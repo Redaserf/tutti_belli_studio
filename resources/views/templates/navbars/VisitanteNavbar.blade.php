@@ -21,16 +21,16 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Servicios</a>
+                <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
               </li>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#" style="color: #C8A096;">Productos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Cursos</a>
+                    <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Contacto</a>
+                    <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Iniciar sesión</a>
@@ -42,8 +42,9 @@
           </nav>
     @yield('body')
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     @yield('js')
 </body>
 </html>
