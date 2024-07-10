@@ -283,6 +283,7 @@ cursor: pointer;
     @yield('body')
 
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script>
 
