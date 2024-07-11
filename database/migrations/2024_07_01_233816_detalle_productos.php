@@ -18,14 +18,14 @@ return new class extends Migration
             $table->double('precioUnitario');
             $table->integer('cantidadProductos');
             $table->double('precioTotal');
-            $table->unsignedBigInteger('descuentoId');
+            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->unsignedBigInteger('ventaId');
             $table->timestamps();
 
             $table->foreign('descuentoId')->references('id')->on('descuentos');
             $table->foreign('ventaId')->references('id')->on('ventas');
 
-            
+
 
         });
     }

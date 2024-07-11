@@ -17,17 +17,17 @@ class Cita extends Model
     public function usuario(){
         return $this->belongsTo(Usuario::class, 'usuarioId');
     }
-    
+
     public function usuarioEmpleado(){
         return $this->belongsTo(Usuario::class, 'empleadoId');
     }
 
-    
+
     public function citaHasServicio(){
-        return $this->hasMany(CitaHasServicio::class);
+        return $this->hasMany(CitaHasServicio::class,'citaId');
     }
 
-    
+
     public function resenias(){
         return $this->hasOne(Resenia::class);
     }

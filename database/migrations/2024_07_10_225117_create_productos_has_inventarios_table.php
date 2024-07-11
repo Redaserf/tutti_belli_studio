@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('productos_has_inscripciones', function(Blueprint $table){
-
+        Schema::create('product_has_inventarios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('productoId');
-            $table->unsignedBigInteger('inscripcionId');
             $table->timestamps();
 
+            //Llaves foraneas
+            $table->unsignedBigInteger('productoId');
             $table->foreign('productoId')->references('id')->on('productos');
-            $table->foreign('inscripcionesId')->references('id')->on('inscripciones');
 
-            
+            $table->unsignedBigInteger('inventarioId');
+            $table->foreign('inventarioId')->references('id')->on('inventarios');
 
         });
     }
@@ -32,8 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('productos_has_inscripciones');
-
+        Schema::dropIfExists('product_has_inventarios');
     }
 };

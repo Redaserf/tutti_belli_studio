@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('fechaInicio');
             $table->double('precio');
             $table->unsignedBigInteger('empleadoId');
-            $table->unsignedBigInteger('descuentoId');
+            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();
 
 
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreign('descuentoId')->references('id')->on('descuentos');
 
 
-            
+
 
         });
     }

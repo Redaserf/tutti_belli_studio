@@ -13,7 +13,7 @@ class Tecnica extends Model
     protected $primaryKey= 'id';
 
     protected $fillable = ['nombre', 'precio', 'descripcion', 'servicioId'];
-    
+
 
     public function cuidados(){
         return $this->hasOne(Cuidado::class);
@@ -23,7 +23,12 @@ class Tecnica extends Model
         return $this->hasMany(TecnicaHasCurso::class);
     }
 
-    public function materialesUsados(){
-        return $this->hasMany(MaterialUsado::class);
+    public function InventarioHasTecnica(){
+        return $this->hasMany(InventarioHasTecnica::class);
     }
+
+    public function servicios(){
+        return $this->belongsTo(Servicio::class);
+    }
+
 }

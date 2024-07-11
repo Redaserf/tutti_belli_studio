@@ -17,17 +17,17 @@ return new class extends Migration
             $table->id();
             $table->double('precioTecnica');
             $table->double('precioTotal');
-            $table->unsignedBigInteger('descuentoId');
+            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->unsignedBigInteger('ventaId');
             $table->timestamps();
 
             $table->foreign('descuentoId')->references('id')->on('descuentos');
             $table->foreign('ventaId')->references('id')->on('ventas');
 
-            
+
 
         });
-        
+
     }
 
     /**

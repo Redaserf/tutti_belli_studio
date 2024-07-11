@@ -16,4 +16,8 @@ class DetalleProducto extends Model
 
     //Hay que llegar a un acuerdo con los detalles de las ventas
 
+    function DetalleProductoHasInventario(){
+        return $this->hasMany(DetalleProductoHasInventario::class, 'detalleProductoId');
+    }
+
 }
