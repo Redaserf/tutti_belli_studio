@@ -23,12 +23,12 @@ return new class extends Migration
             $table->unsignedBigInteger('usuarioId');
             $table->unsignedBigInteger('empleadoId');
             $table->timestamps();
-            
+
             $table->foreign('usuarioId')->references('id')->on('usuarios');
             $table->foreign('empleadoId')->references('id')->on('usuarios');
 
         });
-        $table->timestamps();
+        // $table->timestamps();
 
     }
 

@@ -15,6 +15,10 @@ class Servicio extends Model
     protected $fillable = ['nombre'];
 
     public function citaHasServicio(){
-        return $this->hasMany(CitaHasServicio::class);
+        return $this->hasMany(CitaHasServicio::class,'servicioId');
+    }
+
+    public function tecnicas(){
+        return $this->hasMany(Tecnica::class);
     }
 }

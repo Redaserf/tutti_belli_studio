@@ -13,8 +13,8 @@ class Inscripcion extends Model
     protected $primaryKey= 'id';
 
     protected $fillable = ['fechaInscripcion', 'precio', 'estado', 'usuarioId', 'cursoId']; //el precio igual lo podemos sacar del curso (duplicidad de datos)
- 
-    
+
+
     public function usuarios(){
         return $this->belongsTo(Usuario::class, 'usuarioId');
     }
@@ -23,7 +23,7 @@ class Inscripcion extends Model
         return $this->belongsTo(Curso::class, 'cursoId');
     }
 
-    public function productosHasInscripciones(){
-        return $this->hasMany(ProductoHasInscripcion::class);
+    function inventarioHasInscripcion(){
+        return $this->hasMany(InvetarioHasInscripcion::class, 'inscripcionId');
     }
 }

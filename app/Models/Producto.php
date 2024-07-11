@@ -18,7 +18,7 @@ class Producto extends Model
         return $this->hasMany(ProductoHasInscripcion::class);
     }
 
-    public function materialesUsados(){
-        return $this->hasMany(MaterialUsado::class);
+    public function productHasInventario(){
+        return $this->hasMany(ProductHasInventario::class,'productoId');
     }
 }
