@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvetarioHasInscripcion extends Model
 {
+
+    protected $fillable = [
+        'inventarioId',
+        'inscripcionId'
+    ];
+    
     use HasFactory;
 
     //relaciones

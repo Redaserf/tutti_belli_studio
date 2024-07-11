@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductHasInventario extends Model
 {
+
+
+    protected $fillable = [
+        'inventarioId',
+        'productoId'
+    ];
+
     use HasFactory;
 
     //relaciones

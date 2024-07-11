@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventarioHasTecnica extends Model
 {
+
+    protected $fillable = [
+        'inventarioId',
+        'tecnicaId'
+    ];
+
     use HasFactory;
 
     function inventario(){
