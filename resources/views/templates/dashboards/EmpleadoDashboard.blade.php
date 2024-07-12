@@ -7,21 +7,15 @@
     <title>@yield('title')</title>
     <style>
 
-        /* Google Font Import - Poppins */
+/* ========================= Dashboard ========================= */
+
+/* Google Font Import - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-
-
-*{
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
-}
 
 :root{
     /* ===== Colores ===== */
-    --body-color: #E4E9F7;
-    --sidebar-color: #FFF;
+    --body-color: #FFF;
+    --sidebar-color: #E4E9F7;;
     --primary-color: #ffcade;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
@@ -55,7 +49,11 @@ body{
 }
 
 .sidebar.close{
-    width: 61.5px;   
+    width: 90px;   
+}
+
+.dashboard-container{
+    font-family: "Poppins", sans-serif;
 }
 
 /* ===== Resuable CSSS ===== */
@@ -189,16 +187,16 @@ cursor: pointer;
 .home{
     position: relative;
     height: 100vh;
-    left: 278px;
-    width: calc(100% - 278px);
+    left: 255px;
+    width: calc(100% - 255px);
     background: var(--body-color);
     transition: var(--tran-05);
 }
 
 .sidebar.close ~ .home{
-    left: 90px;
-    width: calc(100% - 90px);
-}
+    left: 95px;
+    width: calc(100% - 95px);
+} 
 
     </style>
     @yield('styles')
