@@ -5,7 +5,15 @@ use Illuminate\Support\Facades\Route;
 // Home
 
 Route::get('/', function () {
-    return view('Home');
+    return view('Home.Home-administrador');
+});
+
+Route::get('/Usuario', function () {
+    return view('Home.Home-usuario');
+});
+
+Route::get('/Empleado', function () {
+    return view('Home.Home-empleado');
 });
 
 
