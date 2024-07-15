@@ -12,13 +12,29 @@ class Producto extends Model
     protected $table = 'productos';
     protected $primaryKey= 'id';
 
-    protected $fillable = ['nombre', 'precio', 'cantidadEnStock'];
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
 
-    public function productosHasManyInscriptiones(){
-        return $this->hasMany(ProductoHasInscripcion::class);
+    protected $fillable = ['nombre', 'precio', 'cantidadEnStock','inventarioId'];
+
+    public function inventario(){
+        return $this->belongsTo(Inventario::class,'inventarioId');
     }
 
-    public function productHasInventario(){
-        return $this->hasMany(ProductHasInventario::class,'productoId');
+    function productoHasTecnica()
+    {
+        return $this-> hasMany( ProductoHasTecnica::class, 'productoId');
     }
+
+    function productoHasInscripcion()
+    {
+        return $this-> hasMany( ProductoHasInscripcion::class, 'productoId');
+    }
+
+
+    public function detalleProductoHasProducto(){
+        return $this->hasMany(DetalleProductoHasProducto::class, 'productoId');
+    }
+
+
 }

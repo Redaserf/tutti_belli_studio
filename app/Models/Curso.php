@@ -12,9 +12,12 @@ class Curso extends Model
     protected $table = 'cursos';
     protected $primaryKey= 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['nombre', 'cupoLimite', 'fechaInicio', 'precio', 'empleadoid', 'descuentoId'];
 
-    
+
     public function usuariosEmpleados(){
         return $this->belongsTo(Usuario::class, 'empleadoId');
     }
@@ -23,7 +26,7 @@ class Curso extends Model
         return $this->hasMany(DiaCurso::class);
     }
 
-    
+
     public function inscripciones(){
         return $this->hasMany(Inscripcion::class);
     }

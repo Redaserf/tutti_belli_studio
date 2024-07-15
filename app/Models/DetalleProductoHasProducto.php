@@ -7,10 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetalleProductoHasProducto extends Model
 {
-    use HasFactory;
-
-    protected $table = 'detalle_productos_has_productos';
+    protected $table = 'detalle_producto_has_productos';
     protected $primaryKey= 'id';
 
-    protected $fillable = ['detalleProductosId', 'productoID'];
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
+    protected $fillable = ['productoId', 'detalleProductoId'];
+
+    public function producto(){
+        return $this->belongsTo(Producto::class, 'productoId');
+    }
+
+    public function detalleProducto(){
+        return $this->belongsTo(DetalleProducto::class, 'detalleProductoId');
+    }
+
+    use HasFactory;
 }

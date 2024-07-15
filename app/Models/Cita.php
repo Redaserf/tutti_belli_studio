@@ -12,6 +12,9 @@ class Cita extends Model
     protected $table = 'citas';
     protected $primaryKey = 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId'];
 
     public function usuario(){
@@ -28,7 +31,7 @@ class Cita extends Model
     }
 
 
-    public function resenias(){
-        return $this->hasOne(Resenia::class);
-    }
+    //public function resenias(){
+      //  return $this->hasOne(Resenia::class);
+    //}
 }

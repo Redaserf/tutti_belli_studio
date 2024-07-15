@@ -12,6 +12,9 @@ class Usuario extends Model
     protected $table = 'usuarios';
     protected $primaryKey= 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['nombre', 'apellidoPaterno', 'apellidoMaterno', 'contrasenia', 'fotoPerfil', 'correo', 'numeroTelefono', 'rolId'];
 
     public function roles(){
@@ -30,12 +33,12 @@ class Usuario extends Model
         return $this->hasMany(Venta::class);
     }
 
-    
+
     public function ususariosEmpleadoCursos(){
         return $this->hasMany(Curso::class);
     }
 
-    
+
     public function inscripciones(){
         return $this->hasOne(Inscripcion::class);
     }

@@ -18,10 +18,13 @@ return new class extends Migration
             $table->string('nombre');
             $table->double('precio');
             $table->integer('cantidadEnStock');
+            $table->unsignedBigInteger('inventarioId');
             $table->timestamps();
+            $table->foreign('inventarioId')->references('id')->on('inventarios');
 
 
-            
+
+
 
         });
     }

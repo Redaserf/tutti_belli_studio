@@ -22,10 +22,10 @@ return new class extends Migration
 
             $table->foreign('cursoId')->references('id')->on('cursos');
 
-            
+
 
         });
-    
+
     }
 
     /**

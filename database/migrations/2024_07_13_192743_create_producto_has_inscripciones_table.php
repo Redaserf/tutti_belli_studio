@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invetario_has_inscripcions', function (Blueprint $table) {
+        Schema::create('producto_has_inscripciones', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
 
             //Llaves foraneas
+            $table->unsignedBigInteger('productoId');
             $table->unsignedBigInteger('inscripcionId');
+            $table->timestamps();
+
+            $table->foreign('productoId')->references('id')->on('productos');
             $table->foreign('inscripcionId')->references('id')->on('inscripciones');
 
-            $table->unsignedBigInteger('inventarioId');
-            $table->foreign('inventarioId')->references('id')->on('inventarios');
+
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invetario_has_inscripcions');
+        Schema::dropIfExists('producto_has_inscripcions');
     }
 };
