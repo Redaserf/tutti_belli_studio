@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventario_has_tecnicas', function (Blueprint $table) {
+        Schema::create('producto_has_tecnicas', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
 
             //Llaves foraneas
             $table->unsignedBigInteger('tecnicaId');
-            $table->foreign('tecnicaId')->references('id')->on('tecnicas');
+            $table->unsignedBigInteger('productoId');
+            $table->timestamps();
 
-            $table->unsignedBigInteger('inventarioId');
-            $table->foreign('inventarioId')->references('id')->on('inventarios');
+            $table->foreign('tecnicaId')->references('id')->on('tecnicas');
+            $table->foreign('productoId')->references('id')->on('productos');
+
+
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventario_has_tecnicas');
+        Schema::dropIfExists('producto_has_tecnicas');
     }
 };

@@ -12,6 +12,9 @@ class Venta extends Model
     protected $table = 'ventas';
     protected $primaryKey= 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['total', 'fechaVenta', 'usuarioId']; //total lo podemos sacar de los detalles(por discutir)
 
     public function usuarios(){

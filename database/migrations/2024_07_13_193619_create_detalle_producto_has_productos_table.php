@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_has_inventarios', function (Blueprint $table) {
+        Schema::create('detalle_producto_has_productos', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('productoId');
+            $table->unsignedBigInteger('detalleProductoId');
             $table->timestamps();
 
-            //Llaves foraneas
-            $table->unsignedBigInteger('productoId');
             $table->foreign('productoId')->references('id')->on('productos');
+            $table->foreign('detalleProductoId')->references('id')->on('detalle_productos');
 
-            $table->unsignedBigInteger('inventarioId');
-            $table->foreign('inventarioId')->references('id')->on('inventarios');
 
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_has_inventarios');
+        Schema::dropIfExists('detalle_producto_has_productos');
     }
 };

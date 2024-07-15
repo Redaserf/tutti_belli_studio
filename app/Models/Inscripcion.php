@@ -12,6 +12,9 @@ class Inscripcion extends Model
     protected $table = 'inscripciones';
     protected $primaryKey= 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['fechaInscripcion', 'precio', 'estado', 'usuarioId', 'cursoId']; //el precio igual lo podemos sacar del curso (duplicidad de datos)
 
 
@@ -23,7 +26,7 @@ class Inscripcion extends Model
         return $this->belongsTo(Curso::class, 'cursoId');
     }
 
-    function inventarioHasInscripcion(){
-        return $this->hasMany(InvetarioHasInscripcion::class, 'inscripcionId');
+    function productoHasInscripcion(){
+        return $this->hasMany(ProductoHasInscripcion::class, 'inscripcionId');
     }
 }

@@ -5,26 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventario extends Model
+class ProductoHasTecnica extends Model
 {
-
-    protected $table = 'inventarios';
-    protected $primaryKey= 'id';
 
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
     protected $fillable = [
-        'nombre',
+        'productoId',
+        'tecnicaId'
     ];
 
     use HasFactory;
 
-
-    //relaciones CORREGIR
-
     function producto(){
-        return $this->hasMany(Producto::class, 'inventarioId');
+        return $this->belongsTo(Producto::class,'productoId');
     }
 
+    function tecnica(){
+        return $this->belongsTo(Tecnica::class,'tecnicaId');
+    }
+
+    use HasFactory;
 }

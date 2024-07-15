@@ -12,6 +12,9 @@ class Servicio extends Model
     protected $table = 'servicios';
     protected $primaryKey= 'id';
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $fillable = ['nombre'];
 
     public function citaHasServicio(){

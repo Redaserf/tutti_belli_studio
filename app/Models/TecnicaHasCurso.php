@@ -9,6 +9,9 @@ class TecnicaHasCurso extends Model
 {
     use HasFactory;
 
+    //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    public $timestamps = false;
+
     protected $table = 'tecnicas_has_cursos';
     protected $primaryKey= 'id';
 
