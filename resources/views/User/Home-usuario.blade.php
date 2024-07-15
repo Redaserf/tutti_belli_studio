@@ -129,7 +129,7 @@ body, html {
   .img-horario{
     width: 350px;
     height: 500px;
-    margin-left: 100px;
+    margin-left: 0 auto;
   }
 
   
