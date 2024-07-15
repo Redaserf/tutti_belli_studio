@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutti Belli</title>
+    <title>Tutti Belli Studio</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
     <style>
-
-body, html {
+      body, html {
     margin: 0;
     padding: 0;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
@@ -129,7 +132,7 @@ body, html {
   .img-horario{
     width: 350px;
     height: 500px;
-    margin-left: 100px;
+    margin-left: 0 auto;
   }
 
   
@@ -328,16 +331,13 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         width: 90%;
     }
 }
-
     </style>
 </head>
-
-
 <body class="hiddenX">
 
-  <div id="contenedor_carga"></div>
-
-
+  <div id="contenedor_carga">
+    
+  </div>
   <section>
 
     <div id="carouselExampleIndicators" class="carousel slide">
@@ -637,24 +637,79 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+      <script src="script2.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
       <script>
+          $(document).ready(function(){
 
-$(document).ready(function(){
-});
+          // Botón reservar
+          var reservarBtn = document.getElementById('reservarBtn');
+          var firstSection = document.querySelector('section:first-of-type');
+
+          function checkVisibility() {
+            var rect = firstSection.getBoundingClientRect();
+            var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+
+            if (rect.bottom <= 0) {
+              reservarBtn.style.display = 'block';
+              setTimeout(function() {
+                reservarBtn.style.opacity = '1';
+              }, 10); // slight delay to ensure display change is applied
+            } else {
+              reservarBtn.style.opacity = '0';
+              setTimeout(function() {
+                reservarBtn.style.display = 'none';
+              }, 500); // matches the transition duration
+            }
+          }
+
+          window.addEventListener('scroll', checkVisibility);
+          window.addEventListener('resize', checkVisibility);
+          checkVisibility();
+
+          // MT sección 1
+          function seccion1mt(){
+              var bannerxd = document.querySelector('.bannerP');
+              if (window.innerWidth <= 768) {
+                  bannerxd.style.marginTop = '0';
+              } else {
+                  bannerxd.style.marginTop = '-90px';
+              }
+          }
+          window.addEventListener('resize', seccion1mt);
+          seccion1mt();
+
+          // MT cursos
+          function cursosIMG(){
+              var mt0Images = document.querySelectorAll('.mt0');
+              mt0Images.forEach(function(image) {
+                  if (window.innerWidth <= 768) {
+                      image.style.marginTop = '0';
+                  } else {
+                      image.style.marginTop = '200px';
+                  }
+              });
+          }
+          window.addEventListener('resize', cursosIMG);
+          cursosIMG();
+
+          // Carrusel 1
+          $('#myCarousel').carousel({
+              interval: 2000 // Cambia de slide cada 2 segundos
+            });
+          });
 
 
-// Pantalla de carga
-var loader = document.getElementById("contenedor_carga");
-var navbar = document.getElementById("navbar");
-window.addEventListener('load', function(){
-    $('#navbar').css('visibility', 'visible');
-    loader.style.display = "none";
-})
-
+          // Pantalla de carga
+          var loader = document.getElementById("contenedor_carga");
+          var navbar = document.getElementById("navbar");
+          window.addEventListener('load', function(){
+              $('#navbar').css('visibility', 'visible');
+              loader.style.display = "none";
+          })
       </script>
 </body>
 </html>
