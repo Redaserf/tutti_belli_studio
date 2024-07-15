@@ -1,62 +1,50 @@
 <?php
 
+use App\Http\Controllers\ViewsController;
 use Illuminate\Support\Facades\Route;
 
-// Home
+// ==========[ Vistas ]==========
 
 Route::get('/', function () {
-    return view('Home.Home-administrador');
-});
-
-Route::get('/Usuario', function () {
-    return view('Home.Home-usuario');
-});
-
-Route::get('/Empleado', function () {
-    return view('Home.Home-empleado');
+    return view('Guest.Home-guest');
 });
 
 
-// Login y registro de usuarios
+    // =====[ Guest ]=====
 
-Route::get('/Login', function () {
-    return view('Login');
-});
-
-Route::get('/Registro', function () {
-    return view('Registro');
-});
+    Route::get('/Home-guest',[ViewsController::class,'guestHome']);
+    Route::get('/Cursos-Guest',[ViewsController::class,'guestCursos']);
+    Route::get('/Login',[ViewsController::class,'LoginVista']);
+    Route::get('/Registro',[ViewsController::class,'RegistroVista']);
+    Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
 
 
-// Registrar nuevas cosas
+    // =====[ User ]=====
 
-Route::get('/AgregarProducto', function () {
-    return view('Agregar-Producto');
-});
-
-Route::get('/AgregarCurso', function () {
-    return view('Agregar-Curso');
-});
-
-Route::get('/AgregarTecnica', function () {
-    return view('Agregar-Tecnica');
-});
+    Route::get('/Home-usuario',[ViewsController::class,'userHome']);
+    Route::get('/Cursos-User',[ViewsController::class,'userCursos']);
+    Route::get('/Perfil-User',[ViewsController::class,'userPerfil']);
+    Route::get('/Productos-User',[ViewsController::class,'userProductos']);
+    Route::get('/Reservacion-User',[ViewsController::class,'userReservacion']);
 
 
-// Templates
+    // =====[ Employee ]=====
 
-Route::get('/Cliente', function () {
-    return view('templates.navbars.ClienteNavbar');
-});
+    Route::get('/Home-empleado',[ViewsController::class,'employeeHome']);
+    Route::get('/Agregar-Cita-Empleado',[ViewsController::class,'employeeAgregarCita']);
+    Route::get('/Ver-Citas-Empleado',[ViewsController::class,'employeeVerCitas']);
 
-Route::get('/Visitante', function () {
-    return view('templates.navbars.VisitanteNavbar');
-});
 
-Route::get('/Empleado', function () {
-    return view('templates.dashboards.EmpleadoDashboard');
-});
+    // =====[ Boss ]=====
 
-Route::get('/Administrador', function () {
-    return view('templates.dashboards.AdministradorDashboard');
-});
+    Route::get('/Home-administrador',[ViewsController::class,'bossHome']);
+    Route::get('/Agregar-cita',[ViewsController::class,'bossAgregarCita']);
+    Route::get('/Agregar-Curso',[ViewsController::class,'bossAgregarCurso']);
+    Route::get('/Agregar-Descuento-Producto',[ViewsController::class,'bossAgregarDescuentoProducto']);
+    Route::get('/Agregar-Descuento-Tecnica',[ViewsController::class,'bossAgregarDescuentoTecnica']);
+    Route::get('/Agregar-Empleado',[ViewsController::class,'bossAgregarEmpleado']);
+    Route::get('/Agregar-Producto',[ViewsController::class,'bossAgregarProducto']);
+    Route::get('/Agregar-Servicio',[ViewsController::class,'bossAgregarServicio']);
+    Route::get('/Agregar-Tecnica',[ViewsController::class,'bossAgregarTecnica']);
+    Route::get('/Ver-Inventario',[ViewsController::class,'bossVerInventario']);
+    Route::get('/Ver-Ventas',[ViewsController::class,'bossVerVentas']);
