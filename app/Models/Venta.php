@@ -18,6 +18,6 @@ class Venta extends Model
     protected $fillable = ['total', 'fechaVenta', 'usuarioId']; //total lo podemos sacar de los detalles(por discutir)
 
     public function usuarios(){
-        return $this->belongsTo(Cita::class, 'usuarioId');
+        return $this->belongsTo(User::class, 'usuarioId');
     }
 }
