@@ -22,15 +22,15 @@ return new class extends Migration
             $table->unsignedBigInteger('cursoId');
             $table->timestamps();
 
-            $table->foreign('usuarioId')->references('id')->on('usuarios');
+            $table->foreign('usuarioId')->references('id')->on('users');
             $table->foreign('cursoId')->references('id')->on('cursos');
 
-            
+
 
         });
     }
 
-    
+
 
     /**
      * Reverse the migrations.

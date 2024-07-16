@@ -21,7 +21,7 @@ return new class extends Migration
             // checar atributo estatus faltante en el diagrama
             $table->timestamps();
 
-            $table->foreign('usuarioId')->references('id')->on('usuarios');
+            $table->foreign('usuarioId')->references('id')->on('users');
 
 
 
