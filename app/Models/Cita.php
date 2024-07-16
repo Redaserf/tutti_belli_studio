@@ -18,11 +18,11 @@ class Cita extends Model
     protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId'];
 
     public function usuario(){
-        return $this->belongsTo(Usuario::class, 'usuarioId');
+        return $this->belongsTo(User::class, 'usuarioId');
     }
 
     public function usuarioEmpleado(){
-        return $this->belongsTo(Usuario::class, 'empleadoId');
+        return $this->belongsTo(User::class, 'empleadoId');
     }
 
 

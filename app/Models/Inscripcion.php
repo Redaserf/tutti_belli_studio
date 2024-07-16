@@ -19,7 +19,7 @@ class Inscripcion extends Model
 
 
     public function usuarios(){
-        return $this->belongsTo(Usuario::class, 'usuarioId');
+        return $this->belongsTo(User::class, 'usuarioId');
     }
 
     public function cursos(){

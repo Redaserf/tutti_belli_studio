@@ -19,7 +19,7 @@ class Curso extends Model
 
 
     public function usuariosEmpleados(){
-        return $this->belongsTo(Usuario::class, 'empleadoId');
+        return $this->belongsTo(User::class, 'empleadoId');
     }
 
     public function diasCursos() {
