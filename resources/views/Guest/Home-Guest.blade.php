@@ -410,7 +410,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
           </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#" style="color: #C8A096;">Productos</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
@@ -419,10 +419,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Iniciar sesión</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
               </li>
             </ul>
-            <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+            <a href="/Login">
+              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+            </a>
           </div>
         </div>
       </nav>
@@ -499,7 +501,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <h2>Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
             <p>Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p>Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <button class="btn btn-primary">Reservar cita</button>
+            <a href="/Login">
+              <button onclick="" class="btn btn-primary">Reservar cita</button>
+            </a>
           </div>
         </div>
       </section>
@@ -512,7 +516,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Login" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -520,7 +524,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Login" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -528,7 +532,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Login" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>
@@ -582,16 +586,10 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
 
 
-      <!-- PA QUE CARGUE MAS LENTO AKSDJFGBNDKFJ -->
-      <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
-
-
             <!-- BOTÓN RESERVAR -->
-            <button  id="reservarBtn" type="button" class="btn btn-dark" style="border-radius: 40px; position: fixed; bottom: 4%; left: 3%; font-size: 32px; font-weight:400;">Reservar ahora</button>
+            <a href="/Login">
+              <button  id="reservarBtn" type="button" class="btn btn-dark" style="border-radius: 40px; position: fixed; bottom: 4%; left: 3%; font-size: 32px; font-weight:400;z-index:10">Reservar ahora</button>
+            </a>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer">
@@ -611,9 +609,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Servicios</a></li>
-                        <li><a href="#">Iniciar sesión</a></li>
-                        <li><a href="#">Cursos</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#cursos">Cursos</a></li>
+                        <li><a href="/Login">Iniciar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
                     <ul class="horario">
@@ -624,8 +622,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 </div>
                 <div class="col-12">
                     <div class="icons">
-                        <a href="#" class=""><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class=""><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
                         <a href="#" class=""><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
@@ -638,68 +636,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     </footer>
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-      <script src="script2.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
       <script>
+
           $(document).ready(function(){
 
-          // Botón reservar
-          var reservarBtn = document.getElementById('reservarBtn');
-          var firstSection = document.querySelector('section:first-of-type');
 
-          function checkVisibility() {
-            var rect = firstSection.getBoundingClientRect();
-            var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+            // scripts aquí
 
-            if (rect.bottom <= 0) {
-              reservarBtn.style.display = 'block';
-              setTimeout(function() {
-                reservarBtn.style.opacity = '1';
-              }, 10); // slight delay to ensure display change is applied
-            } else {
-              reservarBtn.style.opacity = '0';
-              setTimeout(function() {
-                reservarBtn.style.display = 'none';
-              }, 500); // matches the transition duration
-            }
-          }
 
-          window.addEventListener('scroll', checkVisibility);
-          window.addEventListener('resize', checkVisibility);
-          checkVisibility();
-
-          // MT sección 1
-          function seccion1mt(){
-              var bannerxd = document.querySelector('.bannerP');
-              if (window.innerWidth <= 768) {
-                  bannerxd.style.marginTop = '0';
-              } else {
-                  bannerxd.style.marginTop = '-90px';
-              }
-          }
-          window.addEventListener('resize', seccion1mt);
-          seccion1mt();
-
-          // MT cursos
-          function cursosIMG(){
-              var mt0Images = document.querySelectorAll('.mt0');
-              mt0Images.forEach(function(image) {
-                  if (window.innerWidth <= 768) {
-                      image.style.marginTop = '0';
-                  } else {
-                      image.style.marginTop = '200px';
-                  }
-              });
-          }
-          window.addEventListener('resize', cursosIMG);
-          cursosIMG();
-
-          // Carrusel 1
-          $('#myCarousel').carousel({
-              interval: 2000 // Cambia de slide cada 2 segundos
-            });
           });
 
 

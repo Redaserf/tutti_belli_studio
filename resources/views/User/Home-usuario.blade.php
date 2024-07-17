@@ -132,7 +132,14 @@ body, html {
     margin-left: 0 auto;
   }
 
-  
+  .vertical-separator {
+            display: inline-block;
+            width: 1.5px;
+            height: 30px;
+            background-color: #C8A096;
+            margin: 3px 15px;
+            vertical-align: middle;
+        }
 
 
 /* ANIMACION DE CARGA */
@@ -390,10 +397,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    
-    
 
   </section>
+
 
   <!-- NAVBAR / ENCABEZADO -->
       <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
@@ -407,27 +413,29 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Servicios</a>
+                <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
               </li>
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" style="color: #C8A096;">Productos</a>
+                    <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Cursos</a>
+                    <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Contacto</i></a>
+                    <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</i></a>
                   </li>
                   <span class="vertical-separator"></span>
                   <li class="nav-item" style="margin-left: 0;">
-                    <a class="nav-link active texto1" aria-current="page" href="#" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+                    <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
                   </li>
                   </li>
                 </ul>
-                <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+                <a href="/Reservacion-User">
+                  <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+                </a>
               </div>
             </div>
-          </nav>
+        </nav>
 
       <br><br><br>
 
@@ -455,6 +463,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           </div>
         </div>
       </section>
+
 
       <!-- SERVICIOS-->
       <section id="servicios" class="">
@@ -492,6 +501,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           </div>
       </div>
       </section>
+
+
       <!-- IMAGEN SEPARADORA -->
       <section class="image-section">
         <div class="overlay">
@@ -501,10 +512,14 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <h2>Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
             <p>Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p>Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <button class="btn btn-primary">Reservar cita</button>
+            <a href="/Reservacion-User">
+              <button class="btn btn-primary">Reservar cita</button>
+            </a>
           </div>
         </div>
       </section>
+
+
       <!-- CURSOS -->
       <section id="cursos">
         <p class="text-uppercase text-center" style="font-size: 50px;">Cursos</p>
@@ -514,7 +529,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -522,7 +537,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -530,7 +545,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>
@@ -584,16 +599,10 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
 
 
-      <!-- PA QUE CARGUE MAS LENTO AKSDJFGBNDKFJ -->
-      <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/Yf5d_Zx3AaI?si=thrAV_zaAoLEPzdh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
-
-
             <!-- BOTÓN RESERVAR -->
-            <button  id="reservarBtn" type="button" class="btn btn-dark" style="border-radius: 40px; position: fixed; bottom: 4%; left: 3%; font-size: 32px; font-weight:400;">Reservar ahora</button>
+            <a href="/Reservacion-User">
+              <button  id="reservarBtn" type="button" class="btn btn-dark" style="border-radius: 40px; position: fixed; bottom: 4%; left: 3%; font-size: 32px; font-weight:400; z-index:10;">Reservar ahora</button>
+            </a>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer">
@@ -613,9 +622,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Servicios</a></li>
-                        <li><a href="#">Iniciar sesión</a></li>
-                        <li><a href="#">Cursos</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#cursos">Cursos</a></li>
+                        <li><a href="#">Cerrar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
                     <ul class="horario">
@@ -626,8 +635,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 </div>
                 <div class="col-12">
                     <div class="icons">
-                        <a href="#" class=""><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class=""><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
                         <a href="#" class=""><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
@@ -641,7 +650,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-      <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 
       <script>
 

@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Route;
 // ==========[ Vistas ]==========
 
 Route::get('/', function () {
-    return view('Guest.Home-guest');
+    return view('Roles');
 });
 
 
     // =====[ Guest ]=====
 
     Route::get('/Home-guest',[ViewsController::class,'guestHome']);
-    Route::get('/Cursos-Guest',[ViewsController::class,'guestCursos']);
     Route::get('/Login',[ViewsController::class,'LoginVista']);
     Route::get('/Registro',[ViewsController::class,'RegistroVista']);
     Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
@@ -33,6 +32,7 @@ Route::get('/', function () {
     Route::get('/Home-empleado',[ViewsController::class,'employeeHome']);
     Route::get('/Agregar-Cita-Empleado',[ViewsController::class,'employeeAgregarCita']);
     Route::get('/Ver-Citas-Empleado',[ViewsController::class,'employeeVerCitas']);
+    Route::get('/Ver-Productos-Empleado',[ViewsController::class,'employeeVerProductos']);
 
 
     // =====[ Boss ]=====
@@ -48,3 +48,12 @@ Route::get('/', function () {
     Route::get('/Agregar-Tecnica',[ViewsController::class,'bossAgregarTecnica']);
     Route::get('/Ver-Inventario',[ViewsController::class,'bossVerInventario']);
     Route::get('/Ver-Ventas',[ViewsController::class,'bossVerVentas']);
+    Route::get('/Ver-Empleados',[ViewsController::class,'bossVerEmpleados']);
+    Route::get('/Ver-Descuentos',[ViewsController::class,'bossVerDescuentos']);
+    Route::get('/Ver-Citas',[ViewsController::class,'bossVerCitas']);
+    Route::get('/Ver-Cursos',[ViewsController::class,'bossVerCursos']);
+    Route::get('/Ver-Productos',[ViewsController::class,'bossVerProductos']);
+    Route::get('/Ver-Servicios',[ViewsController::class,'bossVerServicios']);
+
+
+
