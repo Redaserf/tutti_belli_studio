@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Registro - Tutti Belli Studio</title>
+    <title>Registro - Tutti Belli</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -127,7 +127,7 @@
                     <div class="col-6 col-md-6">
                         <label for="genero" class="form-label">Género</label>
                         <select class="form-control" id="genero">
-                            <option selected>Escoge tu genero</option>
+                            <option selected disabled>Escoge tu genero</option>
                             <option value="Hombre">Hombre</option>
                             <option value="Mujer">Mujer</option>
                         </select>

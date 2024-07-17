@@ -14,10 +14,6 @@ class ViewsController extends Controller
         return view('Guest.Home-guest');
     }
 
-    public function guestCursos(){
-        return view('Guest.Cursos-guest');
-    }
-
     public function guestProductos(){
         return view('Guest.Productos-guest');
     }
@@ -68,6 +64,10 @@ class ViewsController extends Controller
         return view('Employee.Ver-Citas-Empleado');
     }
 
+    public function employeeVerProductos(){
+        return view('Employee.Ver-Productos-Empleado');
+    }
+
 
     // ==========[ Boss ]==========
 
@@ -115,4 +115,27 @@ class ViewsController extends Controller
         return view('Boss.Ver-Ventas');
     }
 
+    public function bossVerEmpleados(){
+        return view('Boss.Ver-Empleados');
+    }
+
+    public function bossVerDescuentos(){
+        return view('Boss.Ver-Descuentos');
+    }
+
+    public function bossVerCitas(){
+        return view('Boss.Ver-Citas');
+    }
+
+    public function bossVerCursos(){
+        return view('Boss.Ver-Cursos');
+    }
+
+    public function bossVerProductos(){
+        return view('Boss.Ver-Productos');
+    }
+
+    public function bossVerServicios(){
+        return view('Boss.Ver-Servicios');
+    }
 }

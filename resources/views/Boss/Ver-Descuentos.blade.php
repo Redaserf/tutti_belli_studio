@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Descuentos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <style>
+           
+/* Dashboard */
 
-        @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
-        /* Dashboard */
-        /* Google Font Import - Poppins */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 
 * {
@@ -236,24 +234,12 @@ header {
 /* Fin Dashboard */
 
 
+/* Aquí abajo poner tus estilos */
 
-                .container-full{
-                    min-height: calc(94vh - 6rem);
-                    margin-top: -50px;
-                    margin: 100px;
-                    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
-                    border-radius: 20px;
-                }
 
-                body{
-                    overflow-y: hidden;
-                }
 
-                .citas{
-                    font-family: "Playwrite FR Moderne"
-                }
+
 </style>
-
 </head>
 
 <body class="hiddenX">
@@ -343,66 +329,72 @@ header {
                 
         {{-- Fin Sidebar --}}
 
-        
-    <section class="home">
-        <div class="container-full border">
-            <h2 class="citas text-center mt-3">Inventario</h2>
-            <br>
-            <div>
-                <!-- Aquí el inventario mediante back-end :c -->
-            </div>
-    
-        </div>
-    </section>
 
 
-    <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<div class="home">
+
+    {{-- Agrega aquí todo lo que vayas a hacer --}}
+
+
+
+
+
+    {{-- estos botones son para mandar a la vista de agregar descuento a un producto o a una tecnica --}}
+    <div style="margin: 100px">
+        <a href="/Agregar-Descuento-Producto"><button class="btn btn-info">Agregar descuento en producto</button></a>
+        <a href="/Agregar-Descuento-Tecnica"><button class="btn btn-danger">Agregar descuento en técnica</button></a>
+    </div>
     
-    <script>
-    
-    // Scripts para todas las vistas
-    
-        // Pantalla de carga
-        var loader = document.getElementById("contenedor_carga");
-        var navbar = document.getElementById("navbar");
-        window.addEventListener('load', function(){
-            $('#navbar').css('visibility', 'visible');
-            loader.style.display = "none";
-        });
-    
-    $(document).ready(function(){
-    
-        // Dashboard toggle
-        const body = document.querySelector("body"),
-                sidebar = body.querySelector(".sidebar"),
-                toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay");
-    
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-            if (!sidebar.classList.contains("close")) {
-                overlay.style.display = "block";
-            } else {
-                overlay.style.display = "none";
-            }
-        });
-    
-        overlay.addEventListener("click", () => {
-            sidebar.classList.add("close");
-            overlay.style.display = "none";
-        });
-    
-        // Fin scripts para todas las vistas
-    
-    
-    
-    
-    
-        // Fin document.ready
+</div>
+
+<script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+
+// Scripts para todas las vistas, no tocar
+
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    var navbar = document.getElementById("navbar");
+    window.addEventListener('load', function(){
+        $('#navbar').css('visibility', 'visible');
+        loader.style.display = "none";
     });
-    
-    </script>
+
+$(document).ready(function(){
+
+    // Dashboard toggle
+    const body = document.querySelector("body"),
+            sidebar = body.querySelector(".sidebar"),
+            toggle = body.querySelector(".toggle"),
+            overlay = body.querySelector(".overlay");
+
+    toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+        if (!sidebar.classList.contains("close")) {
+            overlay.style.display = "block";
+        } else {
+            overlay.style.display = "none";
+        }
+    });
+
+    overlay.addEventListener("click", () => {
+        sidebar.classList.add("close");
+        overlay.style.display = "none";
+    });
+
+    // Fin scripts para todas las vistas
+
+
+
+
+
+    // Fin document.ready
+});
+
+</script>
+
 </body>
 </html>
