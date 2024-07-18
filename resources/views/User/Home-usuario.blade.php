@@ -335,6 +335,57 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         width: 90%;
     }
 }
+.logo-img {
+    height: auto;
+    width: 30%;
+    max-height: 90%;
+    max-width: 90%;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .logo-img {
+      width: 50%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .logo-img {
+      width: 70%;
+    }
+  }
+  .logo-img {
+      height: auto;
+      width: 30%;
+      max-height: 90%;
+      max-width: 90%;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .logo-img {
+        width: 50%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .logo-img {
+        width: 70%;
+      }
+    }
+
+    .section-divider {
+      height: 7px;
+      background-color: rgba(255, 255, 255, 0.8);
+      width: 100%;
+      margin: 0;
+    }
+    .section-divider2 {
+      height: 30px;
+      background:white;
+      width: 100%;
+      margin: 0;
+    }
 
     </style>
 </head>
@@ -346,60 +397,15 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
   <section>
-
-    <div id="carouselExampleIndicators" class="carousel slide">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <div class="hero-image" style="position: relative; width: 100%; height: auto;">
+      <img src="/resources/img/home/imagenejemplo2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.5);">
+        <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="/resources/img/home/imagenejemplo2.jpg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <div class="info-box">
-              <img src="/resources/img/home/_CON.png" alt="" style="height: 60%; width: 60%;">
-              <h5>¡Súper promoción!</h5>
-              <p>Elige 2 de los tratamientos seleccionados por solo $2,500</p>
-              <button class="btn btn-light">Me interesa la promoción</button>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="/resources/img/home/imagenejemplo4.jpeg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <div class="info-box">
-              <img src="/resources/img/home/_CON.png" alt="" style="height: 60%; width: 60%;">
-              <h5>¡Oferta especial!</h5>
-              <p>Descuento en todos los tratamientos faciales</p>
-              <button class="btn btn-light">Más información</button>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="/resources/img/home/imagenejemplo2.jpg" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <div class="info-box">
-              <img src="/resources/img/home/_CON.png" alt="" style="height: 60%; width: 60%;">
-              <h5>Nueva promoción</h5>
-              <p>Tratamientos de belleza a mitad de precio</p>
-              <button class="btn btn-light">Ver detalles</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-
+    <div class="section-divider"></div>
+    <!-- <div class="section-divider"></div> -->
   </section>
-
 
   <!-- NAVBAR / ENCABEZADO -->
       <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
@@ -508,7 +514,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <!-- IMAGEN SEPARADORA -->
       <section class="image-section">
         <div class="overlay">
-          <img src="/resources/img/home/imagenejemplo4.jpeg" alt="Imagen separadora">
+          <img src="/resources/img/home/img-separadora-home.jpeg" alt="Imagen separadora">
           <div class="dark-overlay"></div>
           <div class="overlay-text">
             <h2>Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
@@ -571,16 +577,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
             </div>
             <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
             </div>
             <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
             </div>
             <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
             </div>
             <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
             </div>
           </div>
         </div>
@@ -616,9 +622,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 </div>
                 <div class="col-md-4">
                     <h5>Dirección</h5>
-                    <p>adljbflñaisfjblñial<br>fuiajbofbasfjos</p>
-                    <p>Teléfono: 874817238478</p>
-                    <p>Email: aknfoanfs@gmail.com</p>
+                    <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
+                    <p>Teléfono: +52 871 382 6767</p>
+                    <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
                 <div class="col-md-4">
                     <h5>Enlaces</h5>
@@ -671,6 +677,31 @@ $(document).ready(function(){
     separadorHidden();
 
 });
+function adjustGallery() {
+  const galleryItems = document.querySelectorAll('.img-desape');
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth < 768) {
+    galleryItems.forEach((item, index) => {
+      if (index >= 4) {
+        item.style.display = 'none';
+      } else {
+        item.style.display = 'block';
+      }
+    });
+  } else {
+    galleryItems.forEach(item => {
+      item.style.display = 'block';
+    });
+  }
+}
+
+// Llama a la función al cargar la página y al redimensionar la ventana
+window.addEventListener('load', adjustGallery);
+window.addEventListener('resize', adjustGallery);
+
+  // Adjust gallery on window resize
+  window.addEventListener('resize', adjustGallery);
 
 
 // Pantalla de carga
@@ -680,6 +711,7 @@ window.addEventListener('load', function(){
     $('#navbar').css('visibility', 'visible');
     loader.style.display = "none";
 })
+
 
       </script>
 </body>
