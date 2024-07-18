@@ -378,43 +378,46 @@
                     <div class="row">
                         <h2>Agregar Empleado</h2>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="employeeName" placeholder="Nombre">
-                            <label for="employeeName">Nombre</label>
+                    <form action="/RegistroEmpleado" method="POST">
+                        @csrf
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input name="employeeName" type="text" class="form-control" id="employeeName" placeholder="Nombre" required>
+                                <label for="employeeName">Nombre</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input name="employeeLastname" type="text" class="form-control" id="employeeLastname" placeholder="Apellidos" required>
+                                <label for="employeeLastname">Apellidos</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <select name="employeeGender" class="form-control" id="employeeGender" placeholder="Sexo" required>
+                                    <option value="" disabled selected>Escoge una opción</option>
+                                    <option value="Hombre">Hombre</option>
+                                    <option value="Mujer">Mujer</option>
+                                </select>
+                                <label for="employeeGender">Género</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
+                                <label for="employeePhone">Número telefónico</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="employeeBirthDate" id="employeeBirthDate" placeholder="Fecha de nacimiento" required>
+                                <label for="employeeBirthDate">Fecha de nacimiento</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input name="employeeEmail" type="email" class="form-control" id="employeeEmail" placeholder="Correo electrónico" required>
+                                <label for="employeeEmail">Correo electrónico</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input name="employeePassword" type="password" class="form-control" id="employeePassword" placeholder="Contraseña" required minlength="8" pattern=".*[0-9].*" title="Su contraseña debe incluír al menos 1 número">
+                                <label for="employeePassword">Contraseña</label>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-dark btn-block w-100">Agregar Empleado</button>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="employeeAge" placeholder="Edad">
-                            <label for="employeeAge">Edad</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="employeeEmail" placeholder="Correo electrónico">
-                            <label for="employeeEmail">Correo electrónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-control" id="employeeGender" placeholder="Sexo">
-                                <option value="" disabled selected>-- Seleccione el sexo --</option>
-                                <option value="male">Masculino</option>
-                                <option value="female">Femenino</option>
-                                <option value="other">Otro</option>
-                            </select>
-                            <label for="employeeGender">Sexo</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="tel" class="form-control" id="employeePhone" placeholder="Número telefónico">
-                            <label for="employeePhone">Número telefónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="employeeStartDate" placeholder="Fecha de inicio">
-                            <label for="employeeStartDate">Fecha de inicio</label>
-                        </div>
-                        <div class="mb-3">
-                            <label for="employeeDescription">Descripción</label>
-                            <textarea class="form-control" id="employeeDescription" rows="7" style="resize: none;" placeholder="Descripción"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100">Agregar Empleado</button>
-                        </div>
+                    </form>
                     </div>
                 </div>
             </div>
