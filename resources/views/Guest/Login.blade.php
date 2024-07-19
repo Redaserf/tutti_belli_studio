@@ -108,12 +108,13 @@ a:hover {
             </div>
             <h2>Ingresa con tu cuenta</h2>
             <p>Ingresa tu email y contraseña para continuar</p>
-            <form>
+            <form action="/LoginUsuario" method="POST">
+                @csrf
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Correo" required>
+                    <input type="email" name="email" class="form-control" placeholder="Correo" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Contraseña" required>
+                    <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
                 </div>
                 <button type="submit" class="btn btn-dark w-100">Ingresar</button>
             </form>

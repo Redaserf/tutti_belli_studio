@@ -49,8 +49,8 @@ body, html {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            max-width: 630px;
+            width: 630px;
         }
         .profile-container h2 {
             color: #000000;
@@ -88,12 +88,17 @@ body, html {
                     <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #C8A096;">Cursos</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #C8A096;">Contacto</i></a>
                   </li>
-                  <span class="vertical-separator"></span>
+                  <span id="separador" class="vertical-separator" style="visibility:visible"></span>
                   <li class="nav-item" style="margin-left: 0;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+                    <a id="cuenta" class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
                   </li>
+                  <li class="nav-item" style="margin-left: 100px;">
+                    <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
                   </li>
                 </ul>
                 <a href="/Reservacion-User">
@@ -111,20 +116,24 @@ body, html {
     <h2>Mi cuenta</h2>
     <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" value="Juan Pérez" readonly>
+        <input type="text" class="form-control" id="nombre" value="{{ Auth::user()->name }}" readonly>
     </div>
     <div class="mb-3">
-        <label for="numero" class="form-label">Número</label>
-        <input type="text" class="form-control" id="numero" value="+1234567890" readonly>
-    </div>
-    <div class="mb-3">
-        <label for="correo" class="form-label">Correo</label>
-        <input type="email" class="form-control" id="correo" value="juan.perez@example.com" readonly>
-    </div>
-    <div class="mb-3">
-        <label for="genero" class="form-label">Género</label>
-        <input type="text" class="form-control" id="genero" value="Masculino" readonly>
-    </div>
+      <label for="nombre" class="form-label">Apellidos</label>
+      <input type="text" class="form-control" id="nombre" value="{{ Auth::user()->apellido }}" readonly>
+  </div>
+  <div class="mb-3">
+    <label for="genero" class="form-label">Género</label>
+    <input type="text" class="form-control" id="genero" value="{{ Auth::user()->gender }}" readonly>
+  </div>
+  <div class="mb-3">
+    <label for="correo" class="form-label">Correo electrónico</label>
+    <input type="email" class="form-control" id="correo" value="{{ Auth::user()->email }}" readonly>
+  </div>
+  <div class="mb-3">
+      <label for="numero" class="form-label">Número de teléfono</label>
+      <input type="text" class="form-control" id="numero" value="{{ Auth::user()->numeroTelefono }}" readonly>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -135,7 +144,17 @@ body, html {
 
 $(document).ready(function(){
 
-// Scripts aquí
+    function separadorHidden(){
+      var cuentaLi = document.getElementById("cuenta");
+       var separador = document.getElementById("separador");
+        if (window.innerWidth <= 992) {
+          $('.vertical-separator').css('visibility', 'hidden');
+        } else {
+          $('.vertical-separator').css('visibility', 'visible');
+        }
+    }
+    window.addEventListener('resize', separadorHidden);
+    separadorHidden();
 
 });
 

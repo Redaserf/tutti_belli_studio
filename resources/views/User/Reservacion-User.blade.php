@@ -75,10 +75,12 @@ body, html {
                   <li class="nav-item">
                     <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #C8A096;">Contacto</i></a>
                   </li>
-                  <span class="vertical-separator"></span>
+                  <span id="separador" class="vertical-separator"></span>
                   <li class="nav-item" style="margin-left: 0;">
                     <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
                   </li>
+                  <li class="nav-item" style="margin-left: 100px;">
+                    <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
                   </li>
                 </ul>
                 <a href="/Reservacion-User">
@@ -107,6 +109,19 @@ body, html {
 <script>
 
 $(document).ready(function(){
+
+  function separadorHidden(){
+      var cuentaLi = document.getElementById("cuenta");
+       var separador = document.getElementById("separador");
+        if (window.innerWidth <= 992) {
+          $('.vertical-separator').css('visibility', 'hidden');
+        } else {
+          $('.vertical-separator').css('visibility', 'visible');
+        }
+    }
+    window.addEventListener('resize', separadorHidden);
+    separadorHidden();
+
 
     // Scripts aquí
 
