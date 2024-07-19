@@ -3,11 +3,27 @@
 use App\Http\Controllers\ViewsController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ConsultasController;
+
+
 // ==========[ Vistas ]==========
 
 Route::get('/', function () {
     return view('Roles');
 });
+
+//prueba no hacer caso y si lo vez borralo
+
+    Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
+
+    //consultas
+
+    //Consulta para traer los usuarios con sus roles
+    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
+
+    //servicios con sus tecnicas
+
+    Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
 
 
     // =====[ Guest ]=====

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->binary('fotoPerfil');
+            $table->string('fotoPerfil');
             $table->string('numeroTelefono', 10);
             $table->unsignedBigInteger('rolId');
             $table->rememberToken();
