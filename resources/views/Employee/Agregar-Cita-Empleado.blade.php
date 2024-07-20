@@ -347,6 +347,9 @@ header {
 
 <div class="home">
 
+
+    <form action="/RegistroCitaAdmin" method="POST">
+    @csrf 
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -414,6 +417,7 @@ header {
             </div>
         </div>
     </div>
+    </form>
 
 </div>
 
