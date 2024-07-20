@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
            
 /* Dashboard */
 
@@ -238,6 +240,30 @@ header {
 
 
 
+    .top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    }
+
+    .top a{
+    margin-left: 0px;
+    }
+
+    .top h2{
+    font-family: "Playwrite FR Moderne";
+    margin-right: 20px;
+    }
+
+    .section-divider {
+      height: 3px;
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 100%;
+      margin-top: 20px;
+    }
+
+
 
 </style>
 </head>
@@ -280,7 +306,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-clipboard icon"></i>
+                                <i class="fa-solid fa-scissors icon"></i>
                                 <span class="text nav-text">Servicios</span>
                             </a>
                         </li>
@@ -292,7 +318,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Productos">
-                                <i class="fa-solid fa-bag-shopping icon"></i>
+                                <i class="fa-solid fa-basket-shopping icon"></i>
                                 <span class="text nav-text">Productos</span>
                             </a>
                         </li>
@@ -304,13 +330,13 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-sack-dollar icon"></i>
+                                <i class="fa-solid fa-percent icon"></i>
                                 <span class="text nav-text">Descuentos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
-                              <i class="fa-solid fa-user icon"></i>
+                                <i class="fa-solid fa-user-tie icon"></i>
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
@@ -327,23 +353,25 @@ header {
                 </div>
             </nav>
                 
-        {{-- Fin Sidebar --}}
+            {{-- Fin Sidebar --}}
 
 
 
-<div class="home">
+        <section class="home">
+            <div class="top text-center">
+                <h2>Descuentos</h2>
+                <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
+                <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en servicio<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
+            </div>
+            <div class="section-divider"></div>
 
-    {{-- Agrega aquí todo lo que vayas a hacer --}}
+            <div>
 
+                {{-- Aquí las cosas con descuento --}}
 
+            </div>
 
-
-
-    {{-- estos botones son para mandar a la vista de agregar descuento a un producto o a una tecnica --}}
-    <div style="margin: 100px">
-        <a href="/Agregar-Descuento-Producto"><button class="btn btn-info">Agregar descuento en producto</button></a>
-        <a href="/Agregar-Descuento-Tecnica"><button class="btn btn-danger">Agregar descuento en técnica</button></a>
-    </div>
+        </section>
     
 </div>
 
@@ -388,7 +416,21 @@ $(document).ready(function(){
     // Fin scripts para todas las vistas
 
 
-
+    function botones(){ 
+              if (window.innerWidth <= 960) {
+                $('.top').css('flex-direction', 'column');
+                $('.top').css('gap', '10px');
+                $('.right').css('margin-right', '0');
+                $('.left').css('margin-left', '0');
+              } else {
+                $('.top').css('gap', '0');
+                $('.top').css('flex-direction', '');
+                $('.right').css('margin-right', '10px');
+                $('.left').css('margin-left', '10px');
+              }
+          }
+          window.addEventListener('resize', botones);
+          botones();
 
 
     // Fin document.ready

@@ -289,86 +289,86 @@
         <div id="contenedor_carga"></div>
         <div class="overlay"></div>
     
-            {{-- Sidebar --}}
-        
-            <nav class="dashboard-container sidebar close">
-                <header>
-                    <div class="image-text">
-                        <span class="image">
-                            <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
-                        </span>
-                        <div class="text header-text">
-                            <span class="name">anyelo</span>
-                            <span class="rol">Administrador</span>
-                        </div>
+        {{-- Sidebar --}}
+    
+        <nav class="dashboard-container sidebar close">
+            <header>
+                <div class="image-text">
+                    <span class="image">
+                        <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
+                    </span>
+                    <div class="text header-text">
+                        <span class="name">anyelo</span>
+                        <span class="rol">Administrador</span>
                     </div>
-                    <i class="fa-solid fa-angle-right toggle"></i>
-                </header>
-        
-                <div class="menu-bar">
-                    <div class="menu">
-                        <ul class="menu-links">
-                            <li class="nav-link">
-                                <a href="/Home-administrador">
-                                    <i class="fa-solid fa-house icon"></i>
-                                    <span class="text nav-text">Inicio</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Citas">
-                                    <i class="fa-regular fa-calendar icon"></i>
-                                    <span class="text nav-text">Citas</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Servicios">
-                                    <i class="fa-solid fa-clipboard icon"></i>
-                                    <span class="text nav-text">Servicios</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Cursos">
-                                    <i class="fa-solid fa-pencil icon"></i>
-                                    <span class="text nav-text">Cursos</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Productos">
-                                    <i class="fa-solid fa-bag-shopping icon"></i>
-                                    <span class="text nav-text">Productos</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Inventario">
-                                    <i class="fa-solid fa-box icon"></i>
-                                    <span class="text nav-text">Inventario</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Descuentos">
-                                    <i class="fa-solid fa-sack-dollar icon"></i>
-                                    <span class="text nav-text">Descuentos</span>
-                                </a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="/Ver-Empleados">
-                                  <i class="fa-solid fa-user icon"></i>
-                                  <span class="text nav-text">Empleados</span>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="bottom-content">
-                            <li class="">
-                                <a href="#">
-                                    <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
-                                    <span class="text nav-text">Cerrar sesión</span>
-                                </a>
-                            </li>
-                        </div>
+                </div>
+                <i class="fa-solid fa-angle-right toggle"></i>
+            </header>
+    
+            <div class="menu-bar">
+                <div class="menu">
+                    <ul class="menu-links">
+                        <li class="nav-link">
+                            <a href="/Home-administrador">
+                                <i class="fa-solid fa-house icon"></i>
+                                <span class="text nav-text">Inicio</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Citas">
+                                <i class="fa-regular fa-calendar icon"></i>
+                                <span class="text nav-text">Citas</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Servicios">
+                                <i class="fa-solid fa-scissors icon"></i>
+                                <span class="text nav-text">Servicios</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Cursos">
+                                <i class="fa-solid fa-pencil icon"></i>
+                                <span class="text nav-text">Cursos</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Productos">
+                                <i class="fa-solid fa-basket-shopping icon"></i>
+                                <span class="text nav-text">Productos</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Inventario">
+                                <i class="fa-solid fa-box icon"></i>
+                                <span class="text nav-text">Inventario</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Descuentos">
+                                <i class="fa-solid fa-percent icon"></i>
+                                <span class="text nav-text">Descuentos</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/Ver-Empleados">
+                                <i class="fa-solid fa-user-tie icon"></i>
+                              <span class="text nav-text">Empleados</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="bottom-content">
+                        <li class="">
+                            <a href="#">
+                                <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+                                <span class="text nav-text">Cerrar sesión</span>
+                            </a>
+                        </li>
                     </div>
-                </nav>
-                    
+                </div>
+            </nav>
+                
             {{-- Fin Sidebar --}}
     
 
@@ -376,6 +376,8 @@
 
 <div class="home">
 
+    <form action="/RegistroDescuentoProducto" method="POST">
+    @csrf   
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -411,7 +413,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
+    </form>
 
 </div>
 

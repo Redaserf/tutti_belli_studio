@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <style>
-           
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
 /* Dashboard */
 
 /* Google Font Import - Poppins */
@@ -238,6 +238,30 @@ header {
 
 
 
+.top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    }
+
+    .top a{
+    margin-left: 0px;
+    }
+
+    .top h2{
+    font-family: "Playwrite FR Moderne";
+    margin-right: 20px;
+    }
+
+    .section-divider {
+      height: 3px;
+      background-color: rgba(0, 0, 0, 0.8);
+      min-width: 100%;
+      margin-top: 20px;
+    }
+
+
 
 </style>
 </head>
@@ -280,7 +304,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-clipboard icon"></i>
+                                <i class="fa-solid fa-scissors icon"></i>
                                 <span class="text nav-text">Servicios</span>
                             </a>
                         </li>
@@ -292,7 +316,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Productos">
-                                <i class="fa-solid fa-bag-shopping icon"></i>
+                                <i class="fa-solid fa-basket-shopping icon"></i>
                                 <span class="text nav-text">Productos</span>
                             </a>
                         </li>
@@ -304,13 +328,13 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-sack-dollar icon"></i>
+                                <i class="fa-solid fa-percent icon"></i>
                                 <span class="text nav-text">Descuentos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
-                              <i class="fa-solid fa-user icon"></i>
+                                <i class="fa-solid fa-user-tie icon"></i>
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
@@ -331,18 +355,20 @@ header {
 
 
 
-<div class="home">
+        <section class="home">
+            <div class="top text-center">
+                <h2>Productos</h2>
+                <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Agregar producto<i style="margin-left: 6px" class="fa-solid fa-circle-plus"></i></button></a>
+            </div>
+            <div class="section-divider"></div>
 
-    {{-- Agrega aquí todo lo que vayas a hacer --}}
+            <div>
 
+                {{-- aqui todo --}}
 
+            </div>
 
-
-
-    {{-- este botón es para mandar a la vista de agregar un producto, este botón solo estará en administrador --}}
-    <a href="/Agregar-Producto" style=""><button class="btn btn-danger" style="margin: 100px;">Agregar producto</button></a>
-    
-</div>
+        </section>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -385,7 +411,17 @@ $(document).ready(function(){
     // Fin scripts para todas las vistas
 
 
-
+    function botones(){ 
+              if (window.innerWidth <= 960) {
+                $('.top').css('flex-direction', 'column');
+                $('.top').css('gap', '10px');
+              } else {
+                $('.top').css('gap', '0');
+                $('.top').css('flex-direction', '');
+              }
+          }
+          window.addEventListener('resize', botones);
+          botones();
 
 
     // Fin document.ready

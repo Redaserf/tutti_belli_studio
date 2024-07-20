@@ -236,26 +236,52 @@ header {
 /* Fin Dashboard */
 
 
-                .container-full{
-                    min-height: calc(94vh - 6rem);
-                    margin-top: -50px;
-                    margin: 100px;
-                    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
-                    border-radius: 20px;
-                }
+    .container-full{
+        min-height: calc(94vh - 6rem);
+        margin-top: -50px;
+        margin: 100px;
+        box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+    }
 
-                body{
-                    overflow-y: hidden;
-                }
+    body{
+        overflow-y: hidden;
+    }
 
-                .citas{
-                    font-family: "Playwrite FR Moderne"
-                }
+    .citas{
+        font-family: "Playwrite FR Moderne"
+    }
+
+
+
+    .top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    }
+
+    .top a{
+    margin-left: 0px;
+    }
+
+    .top h2{
+    font-family: "Playwrite FR Moderne";
+    margin-right: 20px;
+    }
+
+    .section-divider {
+      height: 3px;
+      background-color: rgba(0, 0, 0, 0.8);
+      min-width: 100%;
+      margin-top: 20px;
+    }
+
     </style>
 
 </head>
 
-<body class="hiddenX">
+<body class="">
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
@@ -293,7 +319,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-clipboard icon"></i>
+                                <i class="fa-solid fa-scissors icon"></i>
                                 <span class="text nav-text">Servicios</span>
                             </a>
                         </li>
@@ -305,7 +331,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Productos">
-                                <i class="fa-solid fa-bag-shopping icon"></i>
+                                <i class="fa-solid fa-basket-shopping icon"></i>
                                 <span class="text nav-text">Productos</span>
                             </a>
                         </li>
@@ -317,13 +343,13 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-sack-dollar icon"></i>
+                                <i class="fa-solid fa-percent icon"></i>
                                 <span class="text nav-text">Descuentos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
-                              <i class="fa-solid fa-user icon"></i>
+                                <i class="fa-solid fa-user-tie icon"></i>
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
@@ -340,19 +366,22 @@ header {
                 </div>
             </nav>
                 
-        {{-- Fin Sidebar --}}
+            {{-- Fin Sidebar --}}
 
-    <section class="home">
-        <div class="container-full border">
-            <h2 class="citas text-center mt-3">Citas pendientes</h2>
-            <a href="/Agregar-cita"><button class="btn btn-info">Agendar cita</button></a>
-            <br>
-            <div>
-                <!-- Aquí las citas mediante back-end :c -->
-            </div>
+            <section class="home">
+                <div class="top text-center">
+                    <h2>Citas pendientes</h2>
+                    <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: curso;">Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></i></button></a>
+                </div>
+                <div class="section-divider"></div>
     
-        </div>
-    </section>
+                <div>
+    
+                    {{-- aqui todo --}}
+    
+                </div>
+    
+            </section>
 
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
@@ -396,7 +425,17 @@ header {
         // Fin scripts para todas las vistas
     
     
-    
+        function botones(){ 
+              if (window.innerWidth <= 960) {
+                $('.top').css('flex-direction', 'column');
+                $('.top').css('gap', '10px');
+              } else {
+                $('.top').css('gap', '0');
+                $('.top').css('flex-direction', '');
+              }
+          }
+          window.addEventListener('resize', botones);
+          botones();
     
     
         // Fin document.ready

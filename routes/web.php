@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ViewsController;
 use Illuminate\Support\Facades\Route;
@@ -71,3 +72,15 @@ Route::get('/', function () {
     // =====[ Empleados ]=====
 
     Route::post('/RegistroEmpleado',[UsuarioController::class, 'RegistroEmpleado']);
+
+
+
+    // =====[ Agregar (Administrador) ]=====
+
+    Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
+    Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
+    Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
+    Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
+    Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
+    Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
+    Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);

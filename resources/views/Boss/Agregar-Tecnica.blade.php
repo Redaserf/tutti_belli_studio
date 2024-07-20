@@ -326,7 +326,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-clipboard icon"></i>
+                                <i class="fa-solid fa-scissors icon"></i>
                                 <span class="text nav-text">Servicios</span>
                             </a>
                         </li>
@@ -338,7 +338,7 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Productos">
-                                <i class="fa-solid fa-bag-shopping icon"></i>
+                                <i class="fa-solid fa-basket-shopping icon"></i>
                                 <span class="text nav-text">Productos</span>
                             </a>
                         </li>
@@ -350,13 +350,13 @@ header {
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-sack-dollar icon"></i>
+                                <i class="fa-solid fa-percent icon"></i>
                                 <span class="text nav-text">Descuentos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
-                              <i class="fa-solid fa-user icon"></i>
+                                <i class="fa-solid fa-user-tie icon"></i>
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
@@ -373,12 +373,15 @@ header {
                 </div>
             </nav>
                 
-        {{-- Fin Sidebar --}}
+            {{-- Fin Sidebar --}}
 
 
 
 <div class="home">
-    
+
+
+    <form action="/RegistroTecnica" method="POST">
+    @csrf   
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -425,6 +428,9 @@ header {
             </div>
         </div>
     </div>
+    </form>
+
+
 
 </div>
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>

@@ -311,14 +311,14 @@
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a href="/Ver-citas">
+                            <a href="/Ver-Citas">
                                 <i class="fa-regular fa-calendar icon"></i>
                                 <span class="text nav-text">Citas</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-clipboard icon"></i>
+                                <i class="fa-solid fa-scissors icon"></i>
                                 <span class="text nav-text">Servicios</span>
                             </a>
                         </li>
@@ -329,8 +329,8 @@
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a href="#">
-                                <i class="fa-solid fa-bag-shopping icon"></i>
+                            <a href="/Ver-Productos">
+                                <i class="fa-solid fa-basket-shopping icon"></i>
                                 <span class="text nav-text">Productos</span>
                             </a>
                         </li>
@@ -342,13 +342,13 @@
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-sack-dollar icon"></i>
+                                <i class="fa-solid fa-percent icon"></i>
                                 <span class="text nav-text">Descuentos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
-                              <i class="fa-solid fa-user icon"></i>
+                                <i class="fa-solid fa-user-tie icon"></i>
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
@@ -374,6 +374,8 @@
 <div class="home">
 
     
+    <form action="/RegistroCitaAdmin" method="POST">
+    @csrf   
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -441,6 +443,7 @@
             </div>
         </div>
     </div>
+    </form>
 
 
 </div>
