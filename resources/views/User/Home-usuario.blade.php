@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutti Belli</title>
+    <title>Tutti Belli Studio</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
     <style>
-
-body, html {
+      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+      body, html {
     margin: 0;
     padding: 0;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
@@ -15,64 +19,65 @@ body, html {
     background-repeat: no-repeat;
     background-position: center center;
 }
-
+.fonts3{
+  font-family: "Josefin Sans", sans-serif !important; 
+  /* letra principal */
+}
 .hiddenX{
     overflow-x: hidden;
 }
-/* Carrusel principal */
-#carouselExampleIndicators {
-    margin-left: 0px;
-    margin-top: 65px;
-    max-height: 520px; /* Ajusta esta altura según tus necesidades */
-    overflow: hidden;
-  }
-  
-  #carouselExampleIndicators .carousel-inner {
-    max-height: 520px; /* Debe coincidir con la altura del carrusel */
-  }
-  
-  #carouselExampleIndicators .carousel-item img {
-    object-fit: cover; /* Ajusta las imágenes para que cubran el contenedor */
-    height: 520px; /* Debe coincidir con la altura del carrusel */
-    width: 100%;
-  }
-  
-  .carousel-caption {
-    position: absolute;
-    top: 50%;
-    left: -90%; /* Ajusta este valor según sea necesario */
-    transform: translateY(-90%);
-    text-align: left;
-    max-width: 25%; /* Ajusta el ancho según sea necesario */
-  }
-  
-  .carousel-caption .info-box {
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
-    padding: 20px;
-    border-radius: 20px;
-  }
-  
-  .carousel-caption .info-box h5 {
-    font-family: 'Yaldevi', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 15px;
-  }
-  
-  .carousel-caption .info-box p {
-    font-family: 'Yaldevi', sans-serif;
+/* BOTON PARA RESERVAR CITA MEJORADO ESTE ES EL BOTON PRINCIPAL */
+.reserve-button {
+    background-color: #212121; /* Negro mate */
+    color: #e0e0e0; /* Gris claro */
+    border: 2px solid #e0e0e0; /* Borde gris claro */
+    padding: 10px 20px;
     font-size: 18px;
-    margin-bottom: 20px;
-    color: gray;
+    font-weight: 400;
+    text-transform: uppercase;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: fixed;
+    bottom: 4%;
+    left: 3%;
+    z-index: 10;
+    display: inline-block;
   }
-  
-  .carousel-caption .info-box .btn {
-    font-size: 16px;
-    font-weight: bold;
-    background: #ffebed;
-    color:rgb(109, 95, 95);
+
+  .reserve-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
   }
+
+  .reserve-button:hover::before {
+    left: 100%;
+  }
+
+  .reserve-button:hover {
+    color: #212121; /* Cambia el color del texto a negro mate */
+    background-color: #e0e0e0; /* Cambia el fondo a gris claro */
+  }
+
+  @media (max-width: 768px) {
+    .reserve-button {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .reserve-button {
+      font-size: 14px;
+      padding: 6px 12px;
+    }
+  }
+/* Carrusel principal */
+
   .image-section {
     position: relative;
     width: 100%;
@@ -86,60 +91,105 @@ body, html {
   }
   
   .overlay {
-    position: relative;
-    width: 100%;
-  }
-  
-  .dark-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo negro semi-transparente para aplicar el filtro oscuro */
-    z-index: 1;
-  }
-  
-  .overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    padding: 20px;
-    z-index: 2; /* Asegura que el texto esté sobre el filtro oscuro */
-  }
-  
+  position: relative;
+  width: 100%;
+}
+
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.p{
+  font-family: "Merriweather", serif;
+}
+.h2{
+  font-family: "Merriweather", serif;
+}
+.overlay-text {
+  color:black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  padding: 20px;
+  z-index: 2;
+}
+
+.overlay-text h2 {
+  font-family: "Varela", sans-serif;
+  color: black;
+  font-size: 1.5rem; /* Ajuste inicial para dispositivos pequeños */
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.overlay-text p {
+  font-family: "Varela", sans-serif;
+  color: black;
+  font-size: 0.875rem; /* Ajuste inicial para dispositivos pequeños */
+  margin-bottom: 10px;
+}
+
+.overlay-text .btn {
+  font-size: 0.875rem; /* Ajuste inicial para dispositivos pequeños */
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
   .overlay-text h2 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    font-size: 1.75rem; /* Ajuste para dispositivos medianos */
   }
-  
+
   .overlay-text p {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 1rem; /* Ajuste para dispositivos medianos */
   }
-  
+
   .overlay-text .btn {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 1rem; /* Ajuste para dispositivos medianos */
   }
+}
+
+@media (min-width: 992px) {
+  .overlay-text h2 {
+    font-size: 2rem; /* Ajuste para dispositivos grandes */
+  }
+
+  .overlay-text p {
+    font-size: 1.125rem; /* Ajuste para dispositivos grandes */
+  }
+
+  .overlay-text .btn {
+    font-size: 1.125rem; /* Ajuste para dispositivos grandes */
+  }
+}
+
+@media (min-width: 1200px) {
+  .overlay-text h2 {
+    font-size: 2.875rem; /* Aproximadamente 46px */
+  }
+
+  .overlay-text p {
+    font-size: 1.25rem; /* Aproximadamente 20px */
+  }
+
+  .overlay-text .btn {
+    font-size: 1.25rem; /* Aproximadamente 20px */
+  }
+}
   .img-horario{
     width: 350px;
     height: 500px;
     margin-left: 0 auto;
   }
 
-  .vertical-separator {
-            display: inline-block;
-            width: 1.5px;
-            height: 30px;
-            background-color: #C8A096;
-            margin: 3px 15px;
-            vertical-align: middle;
-        }
+  
 
 
 /* ANIMACION DE CARGA */
@@ -185,35 +235,49 @@ section{
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    width: 300px;
-    padding: 20px;
+    width: 22%;
+    padding: 35px;
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s;
-}
-.card:hover {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Espacio entre filas en caso de que se desborde en pantallas pequeñas */
+  }
+
+  .card:hover {
     transform: scale(1.05);
-}
-.card img {
-    width: 50px; /* Ajusta el tamaño según sea necesario */
-    height: 50px; /* Ajusta el tamaño según sea necesario */
+  }
+
+  .card img {
+    width: 80px;
+    height: 80px;
     display: block;
-    margin: 0 auto;
-}
-.card p {
-    text-align: justify,center;
+    margin: 0 auto 10px;
+  }
+
+  .card h3 {
+    margin: 10px 0;
+  }
+
+  .card p {
+    text-align: center;
     text-justify: inter-word;
-}
-@media (max-width: 768px) {
+    flex-grow: 1; /* Para que los párrafos ocupen el espacio disponible */
+  }
+
+  @media (max-width: 768px) {
     .card {
-        width: 45%;
+      width: 45%;
     }
-}
-@media (max-width: 480px) {
+  }
+
+  @media (max-width: 480px) {
     .card {
-        width: 90%;
+      width: 90%;
     }
-}
+  }
 /* FIN DE SERVICIOS DE AARON */
 /* GALERIA */
 
@@ -271,16 +335,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* CARRUSEL DE LA PANTALLA PRINCIPAL */
-.carousel-right {
-    width: 100vh;
-    height: 100vh;
-    position: relative;
-}
-.carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 /*Cursos*/
 .card-img-top {
     width: 250px;
@@ -299,7 +353,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     object-fit: cover; /* Ajusta la imagen para cubrir el área */
 }
 .card {
-    margin-bottom: 20px; /* Añade espacio entre las tarjetas */
+    margin-bottom: 30px; /* Añade espacio entre las tarjetas */
 }
 .card-2 {
     background: white;
@@ -336,27 +390,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 }
 .logo-img {
-    height: auto;
-    width: 30%;
-    max-height: 90%;
-    max-width: 90%;
-    margin-bottom: 20px;
-  }
-
-  @media (max-width: 768px) {
-    .logo-img {
-      width: 50%;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .logo-img {
-      width: 70%;
-    }
-  }
-  .logo-img {
       height: auto;
-      width: 30%;
+      width: 0 auto;
       max-height: 90%;
       max-width: 90%;
       margin-bottom: 20px;
@@ -376,74 +411,63 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     .section-divider {
       height: 7px;
-      background-color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.8);
       width: 100%;
       margin: 0;
     }
-    .section-divider2 {
-      height: 30px;
-      background:white;
-      width: 100%;
-      margin: 0;
+    .fonts2{
+      font-family: "Merriweather", serif;
     }
-
     </style>
 </head>
-
-
 <body class="hiddenX">
 
-  <div id="contenedor_carga"></div>
-
-
+  <div id="contenedor_carga">
+    
+  </div>
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
-      <img src="/resources/img/home/imagenejemplo2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.5);">
+      <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.1);">
         <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
     </div>
     <div class="section-divider"></div>
-    <!-- <div class="section-divider"></div> -->
   </section>
 
   <!-- NAVBAR / ENCABEZADO -->
-      <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-            <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+  <nav  id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
+          </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
               </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</i></a>
-                  </li>
-                  <span id="separador" class="vertical-separator"></span>
-                  <li class="nav-item" style="margin-left: 0;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
-                  </li>
-                  <li class="nav-item" style="margin-left: 100px;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
-                  </li>
-                </ul>
-                <a href="/Reservacion-User">
-                  <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-                </a>
-              </div>
-            </div>
-        </nav>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
+              </li>
+            </ul>
+            <a href="/Login">
+              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+            </a>
+          </div>
+        </div>
+      </nav>
 
       <br><br><br>
 
@@ -459,113 +483,118 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               <img src="/resources/img/home/horariotutti.jpg" alt="Horarios" class="img-fluid img-horario">
             </div>
             <div class="col-md-6">
-              <h2>Conoce tu centro de micropigmentación</h2>
-              <p>Micropigmentación Arte, surge de la necesidad en la región de un centro que fusione todo lo que una persona busca para el cuidado de su imagen, en un ambiente cómodo y profesional, todo en un solo lugar desde el 2020.</p>
+              <h2 class="fonts3">Conoce tu centro de micropigmentación</h2>
+              <p class="fonts3">Micropigmentación Arte, surge de la necesidad en la región de un centro que fusione todo lo que una persona busca para el cuidado de su imagen, en un ambiente cómodo y profesional, todo en un solo lugar desde el 2020.</p>
               <br>
-              <h3>Profesionales</h3>
-              <p>Ofrecemos un servicio profesional de excelente calidad, con el mejor reclutamiento de especialistas en la región. El profesionalismo de nuestros expertos y el alto nivel de nuestros productos y equipo caracterizan nuestro gran servicio al cliente.</p>
+              <h3 class="fonts3">Profesionales</h3>
+              <p class="fonts3">Ofrecemos un servicio profesional de excelente calidad, con el mejor reclutamiento de especialistas en la región. El profesionalismo de nuestros expertos y el alto nivel de nuestros productos y equipo caracterizan nuestro gran servicio al cliente.</p>
               <br>
-              <h3>Ahorra tiempo</h3>
-              <p>Nuestro sistema de citas permite a nuestros clientes recibir su servicio en cuestión de minutos, maximizando el ahorro de tiempo en esta época en la que es tan valioso.</p>
+              <h3 class="fonts3">Ahorra tiempo</h3>
+              <p class="fonts3">Nuestro sistema de citas permite a nuestros clientes recibir su servicio en cuestión de minutos, maximizando el ahorro de tiempo en esta época en la que es tan valioso.</p>
             </div>
           </div>
         </div>
       </section>
 
-
       <!-- SERVICIOS-->
-      <section id="servicios" class="">
+      <section id="servicios"class="fonts3" >
         <p class="text-uppercase text-center" style="font-size: 50px;">Servicios</p>
         <div class="container">
-          <div class="card">
-            <br>
-              <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/LABIOS_TARJETA.png" alt="labios">
+            <div class="card">
               <br>
-              <h3>Labios</h3>
-              <p>En labios hacemos una pequeña limpieza para después anestesiarlos y aplicarles el color que gustes. Nuestro objetivo es dejarlos bellos y sensuales, realzando tu belleza natural con técnicas personalizadas y productos de alta calidad.</p>
-          </div>
-          <div class="card">
-            <br>
-              <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/OJOS_TARJETA.png" alt="Ojos">
+                <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/LABIOS_TARJETA.png" alt="labios">
+                <br>
+                <h3 class="fonts3">Labios</h3>
+                <p class="fonts3">En labios hacemos una pequeña limpieza para después anestesiarlos y aplicarles el color que gustes. Nuestro objetivo es dejarlos bellos y sensuales, realzando tu belleza natural con técnicas personalizadas y productos de alta calidad.</p>
+            </div>
+            <div class="card">
               <br>
-              <h3>Ojos</h3>
-              <p>En ojos manejamos diferentes tipos de delineado, haciendo que tu mirada resalte aún más. Ofrecemos opciones permanentes y semipermanentes, adaptándonos a tus preferencias para lograr el look que deseas de manera segura y precisa.</p>
-          </div>
-          <div class="card">
-            <br>
-              <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/CEJA_TARJETA.png" alt="Ceja">
+                <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/OJOS_TARJETA.png" alt="Ojos">
+                <br>
+                <h3>Ojos</h3>
+                <p>En ojos manejamos diferentes tipos de delineado, haciendo que tu mirada resalte aún más. Ofrecemos opciones permanentes y semipermanentes, adaptándonos a tus preferencias para lograr el look que deseas de manera segura y precisa.</p>
+            </div>
+            <div class="card">
               <br>
+                <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/CEJA_TARJETA.png" alt="Ceja">
+                <br>
+                <br>
+                <h3>Cejas</h3>
+                <p>La ceja es el marco de tu rostro. Realzamos tus facciones con un diseño acorde a la forma de tu cara y la técnica que más te favorezca. Nuestro equipo se asegura de que tus cejas luzcan perfectas y armoniosas, complementando tu belleza natural.</p>
+            </div>
+            <div class="card">
               <br>
-              <h3>Cejas</h3>
-              <p>La ceja es el marco de tu rostro. Realzamos tus facciones con un diseño acorde a la forma de tu cara y la técnica que más te favorezca. Nuestro equipo se asegura de que tus cejas luzcan perfectas y armoniosas, complementando tu belleza natural.</p>
-          </div>
-          <div class="card">
-            <br>
-              <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/PESTAÑA_TARJETA.png" alt="Pestañas">
-              <br>
-              <br>
-              <h3>Pestañas</h3>
-              <p>En Pestañas, nos especializamos en diversas técnicas de extensión y embellecimiento para realzar tu mirada. Nuestro equipo de expertos utiliza productos de alta calidad para asegurar resultados duraderos y personalizados, adaptándose a tus preferencias y necesidades individuales.</p>
-          </div>
+                <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/PESTAÑA_TARJETA.png" alt="Pestañas">
+                <br>
+                <br>
+                <h3>Pestañas</h3>
+                <p>En Pestañas, nos especializamos en diversas técnicas de extensión y embellecimiento para realzar tu mirada. Nuestro equipo de expertos utiliza productos de alta calidad para asegurar resultados duraderos y personalizados, adaptándose a tus preferencias y necesidades individuales.</p>
+            </div>
       </div>
       </section>
-
-
       <!-- IMAGEN SEPARADORA -->
-      <section class="image-section">
+      <section class="image-section" class="fonts3">
+      <div class="section-divider"></div>
         <div class="overlay">
-          <img src="/resources/img/home/img-separadora-home.jpeg" alt="Imagen separadora">
+          <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Imagen separadora">
           <div class="dark-overlay"></div>
           <div class="overlay-text">
-            <h2>Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
-            <p>Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
-            <p>Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <a href="/Reservacion-User">
-              <button class="btn btn-primary">Reservar cita</button>
+            <h2 class="fonts3">Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
+            <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
+            <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
+            <a href="/Login">
+              <button onclick="" class="btn btn-dark">Reservar cita</button>
             </a>
           </div>
-        </div>
+        </div> 
+        <div class="section-divider"></div> 
       </section>
-
-
       <!-- CURSOS -->
-      <section id="cursos">
+      <section id="cursos" class="fonts3">
         <p class="text-uppercase text-center" style="font-size: 50px;">Cursos</p>
         <div class="container">
           <div class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/imagenejemplo.jpeg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
+              <h5 class="card-title">Tutti Belli Studio</h5>
+              <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
+              <a href="/Login" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
+              <h5 class="card-title">Tutti Belli Studio</h5>
+              <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>
+              <a href="/Login" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Domina el arte de realzar miradas con nuestro curso avanzado de Micropigmentación en Pestañas. Aprende técnicas innovadoras para destacar la belleza natural de cada ojo.</p>
-              <a href="/Cursos-User" class="btn btn-primary">Go somewhere</a>
+              <h5 class="card-title">Tutti Belli Studio</h5>
+              <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>
+              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+            </div>
+          </div>
+          <div class="card-2" style="width: 18rem;">
+            <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Tutti Belli Studio</h5>
+              <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
+              <a href="/Login" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
         </div>
       </section>
 
       <!-- Galeria-->
-      <section id="galeria">
+      <section id="galeria" class="fonts3">
         <p class="text-uppercase text-center" style="font-size: 50px;">Galería</p>
         <div class="container">
           <div class="text-center row justify-content-center">
             <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/imgg3.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div class="col-md-3 mb-4">
               <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
@@ -575,18 +604,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             </div>
             <div class="col-md-3 mb-4">
               <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
-            </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
-            </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
-            </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
-            </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria img-desape" alt="...">
             </div>
           </div>
         </div>
@@ -595,25 +612,28 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       
 
       <!-- GOOGLE MAPS -->
-      <section class="Pink_background_for_services_section" style="padding: 0px;">
+      <section class="fonts3" class="Pink_background_for_services_section" style="padding: 0px;">
+      <div class="section-divider"></div>
         <div class="row">
           <img class="img-fluid" src="/resources/img/home/api.jpg" alt="">
         </div>
+        <div class="section-divider"></div>
         <div class="row">
           <p class="text-uppercase text-center" style="font-size: 50px; margin-top: 20px;">DONDE NOS UBICAMOS</p>
-          <p class="text-uppercase text-center" style="font-size: 20px; margin-top: 30px;">CALLE DEL PUERTO #262 VILLAS DE LA HACIENDA 27272</p>
+          <p class="text-uppercase text-center" style="font-size: 20px; margin-top: 30px;">Zafiro #67 Ex Hacienda La Joya 27086</p>
         </div>
+        
         <br><br><br><br><br><br>
       </section>
 
 
             <!-- BOTÓN RESERVAR -->
-            <a href="/Reservacion-User">
-              <button  id="reservarBtn" type="button" class="btn btn-dark" style="border-radius: 40px; position: fixed; bottom: 4%; left: 3%; font-size: 32px; font-weight:400; z-index:10;">Reservar ahora</button>
+            <a href="/Login">
+              <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
             </a>
 
       <!-- FOOTER -->
-      <footer id="contacto" class="footer">
+      <footer id="contacto" class="footer" class="fonts3">
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div  class="row text-center text-md-left">
               <br><br><br>
@@ -632,7 +652,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                         <li><a href="#">Inicio</a></li>
                         <li><a href="#servicios">Servicios</a></li>
                         <li><a href="#cursos">Cursos</a></li>
-                        <li><a href="#">Cerrar sesión</a></li>
+                        <li><a href="/Login">Iniciar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
                     <ul class="horario">
@@ -645,7 +665,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                     <div class="icons">
                         <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
                         <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class=""><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://wa.me/5218713826767" class=""><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
@@ -656,63 +676,27 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
       <script>
 
-$(document).ready(function(){
-
-  function separadorHidden(){
-      var cuentaLi = document.getElementById("cuenta");
-       var separador = document.getElementById("separador");
-        if (window.innerWidth <= 992) {
-          $('.vertical-separator').css('visibility', 'hidden');
-        } else {
-          $('.vertical-separator').css('visibility', 'visible');
-        }
-    }
-    window.addEventListener('resize', separadorHidden);
-    separadorHidden();
-
-});
-function adjustGallery() {
-  const galleryItems = document.querySelectorAll('.img-desape');
-  const screenWidth = window.innerWidth;
-
-  if (screenWidth < 768) {
-    galleryItems.forEach((item, index) => {
-      if (index >= 4) {
-        item.style.display = 'none';
-      } else {
-        item.style.display = 'block';
-      }
-    });
-  } else {
-    galleryItems.forEach(item => {
-      item.style.display = 'block';
-    });
-  }
-}
-
-// Llama a la función al cargar la página y al redimensionar la ventana
-window.addEventListener('load', adjustGallery);
-window.addEventListener('resize', adjustGallery);
-
-  // Adjust gallery on window resize
-  window.addEventListener('resize', adjustGallery);
+          $(document).ready(function(){
 
 
-// Pantalla de carga
-var loader = document.getElementById("contenedor_carga");
-var navbar = document.getElementById("navbar");
-window.addEventListener('load', function(){
-    $('#navbar').css('visibility', 'visible');
-    loader.style.display = "none";
-})
+            // scripts aquí
 
 
+          });
+
+
+          // Pantalla de carga
+          var loader = document.getElementById("contenedor_carga");
+          var navbar = document.getElementById("navbar");
+          window.addEventListener('load', function(){
+              $('#navbar').css('visibility', 'visible');
+              loader.style.display = "none";
+          })
       </script>
 </body>
 </html>
