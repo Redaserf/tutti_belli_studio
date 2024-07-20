@@ -22,6 +22,6 @@ class Servicio extends Model
     }
 
     public function tecnicas(){
-        return $this->hasMany(Tecnica::class);
+        return $this->hasMany(Tecnica::class, 'servicioId');
     }
 }

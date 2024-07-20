@@ -276,6 +276,27 @@
 
         /* Fin Dashboard */
 
+        /*Esto es para el select de los servicios*/
+
+            .multiselect-container {
+        display: flex;
+        flex-direction: column;
+        }
+        .multiselect-option {
+        cursor: pointer;
+        padding: 5px;
+        }
+        .multiselect-option:hover {
+        background-color: #f8f9fa;
+        }
+        .multiselect-option.selected {
+        background-color: #0d6efd;
+        color: white;
+        }
+
+        /*Esto es para el select de los servicios*/
+
+
     </style>
 </head>
 
@@ -392,24 +413,14 @@
                             <input type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita">
                             <label for="appointmentTime">Hora de la cita</label>
                         </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-control" id="service" placeholder="Servicio">
-                                <option value="" disabled selected>-- Seleccione el servicio --</option>
-                                <option value="service1">Servicio 1</option>
-                                <option value="service2">Servicio 2</option>
-                                <option value="service3">Servicio 3</option>
-                            </select>
-                            <label for="service">Servicio</label>
+                        <div >
+                            <div class='container'>
+                                <div id="service" class="form-control multiselect-container form-floating mb-3" required>
+                                </div>
+                            </div>
+                            <!-- <label for="service">Servicio</label> -->
                         </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-control" id="technique" placeholder="Técnica">
-                                <option value="" disabled selected>-- Seleccione la técnica --</option>
-                                <option value="technique1">Técnica 1</option>
-                                <option value="technique2">Técnica 2</option>
-                                <option value="technique3">Técnica 3</option>
-                            </select>
-                            <label for="technique">Técnica</label>
-                        </div>
+                        
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" placeholder="Nombre">
                             <label for="name">Nombre</label>
@@ -449,7 +460,7 @@
 </div>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -466,6 +477,42 @@
 
     $(document).ready(function(){
 
+
+        // function dibujarServiciosTecnicas(){
+            //dibujar los servicios y sus tecnicas despues de que el servicio es seleccionado desde la DB
+
+                $.get('/servicios/tecnicas', function(servicios){//puedo traer las tecnicas con servicios.tecnicas.nombre ex
+                    console.log(servicios);
+
+                    let selectServiciosMul = $('#service');
+                    selectServiciosMul.empty();
+
+                    servicios.forEach(servicio => {
+                        console.log(servicio.tecnicas);//si lo manda
+                        selectServiciosMul.append(`
+                            <div class="multiselect-option" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
+                            <select id="tecnicaSelect${servicio.id}" style="display: none" required></select>
+                    `)
+                    servicio.tecnicas.forEach( tecnica => {
+                        $(`#tecnicaSelect${servicio.id}`).append(`
+                        <option value='${tecnica.id}'>-- ${tecnica.nombre} -- ${tecnica.precio}</option>
+                    `)
+                    })
+                
+                })
+                //despliega el select de cada servicio cuando lo seleccionan
+                $('#service').on('click', '.multiselect-option', function() {
+                    $(this).toggleClass('selected');
+                    console.log($(this));
+                    let selectId = $(this).data('select-id');
+                    $(`#tecnicaSelect${selectId}`).toggle();
+                    console.log($(this));
+               });
+               
+            })
+         
+
+        
         // Dashboard toggle
         const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),

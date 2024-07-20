@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver productos</title>
+    <title>Descuentos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="vistaCitas.css">
 
@@ -249,7 +249,86 @@
                     <span class="name">anyelo</span>
                     <span class="rol">Administrador</span>
                 </div>
+            </div>
 
+            <i class="fa-solid fa-angle-right toggle"></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links-custom">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-house icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-regular fa-calendar icon"></i>
+                            <span class="text nav-text">Citas</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-clipboard icon"></i>
+                            <span class="text nav-text">Servicios</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-pencil icon"></i>
+                            <span class="text nav-text">Cursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-bag-shopping icon"></i>
+                            <span class="text nav-text">Productos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-box icon"></i>
+                            <span class="text nav-text">Inventario</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-sack-dollar icon"></i>
+                            <span class="text nav-text">Descuentos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="fa-solid fa-user icon"></i>
+                            <span class="text nav-text">Usuarios</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                    <a href="#">
+                        <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+                        <span class="text nav-text">Cerrar sesión</span>
+                    </a>
+                </li>
+            </div>
+        </div>
+    </nav>
+
+    <section class="home">
+        <div class="container-full border">
+            <h2 class="citas text-center mt-3">Descuentos</h2>
+            <br>
+            <div>
+                <!-- Aquí las citas mediante back-end :c -->
+            </div>
+    
+        </div>
+    </section>
 
 
     <script src="vistaCitas.js"></script>
@@ -260,7 +339,7 @@
         // Dashboard
         const body = document.querySelector("body"),
             sidebar = body.querySelector(".sidebar"),
-
+            toggle = body.querySelector(".toggle");
 
             toggle.addEventListener("click", () =>{
                 sidebar.classList.toggle("close");

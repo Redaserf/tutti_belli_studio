@@ -31,7 +31,7 @@ class Tecnica extends Model
     }
 
     public function servicios(){
-        return $this->belongsTo(Servicio::class);
+        return $this->belongsTo(Servicio::class, 'servicioId');
     }
 
 }
