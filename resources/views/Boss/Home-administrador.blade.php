@@ -422,9 +422,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 </head>
 <body class="hiddenX">
 
-  <div id="contenedor_carga">
-    
-  </div>
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
@@ -681,22 +678,5 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
       <script>
 
-          $(document).ready(function(){
-
-
-            // scripts aquí
-
-
-          });
-
-
-          // Pantalla de carga
-          var loader = document.getElementById("contenedor_carga");
-          var navbar = document.getElementById("navbar");
-          window.addEventListener('load', function(){
-              $('#navbar').css('visibility', 'visible');
-              loader.style.display = "none";
-          })
-      </script>
 </body>
 </html>
