@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\RegistrosController;
+use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\UsuarioController;
+
 use App\Http\Controllers\ViewsController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,7 @@ Route::get('/', function () {
 
     Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
 
-    //consultas
+    // ===== [Consultas] =====
 
     //Consulta para traer los usuarios con sus roles
     Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
@@ -26,6 +28,10 @@ Route::get('/', function () {
     //servicios con sus tecnicas
 
     Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
+
+    // ===== [Sevicios] =====
+    //devuelve servicio como Json
+    Route::get('/get/servicios',[ServicioController::class,'index']);
 
 
     // =====[ Guest ]=====
