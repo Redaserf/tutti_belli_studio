@@ -294,7 +294,7 @@ header {
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -308,7 +308,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -372,7 +372,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -381,7 +381,7 @@ header {
 
 
     <form action="/RegistroTecnica" method="POST">
-    @csrf   
+    @csrf
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -390,8 +390,8 @@ header {
                         <H2>Agregar técnica</H2>
                     </div>
                     <div class="col-md-6">
-                        
-                        
+
+
                         <div class="image-label">
                             <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
                             <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
@@ -400,11 +400,11 @@ header {
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <select name="" class="form-control" id="TecnicService">
+                            <select name="" class="form-control" id="servicioId">
                                 <option value="" disabled selected>Servicios</option>
-                                
+
                                 <!-- Servicios que aparecerán con back-end -->
-                                
+
                             </select>
                             <label for="TecnicService">Servicio al que pertenece la técnica</label>
                         </div>
@@ -421,7 +421,7 @@ header {
                             <textarea class="form-control" id="AddTecnicDescription" rows="7" style="resize: none;"></textarea>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100" style="margin-bottom: 20px;">Agregar técnica</button>
+                            <button type="submit" class="btn btn-dark btn-block w-100" id="AddTecnicaButon" style="margin-bottom: 20px;">Agregar técnica</button>
                         </div>
                     </div>
                 </div>
@@ -434,7 +434,7 @@ header {
 
 </div>
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -471,14 +471,63 @@ $(document).ready(function(){
         overlay.style.display = "none";
     });
 
+    loadServicios();
     // Fin scripts para todas las vistas
 
+    //script para agregar tecnica
+    $('#AddTecnicaButon').on('click',function (e){
+        e.preventDefault();
 
+        let tecnicName = $('#AddTecnicName').val();
+        let tecnicPrice = $('#AddTecnicPrice').val();
+        let tecnicDescripcion = $('#AddTecnicDescription').val();
+        let serviceId = $('#servicioId').val();
 
+        $.ajax({
+            url: '/RegistroTecnica',
+            type: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val(),
+                nombre: tecnicName,
+                precio: tecnicPrice,
+                descripcion: tecnicDescripcion,
+                servicioId: serviceId
+            },
+            success: function(response) {
+                alert("Tecnica agregada exitosamente");
+                $('#AddTecnicName').val('');
+                $('#AddTecnicPrice').val('');
+                $('#AddTecnicDescription').val('');
+                $('#servicioId').val('');
+            },
+            error: function(error) {
+                alert('Ocurrió un error al agregar el servicio');
+                $('#AddTecnicName').val('');
+            }
+        });
 
+    });
+    //Fin del script para agregar tecnica
 
     // Fin document.ready
 });
+
+//Script para dibujar los servicios existentes en el select
+//NOTA: PARA QUE FUNCIONE SE DEBE DE TENER REGISTRADOS SERVICIOS EN LA BASE DE DATOS
+function loadServicios(){
+    $.get('/get/servicios',function (servicios){
+        //se obtiene el select mediante su id para manipularlo
+        servicioSelect = $('#servicioId');
+
+        servicioSelect.empty();
+
+        //recorremos la coleccion de servicios y se adieren a el select
+        servicios.forEach(servicio =>{
+            servicioSelect.append(new Option(servicio.nombre,servicio.id));
+        });
+
+    });
+}
 
 </script>
 </body>

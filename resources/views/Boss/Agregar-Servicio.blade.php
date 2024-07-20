@@ -292,7 +292,7 @@ header {
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -306,7 +306,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -370,7 +370,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -381,7 +381,7 @@ header {
 
 
     <form action="/RegistroServicio" method="POST">
-    @csrf   
+    @csrf
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -391,11 +391,11 @@ header {
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="AddProductName" placeholder="nombre del producto">
-                            <label for="AddProductName">Nombre del Servicio</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del servicio">
+                            <label for="AddServiceName">Nombre del Servicio</label>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100">Agregar Servicio</button>
+                            <button type="button" class="btn btn-dark btn-block w-100" id="AddServiceButon">Agregar Servicio</button>
                         </div>
                     </div>
                 </div>
@@ -405,10 +405,10 @@ header {
     </form>
 
 
-    
+
 </div>
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -432,7 +432,7 @@ $(document).ready(function(){
             overlay = body.querySelector(".overlay");
 
     toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
+        sidebar.classList.toggle("close"    );
         if (!sidebar.classList.contains("close")) {
             overlay.style.display = "block";
         } else {
@@ -447,9 +447,30 @@ $(document).ready(function(){
 
     // Fin scripts para todas las vistas
 
+    //Script para agregar servicio
+    $('#AddServiceButon').on('click', function(e) {
+        e.preventDefault();
 
+        let serviceName = $('#nombre').val();
 
-
+        $.ajax({
+            url: '/RegistroServicio',
+            type: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val(),
+                nombre: serviceName
+            },
+            success: function(response) {
+                alert("Servicio agregado exitosamente");
+                $('#nombre').val('');
+            },
+            error: function(error) {
+                alert('Ocurrió un error al agregar el servicio');
+                $('#nombre').val('');
+            }
+        });
+    });
+    // Fin script para agregar tecnica
 
     // Fin document.ready
 });
