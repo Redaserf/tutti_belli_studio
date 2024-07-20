@@ -9,6 +9,8 @@
 
 <style>
            
+    @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
+
 /* Dashboard */
 
 /* Google Font Import - Poppins */
@@ -238,6 +240,40 @@ header {
 
 
 
+                .container-full{
+                    min-height: calc(94vh - 6rem);
+                    margin-top: -50px;
+                    margin: 100px;
+                    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
+                    border-radius: 20px;
+                }
+
+                body{
+                    overflow-y: hidden;
+                }
+
+                .top{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+                }
+
+                .top a{
+                margin-left: 0px;
+                }
+
+                .top h2{
+                font-family: "Playwrite FR Moderne";
+                margin-right: 20px;
+                }
+
+                .section-divider {
+                height: 3px;
+                background-color: rgba(0, 0, 0, 0.8);
+                min-width: 100%;
+                margin-top: 20px;
+                }
 
 </style>
 </head>
@@ -306,14 +342,19 @@ header {
     
 
 
-    <div class="home">
-
-    {{-- Agrega aquí todo lo que vayas a hacer --}}
-
-
-
-    
+  <section class="home">
+    <div class="top text-center">
+        <h2>Productos</h2>
     </div>
+    <div class="section-divider"></div>
+
+    <div>
+
+        {{-- aqui todo --}}
+
+    </div>
+
+</section>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -358,8 +399,20 @@ $(document).ready(function(){
 
 
 
-
-    // Fin document.ready
+    function botones(){ 
+              if (window.innerWidth <= 960) {
+                $('.top').css('flex-direction', 'column');
+                $('.top').css('gap', '10px');
+              } else {
+                $('.top').css('gap', '0');
+                $('.top').css('flex-direction', '');
+              }
+          }
+          window.addEventListener('resize', botones);
+          botones();
+    
+    
+        // Fin document.ready
 });
 
 </script>

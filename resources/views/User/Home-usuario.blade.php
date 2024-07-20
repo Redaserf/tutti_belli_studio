@@ -422,9 +422,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 </head>
 <body class="hiddenX">
 
-  <div id="contenedor_carga">
-    
-  </div>
+  <div id="contenedor_carga"></div>
+
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
@@ -436,7 +435,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   </section>
 
   <!-- NAVBAR / ENCABEZADO -->
-  <nav  id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
+  <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
@@ -450,24 +449,28 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
           </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
+                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</i></a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
+              <span id="separador" class="vertical-separator"></span>
+              <li class="nav-item" style="margin-left: 0;">
+                <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+              </li>
+              <li class="nav-item" style="margin-left: 100px;">
+                <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
               </li>
             </ul>
-            <a href="/Login">
+            <a href="/Reservacion-User">
               <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
             </a>
           </div>
         </div>
-      </nav>
+    </nav>
 
       <br><br><br>
 
@@ -542,7 +545,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <h2 class="fonts3">Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <a href="/Login">
+            <a href="/Reservacion-User">
               <button onclick="" class="btn btn-dark">Reservar cita</button>
             </a>
           </div>
@@ -558,7 +561,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -566,7 +569,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -574,7 +577,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -582,7 +585,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
         </div>
@@ -628,14 +631,14 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
             <!-- BOTÓN RESERVAR -->
-            <a href="/Login">
+            <a href="/Reservacion-User">
               <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
             </a>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
         <div style="background-color: #1e1b1b;"class="container-fluid">
-            <div  class="row text-center text-md-left">
+            <div class="row text-center text-md-left">
               <br><br><br>
                 <div class="col-md-4 text-center">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="img-fluid">

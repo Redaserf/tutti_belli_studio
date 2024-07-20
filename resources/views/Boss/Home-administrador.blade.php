@@ -4,78 +4,277 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutti Belli Studio</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
-      @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
-      @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
-      body, html {
+
+    @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+      /* Google Font Import - Poppins */
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+    body, html {
     margin: 0;
     padding: 0;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-}
-.fonts3{
+      }
+
+  
+ /* ==========[ Dashboard ]========= */
+
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-links-custom {
+            margin: 0;
+            padding: 0;
+            padding-left: 0;
+        }
+
+        ul{
+            padding-left: 0;
+        }
+
+        .hiddenX {
+            overflow-x: hidden;
+        }
+
+        #contenedor_carga {
+            background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+            background-size: 20%;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+
+        /* Dashboard CSS */
+        :root {
+            --body-color: #FFF;
+            --sidebar-color: #E4E9F7;
+            --primary-color: #ffcade;
+            --primary-color-light: #F6F5FF;
+            --toggle-color: #DDD;
+            --text-color: #707070;
+            --tran-02: all 0.2s ease;
+            --tran-03: all 0.3s ease;
+            --tran-04: all 0.4s ease;
+            --tran-05: all 0.5s ease;
+        }
+
+        body {
+            height: 100vh;
+            background: var(--body-color);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background: var(--sidebar-color);
+            transition: var(--tran-05);
+            z-index: 100;
+        }
+
+        .sidebar.close {
+            width: 90px;
+        }
+
+        .dashboard-container {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .sidebar .text {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: var(--tran-03);
+            white-space: nowrap;
+            opacity: 1;
+        }
+
+        .sidebar.close .text {
+            opacity: 0;
+        }
+
+        .sidebar .image {
+            min-width: 60px;
+            margin-right: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar li {
+            height: 50px;
+            margin-top: 10px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar li .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 60px;
+            font-size: 18px;
+        }
+
+        .sidebar li .icon,
+        .sidebar li .text {
+            color: var(--text-color);
+            transition: var(--tran-02);
+        }
+
+        .sidebar header {
+            position: relative;
+        }
+
+        .sidebar .menu {
+            margin-top: 45px;
+        }
+
+        .sidebar .image-text img {
+            width: 48px;
+            border-radius: 8px;
+        }
+
+        .sidebar header .image-text {
+            display: flex;
+            align-items: center;
+        }
+
+        header .image-text .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        .header-text .name {
+            font-weight: 600;
+        }
+
+        .header-text .rol {
+            margin-top: -2px;
+        }
+
+        .sidebar header .toggle {
+            position: absolute;
+            top: 50%;
+            right: -25px;
+            transform: translateY(-50%) rotate(180deg);
+            height: 25px;
+            width: 25px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--sidebar-color);
+            font-size: 16px;
+            transition: var(--tran-03);
+            cursor: pointer;
+        }
+
+        .sidebar.close header .toggle {
+            transform: translateY(-50%);
+        }
+
+        .sidebar li a {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--tran-04);
+        }
+
+        .sidebar li a:hover {
+            background: var(--primary-color);
+        }
+
+        .sidebar li a:hover .icon,
+        .sidebar li a:hover .text {
+            color: var(--sidebar-color);
+        }
+
+        .sidebar .menu-bar {
+            height: calc(100% - 110px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .home {
+            position: relative;
+            margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
+            background: var(--body-color);
+            transition: var(--tran-05);
+        }
+
+        .sidebar.close ~ .home {
+            margin-left: 90px; /* Cuando la sidebar está cerrada, deja menos espacio */
+        }
+
+        .sidebarOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 98;
+            display: none;
+        }
+
+
+
+
+ /* ==========[ Home ]========= */
+
+ .fonts3{
   font-family: "Josefin Sans", sans-serif !important; 
-  /* letra principal */
 }
+
+ .p{
+  font-family: "Merriweather", serif;
+}
+.h2{
+  font-family: "Merriweather", serif;
+}
+
+.fonts2{
+  font-family: "Merriweather", serif;
+}
+
+
+ .home{
+      background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      min-height: 100vh;
+}
+
+
 .hiddenX{
     overflow-x: hidden;
 }
-/* BOTON PARA RESERVAR CITA MEJORADO ESTE ES EL BOTON PRINCIPAL */
-.reserve-button {
-    background-color: #212121; /* Negro mate */
-    color: #e0e0e0; /* Gris claro */
-    border: 2px solid #e0e0e0; /* Borde gris claro */
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: 400;
-    text-transform: uppercase;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: fixed;
-    bottom: 4%;
-    left: 3%;
-    z-index: 10;
-    display: inline-block;
-  }
 
-  .reserve-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    transition: all 0.3s ease;
-  }
-
-  .reserve-button:hover::before {
-    left: 100%;
-  }
-
-  .reserve-button:hover {
-    color: #212121; /* Cambia el color del texto a negro mate */
-    background-color: #e0e0e0; /* Cambia el fondo a gris claro */
-  }
-
-  @media (max-width: 768px) {
-    .reserve-button {
-      font-size: 16px;
-      padding: 8px 16px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .reserve-button {
-      font-size: 14px;
-      padding: 6px 12px;
-    }
-  }
 /* Carrusel principal */
 
   .image-section {
@@ -104,12 +303,7 @@
   background: rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-.p{
-  font-family: "Merriweather", serif;
-}
-.h2{
-  font-family: "Merriweather", serif;
-}
+
 .overlay-text {
   color:black;
   position: absolute;
@@ -189,21 +383,7 @@
     margin-left: 0 auto;
   }
 
-  
 
-
-/* ANIMACION DE CARGA */
-
-    #contenedor_carga{
-        background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
-        background-size: 20%;
-        height: 100vh;
-        width: 100%;
-        position: fixed;
-        z-index: 100;
-    }
-
-/* FIN ANIMACION DE CARGA */
 
 footer {
     margin: 0;
@@ -214,10 +394,7 @@ footer {
 section{
     padding: 20px 0;
 }
-/* .Pink_background_for_services_section{
 
-    background-color:#FEECED ;
-} */
 
 .Color_del_footer_xd{
     background-color: #1E1B1B;
@@ -235,49 +412,35 @@ section{
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    width: 22%;
-    padding: 35px;
+    width: 300px;
+    padding: 20px;
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 20px; /* Espacio entre filas en caso de que se desborde en pantallas pequeñas */
-  }
-
-  .card:hover {
+}
+.card:hover {
     transform: scale(1.05);
-  }
-
-  .card img {
-    width: 80px;
-    height: 80px;
+}
+.card img {
+    width: 50px; /* Ajusta el tamaño según sea necesario */
+    height: 50px; /* Ajusta el tamaño según sea necesario */
     display: block;
-    margin: 0 auto 10px;
-  }
-
-  .card h3 {
-    margin: 10px 0;
-  }
-
-  .card p {
-    text-align: center;
+    margin: 0 auto;
+}
+.card p {
+    text-align: justify,center;
     text-justify: inter-word;
-    flex-grow: 1; /* Para que los párrafos ocupen el espacio disponible */
-  }
-
-  @media (max-width: 768px) {
+}
+@media (max-width: 768px) {
     .card {
-      width: 45%;
+        width: 45%;
     }
-  }
-
-  @media (max-width: 480px) {
+}
+@media (max-width: 480px) {
     .card {
-      width: 90%;
+        width: 90%;
     }
-  }
+}
 /* FIN DE SERVICIOS DE AARON */
 /* GALERIA */
 
@@ -335,6 +498,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* CARRUSEL DE LA PANTALLA PRINCIPAL */
+.carousel-right {
+    width: 100vh;
+    height: 100vh;
+    position: relative;
+}
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 /*Cursos*/
 .card-img-top {
     width: 250px;
@@ -353,7 +526,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     object-fit: cover; /* Ajusta la imagen para cubrir el área */
 }
 .card {
-    margin-bottom: 30px; /* Añade espacio entre las tarjetas */
+    margin-bottom: 20px; /* Añade espacio entre las tarjetas */
 }
 .card-2 {
     background: white;
@@ -415,13 +588,103 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       width: 100%;
       margin: 0;
     }
-    .fonts2{
-      font-family: "Merriweather", serif;
-    }
+
     </style>
 </head>
 <body class="hiddenX">
 
+  <div id="contenedor_carga"></div>
+  <div class="sidebarOverlay"></div>
+
+
+
+        {{-- Sidebar --}}
+    
+        <nav class="dashboard-container sidebar close">
+          <header>
+              <div class="image-text">
+                  <span class="image">
+                      <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
+                  </span>
+                  <div class="text header-text">
+                      <span class="name">anyelo</span>
+                      <span class="rol">Administrador</span>
+                  </div>
+              </div>
+              <i class="fa-solid fa-angle-right toggle"></i>
+          </header>
+  
+          <div class="menu-bar">
+              <div class="menu">
+                  <ul class="menu-links">
+                      <li class="nav-link">
+                          <a href="/Home-administrador">
+                              <i class="fa-solid fa-house icon"></i>
+                              <span class="text nav-text">Inicio</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Citas">
+                              <i class="fa-regular fa-calendar icon"></i>
+                              <span class="text nav-text">Citas</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Servicios">
+                              <i class="fa-solid fa-scissors icon"></i>
+                              <span class="text nav-text">Servicios</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Cursos">
+                              <i class="fa-solid fa-pencil icon"></i>
+                              <span class="text nav-text">Cursos</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Productos">
+                              <i class="fa-solid fa-basket-shopping icon"></i>
+                              <span class="text nav-text">Productos</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Inventario">
+                              <i class="fa-solid fa-box icon"></i>
+                              <span class="text nav-text">Inventario</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Descuentos">
+                              <i class="fa-solid fa-percent icon"></i>
+                              <span class="text nav-text">Descuentos</span>
+                          </a>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Empleados">
+                              <i class="fa-solid fa-user-tie icon"></i>
+                            <span class="text nav-text">Empleados</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="bottom-content">
+                      <li class="">
+                          <a href="#">
+                              <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+                              <span class="text nav-text">Cerrar sesión</span>
+                          </a>
+                      </li>
+                  </div>
+              </div>
+          </nav>
+              
+          {{-- Fin Sidebar --}}
+
+
+
+<div class="home">
+
+  
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
@@ -431,40 +694,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     </div>
     <div class="section-divider"></div>
   </section>
-
-  <!-- NAVBAR / ENCABEZADO -->
-  <nav  id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
-          <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
-          </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
-              </li>
-            </ul>
-            <a href="/Login">
-              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-            </a>
-          </div>
-        </div>
-      </nav>
 
       <br><br><br>
 
@@ -539,7 +768,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <h2 class="fonts3">Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <a href="/Login">
+            <a href="/Agregar-cita">
               <button onclick="" class="btn btn-dark">Reservar cita</button>
             </a>
           </div>
@@ -555,7 +784,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -563,7 +792,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -571,7 +800,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
           <div class="card-2" style="width: 18rem;">
@@ -579,7 +808,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
-              <a href="/Login" class="btn btn-dark">Conocer mas</a>
+              <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
         </div>
@@ -624,11 +853,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
 
 
-            <!-- BOTÓN RESERVAR -->
-            <a href="/Login">
-              <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
-            </a>
-
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
         <div style="background-color: #1e1b1b;"class="container-fluid">
@@ -672,11 +896,49 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           <br>Diseñada y desarrollada by Deiters</p>
       </div>
     </footer>
+    
+      
+    </div>
+
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
+
+
       <script>
 
+        // Pantalla de carga
+        var loader = document.getElementById("contenedor_carga");
+        var navbar = document.getElementById("navbar");
+        window.addEventListener('load', function(){
+            $('#navbar').css('visibility', 'visible');
+            loader.style.display = "none";
+        });
+
+    $(document).ready(function(){
+
+        // Dashboard toggle
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector(".sidebar"),
+              toggle = body.querySelector(".toggle"),
+              sidebarOverlay = body.querySelector(".sidebarOverlay");
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if (!sidebar.classList.contains("close")) {
+                sidebarOverlay.style.display = "block";
+            } else {
+                sidebarOverlay.style.display = "none";
+            }
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            sidebar.classList.add("close");
+            sidebarOverlay.style.display = "none";
+        });
+    });
+    
+</script>
 </body>
 </html>
