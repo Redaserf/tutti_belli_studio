@@ -294,7 +294,7 @@ header {
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -308,7 +308,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -372,7 +372,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -381,7 +381,7 @@ header {
 
 
     <form action="/RegistroTecnica" method="POST">
-    @csrf   
+    @csrf
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -390,8 +390,8 @@ header {
                         <H2>Agregar técnica</H2>
                     </div>
                     <div class="col-md-6">
-                        
-                        
+
+
                         <div class="image-label">
                             <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
                             <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
@@ -402,9 +402,9 @@ header {
                         <div class="form-floating mb-3">
                             <select name="" class="form-control" id="TecnicService">
                                 <option value="" disabled selected>Servicios</option>
-                                
+
                                 <!-- Servicios que aparecerán con back-end -->
-                                
+
                             </select>
                             <label for="TecnicService">Servicio al que pertenece la técnica</label>
                         </div>
@@ -421,7 +421,7 @@ header {
                             <textarea class="form-control" id="AddTecnicDescription" rows="7" style="resize: none;"></textarea>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100" style="margin-bottom: 20px;">Agregar técnica</button>
+                            <button id="AddTecnicaButon" type="submit" class="btn btn-dark btn-block w-100" style="margin-bottom: 20px;">Agregar técnica</button>
                         </div>
                     </div>
                 </div>
@@ -473,12 +473,18 @@ $(document).ready(function(){
 
     // Fin scripts para todas las vistas
 
+    //Script para agregar Tecnica
 
+    $s
 
 
 
     // Fin document.ready
 });
+
+    function agregarTecnica(){
+
+    }
 
 </script>
 </body>

@@ -8,13 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-use App\Models\User;
 
 class UsuarioController extends Controller
 {
     //
 
-    
+
 
 
 // ==========[ Login y registro de usuarios]==========
@@ -40,7 +39,7 @@ class UsuarioController extends Controller
         ]);
     }
 
-    
+
     public function Registro(Request $request){
         $user = User::create([
             'name' => $request->nombre,
