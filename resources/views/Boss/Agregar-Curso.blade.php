@@ -292,7 +292,7 @@
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -306,7 +306,7 @@
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -370,7 +370,7 @@
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -379,14 +379,14 @@
 
 
 <div class="home">
-    
+
     <form action="/RegistroCursoAdmin" method="POST">
-    @csrf   
+    @csrf
     <div class="container container-div">
         <div class="header-section">
             <h1>Cursos</h1>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="form-floating mb-3">
@@ -418,6 +418,15 @@
                     <label for="precio">Precio</label>
                 </div>
             </div>
+            <div class="form-floating mb-3">
+                <select name="" class="form-control" id="empleadoId">
+                    <option value="" disabled selected>Empleado</option>
+
+                    <!-- Servicios que aparecerán con back-end -->
+
+                </select>
+                <label for="empleadoId">Empleado de la cita</label>
+            </div>
             <div class="col-md-12">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --">
@@ -425,23 +434,24 @@
                 </div>
             </div>
             <div class="col-md-12 text-center">
-                <button class="btn btn-dark w-100">Agregar curso</button>
+                <button class="btn btn-dark w-100" id="agregarCurso">Agregar curso</button>
             </div>
+
         </div>
     </div>
     </form>
 
-    
+
 </div>
-    
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script>
 
         // Scripts para todas las vistas
-        
+
                 // Pantalla de carga
                 var loader = document.getElementById("contenedor_carga");
                 var navbar = document.getElementById("navbar");
@@ -449,15 +459,15 @@
                     $('#navbar').css('visibility', 'visible');
                     loader.style.display = "none";
                 });
-        
+
             $(document).ready(function(){
-        
+
                 // Dashboard toggle
                 const body = document.querySelector("body"),
                         sidebar = body.querySelector(".sidebar"),
                         toggle = body.querySelector(".toggle"),
                         overlay = body.querySelector(".overlay");
-        
+
                 toggle.addEventListener("click", () => {
                     sidebar.classList.toggle("close");
                     if (!sidebar.classList.contains("close")) {
@@ -466,21 +476,76 @@
                         overlay.style.display = "none";
                     }
                 });
-        
+
                 overlay.addEventListener("click", () => {
                     sidebar.classList.add("close");
                     overlay.style.display = "none";
                 });
-        
+
+                loadEmpleados();
                 // Fin scripts para todas las vistas
-        
-        
 
+                //Script para registrar el nuevo curso
+                $('#agregarCurso').on('click', function(e) {
+                    e.preventDefault();
 
+                    let courseName = $('#nombre').val();
+                    let courseLimit = $('#cupoLimite').val();
+                    let courseBegining = $('#fechaInicio').val()
+                    let coursePrice = $('#precio').val();
+                    let courseEmployee = $('#empleadoId').val()
+
+                    $.ajax({
+                        url: '/RegistroCursoAdmin',
+                        type: 'POST',
+                        data: {
+                            _token: $('input[name="_token"]').val(),
+                            nombre: courseName,
+                            cupoLimite: courseLimit,
+                            fechaInicio: courseBegining,
+                            precio: coursePrice,
+                            empleadoId: courseEmployee
+                        },
+                        success: function(response) {
+                            alert("Curso agregado exitosamente");
+                            $('#courseName').val('');
+                            $('#courseLimit').val('');
+                            $('#courseBegining').val('');
+                            $('#coursePrice').val('');
+                            $('#courseEmployee').val('');
+                        },
+                        error: function(error) {
+                            alert('Ocurrió un error al agregar el Curso');
+                            $('#courseName').val('');
+                            $('#courseLimit').val('');
+                            $('#courseBegining').val('');
+                            $('#coursePrice').val('');
+                            $('#courseEmployee').val('');
+                        }
+                    });
+                });
+                // Fin de script para agregar curso
 
                 // Fin document.ready
             });
-        
+
+
+        //Script para dibujar los empleados existentes en el select
+        //NOTA: PARA QUE FUNCIONE SE DEBE DE TENER REGISTRADOS EMPLEADOS EN LA BASE DE DATOS
+        function loadEmpleados(){
+            $.get('/get/empleados',function (empleados){
+                //se obtiene el select mediante su id para manipularlo
+                empleadoSelect = $('#empleadoId');
+                empleadoSelect.empty();
+
+                //recorremos la coleccion de empleados y se adieren a el select
+                empleados.forEach(empleado =>{
+                    empleadoSelect.append(new Option(empleado.name,empleado.id));
+                });
+
+            });
+        }
+
         </script>
 
 </body>

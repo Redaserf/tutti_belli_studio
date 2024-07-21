@@ -291,7 +291,7 @@ header {
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -305,7 +305,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -369,7 +369,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -380,7 +380,7 @@ header {
 
 
     <form action="/RegistroProducto" method="POST">
-    @csrf   
+    @csrf
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -389,8 +389,8 @@ header {
                         <H2>Agregar producto</H2>
                     </div>
                     <div class="col-md-6">
-                        
-                        
+
+
                         <div class="image-label">
                             <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
                             <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
@@ -407,14 +407,15 @@ header {
                             <label for="AddProductPrice">Precio del producto</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-control" id="selecService" placeholder="Servicio">
-                                <option value="" disabled selected>-- Seleccione la Categoria--</option>
-                                <option value="male">S1</option>
-                                <option value="female">S2</option>
-                                <option value="other">Otro</option>
+
+                            <select class="form-control" id="inventarioSelect" placeholder="Servicio">
+                                <option value="" disabled selected>-- Inventario--</option>
+
                             </select>
-                            <label for="employeeGender">Categoria</label>
+
+                            <label for="selectInventario">Inventario al que corresponde</label>
                         </div>
+
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock">
                             <label for="AddInStock">Cantidad en stock</label>
@@ -424,7 +425,7 @@ header {
                             <textarea class="form-control" id="AddProductDescription" rows="7" style="resize: none;"></textarea>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100">Agregar Producto</button>
+                            <button type="button" class="btn btn-dark btn-block w-100" id="agregarProducto">Agregar Producto</button>
                         </div>
                     </div>
                 </div>
@@ -437,7 +438,7 @@ header {
 
 </div>
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -474,14 +475,68 @@ $(document).ready(function(){
         overlay.style.display = "none";
     });
 
+    loadInventarios();
+
     // Fin scripts para todas las vistas
 
+    //Script para agregar producto
+
+    $('#agregarProducto').on('click', function(e) {
+        e.preventDefault();
+
+        let productName = $('#AddProductName').val();
+        let productPrice = $('#AddProductPrice').val();
+        let productInStock = $('#AddInStock').val();
+        let productInventory = $('#inventarioSelect').val();
 
 
-
+        $.ajax({
+            url: '/RegistroProducto',
+            type: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val(),
+                nombre: productName,
+                precio: productPrice,
+                cantidadEnStock : productInStock,
+                inventarioId : productInventory
+            },
+            success: function(response) {
+                alert("Servicio agregado exitosamente");
+                $('#productName').val('');
+                $('#productPrice').val('');
+                $('#productInStock').val('');
+                $('#productInventory').val('');
+            },
+            error: function(error) {
+                alert('Ocurrió un error al agregar el servicio');
+                $('#productName').val('');
+                $('#productPrice').val('');
+                $('#productInStock').val('');
+                $('#productInventory').val('');
+            }
+        });
+    });
+    // Fin script para registrar productos
 
     // Fin document.ready
 });
+
+//Script para dibujar los inventarios existentes en el select
+//NOTA: PARA QUE FUNCIONE SE DEBE DE TENER REGISTRADOS INVENTARIOS EN LA BASE DE DATOS
+function loadInventarios(){
+    $.get('/get/inventarios',function (inventarios){
+        //se obtiene el select mediante su id para manipularlo
+        inventarioSelect = $('#inventarioSelect');
+
+        inventarioSelect.empty();
+
+        //recorremos la coleccion de inventarios y se adieren a el select
+        inventarios.forEach(inventario =>{
+            inventarioSelect.append(new Option(inventario.nombre,inventario.id));
+        });
+
+    });
+}
 
 </script>
 </body>
