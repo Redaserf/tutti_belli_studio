@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ViewsController extends Controller
 {
@@ -11,131 +13,472 @@ class ViewsController extends Controller
     // ==========[ Guest ]==========
 
     public function guestHome(){
-        return view('Guest.Home-guest');
+        if (!Auth::check()) {
+            return view('Guest.Home-guest');
+        }
+        
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function guestProductos(){
-        return view('Guest.Productos-guest');
+        if (!Auth::check()) {
+            return view('Guest.Productos-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Productos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Productos-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Ver-Productos-Empleado');
+        }
     }
 
     public function LoginVista(){
-        return view('Guest.Login');
+        if (!Auth::check()) {
+            return view('Guest.Login');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function RegistroVista(){
-        return view('Guest.Registro');
+        if (!Auth::check()) {
+            return view('Guest.Registro');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
 
     // ==========[ User ]==========
 
     public function userHome(){
-        return view('User.Home-usuario');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return view('User.Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function userPerfil(){
-        return view('User.Perfil-User');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return view('User.Perfil-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function userCursos(){
-        return view('User.Cursos-User');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Cursos');
+        } elseif ($user->rolId == 2) {
+            return view('User.Cursos-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function userProductos(){
-        return view('User.Productos-User');
+        if (!Auth::check()) {
+            return redirect('/Productos-Guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Productos');
+        } elseif ($user->rolId == 2) {
+            return view('User.Productos-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Ver-Productos-Empleado');
+        }
     }
 
     public function userReservacion(){
-        return view('User.Reservacion-User');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Agregar-cita');
+        } elseif ($user->rolId == 2) {
+            return view('User.Reservacion-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Agregar-Cita-Empleado');
+        }
     }
 
 
     // ==========[ Employee ]==========
 
     public function employeeHome(){
-        return view('Employee.Home-empleado');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return view('Employee.Home-empleado');
+        }
     }
 
     public function employeeAgregarCita(){
-        return view('Employee.Agregar-Cita-Empleado');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Agregar-cita');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Reservacion-User');
+        } elseif ($user->rolId == 3) {
+            return view('Employee.Agregar-Cita-Empleado');
+        }
     }
 
     public function employeeVerCitas(){
-        return view('Employee.Ver-Citas-Empleado');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+        
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Citas');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return view('Employee.Ver-Citas-Empleado');
+        }
     }
 
     public function employeeVerProductos(){
-        return view('Employee.Ver-Productos-Empleado');
+        if (!Auth::check()) {
+            return redirect('/Productos-Guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Productos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Productos-User');
+        } elseif ($user->rolId == 3) {
+            return view('Employee.Ver-Productos-Empleado');
+        }
     }
 
 
     // ==========[ Boss ]==========
 
     public function bossHome(){
-        return view('Boss.Home-administrador');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarCita(){
-        return view('Boss.Agregar-cita');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-cita');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Reservacion-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Agregar-Cita-Empleado');
+        }
     }
 
     public function bossAgregarCurso(){
-        return view('Boss.Agregar-Curso');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Curso');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarDescuentoProducto(){
-        return view('Boss.Agregar-Descuento-Producto');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Descuento-Producto');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarDescuentoTecnica(){
-        return view('Boss.Agregar-Descuento-Tecnica');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Descuento-Tecnica');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarEmpleado(){
-        return view('Boss.Agregar-Empleado');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Empleado');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarProducto(){
-        return view('Boss.Agregar-Producto');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Producto');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarServicio(){
-        return view('Boss.Agregar-Servicio');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Servicio');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossAgregarTecnica(){
-        return view('Boss.Agregar-Tecnica');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Agregar-Tecnica');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerInventario(){
-        return view('Boss.Ver-Inventario');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Inventario');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerVentas(){
-        return view('Boss.Ver-Ventas');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Ventas');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerEmpleados(){
-        return view('Boss.Ver-Empleados');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Empleados');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerDescuentos(){
-        return view('Boss.Ver-Descuentos');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Descuentos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerCitas(){
-        return view('Boss.Ver-Citas');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Citas');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Ver-Citas-Empleado');
+        }
     }
 
     public function bossVerCursos(){
-        return view('Boss.Ver-Cursos');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Cursos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Cursos-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
     public function bossVerProductos(){
-        return view('Boss.Ver-Productos');
+        if (!Auth::check()) {
+            return redirect('/Productos-Guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Productos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Productos-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Ver-Productos');
+        }
     }
 
     public function bossVerServicios(){
-        return view('Boss.Ver-Servicios');
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Servicios');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
+
+
+
+
+
+    // Ver producto específico (no mames aarón)
+    public function Producto(){
+        return view('User.Ver-Prodcuto-especifico');
+    }
+
+
 }

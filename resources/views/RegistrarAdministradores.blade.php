@@ -283,89 +283,6 @@
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
 
-        {{-- Sidebar --}}
-
-        <nav class="dashboard-container sidebar close">
-            <header>
-                <div class="image-text">
-                    <span class="image">
-                        <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
-                    </span>
-                    <div class="text header-text">
-                        <span class="name">{{ Auth::user()->name }}</span>
-                        <span class="rol">Administrador</span>
-                    </div>
-                </div>
-                <i class="fa-solid fa-angle-right toggle"></i>
-            </header>
-
-            <div class="menu-bar">
-                <div class="menu">
-                    <ul class="menu-links">
-                        <li class="nav-link">
-                            <a href="/Home-administrador">
-                                <i class="fa-solid fa-house icon"></i>
-                                <span class="text nav-text">Inicio</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Citas">
-                                <i class="fa-regular fa-calendar icon"></i>
-                                <span class="text nav-text">Citas</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Servicios">
-                                <i class="fa-solid fa-scissors icon"></i>
-                                <span class="text nav-text">Servicios</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Cursos">
-                                <i class="fa-solid fa-pencil icon"></i>
-                                <span class="text nav-text">Cursos</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Productos">
-                                <i class="fa-solid fa-basket-shopping icon"></i>
-                                <span class="text nav-text">Productos</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Inventario">
-                                <i class="fa-solid fa-box icon"></i>
-                                <span class="text nav-text">Inventario</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Descuentos">
-                                <i class="fa-solid fa-percent icon"></i>
-                                <span class="text nav-text">Descuentos</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="/Ver-Empleados">
-                                <i class="fa-solid fa-user-tie icon"></i>
-                              <span class="text nav-text">Empleados</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="bottom-content">
-                        <li class="">
-                            <a href="#">
-                                <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
-                                <span class="text nav-text">Cerrar sesión</span>
-                            </a>
-                        </li>
-                    </div>
-                </div>
-            </nav>
-
-            {{-- Fin Sidebar --}}
-
-
 
 
 
@@ -376,45 +293,45 @@
             <div class="container full-height d-flex justify-content-center align-items-center">
                 <div class="row w-100">
                     <div class="row">
-                        <h2>Agregar Empleado</h2>
+                        <h2>Agregar Administrador</h2>
                     </div>
                     <form action="/RegistroEmpleado" method="POST">
                         @csrf
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
-                                <input name="employeeName" type="text" class="form-control" id="employeeName" placeholder="Nombre" required>
-                                <label for="employeeName">Nombre</label>
+                                <input name="adminName" type="text" class="form-control" id="adminName" placeholder="Nombre" required>
+                                <label for="adminName">Nombre</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input name="employeeLastname" type="text" class="form-control" id="employeeLastname" placeholder="Apellidos" required>
-                                <label for="employeeLastname">Apellidos</label>
+                                <input name="adminLastname" type="text" class="form-control" id="adminLastname" placeholder="Apellidos" required>
+                                <label for="adminLastname">Apellidos</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <select name="employeeGender" class="form-control" id="employeeGender" placeholder="Sexo" required>
+                                <select name="adminGender" class="form-control" id="adminGender" placeholder="Sexo" required>
                                     <option value="" disabled selected>Escoge una opción</option>
                                     <option value="Hombre">Hombre</option>
                                     <option value="Mujer">Mujer</option>
                                 </select>
-                                <label for="employeeGender">Género</label>
+                                <label for="adminGender">Género</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
-                                <label for="employeePhone">Número telefónico</label>
+                                <input type="number" name="adminPhone" class="form-control" id="adminPhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
+                                <label for="adminPhone">Número telefónico</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="date" class="form-control" name="employeeBirthDate" id="employeeBirthDate" placeholder="Fecha de nacimiento" required>
-                                <label for="employeeBirthDate">Fecha de nacimiento</label>
+                                <input type="date" class="form-control" name="adminBirthDate" id="adminBirthDate" placeholder="Fecha de nacimiento" required>
+                                <label for="adminBirthDate">Fecha de nacimiento</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input name="employeeEmail" type="email" class="form-control" id="employeeEmail" placeholder="Correo electrónico" required>
-                                <label for="employeeEmail">Correo electrónico</label>
+                                <input name="adminEmail" type="email" class="form-control" id="adminEmail" placeholder="Correo electrónico" required>
+                                <label for="adminEmail">Correo electrónico</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input name="employeePassword" type="password" class="form-control" id="employeePassword" placeholder="Contraseña" required minlength="8" pattern=".*[0-9].*" title="Su contraseña debe incluír al menos 1 número">
-                                <label for="employeePassword">Contraseña</label>
+                                <input name="adminPassword" type="password" class="form-control" id="adminPassword" placeholder="Contraseña" required minlength="8" pattern=".*[0-9].*" title="Su contraseña debe incluír al menos 1 número">
+                                <label for="adminPassword">Contraseña</label>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-dark btn-block w-100" id="agregarEmpleado">Agregar Empleado</button>
+                                <button type="button" class="btn btn-dark btn-block w-100" id="agregarAdmin">Agregar Administrador</button>
                             </div>
                         </div>
                     </form>
@@ -427,7 +344,7 @@
 </div>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -444,67 +361,51 @@
 
 $(document).ready(function(){
 
-    // Dashboard toggle
-    const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
-
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-        if (!sidebar.classList.contains("close")) {
-            overlay.style.display = "block";
-        } else {
-            overlay.style.display = "none";
-        }
-    });
-
-    overlay.addEventListener("click", () => {
-        sidebar.classList.add("close");
-        overlay.style.display = "none";
-    });
-
-    // Fin scripts para todas las vistas
-
     //Script para registrar el nuevo Empleado
-    $('#agregarEmpleado').on('click', function(e) {
+    $('#agregarAdmin').on('click', function(e) {
         e.preventDefault();
 
-        let employeeName = $('#employeeName').val();
-        let employeeLastname = $('#employeeLastname').val();
-        let employeeGender = $('#employeeGender').val();
-        let employeePhone = $('#employeePhone').val();
-        let employeeBirthDate = $('#employeeBirthDate').val();
-        let employeeEmail = $('#employeeEmail').val();
-        let employeePassword = $('#employeePassword').val();
+        let adminName = $('#adminName').val();
+        let adminLastname = $('#adminLastname').val();
+        let adminGender = $('#adminGender').val();
+        let adminPhone = $('#adminPhone').val();
+        let adminBirthDate = $('#adminBirthDate').val();
+        let adminEmail = $('#adminEmail').val();
+        let adminPassword = $('#adminPassword').val();
 
         $.ajax({
-            url: '/RegistroEmpleado',
+            url: '/RegistroAdmin',
             type: 'POST',
             data: {
                 _token: $('input[name="_token"]').val(),
-                name: employeeName,
-                apellido: employeeLastname,
-                gender: employeeGender,
-                numeroTelefono:employeePhone,
-                fechaNacimiento:employeeBirthDate,
-                email: employeeEmail,
-                password: employeePassword,
-                rolId: 3
+                name: adminName,
+                apellido: adminLastname,
+                gender: adminGender,
+                numeroTelefono:adminPhone,
+                fechaNacimiento:adminBirthDate,
+                email: adminEmail,
+                password: adminPassword,
+                rolId: 4
             },
             success: function(response) {
-                alert("Empleado agregado exitosamente");
-                window.location.href = '/Ver-Empleados';
+                alert("Administrador agregado exitosamente");
+                $('#adminName').val('');
+                $('#adminLastname').val('');
+                $('#adminGender').val('');
+                $('#adminPhone').val('');
+                $('#adminBirthDate').val('');
+                $('#adminEmail').val('');
+                $('#adminPassword').val('');
             },
             error: function(error) {
-                alert('Ocurrió un error al agregar al empleado');
-                $('#employeeName').val('');
-                $('#employeeLastname').val('');
-                $('#employeeGender').val('');
-                $('#employeePhone').val('');
-                $('#employeeBirthDate').val('');
-                $('#employeeEmail').val('');
-                $('#employeePassword').val('');
+                alert('Ocurrió un error al agregar al administrador');
+                $('#adminName').val('');
+                $('#adminLastname').val('');
+                $('#adminGender').val('');
+                $('#adminPhone').val('');
+                $('#adminBirthDate').val('');
+                $('#adminEmail').val('');
+                $('#adminPassword').val('');
             }
         });
     });

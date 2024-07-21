@@ -30,6 +30,8 @@ class UsuarioController extends Controller
                 return redirect('/Home-usuario');
             } elseif ($user->rolId == 3) {
                 return redirect('/Home-empleado');
+            }  elseif ($user->rolId == 4) {
+                return redirect('/Home-administrador');
             }
         }
 
@@ -44,7 +46,7 @@ class UsuarioController extends Controller
         $user = User::create([
             'name' => $request->nombre,
             'apellido' => $request->apellidos,
-            'fecha_nacimiento' => $request->fechaNacimiento,
+            'fechaNacimiento' => $request->fechaNacimiento,
             'numeroTelefono' => $request->telefono,
             'email' => $request->email,
             'gender' => $request->genero,
@@ -69,7 +71,11 @@ class UsuarioController extends Controller
         return response()->json($empleados);
     }
 
-
+// ==========[ eliminar un empleado ]==========
+    function employeeDelete($id){
+        User::findOrFail($id)->delete();
+        return response()->json(null, 204);
+    }
 
 
 }
