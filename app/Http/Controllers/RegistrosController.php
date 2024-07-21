@@ -85,6 +85,10 @@ class RegistrosController extends Controller
         $curso->empleadoId = $request->empleadoId;
         $curso->save();
 
+        //regresa el id del curso que se acaba de crear para mandarlo en el ajax
+        // que se encuentra en Cursos
+        return response()->json(['cursoId' => $curso->id]);
+
     }
 
     function RegistroProducto(Request $request)

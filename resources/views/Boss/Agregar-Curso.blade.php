@@ -378,71 +378,80 @@
 
 
 
-<div class="home">
+    <div class="home">
 
-    <form action="/RegistroCursoAdmin" method="POST">
-    @csrf
-    <div class="container container-div">
-        <div class="header-section">
-            <h1>Cursos</h1>
-        </div>
+        <form action="/RegistroCursoAdmin" method="POST">
+            @csrf
+            <div class="container container-div">
+                <div class="header-section">
+                    <h1>Cursos</h1>
+                </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="-- Nombre --">
-                    <label for="nombre">Nombre</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --">
-                    <label for="cupoLimite">Cupo Limite</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
-                    <label for="fechaInicio">Fecha de inicio</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="time" class="form-control" id="horaInicio" name="horaInicio" placeholder="-- Hora de inicio del curso --">
-                    <label for="horaInicio">Hora de inicio</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --">
-                    <label for="precio">Precio</label>
-                </div>
-            </div>
-            <div class="form-floating mb-3">
-                <select name="" class="form-control" id="empleadoId">
-                    <option value="" disabled selected>Empleado</option>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="-- Nombre --">
+                            <label for="nombre">Nombre</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --">
+                            <label for="cupoLimite">Cupo Limite</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                            <label for="fechaInicio">Fecha de inicio</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="time" class="form-control" id="horaInicio" name="horaInicio" placeholder="-- Hora de inicio del curso --">
+                            <label for="horaInicio">Hora de inicio</label>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3" id="contenedoTecnicas">
 
-                    <!-- Servicios que aparecerán con back-end -->
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <button type="button" id="anadirTecnica" class="btn btn-dark w-100" name="anadirTecnica">
+                                <label for="anadirTecnica">Añadir tecnica</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --">
+                            <label for="precio">Precio</label>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select name="" class="form-control" id="empleadoId">
+                            <option value="" disabled selected>Empleado</option>
 
-                </select>
-                <label for="empleadoId">Empleado de la cita</label>
-            </div>
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --">
-                    <label for="descripcion">Descripción</label>
+                            <!-- Servicios que aparecerán con back-end -->
+
+                        </select>
+                        <label for="empleadoId">Empleado de la cita</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --">
+                            <label for="descripcion">Descripción</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-dark w-100" id="agregarCurso">Agregar curso</button>
+                    </div>
+
                 </div>
             </div>
-            <div class="col-md-12 text-center">
-                <button class="btn btn-dark w-100" id="agregarCurso">Agregar curso</button>
-            </div>
+        </form>
 
-        </div>
+
     </div>
-    </form>
-
-
-</div>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -452,103 +461,180 @@
 
         // Scripts para todas las vistas
 
-                // Pantalla de carga
-                var loader = document.getElementById("contenedor_carga");
-                var navbar = document.getElementById("navbar");
-                window.addEventListener('load', function(){
-                    $('#navbar').css('visibility', 'visible');
-                    loader.style.display = "none";
-                });
+        // Pantalla de carga
+        var loader = document.getElementById("contenedor_carga");
+        var navbar = document.getElementById("navbar");
+        window.addEventListener('load', function(){
+            $('#navbar').css('visibility', 'visible');
+            loader.style.display = "none";
+        });
 
-            $(document).ready(function(){
+        $(document).ready(function(){
+            let selectCounter = 0; // Variable contador
+            let selectedTecnicas = []; // Lista para mantener las técnicas seleccionadas
 
-                // Dashboard toggle
-                const body = document.querySelector("body"),
-                        sidebar = body.querySelector(".sidebar"),
-                        toggle = body.querySelector(".toggle"),
-                        overlay = body.querySelector(".overlay");
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay");
 
-                toggle.addEventListener("click", () => {
-                    sidebar.classList.toggle("close");
-                    if (!sidebar.classList.contains("close")) {
-                        overlay.style.display = "block";
-                    } else {
-                        overlay.style.display = "none";
-                    }
-                });
-
-                overlay.addEventListener("click", () => {
-                    sidebar.classList.add("close");
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
                     overlay.style.display = "none";
-                });
-
-                loadEmpleados();
-                // Fin scripts para todas las vistas
-
-                //Script para registrar el nuevo curso
-                $('#agregarCurso').on('click', function(e) {
-                    e.preventDefault();
-
-                    let courseName = $('#nombre').val();
-                    let courseLimit = $('#cupoLimite').val();
-                    let courseDateBegining = $('#fechaInicio').val();
-                    let courseHourBegining = $('#horaInicio').val();
-                    let coursePrice = $('#precio').val();
-                    let courseEmployee = $('#empleadoId').val();
-
-                    $.ajax({
-                        url: '/RegistroCursoAdmin',
-                        type: 'POST',
-                        data: {
-                            _token: $('input[name="_token"]').val(),
-                            nombre: courseName,
-                            cupoLimite: courseLimit,
-                            fechaInicio: courseDateBegining,
-                            horaInicio: courseHourBegining,
-                            precio: coursePrice,
-                            empleadoId: courseEmployee
-                        },
-                        success: function(response) {
-                            alert("Curso agregado exitosamente");
-                            $('#courseName').val('');
-                            $('#courseLimit').val('');
-                            $('#courseBegining').val('');
-                            $('#coursePrice').val('');
-                            $('#courseEmployee').val('');
-                        },
-                        error: function(error) {
-                            alert('Ocurrió un error al agregar el Curso');
-                            $('#courseName').val('');
-                            $('#courseLimit').val('');
-                            $('#courseBegining').val('');
-                            $('#coursePrice').val('');
-                            $('#courseEmployee').val('');
-                        }
-                    });
-                });
-                // Fin de script para agregar curso
-
-                // Fin document.ready
+                }
             });
 
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+            });
+
+            loadEmpleados();
+            // Fin scripts para todas las vistas
+
+            $('#anadirTecnica').on('click', function(e){
+                e.preventDefault();
+                // Verificar si hay técnicas disponibles
+                $.get('/get/tecnicas', function(tecnicas){
+                    let filteredTecnicas = tecnicas.filter(tecnica => !selectedTecnicas.includes(tecnica.id.toString()));
+                    if (filteredTecnicas.length === 0) {
+                        alert('No hay más técnicas disponibles.');
+                        return;
+                    }
+
+                    selectCounter++; // Incrementa el contador cada vez que se añade un nuevo select
+
+                    // Crear un nuevo select con un id único
+                    var newSelect = $('<select class="form-control mb-3" name="tecnicas[]"></select>');
+                    newSelect.attr('id', 'tecnicaSelect' + selectCounter);
+
+                    // Añadir el nuevo select al contenedor
+                    $('#contenedoTecnicas').append(newSelect);
+
+                    // Llenar el select con las técnicas, excluyendo las ya seleccionadas
+                    filteredTecnicas.forEach(tecnica => {
+                        newSelect.append(new Option(tecnica.nombre, tecnica.id));
+                    });
+
+                    // Agregar evento para actualizar la lista de técnicas seleccionadas
+                    newSelect.on('change', function() {
+                        selectedTecnicas = []; // Resetear la lista
+                        $('select[name="tecnicas[]"]').each(function() {
+                            if ($(this).val()) {
+                                selectedTecnicas.push($(this).val());
+                            }
+                        });
+                    });
+                });
+            });
+
+            //Script para registrar el nuevo curso
+            $('#agregarCurso').on('click', function(e) {
+                e.preventDefault();
+
+                let courseName = $('#nombre').val();
+                let courseLimit = $('#cupoLimite').val();
+                let courseDateBegining = $('#fechaInicio').val();
+                let courseHourBegining = $('#horaInicio').val();
+                let coursePrice = $('#precio').val();
+                let courseEmployee = $('#empleadoId').val();
+
+                $.ajax({
+                    url: '/RegistroCursoAdmin',
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        nombre: courseName,
+                        cupoLimite: courseLimit,
+                        fechaInicio: courseDateBegining,
+                        horaInicio: courseHourBegining,
+                        precio: coursePrice,
+                        empleadoId: courseEmployee
+                    },
+                    success: function(response) {
+                        alert("Curso agregado exitosamente");
+                        let cursoId = response.cursoId;
+
+                        saveTecnicas(cursoId, selectedTecnicas);
+
+                        $('#nombre').val('');
+                        $('#cupoLimite').val('');
+                        $('#fechaInicio').val('');
+                        $('#horaInicio').val('');
+                        $('#precio').val('');
+                        $('#empleadoId').val('');
+                    },
+                    error: function(error) {
+                        alert('Ocurrió un error al agregar el Curso');
+                        $('#nombre').val('');
+                        $('#cupoLimite').val('');
+                        $('#fechaInicio').val('');
+                        $('#horaInicio').val('');
+                        $('#precio').val('');
+                        $('#empleadoId').val('');
+                    }
+                });
+            });
+
+            // Fin de script para agregar curso
+
+            // Fin document.ready
+        });
+
+        // Función para llenar el select con las técnicas excluyendo las ya seleccionadas
+        function loadTecnicas(selectElement, selectedTecnicas){
+            $.get('/get/tecnicas', function(tecnicas){
+                // Limpia el select antes de llenarlo
+                selectElement.empty();
+
+                // Filtra las técnicas para excluir las ya seleccionadas
+                let filteredTecnicas = tecnicas.filter(tecnica => !selectedTecnicas.includes(tecnica.id.toString()));
+
+                // Recorre la colección de técnicas y se añaden al select
+                filteredTecnicas.forEach(tecnica => {
+                    selectElement.append(new Option(tecnica.nombre, tecnica.id));
+                });
+            });
+        }
+
+        // Función para guardar las técnicas seleccionadas
+        function saveTecnicas(cursoId, tecnicas) {
+            $.ajax({
+                url: '/GuardarTecnicasCurso', // Cambia esta URL a la ruta correcta
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    cursoId: cursoId,
+                    tecnicas: tecnicas
+                },
+                success: function(response) {
+                    alert("Técnicas guardadas exitosamente");
+                },
+                error: function(error) {
+                    alert('Ocurrió un error al guardar las técnicas');
+                }
+            });
+        }
 
         //Script para dibujar los empleados existentes en el select
         //NOTA: PARA QUE FUNCIONE SE DEBE DE TENER REGISTRADOS EMPLEADOS EN LA BASE DE DATOS
         function loadEmpleados(){
-            $.get('/get/empleados',function (empleados){
+            $.get('/get/empleados', function(empleados){
                 //se obtiene el select mediante su id para manipularlo
                 empleadoSelect = $('#empleadoId');
                 empleadoSelect.empty();
 
                 //recorremos la coleccion de empleados y se adieren a el select
-                empleados.forEach(empleado =>{
-                    empleadoSelect.append(new Option(empleado.name,empleado.id));
+                empleados.forEach(empleado => {
+                    empleadoSelect.append(new Option(empleado.name, empleado.id));
                 });
-
             });
         }
-
-        </script>
+    </script>
 
 </body>
 </html>

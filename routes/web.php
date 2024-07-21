@@ -3,6 +3,8 @@
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\TecnicaController;
+use App\Http\Controllers\TecnicaHasCursoController;
 use App\Http\Controllers\UsuarioController;
 
 use App\Http\Controllers\ViewsController;
@@ -69,66 +71,58 @@ Route::get('/Ver-Citas', [ViewsController::class, 'bossVerCitas']);
 Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
 Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
 Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
-    
-    
+
+
 
 // ==========[ Login y Registros ]==========
-    
-    
-    // =====[ Usuarios ]=====
-    
-    Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
-    Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
-    Route::get('/Logout',[UsuarioController::class, 'Logout']);
-    
-
-    
-    // =====[ Empleados ]=====
-    
-    Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
-    Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
-    Route::get('/empleado/eliminar/{id}',[UsuarioController::class,'employeeDelete']);
-    
-    
-    
-    // =====[ Agregar (Administrador) ]=====
-    
-    Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
-    Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
-    Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
-    Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
-    Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
-    Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
-    Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
 
 
+// =====[ Usuarios ]=====
 
+Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
+Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
+Route::get('/Logout',[UsuarioController::class, 'Logout']);
 
+// =====[ Empleados ]=====
 
+Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
+Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
+Route::get('/empleado/eliminar/{id}',[UsuarioController::class,'employeeDelete']);
 
+// =====[ Agregar (Administrador) ]=====
 
-
+Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
+Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
+Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
+Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
+Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
+Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
+Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
 
 // ==========[ Cosas de Hugo ]==========
 
 
-    //prueba no hacer caso y si lo vez borralo
-    
-        Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
-    
-        // ===== [Consultas] =====
-    
-        //Consulta para traer los usuarios con sus roles
-        Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
-    
-        //servicios con sus tecnicas
-    
-        Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
-    
-        // ===== [Sevicios] =====
-        //devuelve servicio como Json
-        Route::get('/get/servicios',[ServicioController::class,'index']);
-    
-        // ===== [Inventario] =====
-        //devulve inventario como Json
-        Route::get('/get/inventarios',[InventarioController::class,'index']);
+//prueba no hacer caso y si lo vez borralo
+
+Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
+
+// ===== [Consultas] =====
+
+//Consulta para traer los usuarios con sus roles
+Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
+
+//servicios con sus tecnicas
+
+Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
+
+// ===== [Sevicios] =====
+//devuelve servicio como Json
+Route::get('/get/servicios',[ServicioController::class,'index']);
+
+// ===== [Inventario] =====
+//devulve inventario como Json
+Route::get('/get/inventarios',[InventarioController::class,'index']);
+
+// ===== [Tecnicas] =====
+Route::get('/get/tecnicas',[TecnicaController::class,'index']);
+Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
