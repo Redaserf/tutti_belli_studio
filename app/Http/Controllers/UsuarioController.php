@@ -30,6 +30,8 @@ class UsuarioController extends Controller
                 return redirect('/Home-usuario');
             } elseif ($user->rolId == 3) {
                 return redirect('/Home-empleado');
+            }  elseif ($user->rolId == 4) {
+                return redirect('/Home-administrador');
             }
         }
 
@@ -69,7 +71,11 @@ class UsuarioController extends Controller
         return response()->json($empleados);
     }
 
-
+// ==========[ eliminar un empleado ]==========
+    function employeeDelete($id){
+        User::findOrFail($id)->delete();
+        return response()->json(null, 204);
+    }
 
 
 }

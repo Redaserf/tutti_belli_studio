@@ -3,8 +3,6 @@
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
-use App\Http\Controllers\TecnicaController;
-use App\Http\Controllers\TecnicaHasCursoController;
 use App\Http\Controllers\UsuarioController;
 
 use App\Http\Controllers\ViewsController;
@@ -39,10 +37,6 @@ Route::get('/', function () {
     // ===== [Inventario] =====
     //devulve inventario como Json
     Route::get('/get/inventarios',[InventarioController::class,'index']);
-
-    // ===== [tecnicas] =====
-    //devulve las tecnicas como Json
-    Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 
     // =====[ Guest ]=====
 
@@ -117,7 +111,3 @@ Route::get('/', function () {
     Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
     Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
     Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
-
-
-    /////////AAAAAAAAAAAAA
-    Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);

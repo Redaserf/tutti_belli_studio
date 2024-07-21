@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Hash;
 class RegistrosController extends Controller
 {
 
+    // Registrar administradores
+    function RegistroAdmin(Request $request){
+
+        $administrador = new User();
+        $administrador->name = $request->name;
+        $administrador->apellido = $request->apellido;
+        $administrador->fechaNacimiento = $request->fechaNacimiento;
+        $administrador->gender = $request->gender;
+        $administrador->email = $request->email;
+        $administrador->password  = bcrypt($request->password);
+        $administrador->fotoPerfil = $request->fotoPerfil;
+        $administrador->numeroTelefono  = $request->numeroTelefono;
+        $administrador->rolId = $request->rolId;
+        $administrador->save();
+
+    }
+
+
+
     // Aquí los registros que puede hacer el administrador
     function RegistroServicio(Request $request)
     {
@@ -83,6 +102,15 @@ class RegistrosController extends Controller
 
     }
 
+    function RegistroCitaAdmin(){
+
+    }
+
+    function RegistroDescuentoProducto(){
+
+    }
+
+
 //    public function RegistroEmpleado(Request $request){
 //        $empleado = User::create([
 //            'name' => $request->employeeName,
@@ -97,4 +125,6 @@ class RegistrosController extends Controller
 //
 //        return redirect('/Ver-Empleados');
 //    }
+
+
 }

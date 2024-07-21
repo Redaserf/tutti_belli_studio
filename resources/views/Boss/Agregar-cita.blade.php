@@ -315,7 +315,7 @@
                         <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                     </span>
                     <div class="text header-text">
-                        <span class="name">anyelo</span>
+                        <span class="name">{{ Auth::user()->name }}</span>
                         <span class="rol">Administrador</span>
                     </div>
                 </div>
@@ -377,7 +377,7 @@
                       </div>
                       <div class="bottom-content">
                         <li class="">
-                            <a href="#">
+                            <a href="/Logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
                                 <span class="text nav-text">Cerrar sesión</span>
                             </a>
@@ -406,11 +406,11 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="appointmentDate" placeholder="Fecha de la cita">
+                            <input name="date" type="date" class="form-control" id="appointmentDate" placeholder="Fecha de la cita" required>
                             <label for="appointmentDate">Fecha de la cita</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita">
+                            <input name="hour" type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita" required>
                             <label for="appointmentTime">Hora de la cita</label>
                         </div>
                         <div >
@@ -422,27 +422,26 @@
                         </div>
                         
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" placeholder="Nombre">
+                            <input name="name" type="text" class="form-control" id="name" placeholder="Nombre" required>
                             <label for="name">Nombre</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email" placeholder="Correo electrónico">
+                            <input name="email" type="email" class="form-control" id="email" placeholder="Correo electrónico" required>
                             <label for="email">Correo electrónico</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="tel" class="form-control" id="phone" placeholder="Número telefónico">
+                            <input name="phone" type="tel" class="form-control" id="phone" placeholder="Número telefónico" required>
                             <label for="phone">Número telefónico</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="age" placeholder="Edad">
+                            <input name="age" type="number" class="form-control" id="age" placeholder="Edad" required>
                             <label for="age">Edad</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-control" id="gender" placeholder="Género">
+                            <select name="gender" class="form-control" id="gender" placeholder="Género" required>
                                 <option value="" disabled selected>-- Seleccione el género --</option>
                                 <option value="male">Masculino</option>
                                 <option value="female">Femenino</option>
-                                <option value="other">Otro</option>
                             </select>
                             <label for="gender">Género</label>
                         </div>
