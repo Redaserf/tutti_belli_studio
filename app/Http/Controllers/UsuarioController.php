@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class UsuarioController extends Controller
 {
     //
 
-    
+
 
 
 // ==========[ Login y registro de usuarios]==========
@@ -38,12 +39,12 @@ class UsuarioController extends Controller
         ]);
     }
 
-    
+
     public function Registro(Request $request){
         $user = User::create([
             'name' => $request->nombre,
             'apellido' => $request->apellidos,
-            'fecha_nacimiento' => $request->fechaNacimiento,
+            'fechaNacimiento' => $request->fechaNacimiento,
             'numeroTelefono' => $request->telefono,
             'email' => $request->email,
             'gender' => $request->genero,
@@ -62,22 +63,13 @@ class UsuarioController extends Controller
 
 
 
-// ==========[ Registro de empleados ]==========
-
-
-    public function RegistroEmpleado(Request $request){
-        $empleado = User::create([
-            'name' => $request->employeeName,
-            'apellido' => $request->employeeLastname,
-            'fecha_nacimiento' => $request->employeeBirthDate,
-            'numeroTelefono' => $request->employeePhone,
-            'email' => $request->employeeEmail,
-            'gender' => $request->employeeGender,
-            'password' => Hash::make($request->employeePassword),
-            'rolId' => 3,
-        ]);
-
-        return redirect('/Ver-Empleados');
+// ==========[ obtener todos los empleados en json ]==========
+    function employeeIndex(){
+        $empleados = User::where('rolId', 3)->get();
+        return response()->json($empleados);
     }
+
+
+
 
 }

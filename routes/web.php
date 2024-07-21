@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\UsuarioController;
@@ -36,6 +37,9 @@ Route::get('/', function () {
     //devuelve servicio como Json
     Route::get('/get/servicios',[ServicioController::class,'index']);
 
+    // ===== [Inventario] =====
+    //devulve inventario como Json
+    Route::get('/get/inventarios',[InventarioController::class,'index']);
 
     // =====[ Guest ]=====
 
@@ -96,7 +100,8 @@ Route::get('/', function () {
 
     // =====[ Empleados ]=====
 
-    Route::post('/RegistroEmpleado',[UsuarioController::class, 'RegistroEmpleado']);
+    Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
+    Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
 
 
 

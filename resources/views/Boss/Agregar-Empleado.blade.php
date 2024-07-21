@@ -284,7 +284,7 @@
     <div class="overlay"></div>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -298,7 +298,7 @@
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -362,7 +362,7 @@
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -370,7 +370,7 @@
 
 
 <div class="home">
-    
+
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -414,7 +414,7 @@
                                 <label for="employeePassword">Contraseña</label>
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-dark btn-block w-100">Agregar Empleado</button>
+                                <button type="button" class="btn btn-dark btn-block w-100" id="agregarEmpleado">Agregar Empleado</button>
                             </div>
                         </div>
                     </form>
@@ -427,7 +427,7 @@
 </div>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -466,7 +466,55 @@ $(document).ready(function(){
 
     // Fin scripts para todas las vistas
 
+    //Script para registrar el nuevo Empleado
+    $('#agregarEmpleado').on('click', function(e) {
+        e.preventDefault();
 
+        let employeeName = $('#employeeName').val();
+        let employeeLastname = $('#employeeLastname').val();
+        let employeeGender = $('#employeeGender').val();
+        let employeePhone = $('#employeePhone').val();
+        let employeeBirthDate = $('#employeeBirthDate').val();
+        let employeeEmail = $('#employeeEmail').val();
+        let employeePassword = $('#employeePassword').val();
+
+        $.ajax({
+            url: '/RegistroEmpleado',
+            type: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val(),
+                name: employeeName,
+                apellido: employeeLastname,
+                gender: employeeGender,
+                numeroTelefono:employeePhone,
+                fechaNacimiento:employeeBirthDate,
+                email: employeeEmail,
+                password: employeePassword,
+                rolId: 3
+            },
+            success: function(response) {
+                alert("Empleado agregado exitosamente");
+                $('#employeeName').val('');
+                $('#employeeLastname').val('');
+                $('#employeeGender').val('');
+                $('#employeePhone').val('');
+                $('#employeeBirthDate').val('');
+                $('#employeeEmail').val('');
+                $('#employeePassword').val('');
+            },
+            error: function(error) {
+                alert('Ocurrió un error al agregar al empleado');
+                $('#employeeName').val('');
+                $('#employeeLastname').val('');
+                $('#employeeGender').val('');
+                $('#employeePhone').val('');
+                $('#employeeBirthDate').val('');
+                $('#employeeEmail').val('');
+                $('#employeePassword').val('');
+            }
+        });
+    });
+    //Fin script para registrar empleado
 
 
 

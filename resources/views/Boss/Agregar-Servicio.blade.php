@@ -470,7 +470,7 @@ $(document).ready(function(){
             }
         });
     });
-    // Fin script para agregar tecnica
+    // Fin script para agregar servicios
 
     // Fin document.ready
 });

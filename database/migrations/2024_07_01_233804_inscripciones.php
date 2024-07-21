@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('inscripciones', function(Blueprint $table){
 
             $table->id();
-            $table->dateTime('fechaInscripcion');
+            $table->date('fechaInscripcion');
             $table->double('precio');
             $table->boolean('estado');
             $table->unsignedBigInteger('usuarioId');
