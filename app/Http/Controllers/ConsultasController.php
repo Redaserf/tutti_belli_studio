@@ -29,6 +29,15 @@ class ConsultasController extends Controller
         return response()->json($usuarios);
     }
 
+        public function usuariosConRolUsuario()//se trae los usuarios que tengan el rol de usuario
+    {
+            $usuarios = User::whereHas('roles', function ($query) {
+                $query->where('nombre', 'usuario');
+            })->get();
+
+            return response()->json($usuarios);
+    }
+
     public function vistaPrueba(){
         return view('pruebita');
     }

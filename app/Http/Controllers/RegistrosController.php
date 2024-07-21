@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Servicio;
 use App\Models\Tecnica;
+use App\Models\User;
+use App\Models\Cita;
+
 use Illuminate\Http\Request;
 
 class RegistrosController extends Controller

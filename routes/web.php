@@ -29,6 +29,9 @@ Route::get('/', function () {
 
     Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
 
+    //usuarios con el rol de "usuario"
+    Route::get('/usuarios/rol/usuario', [ConsultasController::class, 'usuariosConRolUsuario']);
+
     // ===== [Sevicios] =====
     //devuelve servicio como Json
     Route::get('/get/servicios',[ServicioController::class,'index']);

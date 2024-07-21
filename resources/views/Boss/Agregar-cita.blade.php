@@ -406,11 +406,11 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="appointmentDate" placeholder="Fecha de la cita">
+                            <input type="date" class="form-control" id="appointmentDate" placeholder="Fecha de la cita" required>
                             <label for="appointmentDate">Fecha de la cita</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita">
+                            <input type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita" required>
                             <label for="appointmentTime">Hora de la cita</label>
                         </div>
                         <div >
@@ -420,32 +420,16 @@
                             </div>
                             <!-- <label for="service">Servicio</label> -->
                         </div>
+
+                        <div class="form-floating mb-3">
+                            <select class="form-control" name="usuarioId" id="usuarioId"></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="notasCita">Notas de la cita</label>
+                            <textarea class="form-control" id="notasCita" rows="7" style="resize: none;"></textarea>
+                        </div>
                         
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" placeholder="Nombre">
-                            <label for="name">Nombre</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email" placeholder="Correo electrónico">
-                            <label for="email">Correo electrónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="tel" class="form-control" id="phone" placeholder="Número telefónico">
-                            <label for="phone">Número telefónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="age" placeholder="Edad">
-                            <label for="age">Edad</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-control" id="gender" placeholder="Género">
-                                <option value="" disabled selected>-- Seleccione el género --</option>
-                                <option value="male">Masculino</option>
-                                <option value="female">Femenino</option>
-                                <option value="other">Otro</option>
-                            </select>
-                            <label for="gender">Género</label>
-                        </div>
                         <div>
                             <button type="submit" class="btn btn-dark btn-block w-100">Crear Cita</button>
                         </div>
@@ -490,8 +474,13 @@
                     servicios.forEach(servicio => {
                         console.log(servicio.tecnicas);//si lo manda
                         selectServiciosMul.append(`
-                            <div class="multiselect-option" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
-                            <select id="tecnicaSelect${servicio.id}" style="display: none" required></select>
+
+                            <div class="multiselect-option form-control" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
+
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="tecnicaSelect${servicio.id}" style="display: none" required></select>
+                            </div>
+
                     `)
                     servicio.tecnicas.forEach( tecnica => {
                         $(`#tecnicaSelect${servicio.id}`).append(`
@@ -504,11 +493,28 @@
                 $('#service').on('click', '.multiselect-option', function() {
                     $(this).toggleClass('selected');
                     console.log($(this));
+
+
                     let selectId = $(this).data('select-id');
                     $(`#tecnicaSelect${selectId}`).toggle();
                     console.log($(this));
                });
                
+            })//Fin de dibujar servicios y sus tecnicas pipipi
+
+
+
+            //Dibujar usuarios
+            $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
+                let selectUsuarios = $('#usuarioId');
+                selectUsuarios.empty();
+
+                usersRolUsuario.forEach(usuario => {
+                    selectUsuarios.append(`
+                        <option class="text-center" value="${usuario.id}">Cliente: ${usuario.name + " " +usuario.apellido}</option>
+                    `)
+                    console.log(usersRolUsuario);
+                })
             })
          
 

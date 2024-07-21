@@ -371,7 +371,7 @@ header {
             <section class="home">
                 <div class="top text-center">
                     <h2>Citas pendientes</h2>
-                    <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: curso;">Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></i></button></a>
+                    <a class="left" href="/Agregar-cita" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: curso;">Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></i></button></a>
                 </div>
                 <div class="section-divider"></div>
     
