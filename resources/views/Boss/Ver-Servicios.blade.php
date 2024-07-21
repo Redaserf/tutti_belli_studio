@@ -294,7 +294,7 @@ display: none;
                         <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                     </span>
                     <div class="text header-text">
-                        <span class="name">anyelo</span>
+                        <span class="name">{{ Auth::user()->name }}</span>
                         <span class="rol">Administrador</span>
                     </div>
                 </div>
@@ -356,7 +356,7 @@ display: none;
                       </div>
                       <div class="bottom-content">
                         <li class="">
-                            <a href="#">
+                            <a href="/Logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
                                 <span class="text nav-text">Cerrar sesión</span>
                             </a>

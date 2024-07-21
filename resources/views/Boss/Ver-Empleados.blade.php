@@ -215,7 +215,7 @@ header {
     margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
     background: var(--body-color);
     transition: var(--tran-05);
-
+    
 }
 
 .sidebar.close ~ .home {
@@ -237,41 +237,41 @@ header {
 
 
 
-                .container-full{
-                    min-height: calc(94vh - 6rem);
-                    margin-top: -50px;
-                    margin: 100px;
-                    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
-                    border-radius: 20px;
-                }
+.container-full{
+    min-height: calc(94vh - 6rem);
+    margin-top: -50px;
+    margin: 100px;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
 
-                body{
-                    overflow-y: hidden;
-                }
+body{
+    overflow-y: hidden;
+}
 
-                .top{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 20px;
-                }
+.top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
 
                 .top a{
-                margin-left: 0px;
+                    margin-left: 0px;
                 }
 
                 .top h2{
-                font-family: "Playwrite FR Moderne";
-                margin-right: 20px;
+                    font-family: "Playwrite FR Moderne";
+                    margin-right: 20px;
                 }
-
+                
                 .section-divider {
                 height: 3px;
                 background-color: rgba(0, 0, 0, 0.8);
                 min-width: 100%;
                 margin-top: 20px;
-                }
-    </style>
+            }
+            </style>
 
 </head>
 
@@ -279,19 +279,19 @@ header {
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
-
-        {{-- Sidebar --}}
     
-        <nav class="dashboard-container sidebar close">
-            <header>
-                <div class="image-text">
-                    <span class="image">
-                        <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
-                    </span>
-                    <div class="text header-text">
-                        <span class="name">anyelo</span>
-                        <span class="rol">Administrador</span>
-                    </div>
+    {{-- Sidebar --}}
+    
+    <nav class="dashboard-container sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
+                </span>
+                <div class="text header-text">
+                    <span class="name">{{ Auth::user()->name }}</span>
+                    <span class="rol">Administrador</span>
+                </div>
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
@@ -344,59 +344,128 @@ header {
                         <li class="nav-link">
                             <a href="/Ver-Empleados">
                                 <i class="fa-solid fa-user-tie icon"></i>
-                              <span class="text nav-text">Empleados</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="bottom-content">
-                        <li class="">
-                            <a href="#">
-                                <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
-                                <span class="text nav-text">Cerrar sesión</span>
+                                <span class="text nav-text">Empleados</span>
                             </a>
                         </li>
-                    </div>
+                    </ul>
+                </div>
+                <div class="bottom-content">
+                    <li class="">
+                        <a href="/Logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+                            <span class="text nav-text">Cerrar sesión</span>
+                        </a>
+                    </li>
+                </div>
                 </div>
             </nav>
-                
+            
             {{-- Fin Sidebar --}}
-
-        
+            
+            
             <section class="home">
                 <div class="top text-center">
                     <h2>Empleados</h2>
                     <a class="left" href="/Agregar-Empleado" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Registrar empleado<i style="margin-left: 6px" class="fa-solid fa-user-plus"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
-    
+                
                 <div>
+                    
+                    <table class="table">
+                        <thead>
+                          <tr>
+                              <th scope="col">ID</th>
+                              <th scope="col">Nombre</th>
+                              <th scope="col">Apellidos</th>
+                              <th scope="col">Fecha de nacimiento</th>
+                              <th scope="col">Género</th>
+                              <th scope="col">Correo</th>
+                              <th scope="col">Teléfono</th>
+                            <th scope="col">Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Empleados">
+                        
+                        {{-- Empleados mediante JS --}}
+                        
+                    </tbody>
+                      </table>
     
-                    {{-- aqui todo --}}
-    
-                </div>
-    
-            </section>
-
-
-    <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
-    <script>
-    
-    // Scripts para todas las vistas
-    
-        // Pantalla de carga
+                    </div>
+                    
+                </section>
+                
+                
+                <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                
+                <script>
+                    
+                    // Scripts para todas las vistas
+                    
+                    // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
         window.addEventListener('load', function(){
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
-    
-    $(document).ready(function(){
-    
+
+
+
+        // Dibujar empleados
+
+        function tablaEmpleados(){
+          $.ajax({
+              url: '/get/empleados',
+              method: 'GET',
+              success: function(data) {
+                  const tableBody = $('#Empleados');
+                  tableBody.empty();
+                  data.forEach(empleado => {
+                      const row = `<tr>
+                          <td>${empleado.id}</td>
+                          <td>${empleado.name}</td>
+                          <td>${empleado.apellido}</td>
+                          <td>${empleado.fechaNacimiento}</td>
+                          <td>${empleado.gender}</td>
+                          <td>${empleado.email}</td>
+                          <td>${empleado.numeroTelefono}</td>
+                          <td>
+                              <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></a>
+                          </td>
+                      </tr>`;
+                      tableBody.append(row);
+                  });
+              }
+          });
+        }
+        
+        // Eliminar empleados
+
+        function employeeDelete(id){
+          $.ajax({
+              url: `/empleado/eliminar/${id}`,
+              method: 'GET',
+              success: function(){
+                  tablaEmpleados();
+              },
+              error: function(error){
+                  console.log(error)
+              }
+          });
+        }
+
+
+
+
+        
+        $(document).ready(function(){
+            
+            tablaEmpleados();
+            
         // Dashboard toggle
         const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
@@ -432,6 +501,11 @@ header {
           window.addEventListener('resize', botones);
           botones();
     
+
+
+
+
+
     
         // Fin document.ready
     });

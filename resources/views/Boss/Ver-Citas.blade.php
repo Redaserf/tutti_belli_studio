@@ -295,7 +295,7 @@ header {
                         <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                     </span>
                     <div class="text header-text">
-                        <span class="name">anyelo</span>
+                        <span class="name">{{ Auth::user()->name }}</span>
                         <span class="rol">Administrador</span>
                     </div>
                 </div>
@@ -357,7 +357,7 @@ header {
                       </div>
                       <div class="bottom-content">
                         <li class="">
-                            <a href="#">
+                            <a href="/Logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
                                 <span class="text nav-text">Cerrar sesión</span>
                             </a>
@@ -371,7 +371,7 @@ header {
             <section class="home">
                 <div class="top text-center">
                     <h2>Citas pendientes</h2>
-                    <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: curso;">Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></i></button></a>
+                    <a class="left" href="/Agregar-cita" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: curso;">Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></i></button></a>
                 </div>
                 <div class="section-divider"></div>
     
