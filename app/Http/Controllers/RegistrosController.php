@@ -61,6 +61,7 @@ class RegistrosController extends Controller
         $curso->nombre = $request->nombre;
         $curso->cupoLimite = $request->cupoLimite;
         $curso->fechaInicio = $request->fechaInicio;
+        $curso->horaInicio = $request->horaInicio;
         $curso->precio = $request->precio;
         $curso->empleadoId = $request->empleadoId;
         $curso->save();
