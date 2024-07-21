@@ -44,7 +44,7 @@ class UsuarioController extends Controller
         $user = User::create([
             'name' => $request->nombre,
             'apellido' => $request->apellidos,
-            'fecha_nacimiento' => $request->fechaNacimiento,
+            'fechaNacimiento' => $request->fechaNacimiento,
             'numeroTelefono' => $request->telefono,
             'email' => $request->email,
             'gender' => $request->genero,

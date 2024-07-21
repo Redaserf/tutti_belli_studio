@@ -491,9 +491,10 @@
 
                     let courseName = $('#nombre').val();
                     let courseLimit = $('#cupoLimite').val();
-                    let courseBegining = $('#fechaInicio').val()
+                    let courseDateBegining = $('#fechaInicio').val();
+                    let courseHourBegining = $('#horaInicio').val();
                     let coursePrice = $('#precio').val();
-                    let courseEmployee = $('#empleadoId').val()
+                    let courseEmployee = $('#empleadoId').val();
 
                     $.ajax({
                         url: '/RegistroCursoAdmin',
@@ -502,7 +503,8 @@
                             _token: $('input[name="_token"]').val(),
                             nombre: courseName,
                             cupoLimite: courseLimit,
-                            fechaInicio: courseBegining,
+                            fechaInicio: courseDateBegining,
+                            horaInicio: courseHourBegining,
                             precio: coursePrice,
                             empleadoId: courseEmployee
                         },

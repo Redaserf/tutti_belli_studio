@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->integer('cupoLimite');
-            $table->dateTime('fechaInicio');
+            $table->date('fechaInicio');
+            $table->time('horaInicio');
             $table->double('precio');
             $table->unsignedBigInteger('empleadoId');
             $table->unsignedBigInteger('descuentoId')->nullable();
