@@ -354,7 +354,7 @@
                       </div>
                       <div class="bottom-content">
                         <li class="">
-                            <a href="#">
+                            <a href="/Logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
                                 <span class="text nav-text">Cerrar sesión</span>
                             </a>
