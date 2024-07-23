@@ -494,45 +494,51 @@
             });
 
             loadEmpleados();
-            // Fin scripts para todas las vistas
 
             $('#anadirTecnica').on('click', function(e){
                 e.preventDefault();
-                // Verificar si hay técnicas disponibles
+
                 $.get('/get/tecnicas', function(tecnicas){
+                    //filtered tecnicas es el arreglos de tecinas que aun no son seleccionadas
                     let filteredTecnicas = tecnicas.filter(tecnica => !selectedTecnicas.includes(tecnica.id.toString()));
+                    //Si no hay mas tecnicas disponibles muestra alerta
                     if (filteredTecnicas.length === 0) {
                         alert('No hay más técnicas disponibles.');
                         return;
                     }
 
-                    selectCounter++; // Incrementa el contador cada vez que se añade un nuevo select
+                    //Contador dinamico para los id de los select
+                    selectCounter++;
 
-                    // Crear un nuevo select con un id único
+                    //crae el nuevo select al pulsar el boton de añadir y le pone su id
                     var newSelect = $('<select class="form-control mb-3" name="tecnicas[]"></select>');
                     newSelect.attr('id', 'tecnicaSelect' + selectCounter);
 
-                    // Añadir el nuevo select al contenedor
+                    //lo adhiere al div donde apareceran los select dinamicos
                     $('#contenedoTecnicas').append(newSelect);
 
-                    // Llenar el select con las técnicas, excluyendo las ya seleccionadas
+                    //Dibuja en el select las opciones que todavia no han sido seleccionadas
                     filteredTecnicas.forEach(tecnica => {
                         newSelect.append(new Option(tecnica.nombre, tecnica.id));
                     });
 
-                    // Agregar evento para actualizar la lista de técnicas seleccionadas
+                    // Selecciona el primer valor por defecto
+                    newSelect.val(filteredTecnicas[0].id);
+
                     newSelect.on('change', function() {
-                        selectedTecnicas = []; // Resetear la lista
+                        selectedTecnicas = [];
                         $('select[name="tecnicas[]"]').each(function() {
                             if ($(this).val()) {
                                 selectedTecnicas.push($(this).val());
                             }
                         });
                     });
+
+                    // Fuerza la actualización de la lista de técnicas seleccionadas.
+                    newSelect.trigger('change');
                 });
             });
 
-            //Script para registrar el nuevo curso
             $('#agregarCurso').on('click', function(e) {
                 e.preventDefault();
 
@@ -556,7 +562,7 @@
                         empleadoId: courseEmployee
                     },
                     success: function(response) {
-                        alert("Curso agregado exitosamente");
+                        // alert("Curso agregado exitosamente");
                         let cursoId = response.cursoId;
 
                         saveTecnicas(cursoId, selectedTecnicas);
@@ -569,7 +575,7 @@
                         $('#empleadoId').val('');
                     },
                     error: function(error) {
-                        alert('Ocurrió un error al agregar el Curso');
+                        // alert('Ocurrió un error al agregar el Curso');
                         $('#nombre').val('');
                         $('#cupoLimite').val('');
                         $('#fechaInicio').val('');
@@ -580,60 +586,52 @@
                 });
             });
 
-            // Fin de script para agregar curso
+            function loadTecnicas(selectElement, selectedTecnicas){
+                $.get('/get/tecnicas', function(tecnicas){
+                    selectElement.empty();
 
-            // Fin document.ready
+                    let filteredTecnicas = tecnicas.filter(tecnica => !selectedTecnicas.includes(tecnica.id.toString()));
+
+                    filteredTecnicas.forEach(tecnica => {
+                        selectElement.append(new Option(tecnica.nombre, tecnica.id));
+                    });
+                });
+            }
+
+            function saveTecnicas(cursoId, tecnicas) {
+                $.ajax({
+                    url: '/GuardarTecnicasCurso',
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        cursoId: cursoId,
+                        tecnicas: tecnicas
+                    },
+                    success: function(response) {
+                        alert("Curso guardadas exitosamente");
+                        location.reload();  // Refresca la página al aceptar el alert
+                    },
+                    error: function(error) {
+                        alert('Ocurrió un error al guardar el curso');
+                        location.reload();  // Refresca la página al aceptar el alert
+                    }
+                });
+            }
+
+            function loadEmpleados(){
+                $.get('/get/empleados', function(empleados){
+                    empleadoSelect = $('#empleadoId');
+                    empleadoSelect.empty();
+
+                    empleados.forEach(empleado => {
+                        empleadoSelect.append(new Option(empleado.name, empleado.id));
+                    });
+
+                    // Selecciona el primer valor por defecto
+                    empleadoSelect.val(empleados[0].id);
+                });
+            }
         });
-
-        // Función para llenar el select con las técnicas excluyendo las ya seleccionadas
-        function loadTecnicas(selectElement, selectedTecnicas){
-            $.get('/get/tecnicas', function(tecnicas){
-                // Limpia el select antes de llenarlo
-                selectElement.empty();
-
-                // Filtra las técnicas para excluir las ya seleccionadas
-                let filteredTecnicas = tecnicas.filter(tecnica => !selectedTecnicas.includes(tecnica.id.toString()));
-
-                // Recorre la colección de técnicas y se añaden al select
-                filteredTecnicas.forEach(tecnica => {
-                    selectElement.append(new Option(tecnica.nombre, tecnica.id));
-                });
-            });
-        }
-
-        // Función para guardar las técnicas seleccionadas
-        function saveTecnicas(cursoId, tecnicas) {
-            $.ajax({
-                url: '/GuardarTecnicasCurso', // Cambia esta URL a la ruta correcta
-                type: 'POST',
-                data: {
-                    _token: $('input[name="_token"]').val(),
-                    cursoId: cursoId,
-                    tecnicas: tecnicas
-                },
-                success: function(response) {
-                    alert("Técnicas guardadas exitosamente");
-                },
-                error: function(error) {
-                    alert('Ocurrió un error al guardar las técnicas');
-                }
-            });
-        }
-
-        //Script para dibujar los empleados existentes en el select
-        //NOTA: PARA QUE FUNCIONE SE DEBE DE TENER REGISTRADOS EMPLEADOS EN LA BASE DE DATOS
-        function loadEmpleados(){
-            $.get('/get/empleados', function(empleados){
-                //se obtiene el select mediante su id para manipularlo
-                empleadoSelect = $('#empleadoId');
-                empleadoSelect.empty();
-
-                //recorremos la coleccion de empleados y se adieren a el select
-                empleados.forEach(empleado => {
-                    empleadoSelect.append(new Option(empleado.name, empleado.id));
-                });
-            });
-        }
     </script>
 
 </body>

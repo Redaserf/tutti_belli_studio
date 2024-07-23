@@ -15,7 +15,7 @@ class Tecnica extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'precio', 'descripcion', 'servicioId'];
+    protected $fillable = ['nombre', 'precio', 'descripcion', 'descuentoId'];
 
 
     // public function cuidados(){
@@ -26,12 +26,16 @@ class Tecnica extends Model
         return $this->hasMany(TecnicaHasCurso::class);
     }
 
-    public function InventarioHasTecnica(){
-        return $this->hasMany(InventarioHasTecnica::class);
-    }
+//    public function InventarioHasTecnica(){
+//        return $this->hasMany(InventarioHasTecnica::class);
+//    }
 
     public function servicios(){
         return $this->belongsTo(Servicio::class, 'servicioId');
+    }
+
+    public function descuento(){
+        return $this->belongsTo(Descuento::class,'descuentoId');
     }
 
 }

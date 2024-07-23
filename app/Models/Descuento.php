@@ -17,12 +17,12 @@ class Descuento extends Model
 
     protected $fillable = ['cantidadDescuento'];
 
-    function detalleProducto(){
-        return $this->hasMany(DetalleProducto::class, 'descuentoId');
+    function producto(){
+        return $this->hasMany(Producto::class, 'descuentoId');
     }
 
-    function detalleTecnica(){
-        return $this->hasMany(DetalleTecnica::class, 'descuentoId');
+    function tecnica(){
+        return $this->hasMany(Tecnica::class, 'descuentoId');
     }
 
     function curso(){

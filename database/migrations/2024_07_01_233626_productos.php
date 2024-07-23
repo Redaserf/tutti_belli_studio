@@ -19,8 +19,11 @@ return new class extends Migration
             $table->double('precio');
             $table->integer('cantidadEnStock');
             $table->unsignedBigInteger('inventarioId');
+            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();
+
             $table->foreign('inventarioId')->references('id')->on('inventarios');
+            $table->foreign('descuentoId')->references('id')->on('descuentos');
 
 
 
