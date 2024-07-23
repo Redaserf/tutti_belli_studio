@@ -7,6 +7,8 @@
     <title>Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
+                  @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
 
 body, html {
     margin: 0;
@@ -41,6 +43,9 @@ body, html {
         z-index: 100;
     }
 
+    #navbar{
+  font-family: "Josefin Sans", sans-serif !important;  
+}
 
 
 /* Aquí tus estilos */
@@ -53,7 +58,7 @@ body, html {
 
 
   <!-- NAVBAR / ENCABEZADO -->
-  <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
+  <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
@@ -64,19 +69,19 @@ body, html {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="/Home-guest#servicios" style="color: #C8A096;">Servicios</a>
+            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #000000;">Servicios</a>
           </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#cursos" style="color: #C8A096;">Cursos</a>
+                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #000000;">Cursos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#contacto" style="color: #C8A096;">Contacto</a>
+                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #000000;">Contacto</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #000000;">Iniciar sesión</a>
               </li>
             </ul>
             <a href="/Login">

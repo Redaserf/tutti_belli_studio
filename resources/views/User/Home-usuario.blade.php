@@ -11,7 +11,13 @@
       @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
-      body, html {
+      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+      #navbar{
+  font-family: "Josefin Sans", sans-serif !important;  
+}
+
+    body, html {
     margin: 0;
     padding: 0;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
@@ -390,10 +396,11 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 }
 .logo-img {
-      height: auto;
+  border-radius: 20px;
+      height: 50%;
       width: 0 auto;
-      max-height: 90%;
-      max-width: 90%;
+      max-height: 50%;
+      max-width: 100%;
       margin-bottom: 20px;
     }
 
@@ -426,51 +433,51 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
-      <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.1);">
-        <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
+      <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.4);">
+        <img src="/resources/img/dashboard-navbar/test.gif" alt="Logo" class="logo-img">
       </div>
     </div>
     <div class="section-divider"></div>
   </section>
 
-  <!-- NAVBAR / ENCABEZADO -->
-  <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!-- NAVBAR / ENCABEZADO -->
+<nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/Home-usuario">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
-          <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
-          </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</i></a>
-              </li>
-              <span id="separador" class="vertical-separator"></span>
-              <li class="nav-item" style="margin-left: 0;">
-                <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
-              </li>
-              <li class="nav-item" style="margin-left: 100px;">
-                <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
-              </li>
-            </ul>
-            <a href="/Reservacion-User">
-              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-            </a>
-          </div>
-        </div>
-    </nav>
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
+        </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
+            </li>
+            <span id="separador" class="vertical-separator"></span>
+            <li class="nav-item" style="margin-left: 0;">
+              <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+            </li>
+            <li class="nav-item" style="margin-left: 100px;">
+              <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
+            </li>
+          </ul>
+          <a href="/Reservacion-User">
+            <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+          </a>
+      </div>
+  </div>
+</nav>
 
       <br><br><br>
 
@@ -641,7 +648,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div class="row text-center text-md-left">
               <br><br><br>
                 <div class="col-md-4 text-center">
-                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="img-fluid">
+                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
                 <div class="col-md-4">
                     <h5>Dirección</h5>
@@ -655,7 +662,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                         <li><a href="#">Inicio</a></li>
                         <li><a href="#servicios">Servicios</a></li>
                         <li><a href="#cursos">Cursos</a></li>
-                        <li><a href="/Login">Iniciar sesión</a></li>
+                        <li><a href="/Logout">Cerrar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
                     <ul class="horario">
