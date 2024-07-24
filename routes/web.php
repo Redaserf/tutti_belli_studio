@@ -135,7 +135,11 @@ Route::get('/Ver-Inventario', [ViewsController::class, 'bossVerInventario']);
 Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
 Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
 Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
-Route::get('/Ver-Citas', [ViewsController::class, 'bossVerCitas']);
+
+
+Route::get('/Ver-Citas', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('verCitas');
+
+
 Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
 Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
 Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);

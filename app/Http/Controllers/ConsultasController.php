@@ -90,6 +90,7 @@ class ConsultasController extends Controller
                 'end' => $fechaFin->format('Y-m-d\TH:i:s'),
             ];
         }
+
     
     
         return view('Boss.Ver-Citas', compact('events'));

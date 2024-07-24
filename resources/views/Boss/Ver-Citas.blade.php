@@ -591,14 +591,14 @@ header {
 
         const eventos = @json($events);
 
-        console.log(eventos);
+        console.log("eventos", eventos);
 
         //calendario
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
             initialDate: new Date().toISOString().split('T')[0],
-            slotMinTime: '08:00:00',
+            slotMinTime: '09:00:00',
             slotMaxTime: '21:00:00',
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
@@ -739,9 +739,14 @@ header {
 
 
                     const citaDate = new Date(citasServicios.cita.fechaCita);
-                    actualizarOpcionesSelect(citaDate);
-                    
                     $('#horaCita').show();
+                    console.log('hora de la cita: ', citasServicios.cita.horaCita);
+
+                    actualizarOpcionesSelect(citaDate);
+                    if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
+                    {
+                        $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
+                    }
                     $('#horaCita').val(citasServicios.cita.horaCita);
 
                     citasServicios.servicios.forEach(servicio => {
