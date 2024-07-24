@@ -33,7 +33,7 @@
     }
 
     #contenedor_carga {
-        background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+        background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
         background-size: 20%;
         height: 100vh;
         width: 100%;

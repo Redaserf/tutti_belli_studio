@@ -31,7 +31,7 @@ body, html {
             display: inline-block;
             width: 1.5px;
             height: 30px;
-            background-color: #C8A096;
+            background-color: #000;
             margin: 3px 15px;
             vertical-align: middle;
 }
@@ -92,6 +92,7 @@ h1, h2, h3{
     </style>
 </head>
 <body class="hiddenX">
+  <div id="contenedor_carga"></div>
 
 
 <!-- NAVBAR / ENCABEZADO -->
@@ -121,11 +122,12 @@ h1, h2, h3{
             <li class="nav-item" style="margin-left: 0;">
               <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
             </li>
-            <li class="nav-item" style="margin-left: 100px;">
+            <li class="nav-item" style="">
               <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
             </li>
-          </ul>
-          <a href="/Reservacion-User">
+        </ul>
+        <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+          <a href="/Reservacion-User" style="margin-right:20px;">
             <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
           </a>
       </div>
@@ -168,17 +170,20 @@ h1, h2, h3{
 
 $(document).ready(function(){
 
-    function separadorHidden(){
-      var cuentaLi = document.getElementById("cuenta");
-       var separador = document.getElementById("separador");
-        if (window.innerWidth <= 992) {
-          $('.vertical-separator').css('visibility', 'hidden');
-        } else {
-          $('.vertical-separator').css('visibility', 'visible');
-        }
-    }
-    window.addEventListener('resize', separadorHidden);
-    separadorHidden();
+  function separadorHidden(){
+  var cuentaLi = document.getElementById("cuenta");
+  var carrito = document.getElementById("carrito");
+  var separador = document.getElementById("separador");
+  if (window.innerWidth <= 992) {
+  $('.vertical-separator').css('visibility', 'hidden');
+  $('#carrito').css('marginBottom', '20px');
+  } else {
+  $('.vertical-separator').css('visibility', 'visible');
+  $('#carrito').css('marginBottom', '0');
+  }
+  }
+  window.addEventListener('resize', separadorHidden);
+  separadorHidden();
 
 });
 

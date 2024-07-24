@@ -107,7 +107,14 @@ button{
             background-color: #ff1493;
         }
 
-
+        .vertical-separator {
+            display: inline-block;
+            width: 1.5px;
+            height: 30px;
+            background-color: #000;
+            margin: 3px 15px;
+            vertical-align: middle;
+    }
 
 
 
@@ -118,49 +125,51 @@ button{
     </style>
 </head>
 <body class="hiddenX">
+    <div id="contenedor_carga"></div>
 
 
-    <!-- NAVBAR / ENCABEZADO -->
-    <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/Home-usuario">
-            <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+<!-- NAVBAR / ENCABEZADO -->
+<nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/Home-usuario">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
+          </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
               </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
-                  </li>
-                  <span id="separador" class="vertical-separator"></span>
-                  <li class="nav-item" style="margin-left: 0;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
-                  </li>
-                  <li class="nav-item" style="margin-left: 100px;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
-                  </li>
-                </ul>
-                <a href="/Reservacion-User">
-                  <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-                </a>
-            </div>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
+              </li>
+              <span id="separador" class="vertical-separator"></span>
+              <li class="nav-item" style="margin-left: 0;">
+                <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+              </li>
+              <li class="nav-item" style="">
+                <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
+              </li>
+          </ul>
+          <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="/Reservacion-User" style="margin-right:20px;">
+              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+            </a>
         </div>
-    </nav>
+    </div>
+  </nav>
 
 
 
-
+<br>
 
 
     <div class="container">
@@ -314,17 +323,20 @@ button{
 
 $(document).ready(function(){
 
-  function separadorHidden(){
-      var cuentaLi = document.getElementById("cuenta");
-       var separador = document.getElementById("separador");
-        if (window.innerWidth <= 992) {
-          $('.vertical-separator').css('visibility', 'hidden');
-        } else {
-          $('.vertical-separator').css('visibility', 'visible');
-        }
-    }
-    window.addEventListener('resize', separadorHidden);
-    separadorHidden();
+    function separadorHidden(){
+  var cuentaLi = document.getElementById("cuenta");
+  var carrito = document.getElementById("carrito");
+  var separador = document.getElementById("separador");
+  if (window.innerWidth <= 992) {
+  $('.vertical-separator').css('visibility', 'hidden');
+  $('#carrito').css('marginBottom', '20px');
+  } else {
+  $('.vertical-separator').css('visibility', 'visible');
+  $('#carrito').css('marginBottom', '0');
+  }
+  }
+  window.addEventListener('resize', separadorHidden);
+  separadorHidden();
 
 
     // Scripts aquí

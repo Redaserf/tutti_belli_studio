@@ -35,6 +35,9 @@ h1, h2, h3{
 body, html {
     margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -82,6 +85,7 @@ body, html {
     </style>
 </head>
 <body class="hiddenX">
+  <div id="contenedor_carga"></div>
 
 
 <!-- NAVBAR / ENCABEZADO -->
@@ -139,13 +143,13 @@ $(document).ready(function(){
 });
 
 
-// Pantalla de carga
-var loader = document.getElementById("contenedor_carga");
-var navbar = document.getElementById("navbar");
-window.addEventListener('load', function(){
-    $('#navbar').css('visibility', 'visible');
-    loader.style.display = "none";
-})
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    var navbar = document.getElementById("navbar");
+    window.addEventListener('load', function(){
+        $('#navbar').css('visibility', 'visible');
+        loader.style.display = "none";
+    });
 
 </script>
 </body>

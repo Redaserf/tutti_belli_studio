@@ -37,7 +37,7 @@ overflow-x: hidden;
 }
 
 #contenedor_carga {
-background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
 background-size: 20%;
 height: 100vh;
 width: 100%;
@@ -245,9 +245,6 @@ display: none;
                     border-radius: 20px;
                 }
 
-                body{
-                    overflow-y: hidden;
-                }
 
                 .citas{
                     font-family: "Playwrite FR Moderne"

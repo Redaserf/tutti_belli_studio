@@ -425,6 +425,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     .fonts2{
       font-family: "Merriweather", serif;
     }
+
+    .vertical-separator {
+            display: inline-block;
+            width: 1.5px;
+            height: 30px;
+            background-color: #000;
+            margin: 3px 15px;
+            vertical-align: middle;
+    }
+
     </style>
 </head>
 <body class="hiddenX">
@@ -468,11 +478,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <li class="nav-item" style="margin-left: 0;">
               <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
             </li>
-            <li class="nav-item" style="margin-left: 100px;">
+            <li class="nav-item" style="">
               <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
             </li>
-          </ul>
-          <a href="/Reservacion-User">
+        </ul>
+        <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+          <a href="/Reservacion-User" style="margin-right:20px;">
             <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
           </a>
       </div>
@@ -692,6 +703,22 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <script>
 
           $(document).ready(function(){
+
+
+            function separadorHidden(){
+            var cuentaLi = document.getElementById("cuenta");
+            var carrito = document.getElementById("carrito");
+            var separador = document.getElementById("separador");
+            if (window.innerWidth <= 992) {
+            $('.vertical-separator').css('visibility', 'hidden');
+            $('#carrito').css('marginBottom', '20px');
+            } else {
+            $('.vertical-separator').css('visibility', 'visible');
+            $('#carrito').css('marginBottom', '0');
+            }
+            }
+            window.addEventListener('resize', separadorHidden);
+            separadorHidden();
 
 
             // scripts aquí

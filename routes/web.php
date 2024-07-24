@@ -16,7 +16,7 @@ use App\Http\Controllers\ConsultasController;
 // ==========[ Vistas ]==========
 
 Route::get('/', function () {
-    return view('Roles');
+    return view('Guest.Home-Guest');
 });
 
 
@@ -41,7 +41,7 @@ Route::get('/Cursos-User', [ViewsController::class, 'userCursos']);
 Route::get('/Perfil-User', [ViewsController::class, 'userPerfil']);
 Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
 Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
-Route::get('/Producto', [ViewsController::class, 'Producto']);
+Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
 
 
 // =====[ Employee ]=====
@@ -98,6 +98,8 @@ Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroD
 Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
 Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
 Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
+
+
 
 // ==========[ Cosas de Hugo ]==========
 
