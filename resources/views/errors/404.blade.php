@@ -84,6 +84,7 @@ body, html {
     </style>
 </head>
 <body class="hiddenX">
+  <div id="contenedor_carga"></div>
 
 
 <!-- NAVBAR / ENCABEZADO -->
@@ -139,13 +140,13 @@ $(document).ready(function(){
 });
 
 
-// Pantalla de carga
-var loader = document.getElementById("contenedor_carga");
-var navbar = document.getElementById("navbar");
-window.addEventListener('load', function(){
-    $('#navbar').css('visibility', 'visible');
-    loader.style.display = "none";
-})
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    var navbar = document.getElementById("navbar");
+    window.addEventListener('load', function(){
+        $('#navbar').css('visibility', 'visible');
+        loader.style.display = "none";
+    });
 
 </script>
 </body>

@@ -20,6 +20,18 @@
             align-items: center;
             min-height: 100vh;
         }
+
+        #contenedor_carga {
+            top: 0;
+            left: 0;
+            background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
+            background-size: 20%;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+
         .form-container {
             max-width: 600px;
             width: 100%;
@@ -101,6 +113,8 @@
     </style>
 </head>
 <body>
+    <div id="contenedor_carga"></div>
+
     <div class="d-flex justify-content-center align-items-center min-vh-100">
         <div class="form-container">
             <h2>Ingrese sus datos</h2>
@@ -162,6 +176,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6/Mni1fEZ+4pGnc5DGeRdhxXwFW2" crossorigin="anonymous"></script>
 
     <script>
+
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    window.addEventListener('load', function() {
+        loader.style.display = "none";
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('contrasena');
         const passwordConfirm = document.getElementById('confirmarContrasena');

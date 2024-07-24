@@ -41,12 +41,9 @@
             padding-left: 0;
         }
 
-        .hiddenX {
-            overflow-x: hidden;
-        }
 
         #contenedor_carga {
-            background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+            background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
             background-size: 20%;
             height: 100vh;
             width: 100%;
@@ -859,7 +856,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div  class="row text-center text-md-left">
               <br><br><br>
                 <div class="col-md-4 text-center">
-                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="img-fluid">
+                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
                 <div class="col-md-4">
                     <h5>Dirección</h5>
@@ -873,7 +870,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                         <li><a href="#">Inicio</a></li>
                         <li><a href="#servicios">Servicios</a></li>
                         <li><a href="#cursos">Cursos</a></li>
-                        <li><a href="/Login">Iniciar sesión</a></li>
+                        <li><a href="/Logout">Cerrar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
                     <ul class="horario">
