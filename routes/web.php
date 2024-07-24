@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
@@ -128,3 +129,9 @@ Route::get('/get/inventarios',[InventarioController::class,'index']);
 // ===== [Tecnicas] =====
 Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
+Route::get('/get/tecnicas/{servicioId}', [TecnicaController::class, 'show']);
+
+// ===== [Descuentos] =====
+Route::post('/GuardarDescuentos', [DescuentoController::class, 'aplicarDescuento']);
+
+
