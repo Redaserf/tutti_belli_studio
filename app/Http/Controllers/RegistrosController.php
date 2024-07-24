@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\Descuento;
 use App\Models\Producto;
 use App\Models\Servicio;
 use App\Models\Tecnica;
@@ -125,6 +126,18 @@ class RegistrosController extends Controller
 //
 //        return redirect('/Ver-Empleados');
 //    }
+
+    function RegistroDescuentoTecnica(Request $request)
+    {
+        $descuento = new Descuento();
+        $descuento->cantidadDescuento = $request->cantidadDescuento;
+        $descuento->save();
+
+        //regresa el id del desuento que se acaba de crear para mandarlo en el ajax
+        // que se encuentra en Desucento-tecnica
+        return response()->json(['descuentoId' => $descuento->id]);
+
+    }
 
 
 }
