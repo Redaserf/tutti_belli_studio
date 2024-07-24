@@ -94,13 +94,29 @@ class RegistrosController extends Controller
 
     function RegistroProducto(Request $request)
     {
+//        $imagenPath = $request->file('imagenProducto')->store('imagenProducto', 'public');
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric',
+            'cantidadEnStock' => 'required|integer',
+            'imagenProducto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'inventarioId' => 'required|integer'
+        ]);
+
         $producto = new Producto();
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->cantidadEnStock = $request->cantidadEnStock;
+
+        if ($request->hasFile('imagenProducto')) {
+            $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+        }
+
         $producto->inventarioId = $request->inventarioId;
         $producto->save();
 
+        return response()->json(['success' => 'Producto agregado exitosamente']);
     }
 
     function RegistroCitaAdmin(){

@@ -379,7 +379,7 @@ header {
 <div class="home">
 
 
-    <form action="/RegistroProducto" method="POST">
+    <form action="/RegistroProducto" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="col-12">
         <div class="container container-div">
@@ -394,7 +394,8 @@ header {
                         <div class="image-label">
                             <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
                             <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
-                            <img src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto">
+                            <input type="file" class="form-control" id="imagenProducto" name="imagenProducto">
+                            <img src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -477,42 +478,43 @@ $(document).ready(function(){
 
     loadInventarios();
 
+
+
     // Fin scripts para todas las vistas
+
+    document.getElementById('image').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
 
     //Script para agregar producto
 
     $('#agregarProducto').on('click', function(e) {
         e.preventDefault();
 
-        let productName = $('#AddProductName').val();
-        let productPrice = $('#AddProductPrice').val();
-        let productInStock = $('#AddInStock').val();
-        let productInventory = $('#inventarioSelect').val();
-
+        let formData = new FormData();
+        formData.append('_token', $('input[name="_token"]').val());
+        formData.append('nombre', $('#AddProductName').val());
+        formData.append('precio', $('#AddProductPrice').val());
+        formData.append('cantidadEnStock', $('#AddInStock').val());
+        formData.append('imagenProducto', $('#imagenProducto')[0].files[0]);
+        formData.append('inventarioId', $('#inventarioSelect').val());
 
         $.ajax({
             url: '/RegistroProducto',
             type: 'POST',
-            data: {
-                _token: $('input[name="_token"]').val(),
-                nombre: productName,
-                precio: productPrice,
-                cantidadEnStock : productInStock,
-                inventarioId : productInventory
-            },
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function(response) {
-                alert("Servicio agregado exitosamente");
-                $('#productName').val('');
-                $('#productPrice').val('');
-                $('#productInStock').val('');
-                $('#productInventory').val('');
+                alert("Producto agregado exitosamente");
+                $('#AddProductName').val('');
+                $('#AddProductPrice').val('');
+                $('#AddInStock').val('');
+                $('#imagenProducto').val('');
+                $('#inventarioSelect').val('');
             },
             error: function(error) {
-                alert('Ocurrió un error al agregar el servicio');
-                $('#productName').val('');
-                $('#productPrice').val('');
-                $('#productInStock').val('');
-                $('#productInventory').val('');
+                alert('Ocurrió un error al agregar el producto');
             }
         });
     });

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->double('precio');
             $table->integer('cantidadEnStock');
+            $table->string('imagen');
+
             $table->unsignedBigInteger('inventarioId');
             $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();
