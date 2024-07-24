@@ -60,11 +60,11 @@ class User extends Authenticatable
     }
 
     public function citasUsuarios(){
-        return $this->hasOne(Cita::class,'usuarioId');
+        return $this->hasMany(Cita::class,'usuarioId');
     }
 
     public function citasEmpleados(){
-        return $this->hasOne(Cita::class,'empleadoId');
+        return $this->hasMany(Cita::class,'empleadoId');
     }
 
     public function ventas(){

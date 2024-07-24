@@ -33,6 +33,25 @@ Route::get('/', function () {
     //usuarios con el rol de "usuario"
     Route::get('/usuarios/rol/usuario', [ConsultasController::class, 'usuariosConRolUsuario']);
 
+    //usuarios con el rol empleado
+    Route::get('/usuarios/rol/empleado', [ConsultasController::class, 'usuariosConRolEmpleado']);
+
+    //citas acceptadas
+
+    Route::get('/citas/aceptadas', [ConsultasController::class, 'citasAceptadas']);
+
+    //Citas con sus servicios y tecnicas
+    Route::get('/citas/servicios/tecnicas', [ConsultasController::class, 'serviciosTecnicasCitas']);
+
+    //Una cita con sus servicios y tecnicas
+    Route::get('/cita/servicios/tecnica/{id}', [ConsultasController::class, 'unaCitaConServiciosTecnica']);
+
+
+    //verifica disponibilidad de fechas y horas
+    Route::get('/citas/verificar', [ConsultasController::class, 'verificarDisponibilidad']);
+
+
+
     // ===== [Sevicios] =====
     //devuelve servicio como Json
     Route::get('/get/servicios',[ServicioController::class,'index']);
@@ -80,7 +99,11 @@ Route::get('/', function () {
     Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
     Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
     Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
-    Route::get('/Ver-Citas', [ViewsController::class, 'bossVerCitas']);
+    
+    
+    Route::get('/Ver-Citas', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('verCitas');
+    
+    
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
@@ -114,3 +137,10 @@ Route::get('/', function () {
     Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
     Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
     Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
+
+
+    //editar cita Administrador
+    Route::put('/editar/cita/{id}', [RegistrosController::class, 'editarCita']);
+
+    //eliminar cita Administradir
+    Route::delete('/eliminar/cita/{id}', [RegistrosController::class, 'eliminarCita']);

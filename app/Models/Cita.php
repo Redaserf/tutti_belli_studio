@@ -13,7 +13,7 @@ class Cita extends Model
     protected $primaryKey = 'id';
 
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
-    public $timestamps = false;
+    // public $timestamps = false;
 
     protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId'];
 
@@ -26,10 +26,11 @@ class Cita extends Model
     }
 
 
-    public function citaHasServicio(){
-        return $this->hasMany(CitaHasServicio::class,'citaId');
+    public function servicios()
+    {
+        return $this->belongsToMany(Servicio::class, 'citas_has_servicios', 'citaId', 'servicioId')
+                    ->withPivot('tecnicaId');
     }
-
 
     //public function resenias(){
       //  return $this->hasOne(Resenia::class);
