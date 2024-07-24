@@ -26,5 +26,5 @@ class ProductoHasTecnica extends Model
         return $this->belongsTo(Tecnica::class,'tecnicaId');
     }
 
-    use HasFactory;
+//    use HasFactory;
 }

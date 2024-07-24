@@ -7,6 +7,8 @@
     <title>Cuenta de usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
+            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
 
 body, html {
     margin: 0;
@@ -34,7 +36,29 @@ body, html {
             vertical-align: middle;
 }
 
+#navbar{
+  font-family: "Josefin Sans", sans-serif !important;  
+}
+
+label{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+p{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+input{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+button{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+
+h1, h2, h3{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+
 /* ANIMACION DE CARGA */
+
 #contenedor_carga{
         background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
         background-size: 20%;
@@ -70,43 +94,43 @@ body, html {
 <body class="hiddenX">
 
 
-    <!-- NAVBAR / ENCABEZADO -->
-    <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/Home-usuario">
-            <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+<!-- NAVBAR / ENCABEZADO -->
+<nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/Home-usuario">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
+        </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
+            </li>
+            <span id="separador" class="vertical-separator"></span>
+            <li class="nav-item" style="margin-left: 0;">
+              <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
+            </li>
+            <li class="nav-item" style="margin-left: 100px;">
+              <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
+            </li>
+          </ul>
+          <a href="/Reservacion-User">
+            <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
-              <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #C8A096;">Servicios</a>
-              </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #C8A096;">Productos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #C8A096;">Cursos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #C8A096;">Contacto</i></a>
-                  </li>
-                  <span id="separador" class="vertical-separator" style="visibility:visible"></span>
-                  <li class="nav-item" style="margin-left: 0;">
-                    <a id="cuenta" class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #C8A096;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
-                  </li>
-                  <li class="nav-item" style="margin-left: 100px;">
-                    <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #C8A096;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
-                  </li>
-                </ul>
-                <a href="/Reservacion-User">
-                  <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-                </a>
-            </div>
-        </div>
-    </nav>
+      </div>
+  </div>
+</nav>
 
 
 

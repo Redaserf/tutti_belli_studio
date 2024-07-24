@@ -15,12 +15,12 @@ class DetalleTecnica extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['precioTecnica', 'precioTotal', 'descuentoId', 'ventaId'];
+    protected $fillable = ['precioTecnica', 'precioTotal', 'ventaId'];
 
 
-    public function descuento(){
-        return $this->belongsTo(Descuento::class, 'descuentoId');
-    }
+//    public function descuento(){
+//        return $this->belongsTo(Descuento::class, 'descuentoId');
+//    }
 
     public function venta(){
         return $this->belongsTo(Venta::class, 'ventaId');

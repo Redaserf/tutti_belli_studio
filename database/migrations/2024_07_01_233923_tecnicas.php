@@ -19,9 +19,11 @@ return new class extends Migration
             $table->double('precio');
             $table->longText('descripcion');
             $table->unsignedBigInteger('servicioId');
+            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();
 
             $table->foreign('servicioId')->references('id')->on('servicios');
+            $table->foreign('descuentoId')->references('id')->on('descuentos');
 
 
 

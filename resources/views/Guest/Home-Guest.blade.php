@@ -422,21 +422,20 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 </head>
 <body class="hiddenX">
 
-  <div id="contenedor_carga">
-    
-  </div>
+  <div id="contenedor_carga"></div>
+
   <section>
     <div class="hero-image" style="position: relative; width: 100%; height: auto;">
-      <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 500px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.1);">
-        <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
+      <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.4);">
+        <img src="/resources/img/dashboard-navbar/test.gif" alt="Logo" class="logo-img">
       </div>
     </div>
     <div class="section-divider"></div>
   </section>
 
   <!-- NAVBAR / ENCABEZADO -->
-  <nav  id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
+  <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
@@ -447,19 +446,19 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #C8A096;">Servicios</a>
+            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #000000;">Servicios</a>
           </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #C8A096;">Productos</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #C8A096;">Cursos</a>
+                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #000000;">Cursos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #C8A096;">Contacto</a>
+                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #000000;">Contacto</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #C8A096;">Iniciar sesión</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #000000;">Iniciar sesión</a>
               </li>
             </ul>
             <a href="/Login">
@@ -638,7 +637,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <div  class="row text-center text-md-left">
               <br><br><br>
                 <div class="col-md-4 text-center">
-                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="img-fluid">
+                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
                 <div class="col-md-4">
                     <h5>Dirección</h5>
