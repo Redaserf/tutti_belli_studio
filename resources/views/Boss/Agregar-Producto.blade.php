@@ -408,15 +408,11 @@ header {
                             <label for="AddProductPrice">Precio del producto</label>
                         </div>
                         <div class="form-floating mb-3">
-
                             <select class="form-control" id="inventarioSelect" placeholder="Servicio">
                                 <option value="" disabled selected>-- Inventario--</option>
-
                             </select>
-
                             <label for="selectInventario">Inventario al que corresponde</label>
                         </div>
-
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock">
                             <label for="AddInStock">Cantidad en stock</label>
@@ -497,6 +493,7 @@ $(document).ready(function(){
         formData.append('precio', $('#AddProductPrice').val());
         formData.append('cantidadEnStock', $('#AddInStock').val());
         formData.append('imagenProducto', $('#imagenProducto')[0].files[0]);
+        formData.append('descripcion', $('#AddProductDescription').val());
         formData.append('inventarioId', $('#inventarioSelect').val());
 
         $.ajax({
@@ -511,6 +508,7 @@ $(document).ready(function(){
                 $('#AddProductPrice').val('');
                 $('#AddInStock').val('');
                 $('#imagenProducto').val('');
+                $('#AddProductDescription').val('');
                 $('#inventarioSelect').val('');
             },
             error: function(error) {

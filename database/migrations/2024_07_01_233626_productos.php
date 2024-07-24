@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('precio');
             $table->integer('cantidadEnStock');
             $table->string('imagen');
-
+            $table->string('descripcion');
             $table->unsignedBigInteger('inventarioId');
             $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();

@@ -114,6 +114,8 @@ class RegistrosController extends Controller
             $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
         }
 
+        $producto->descripcion = $request->descripcion;
+
         $producto->inventarioId = $request->inventarioId;
         $producto->save();
 
