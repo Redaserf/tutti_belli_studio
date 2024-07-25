@@ -22,6 +22,16 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+#contenedor_carga {
+    background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
+    background-size: 20%;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+}
+
 .login-container {
     background-color: #fff;
     padding: 1rem;
@@ -101,6 +111,8 @@ a:hover {
 
 </head>
 <body>
+    <div id="contenedor_carga"></div>
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="login-container">
             <div class="logo">
@@ -131,7 +143,11 @@ a:hover {
 
     <script>
 
-
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    window.addEventListener('load', function() {
+        loader.style.display = "none";
+    });
 
     </script>
 

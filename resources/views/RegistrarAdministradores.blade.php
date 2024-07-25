@@ -389,13 +389,7 @@ $(document).ready(function(){
             },
             success: function(response) {
                 alert("Administrador agregado exitosamente");
-                $('#adminName').val('');
-                $('#adminLastname').val('');
-                $('#adminGender').val('');
-                $('#adminPhone').val('');
-                $('#adminBirthDate').val('');
-                $('#adminEmail').val('');
-                $('#adminPassword').val('');
+                window.location.href = '/Home-administrador';
             },
             error: function(error) {
                 alert('Ocurrió un error al agregar al administrador');
