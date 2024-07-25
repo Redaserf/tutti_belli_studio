@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutti Belli Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
@@ -442,25 +444,25 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   <div id="contenedor_carga"></div>
 
   <section>
-    <div class="hero-image" style="position: relative; width: 100%; height: auto;">
+    <div data-aos="fade-up" data-aos-duration="1000" class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
       <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.4);">
-        <img src="/resources/img/dashboard-navbar/test.gif" alt="Logo" class="logo-img">
+        <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
     </div>
-    <div class="section-divider"></div>
+    <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
   </section>
 
 <!-- NAVBAR / ENCABEZADO -->
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-  <div class="container-fluid">
+  <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
       <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div data-aos="fade-up" data-aos-duration="1000" class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
         <li class="nav-item">
           <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
@@ -498,12 +500,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <br>
       <!--INFORMACION-->
       <section id="--INFORMACION--">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 mb-4">
+        <div data-aos="fade-up" data-aos-duration="1000" class="container">
+          <div data-aos="fade-up" data-aos-duration="1000" class="row">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-6 mb-4">
               <img src="/resources/img/home/horariotutti.jpg" alt="Horarios" class="img-fluid img-horario">
             </div>
-            <div class="col-md-6">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-6">
               <h2 class="fonts3">Conoce tu centro de micropigmentación</h2>
               <p class="fonts3">Micropigmentación Arte, surge de la necesidad en la región de un centro que fusione todo lo que una persona busca para el cuidado de su imagen, en un ambiente cómodo y profesional, todo en un solo lugar desde el 2020.</p>
               <br>
@@ -520,22 +522,22 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <!-- SERVICIOS-->
       <section id="servicios"class="fonts3" >
         <p class="text-uppercase text-center" style="font-size: 50px;">Servicios</p>
-        <div class="container">
-            <div class="card">
+        <div data-aos="fade-up" data-aos-duration="1000" class="container">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/LABIOS_TARJETA.png" alt="labios">
                 <br>
                 <h3 class="fonts3">Labios</h3>
                 <p class="fonts3">En labios hacemos una pequeña limpieza para después anestesiarlos y aplicarles el color que gustes. Nuestro objetivo es dejarlos bellos y sensuales, realzando tu belleza natural con técnicas personalizadas y productos de alta calidad.</p>
             </div>
-            <div class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/OJOS_TARJETA.png" alt="Ojos">
                 <br>
                 <h3>Ojos</h3>
                 <p>En ojos manejamos diferentes tipos de delineado, haciendo que tu mirada resalte aún más. Ofrecemos opciones permanentes y semipermanentes, adaptándonos a tus preferencias para lograr el look que deseas de manera segura y precisa.</p>
             </div>
-            <div class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/CEJA_TARJETA.png" alt="Ceja">
                 <br>
@@ -543,7 +545,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 <h3>Cejas</h3>
                 <p>La ceja es el marco de tu rostro. Realzamos tus facciones con un diseño acorde a la forma de tu cara y la técnica que más te favorezca. Nuestro equipo se asegura de que tus cejas luzcan perfectas y armoniosas, complementando tu belleza natural.</p>
             </div>
-            <div class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/PESTAÑA_TARJETA.png" alt="Pestañas">
                 <br>
@@ -555,8 +557,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
       <!-- IMAGEN SEPARADORA -->
       <section class="image-section" class="fonts3">
-      <div class="section-divider"></div>
-        <div class="overlay">
+      <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
+        <div data-aos="fade-up" data-aos-duration="1000" class="overlay">
           <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Imagen separadora">
           <div class="dark-overlay"></div>
           <div class="overlay-text">
@@ -573,33 +575,33 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <!-- CURSOS -->
       <section id="cursos" class="fonts3">
         <p class="text-uppercase text-center" style="font-size: 50px;">Cursos</p>
-        <div class="container">
-          <div class="card-2" style="width: 18rem;">
-            <img src="/resources/img/home/imagenejemplo.jpeg" class="card-img-top" alt="...">
-            <div class="card-body">
+        <div data-aos="fade-up" data-aos-duration="1000" class="container">
+          <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+            <img src="/resources/img/home/img1g.jpg" class="card-img-top" alt="...">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
               <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
-          <div class="card-2" style="width: 18rem;">
-            <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
+          <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+            <img src="/resources/img/home/img4g.jpg" class="card-img-top" alt="...">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>
               <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
-          <div class="card-2" style="width: 18rem;">
-            <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
+          <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+            <img src="/resources/img/home/img3g.jpg" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>
               <a href="/Cursos-User" class="btn btn-dark">Conocer mas</a>
             </div>
           </div>
-          <div class="card-2" style="width: 18rem;">
-            <img src="/resources/img/home/imagenejemplo2.jpg" class="card-img-top" alt="...">
+          <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+            <img src="/resources/img/home/img2g.jpg" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
@@ -612,19 +614,19 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <!-- Galeria-->
       <section id="galeria" class="fonts3">
         <p class="text-uppercase text-center" style="font-size: 50px;">Galería</p>
-        <div class="container">
-          <div class="text-center row justify-content-center">
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imgg3.jpg" class="rounded img-galeria" alt="...">
+        <div data-aos="fade-up" data-aos-duration="1000" class="container">
+          <div data-aos="fade-up" data-aos-duration="1000" class="text-center row justify-content-center">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
+              <img src="/resources/img/home/img5g.jpg" class="rounded img-galeria" alt="...">
             </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
+              <img src="/resources/img/home/img6g.jpg" class="rounded img-galeria" alt="...">
             </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
+              <img src="/resources/img/home/img8g.jpg" class="rounded img-galeria" alt="...">
             </div>
-            <div class="col-md-3 mb-4">
-              <img src="/resources/img/home/imagenejemplo.jpeg" class="rounded img-galeria" alt="...">
+            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
+              <img src="/resources/img/home/img7g.jpg" class="rounded img-galeria" alt="...">
             </div>
           </div>
         </div>
@@ -634,12 +636,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       <!-- GOOGLE MAPS -->
       <section class="fonts3" class="Pink_background_for_services_section" style="padding: 0px;">
-      <div class="section-divider"></div>
-        <div class="row">
+      <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
+        <div data-aos="fade-up" data-aos-duration="1000" class="row">
           <img class="img-fluid" src="/resources/img/home/api.jpg" alt="">
         </div>
-        <div class="section-divider"></div>
-        <div class="row">
+        <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
+        <div data-aos="fade-up" data-aos-duration="1000" class="row">
           <p class="text-uppercase text-center" style="font-size: 50px; margin-top: 20px;">DONDE NOS UBICAMOS</p>
           <p class="text-uppercase text-center" style="font-size: 20px; margin-top: 30px;">Zafiro #67 Ex Hacienda La Joya 27086</p>
         </div>
@@ -698,9 +700,17 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     </footer>
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
       <script>
+        AOS.init({
+            offset: 200, // Desplazamiento desde el top de la página en px
+            delay: 0, // Tiempo de espera antes de la animación en ms
+            duration: 1000, // Duración de la animación en ms
+            easing: 'ease-in-out', // Función de tiempo para la animación
+            once: true, // Si la animación solo debería ocurrir una vez
+        });
 
           $(document).ready(function(){
 
