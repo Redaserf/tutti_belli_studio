@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -345,6 +345,48 @@ header {
             color: #ffffff; /* Color del texto del grupo de botones */
         }
         /*esto es para personalizar el calendario*/
+
+
+
+
+        /* Alerta bonita */
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
     </style>
 
 </head>
@@ -501,6 +543,27 @@ header {
                 </div>
             </section>
 
+            <!-- alerta -->
+
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="info-fill" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
+
+            <div class="custom-alert alert alert-dismissible fade" role="alert">
+                <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+                <div id="alertaTexto">Texto de la alerta</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -524,15 +587,59 @@ header {
     
     $(document).ready(function(){
 
+        function mostrarAlerta(text, alertClass, iconId) {
+                $("#alertaTexto").text(text);
+                $(".custom-alert")
+                    .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+                    .addClass(`show ${alertClass}`)
+                    .fadeIn();
+                $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+                setTimeout(function() {
+                    $(".custom-alert")
+                        .removeClass("show")
+                        .addClass("hide")
+                        .fadeOut();
+                }, 6000);
+            }
+
+         // Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la pagina
+            const alertMessage = localStorage.getItem('alertMessage');
+            const alertClass = localStorage.getItem('alertClass');
+            const alertIcon = localStorage.getItem('alertIcon');
+
+            if (alertMessage) {
+                mostrarAlerta(alertMessage, alertClass, alertIcon);
+
+                // Limpiar el mensaje de alerta después de mostrarlo
+                localStorage.removeItem('alertMessage');
+                localStorage.removeItem('alertClass');
+                localStorage.removeItem('alertIcon');
+            }
+            //alertas
+
         
 
             $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
                 dateFormat: 'yy-mm-dd',
                 minDate: 0, // No permite seleccionar fechas anteriores a hoy
                 maxDate: "+3M -1D",//permite hacer citas a de hoy a un mes y diez dias
-                regional: "es",
+                regional: "es",// no agarra el español
                 onSelect: function(dateText) {
-                    actualizarOpcionesSelect(new Date(dateText));
+
+                    console.log(dateText)
+// separa la fecha de dateText ya que si da la fecha bien pero al ponerla asi actualizarOpciones(new Date(dateText)) muestra una fecha anterior
+                    var partes = dateText.split('-');
+                    var anio = parseInt(partes[0], 10);
+                    var mes = parseInt(partes[1], 10) - 1; 
+                    var dia = parseInt(partes[2], 10);
+                    
+                 
+                    var fechaSeleccionada = new Date(anio, mes, dia);
+
+                    console.log('Fecha seleccionada:', fechaSeleccionada);
+
+                    actualizarOpcionesSelect(fechaSeleccionada);
+
                     let select = $('#horaCita');
                     select.show();
                 //     var selectedDate = new Date(dateText);
@@ -558,11 +665,34 @@ header {
             });
 
         function actualizarOpcionesSelect(date) {
-            let dia = date.getDay();
-            let select = $('#horaCita');
+                let dia = date.getDay();
+                console.log('fecha seleccionada: ',date);
+                console.log('Hoy: ', new Date());
+                let select = $('#horaCita');
 
-            select.empty();
+                select.empty();
 
+                if(date.getDay() === new Date().getDay()) {// si el dia es hoy
+                    
+                let horaInicio;
+                let horaFin;
+                if(dia>=0 && dia<=4){// lunes a viernes
+                    horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
+                    console.log('hora Actual mas dos horas: ', horaInicio);
+                    horaFin = 21;
+                }else if(dia === 5 || dia === 6){//sabados y domingos
+                    horaInicio = new Date().getHours() + 2;
+                    console.log(horaInicio);
+                    horaFin = 16;
+                }
+
+                for (let hora = horaInicio; hora < horaFin; hora++) {
+                    const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
+                    console.log(valorTiempo);
+                    select.append(new Option(valorTiempo, valorTiempo));
+                }
+
+            }
 
 
             let horaInicio;
@@ -585,7 +715,13 @@ header {
 
         // verificar fechas y horas ya seleccionadas
 
+        //para que el fullcalendar se vaya actualizando  y no pueda hacer citas que no sean despues de dos horas de la hora actual muajaj
 
+        let fechaAhora = new Date();
+        let dosHorasDespues = new Date(fechaAhora.getTime() + 2 * 60 * 60 *1000);
+        console.log('Fecha con dos horas despues: ', dosHorasDespues);
+        let fechaInicio2horas = dosHorasDespues.toISOString().split('T')[0];
+        console.log('dos horas despues: ',fechaInicio2horas);
 
 
 
@@ -603,7 +739,7 @@ header {
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
             validRange: {
-                start: new Date().toISOString().split('T')[0],
+                start: fechaInicio2horas,
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
             events: @json($events),//variable de eventos que agarra el arreglo events de el controlador
@@ -668,6 +804,10 @@ header {
 
 
                 var fechaHora = info.date;
+                console.log('fecha y hora: ', fechaHora);
+
+                
+
 
                 // Obtener la fecha (YYYY-MM-DD)
                 var anio = fechaHora.getFullYear();
@@ -680,6 +820,21 @@ header {
                 var minutos = String(fechaHora.getMinutes()).padStart(2, '0');
                 var segundos = String(fechaHora.getSeconds()).padStart(2, '0');
                 var tiempoFormatoDeseado = `${hora}:${minutos}:${segundos}`;
+
+                // Fecha actual en formato (YYYY-MM-DD)
+                var anioActual = new Date().getFullYear();
+                var mesActual = String(new Date().getMonth() + 1).padStart(2, '0');
+                var diaActual = String(new Date().getDate()).padStart(2, '0');
+                var fechaActualJA = `${anioActual}-${mesActual}-${diaActual}`;
+
+                if(fechaFormatoDeseado === fechaActualJA) {
+
+                    if (fechaHora.getHours() < dosHorasDespues.getHours()) {
+                        mostrarAlerta('Las citas solo se pueden hacer con al menos 2 horas de anticipación.', "alert-primary", "info-fill");
+                        return;
+                    }
+
+                }
 
                 console.log('Fecha:', fechaFormatoDeseado);
                 console.log('Hora:', tiempoFormatoDeseado);
@@ -709,8 +864,15 @@ header {
                 },
                 method: 'DELETE',
                 success: function(response){
-                    alert('se elimino con exito');
-                    window.location.href = '/Ver-Citas';
+                     // Guardar el mensaje de alerta en localStorage
+                    localStorage.setItem('alertMessage', 'Se eliminó con éxito');
+                    localStorage.setItem('alertClass', 'alert-danger');
+                    localStorage.setItem('alertIcon', 'exclamation-triangle-fill');
+                    
+                    // Redirigir después de un breve retraso para asegurarse de que la alerta se muestre
+                    setTimeout(function() {
+                        window.location.href = '/Ver-Citas';
+                    }, 8000); 
                 },
                 error: function(error) {
                     console.log(error);
@@ -727,7 +889,7 @@ header {
             
             $.get(`/cita/servicios/tecnica/${id}`, function(citasServicios) {
 
-                console.log('Datos recibidos:', citasServicios); // Añadir un registro de depuración
+                console.log('Datos recibidos:', citasServicios); 
                 console.log(`Id de la cita: `, citasServicios.cita.id);
 
                 
@@ -823,9 +985,6 @@ header {
             })//Fin de dibujar servicios y sus tecnicas pipipi
             console.log($('.multiselect-option'));
 
-
-
-
             //Dibujar usuarios
             $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
                 let selectUsuarios = $('#usuarioId');
@@ -855,7 +1014,7 @@ header {
 
 
 
-            //registrar cita en la base de datos
+        //registrar cita en la base de datos
 
         $('#citaForm').on('submit', function(e) {
             e.preventDefault();
@@ -899,38 +1058,55 @@ header {
                 success: function(response) {
                     console.log(response);
                     limpiarFormulario();                    
+                    let alertMessage = '';
+                    let alertClass = '';
+                    let alertIcon = '';
+
                     if(response.message === 'Cita creada con éxito'){
-
-                        alert('cita creada con exito');
-
-                    }else if(response.message === 'Cita actualizada con éxito'){
-                        alert('Se edito correctamente');
+                        alertMessage = 'cita creada con exito';
+                        alertClass = "alert-success";
+                        alertIcon = "check-circle-fill";
+                    } else if(response.message === 'Cita actualizada con éxito'){
+                        alertMessage = 'Se edito correctamente';
+                        alertClass = "alert-success";
+                        alertIcon = "check-circle-fill";
                     }
+                    if (alertMessage) {
+                        localStorage.setItem('alertMessage', alertMessage);
+                        localStorage.setItem('alertClass', alertClass);
+                        localStorage.setItem('alertIcon', alertIcon);
+                    }
+
                     window.location.href = '/Ver-Citas';
                 },
                 error: function(xhr) {
-                    console.log(xhr);
-                    var response = xhr.responseJSON;
-                    if (response && response.message) {
-                        // Verificar si el mensaje de error es el específico para selección de servicios
-                        if (response.message === 'Debe seleccionar al menos un servicio') {
-                            alert('Por favor, seleccione al menos un servicio.');
-                        }else if(response.message == 'Ya existe una cita para esta fecha y hora'){
-                            alert('Ya existe una cita para esta fecha y hora');
-                        }else if(response.message === 'Error al actualizar la cita'){
-                            alert('Error al actualizar la cita');
-                        }
-                         else {
-                            // Mostrar un mensaje de error genérico para otros mensajes
-                            alert('Por favor, complete todos los campos correctamente.');
-                        }
-                    } else {
-                        // Mostrar un mensaje de error genérico si no hay mensaje específico
-                        alert('Se ha producido un error en la solicitud.');
-                    }
-                }
-            });
+                        console.log(xhr);
+                        var response = xhr.responseJSON;
+                        let alertMessage = '';
+                        let alertClass = 'alert-danger'; // clase predeterminada para errores
+                        let alertIcon = 'exclamation-triangle-fill'; //icono de danger
 
+                        if (response && response.message) {
+                            if (response.message === 'Debe seleccionar al menos un servicio') {
+                                alertMessage = 'Por favor, seleccione al menos un servicio.';
+                                alertClass = 'alert-warning'; // Cambia a advertencia
+                                alertIcon = 'exclamation-triangle-fill'; 
+                            } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
+                                alertMessage = 'Ya existe una cita para esta fecha y hora.';
+                                alertClass = 'alert-warning'; // Cambia a advertencia
+                                alertIcon = 'exclamation-triangle-fill'; 
+                            } else {
+                                alertMessage = 'Por favor, complete todos los campos correctamente.';
+                            }
+                        } else {
+                            alertMessage = 'Se ha producido un error en la solicitud.';
+                        }
+
+                        if (alertMessage) {
+                            mostrarAlerta(alertMessage, alertClass, alertIcon);
+                        }
+                    }
+            });
         });
 
         console.log('Valor del input serviciosSeleccionados:', $('#serviciosSeleccionados').val());

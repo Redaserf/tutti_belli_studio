@@ -39,19 +39,25 @@ class ConsultasController extends Controller
         return response()->json($usuarios);
     }
 
-    public function usuariosConRolUsuario()//se trae los usuarios que tengan el rol de usuario
+    public function usuariosConRolUsuario() // se trae los usuarios que tengan el rol de Usuario y Guest
     {
-            $usuarios = User::whereHas('roles', function ($query) {
-                $query->where('nombre', 'usuario');
-            })->get();
-
-            return response()->json($usuarios);
+        $usuarios = User::whereHas('roles', function ($query) {
+            $query->whereIn('nombre', ['Usuario', 'Guest']);
+        })
+        ->with('roles') 
+        ->get()
+        ->sortBy(function ($user) {
+            // ordenar por rol: "Guest" primero y luego "Usuario"
+            return $user->roles->first()->nombre === 'Guest' ? 0 : 1;
+        });
+    
+        return response()->json($usuarios);
     }
 
     public function usuariosConRolEmpleado()//se trae los usuarios que tengan el rol de empleado
     {
             $usuarios = User::whereHas('roles', function ($query) {
-                $query->where('nombre', 'empleado');
+                $query->where('nombre', 'Empleado');
             })->get();
 
             return response()->json($usuarios);
