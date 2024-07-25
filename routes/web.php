@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\ConsultasController;
 // ==========[ Vistas ]==========
 
 Route::get('/', function () {
-    return view('Roles');
+    return view('Guest.Home-Guest');
 });
 
 
@@ -88,7 +89,7 @@ Route::get('/Cursos-User', [ViewsController::class, 'userCursos']);
 Route::get('/Perfil-User', [ViewsController::class, 'userPerfil']);
 Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
 Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
-Route::get('/Producto', [ViewsController::class, 'Producto']);
+Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
 
 
 // =====[ Employee ]=====
@@ -171,6 +172,8 @@ Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']
 Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
 Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
 
+
+
 // ==========[ Cosas de Hugo ]==========
 
 
@@ -212,3 +215,9 @@ Route::get('/get/inventarios',[InventarioController::class,'index']);
 // ===== [Tecnicas] =====
 Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
+Route::get('/get/tecnicas/{servicioId}', [TecnicaController::class, 'show']);
+
+// ===== [Descuentos] =====
+Route::post('/GuardarDescuentos', [DescuentoController::class, 'aplicarDescuento']);
+
+

@@ -80,4 +80,11 @@ class User extends Authenticatable
     public function inscripciones(){
         return $this->hasOne(Inscripcion::class,'usuarioId');
     }
+
+    public function carrito()
+    {
+        return $this->hasOne(Carrito::class,'usuarioId');
+    }
+
+
 }

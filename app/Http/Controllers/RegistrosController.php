@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\Descuento;
 use App\Models\Producto;
 use App\Models\Servicio;
 use App\Models\Tecnica;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cita;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +36,7 @@ class RegistrosController extends Controller
         $administrador->numeroTelefono  = $request->numeroTelefono;
         $administrador->rolId = $request->rolId;
         $administrador->save();
-
+        Auth::login($administrador);
     }
 
 
@@ -99,13 +101,31 @@ class RegistrosController extends Controller
 
     function RegistroProducto(Request $request)
     {
+//        $imagenPath = $request->file('imagenProducto')->store('imagenProducto', 'public');
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric',
+            'cantidadEnStock' => 'required|integer',
+            'imagenProducto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'inventarioId' => 'required|integer'
+        ]);
+
         $producto = new Producto();
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->cantidadEnStock = $request->cantidadEnStock;
+
+        if ($request->hasFile('imagenProducto')) {
+            $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+        }
+
+        $producto->descripcion = $request->descripcion;
+
         $producto->inventarioId = $request->inventarioId;
         $producto->save();
 
+        return response()->json(['success' => 'Producto agregado exitosamente']);
     }
 
     public function RegistroCita(Request $request) {
@@ -264,6 +284,18 @@ class RegistrosController extends Controller
 //
 //        return redirect('/Ver-Empleados');
 //    }
+
+    function RegistroDescuentoTecnica(Request $request)
+    {
+        $descuento = new Descuento();
+        $descuento->cantidadDescuento = $request->cantidadDescuento;
+        $descuento->save();
+
+        //regresa el id del desuento que se acaba de crear para mandarlo en el ajax
+        // que se encuentra en Desucento-tecnica
+        return response()->json(['descuentoId' => $descuento->id]);
+
+    }
 
 
 }

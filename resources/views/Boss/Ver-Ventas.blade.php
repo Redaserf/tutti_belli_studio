@@ -37,7 +37,7 @@ ul{
 }
 
 #contenedor_carga {
-    background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+    background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
     background-size: 20%;
     height: 100vh;
     width: 100%;
@@ -243,10 +243,6 @@ header {
                     margin: 100px;
                     box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
                     border-radius: 20px;
-                }
-
-                body{
-                    overflow-y: hidden;
                 }
 
                 .citas{

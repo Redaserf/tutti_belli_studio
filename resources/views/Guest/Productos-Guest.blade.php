@@ -55,7 +55,7 @@ body, html {
     </style>
 </head>
 <body class="hiddenX">
-
+  <div id="contenedor_carga"></div>
 
   <!-- NAVBAR / ENCABEZADO -->
   <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
@@ -116,13 +116,13 @@ $(document).ready(function(){
 });
 
 
-// Pantalla de carga
-var loader = document.getElementById("contenedor_carga");
-var navbar = document.getElementById("navbar");
-window.addEventListener('load', function(){
-    $('#navbar').css('visibility', 'visible');
-    loader.style.display = "none";
-})
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    var navbar = document.getElementById("navbar");
+    window.addEventListener('load', function(){
+        $('#navbar').css('visibility', 'visible');
+        loader.style.display = "none";
+    });
 
 </script>
 </body>
