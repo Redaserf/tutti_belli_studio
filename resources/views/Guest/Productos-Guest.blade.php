@@ -43,13 +43,90 @@ body, html {
         z-index: 100;
     }
 
-    #navbar{
+/* Aquí tus estilos */
+
+.fonts3{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+
+#navbar{
   font-family: "Josefin Sans", sans-serif !important;  
 }
 
+label{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+p{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+input{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+button{
+  font-family: "Josefin Sans", sans-serif !important;
+}
 
-/* Aquí tus estilos */
+h1, h2, h3{
+  font-family: "Josefin Sans", sans-serif !important;
+}
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Ubuntu';
+    margin: 0 auto;
+  }
+
+  .product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.product-card {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    text-align: center;
+}
+
+.product-image {
+  border-radius: 20px;
+    width: 50%;
+    height: 200px; /* Ajusta esta altura según tus necesidades */
+    object-fit:contain; /* Mantiene la proporción de la imagen y recorta si es necesario */
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-title {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+}
+
+.product-description {
+    font-size: 1em;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.product-price {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+}
 
 
     </style>
@@ -69,16 +146,16 @@ body, html {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #000000;">Servicios</a>
+            <a class="nav-link active texto1" aria-current="page" href="/Home-guest#servicios" style="color: #000000;">Servicios</a>
           </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #000000;">Cursos</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#cursos" style="color: #000000;">Cursos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #000000;">Contacto</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#contacto" style="color: #000000;">Contacto</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #000000;">Iniciar sesión</a>
@@ -91,17 +168,14 @@ body, html {
         </div>
       </nav>
 
+      <br><br><br><br><br><br>
 
 
+      <div id="productos" class="product-container">
 
+      </div>
 
-
-    {{-- Aquí tu código papi --}}
-
-
-
-
-
+      <br><br><br>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -109,20 +183,54 @@ body, html {
 
 <script>
 
+  // Dibujar productos
+
+  function dibujarProductos() {
+          $.ajax({
+        url: '/get/productos',
+        method: 'GET',
+        success: function(data) {
+          const productos = $('#productos');
+          productos.empty();
+          data.forEach(producto => {
+                const card = `
+                <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                        </div>
+                        <a href="/Login">
+                          <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-success">Agregar al carrito</button>
+                          </a>
+                          </div>
+                          `;
+                          productos.append(card);
+                        });
+                      }
+                    });
+                  }
+
+                  // Pantalla de carga
+                  var loader = document.getElementById("contenedor_carga");
+                  var navbar = document.getElementById("navbar");
+                  window.addEventListener('load', function(){
+                      $('#navbar').css('visibility', 'visible');
+                      loader.style.display = "none";
+                  });
+
+
 $(document).ready(function(){
 
-    // Scripts aquí
+  dibujarProductos();
 
+
+  
+  // Fin document.ready
 });
 
 
-    // Pantalla de carga
-    var loader = document.getElementById("contenedor_carga");
-    var navbar = document.getElementById("navbar");
-    window.addEventListener('load', function(){
-        $('#navbar').css('visibility', 'visible');
-        loader.style.display = "none";
-    });
 
 </script>
 </body>

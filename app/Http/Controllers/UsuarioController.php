@@ -64,18 +64,4 @@ class UsuarioController extends Controller
     }
 
 
-
-// ==========[ obtener todos los empleados en json ]==========
-    function employeeIndex(){
-        $empleados = User::where('rolId', 3)->get();
-        return response()->json($empleados);
-    }
-
-// ==========[ eliminar un empleado ]==========
-    function employeeDelete($id){
-        User::findOrFail($id)->delete();
-        return response()->json(null, 204);
-    }
-
-
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Carrito extends Model
 {
+    use HasFactory;
+
     protected $table = 'carritos';
     protected $primaryKey = 'id';
 
@@ -15,14 +17,14 @@ class Carrito extends Model
         'usuarioId'
     ];
 
-    use HasFactory;
-
     function usuario(){
         return $this->belongsTo(User::class, 'usuarioId');
     }
 
-    public function carritoHasProducto(){
-        return $this->hasMany(CarritoHasProducto::class, 'carritoId');
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'carrito_has_productos', 'carritoId', 'productoId')
+                    ->withTimestamps();
     }
 
 }

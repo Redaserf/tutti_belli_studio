@@ -12,13 +12,13 @@ use App\Http\Controllers\ViewsController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConsultasController;
-
+use App\Http\Controllers\DibujarController;
 
 // ==========[ Vistas ]==========
 
-Route::get('/', function () {
-    return view('Guest.Home-Guest');
-});
+    Route::get('/', function () {
+        return view('Guest.Home-Guest');
+    });
 
 
     Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
@@ -74,25 +74,26 @@ Route::get('/admin', function () {
 Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
 
 
-// =====[ Guest ]=====
 
-Route::get('/Home-guest',[ViewsController::class,'guestHome']);
-Route::get('/Login',[ViewsController::class,'LoginVista']);
-Route::get('/Registro',[ViewsController::class,'RegistroVista']);
-Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
+    // =====[ Guest ]=====
 
-
-// =====[ User ]=====
-
-Route::get('/Home-usuario', [ViewsController::class, 'userHome']);
-Route::get('/Cursos-User', [ViewsController::class, 'userCursos']);
-Route::get('/Perfil-User', [ViewsController::class, 'userPerfil']);
-Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
-Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
-Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
+    Route::get('/Home-guest',[ViewsController::class,'guestHome']);
+    Route::get('/Login',[ViewsController::class,'LoginVista']);
+    Route::get('/Registro',[ViewsController::class,'RegistroVista']);
+    Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
 
 
-// =====[ Employee ]=====
+    // =====[ User ]=====
+
+    Route::get('/Home-usuario', [ViewsController::class, 'userHome']);
+    Route::get('/Cursos-User', [ViewsController::class, 'userCursos']);
+    Route::get('/Perfil-User', [ViewsController::class, 'userPerfil']);
+    Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
+    Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
+    Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
+
+
+    // =====[ Employee ]=====
 
     Route::get('/Home-administrador', [ViewsController::class, 'bossHome']);
     Route::get('/Agregar-cita', [ViewsController::class, 'bossAgregarCita']);
@@ -121,7 +122,8 @@ Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
 Route::get('/Ver-Productos-Empleado', [ViewsController::class, 'employeeVerProductos']);
 
 
-// =====[ Boss ]=====
+
+    // =====[ Boss ]=====
 
 Route::get('/Home-administrador', [ViewsController::class, 'bossHome']);
 Route::get('/Agregar-cita', [ViewsController::class, 'bossAgregarCita']);
@@ -147,30 +149,51 @@ Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
 
 
 
+
 // ==========[ Login y Registros ]==========
 
 
-// =====[ Usuarios ]=====
+    // =====[ Usuarios ]=====
 
-Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
-Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
-Route::get('/Logout',[UsuarioController::class, 'Logout']);
+    Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
+    Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
+    Route::get('/Logout',[UsuarioController::class, 'Logout']);
 
-// =====[ Empleados ]=====
+    // =====[ Empleados ]=====
 
-Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
-Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
-Route::get('/empleado/eliminar/{id}',[UsuarioController::class,'employeeDelete']);
+    Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
 
-// =====[ Agregar (Administrador) ]=====
+    // =====[ Agregar (Administrador) ]=====
 
-Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
-Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
-Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
-Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
-Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
-Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
-Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
+    Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
+    Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
+    Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
+    Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
+    Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
+    Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
+    Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
+
+
+
+
+// ==========[ Dibujar datos ]==========
+
+
+    // =====[ Productos ]=====
+
+        // ===[ Usuario y guest ]===
+        Route::get('/get/productos',[DibujarController::class,'productosIndex']);
+
+        // ===[ Carrito ]===
+        Route::post('/carrito/agregar', [DibujarController::class, 'carritoAgregar'])->middleware('auth');
+
+
+    // =====[ Empleados ]=====
+    
+    Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
+    Route::get('/empleado/eliminar/{id}',[UsuarioController::class,'employeeDelete']);
+
+
 
 
 
