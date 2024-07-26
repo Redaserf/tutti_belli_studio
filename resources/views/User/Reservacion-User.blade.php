@@ -172,66 +172,14 @@ button{
 <br>
 
 
+
+
     <div class="container">
       <div class="row">
           <div class="col-md-6">
-              <div class="accordion" id="serviceAccordion">
-                  <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                              Micropigmentacion
-                          </button>
-                      </h2>
-                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#serviceAccordion">
-                          <div class="accordion-body">
-                              <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="1" id="technique1">
-                                  <label class="form-check-label" for="technique1">
-                                      Técnica 1
-                                  </label>
-                                  <p>Info de técnica 1</p>
-                                  <p>Precio: $100</p>
-                              </div>
-                              <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="2" id="technique2">
-                                  <label class="form-check-label" for="technique2">
-                                      Técnica 2
-                                  </label>
-                                  <p>Info de técnica 2</p>
-                                  <p>Precio: $200</p>
-                              </div>
-                              <!-- Agregar más técnicas según sea necesario -->
-                          </div>
-                      </div>
-                  </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Pestañas
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#serviceAccordion">
-                        <div class="accordion-body">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="3" id="technique3">
-                                <label class="form-check-label" for="technique3">
-                                    Técnica 3
-                                </label>
-                                <p>Info de técnica 3</p>
-                                <p>Precio: $150</p>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="4" id="technique4">
-                                <label class="form-check-label" for="technique4">
-                                    Técnica 4
-                                </label>
-                                <p>Info de técnica 4</p>
-                                <p>Precio: $250</p>
-                            </div>
-                            <!-- Agregar más técnicas según sea necesario -->
-                        </div>
-                    </div>
-                </div>
+          <div class="accordion" id="acordionCitas">
+               
+            </div><!-- fin del accordion -->
                 <!-- Añadir más servicios según sea necesario -->
               </div>
             </div>
@@ -322,6 +270,51 @@ button{
 <script>
 
 $(document).ready(function(){
+
+
+    $.get('/servicios/tecnicas', function(serviciosTecnicas) {
+        console.log(serviciosTecnicas);
+        let acordion = $('#acordionCitas');
+        acordion.empty();
+
+
+        serviciosTecnicas.forEach(servicio => {
+            acordion.append(`
+            
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${servicio.id}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                        ${servicio.nombre}
+                    </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapse${servicio.id}" class="accordion-collapse collapse show">
+                        <div class="accordion-body" id="acordion${servicio.id}">
+
+
+                        </div>
+                    </div>
+                </div>
+            
+            `)
+            let acordionDibujarTecnica = $(`#acordion${servicio.id}`);
+            
+            servicio.tecnicas.forEach(tecnica => {
+                acordionDibujarTecnica.append(`
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="${tecnica.id}" id="checkBox${tecnica.id}">
+                        <label class="form-check-label" for="checkBox${tecnica.id}" id="tecnicaLabel${tecnica.id}" style="width: 100%">
+                            ${tecnica.nombre};
+                        <p>${tecnica.descripcion}</p>
+                        <p id="precio${tecnica.id}">Precio: $${tecnica.precio}</p>
+                        </label>
+                    </div>
+                `)
+            })
+        })
+    })
+
+
+    //dibujar servicios y sus tecnicas con
 
     function separadorHidden(){
   var cuentaLi = document.getElementById("cuenta");
