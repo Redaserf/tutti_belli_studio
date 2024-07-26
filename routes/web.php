@@ -21,10 +21,58 @@ use App\Http\Controllers\DibujarController;
     });
 
 
-    Route::get('/admin', function () {
-        return view('RegistrarAdministradores');
-    });
-    Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
+    Route::get('/pruebita', [ConsultasController::class, 'vistaPrueba']);
+
+    // ===== [Consultas] =====
+
+    //Consulta para traer los usuarios con sus roles
+    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
+
+    //servicios con sus tecnicas
+
+    Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
+
+    //usuarios con el rol de "usuario"
+    Route::get('/usuarios/rol/usuario', [ConsultasController::class, 'usuariosConRolUsuario']);
+
+    //usuarios con el rol empleado
+    Route::get('/usuarios/rol/empleado', [ConsultasController::class, 'usuariosConRolEmpleado']);
+
+    //citas acceptadas
+
+    Route::get('/citas/aceptadas', [ConsultasController::class, 'citasAceptadas']);
+
+    //Citas con sus servicios y tecnicas
+    Route::get('/citas/servicios/tecnicas', [ConsultasController::class, 'serviciosTecnicasCitas']);
+
+    //Una cita con sus servicios y tecnicas
+    Route::get('/cita/servicios/tecnica/{id}', [ConsultasController::class, 'unaCitaConServiciosTecnica']);
+
+
+    //verifica disponibilidad de fechas y horas
+    Route::get('/citas/verificar', [ConsultasController::class, 'verificarDisponibilidad']);
+
+
+
+    // ===== [Sevicios] =====
+    //devuelve servicio como Json
+    Route::get('/get/servicios',[ServicioController::class,'index']);
+
+    // ===== [Inventario] =====
+    //devulve inventario como Json
+    Route::get('/get/inventarios',[InventarioController::class,'index']);
+
+    // =====[ Guest ]=====
+
+    Route::get('/Home-guest',[ViewsController::class,'guestHome']);
+    Route::get('/Login',[ViewsController::class,'LoginVista']);
+    Route::get('/Registro',[ViewsController::class,'RegistroVista']);
+    Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
+Route::get('/admin', function () {
+    return view('RegistrarAdministradores');
+});
+Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
+
 
 
     // =====[ Guest ]=====
@@ -47,14 +95,6 @@ use App\Http\Controllers\DibujarController;
 
     // =====[ Employee ]=====
 
-    Route::get('/Home-empleado', [ViewsController::class, 'employeeHome']);
-    Route::get('/Agregar-Cita-Empleado', [ViewsController::class, 'employeeAgregarCita']);
-    Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
-    Route::get('/Ver-Productos-Empleado', [ViewsController::class, 'employeeVerProductos']);
-
-
-    // =====[ Boss ]=====
-
     Route::get('/Home-administrador', [ViewsController::class, 'bossHome']);
     Route::get('/Agregar-cita', [ViewsController::class, 'bossAgregarCita']);
     Route::get('/Agregar-Curso', [ViewsController::class, 'bossAgregarCurso']);
@@ -68,10 +108,45 @@ use App\Http\Controllers\DibujarController;
     Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
     Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
     Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
-    Route::get('/Ver-Citas', [ViewsController::class, 'bossVerCitas']);
+    
+    
+    Route::get('/Ver-Citas', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('verCitas');
+    
+    
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
+Route::get('/Home-empleado', [ViewsController::class, 'employeeHome']);
+Route::get('/Agregar-Cita-Empleado', [ViewsController::class, 'employeeAgregarCita']);
+Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
+Route::get('/Ver-Productos-Empleado', [ViewsController::class, 'employeeVerProductos']);
+
+
+
+    // =====[ Boss ]=====
+
+Route::get('/Home-administrador', [ViewsController::class, 'bossHome']);
+Route::get('/Agregar-cita', [ViewsController::class, 'bossAgregarCita']);
+Route::get('/Agregar-Curso', [ViewsController::class, 'bossAgregarCurso']);
+Route::get('/Agregar-Descuento-Producto', [ViewsController::class, 'bossAgregarDescuentoProducto']);
+Route::get('/Agregar-Descuento-Tecnica', [ViewsController::class, 'bossAgregarDescuentoTecnica']);
+Route::get('/Agregar-Empleado', [ViewsController::class, 'bossAgregarEmpleado']);
+Route::get('/Agregar-Producto', [ViewsController::class, 'bossAgregarProducto']);
+Route::get('/Agregar-Servicio', [ViewsController::class, 'bossAgregarServicio']);
+Route::get('/Agregar-Tecnica', [ViewsController::class, 'bossAgregarTecnica']);
+Route::get('/Ver-Inventario', [ViewsController::class, 'bossVerInventario']);
+Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
+Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
+Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
+
+
+Route::get('/Ver-Citas', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('verCitas');
+
+
+Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
+Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
+Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
+
 
 
 
@@ -138,6 +213,20 @@ Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);
 
 Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecnicas']);// servicios con sus tecnicas
 
+    Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
+    Route::post('/RegistroCursoAdmin',[RegistrosController::class, 'RegistroCurso']);
+    Route::post('/RegistroDescuentoTecnica',[RegistrosController::class, 'RegistroDescuentoTecnica']);
+    Route::post('/RegistroDescuentoProducto',[RegistrosController::class, 'RegistroDescuentoProducto']);
+    Route::post('/RegistroProducto',[RegistrosController::class, 'RegistroProducto']);
+    Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
+    Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
+
+
+    //editar cita Administrador
+    Route::put('/editar/cita/{id}', [RegistrosController::class, 'editarCita']);
+
+    //eliminar cita Administradir
+    Route::delete('/eliminar/cita/{id}', [RegistrosController::class, 'eliminarCita']);
 // ===== [Sevicios] =====
 //devuelve servicio como Json
 Route::get('/get/servicios',[ServicioController::class,'index']);

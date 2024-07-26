@@ -1,63 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>Select as Checkbox with jQuery</title>
-  <style>
-    .multiselect-container {
-      display: flex;
-      flex-direction: column;
-    }
-    .multiselect-option {
-      cursor: pointer;
-      padding: 5px;
-    }
-    .multiselect-option:hover {
-      background-color: #f8f9fa;
-    }
-    .multiselect-option.selected {
-      background-color: #0d6efd;
-      color: white;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Fecha y Hora Personalizado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 1050;
+            animation-duration: 0.5s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+    </style>
 </head>
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+    </svg>
 
-<div class="container mt-4">
-  <form id="serviceForm">
-    <div class="mb-3">
-      <label for="services" class="form-label">Selecciona servicios:</label>
-      <div id="services" class="form-control multiselect-container">
-        <div class="multiselect-option" data-value="service1">Servicio 1</div>
-        <div class="multiselect-option" data-value="service2">Servicio 2</div>
-        <div class="multiselect-option" data-value="service3">Servicio 3</div>
-        <div class="multiselect-option" data-value="service4">Servicio 4</div>
-      </div>
+    <div class="container mt-5">
+        <button id="show-alert1" class="btn btn-primary">Mostrar Alerta Info</button>
+        <button id="show-alert2" class="btn btn-success">Mostrar Alerta Éxito</button>
+        <button id="show-alert3" class="btn btn-warning">Mostrar Alerta Advertencia</button>
+        <button id="show-alert4" class="btn btn-danger">Mostrar Alerta Peligro</button>
     </div>
-    <button type="submit" class="btn btn-primary">Reservar</button>
-  </form>
-</div>
 
-<script>
-  $(document).ready(function() {
-    $('.multiselect-option').on('click', function() {
-      $(this).toggleClass('selected');
-    });
+    <div class="custom-alert alert alert-dismissible fade" role="alert">
+        <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+        <div id="alert-text">Texto de la alerta</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
-    $('#serviceForm').on('submit', function(e) {
-      e.preventDefault();
-      const selectedServices = [];
-      $('.multiselect-option.selected').each(function() {
-        selectedServices.push($(this).data('value'));
-      });
-      console.log(selectedServices);
-      // Aquí puedes manejar los valores seleccionados, por ejemplo, enviarlos a un servidor
-    });
-  });
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            function showAlert(text, alertClass, iconId) {
+                $("#alert-text").text(text);
+                $(".custom-alert")
+                    .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+                    .addClass(`show ${alertClass}`)
+                    .fadeIn();
+                $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+                setTimeout(function() {
+                    $(".custom-alert")
+                        .removeClass("show")
+                        .addClass("hide")
+                        .fadeOut();
+                }, 5000);
+            }
 
+            $("#show-alert1").click(function() {
+                showAlert("Este es un mensaje de información.", "alert-primary", "info-fill");
+            });
+
+            $("#show-alert2").click(function() {
+                showAlert("Este es un mensaje de éxito.", "alert-success", "check-circle-fill");
+            });
+
+            $("#show-alert3").click(function() {
+                showAlert("Este es un mensaje de advertencia.", "alert-warning", "exclamation-triangle-fill");
+            });
+
+            $("#show-alert4").click(function() {
+                showAlert("Este es un mensaje de peligro.", "alert-danger", "exclamation-triangle-fill");
+            });
+        });
+    </script>
 </body>
 </html>

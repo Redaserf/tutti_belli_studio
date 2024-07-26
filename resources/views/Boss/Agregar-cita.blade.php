@@ -395,65 +395,60 @@
 <div class="home">
 
     
-    <form action="/RegistroCitaAdmin" method="POST">
-    @csrf   
-    <div class="col-12">
-        <div class="container container-div">
-            <div class="container full-height d-flex justify-content-center align-items-center">
-                <div class="row w-100">
-                    <div class="row">
-                        <h2>Crear Cita</h2>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-floating mb-3">
-                            <input name="date" type="date" class="form-control" id="appointmentDate" placeholder="Fecha de la cita" required>
-                            <label for="appointmentDate">Fecha de la cita</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input name="hour" type="time" class="form-control" id="appointmentTime" placeholder="Hora de la cita" required>
-                            <label for="appointmentTime">Hora de la cita</label>
-                        </div>
-                        <div >
-                            <div class='container'>
-                                <div id="service" class="form-control multiselect-container form-floating mb-3" required>
+
+  
+            <form action="/RegistroCitaAdmin" method="POST" id="citaForm">
+                @csrf   
+                <div class="col-12">
+                    <div class="container container-div">
+                        <div class="container full-height d-flex justify-content-center align-items-center">
+                            <div class="row w-100">
+                                <div class="col-md-12">
+
+                                            <input type="hidden" id='id'><!--id para saber si es editar o crear-->
+                                        <div class="form-floating mb-3">
+                                            <input type="date" class="form-control" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
+                                            <label for="appointmentDate">Fecha de la cita</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="time" class="form-control" id="horaCita" name='horaCita' placeholder="Hora de la cita" required>
+                                            <label for="appointmentTime">Hora de la cita</label>
+                                        </div>
+                                        <div >
+                                            <div class='container'>
+                                                <div id="service" class="form-control multiselect-container form-floating mb-3" required>
+                                                </div>
+                                            </div>
+                                            <!-- <label for="service">Servicio</label> -->
+                                            <input type="hidden" id="serviciosSeleccionados" name="serviciosSeleccionados">
+
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="usuarioId" id="usuarioId"></select>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="empleadoId" id="empleadoId"></select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="notasCita">Notas de la cita</label>
+                                            <textarea class="form-control" id="notasCita" name='notasCita' rows="7"  required></textarea>
+                                        </div>
+                                    
+                                        <button type="submit" href="/Ver-citas" class="btn btn-dark btn-block w-100">Confirmar</button>
                                 </div>
                             </div>
-                            <!-- <label for="service">Servicio</label> -->
-                        </div>
-                        
-                        <div class="form-floating mb-3">
-                            <input name="name" type="text" class="form-control" id="name" placeholder="Nombre" required>
-                            <label for="name">Nombre</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input name="email" type="email" class="form-control" id="email" placeholder="Correo electrónico" required>
-                            <label for="email">Correo electrónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input name="phone" type="tel" class="form-control" id="phone" placeholder="Número telefónico" required>
-                            <label for="phone">Número telefónico</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input name="age" type="number" class="form-control" id="age" placeholder="Edad" required>
-                            <label for="age">Edad</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select name="gender" class="form-control" id="gender" placeholder="Género" required>
-                                <option value="" disabled selected>-- Seleccione el género --</option>
-                                <option value="male">Masculino</option>
-                                <option value="female">Femenino</option>
-                            </select>
-                            <label for="gender">Género</label>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100">Crear Cita</button>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    </form>
+
+   
 
 
 </div>
@@ -466,77 +461,185 @@
 
 // Scripts para todas las vistas
 
-        // Pantalla de carga
-        var loader = document.getElementById("contenedor_carga");
-        var navbar = document.getElementById("navbar");
-        window.addEventListener('load', function(){
-            $('#navbar').css('visibility', 'visible');
-            loader.style.display = "none";
-        });
+    //     // Pantalla de carga
+    //     var loader = document.getElementById("contenedor_carga");
+    //     var navbar = document.getElementById("navbar");
+    //     window.addEventListener('load', function(){
+    //         $('#navbar').css('visibility', 'visible');
+    //         loader.style.display = "none";
+    //     });
 
-    $(document).ready(function(){
+    //     console.log()
+
+    // $(document).ready(function(){
+
+     
 
 
-        // function dibujarServiciosTecnicas(){
-            //dibujar los servicios y sus tecnicas despues de que el servicio es seleccionado desde la DB
+    //     // function dibujarServiciosTecnicas(){
+    //         //dibujar los servicios y sus tecnicas despues de que el servicio es seleccionado desde la DB
 
-                $.get('/servicios/tecnicas', function(servicios){//puedo traer las tecnicas con servicios.tecnicas.nombre ex
-                    console.log(servicios);
+    //             $.get('/servicios/tecnicas', function(servicios){//puedo traer las tecnicas con servicios.tecnicas.nombre ex
+    //                 console.log(servicios);
 
-                    let selectServiciosMul = $('#service');
-                    selectServiciosMul.empty();
+    //                 let selectServiciosMul = $('#service');
+    //                 selectServiciosMul.empty();
 
-                    servicios.forEach(servicio => {
-                        console.log(servicio.tecnicas);//si lo manda
-                        selectServiciosMul.append(`
-                            <div class="multiselect-option" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
-                            <select id="tecnicaSelect${servicio.id}" style="display: none" required></select>
-                    `)
-                    servicio.tecnicas.forEach( tecnica => {
-                        $(`#tecnicaSelect${servicio.id}`).append(`
-                        <option value='${tecnica.id}'>-- ${tecnica.nombre} -- ${tecnica.precio}</option>
-                    `)
-                    })
+    //                 servicios.forEach(servicio => {
+    //                     console.log(servicio.tecnicas);//si lo manda
+    //                     selectServiciosMul.append(`
+
+    //                         <div class="multiselect-option form-control" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
+
+    //                         <div class="form-floating mb-3">
+    //                             <select class="form-control" id="tecnicaSelect${servicio.id}" style="display:none" required></select>
+    //                         </div>
+
+    //                 `)
+    //                 servicio.tecnicas.forEach( tecnica => {
+    //                     $(`#tecnicaSelect${servicio.id}`).append(`
+    //                     <option value='${tecnica.id}'>-- ${tecnica.nombre} -- ${tecnica.precio}</option>
+    //                 `)
+    //                 })
                 
-                })
-                //despliega el select de cada servicio cuando lo seleccionan
-                $('#service').on('click', '.multiselect-option', function() {
-                    $(this).toggleClass('selected');
-                    console.log($(this));
-                    let selectId = $(this).data('select-id');
-                    $(`#tecnicaSelect${selectId}`).toggle();
-                    console.log($(this));
-               });
+    //             })
+    //             //despliega el select de cada servicio cuando lo seleccionan
+    //             $('#service').on('click', '.multiselect-option', function() {
+    //                 $(this).toggleClass('selected');
+    //                 console.log($(this));
+
+
+    //                 let selectId = $(this).data('select-id');
+    //                 $(`#tecnicaSelect${selectId}`).toggle();
+    //                 console.log($(this));
+    //            });
+
                
-            })
-         
+               
+    //         })//Fin de dibujar servicios y sus tecnicas pipipi
+    //         console.log($('.multiselect-option'));
+
+
+
+
+    //         //Dibujar usuarios
+    //         $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
+    //             let selectUsuarios = $('#usuarioId');
+    //             selectUsuarios.empty();
+
+    //             usersRolUsuario.forEach(usuario => {
+    //                 selectUsuarios.append(`
+    //                     <option class="text-center" value="${usuario.id}">Cliente: ${usuario.name + " " +usuario.apellido}</option>
+    //                 `)
+    //                 console.log(usersRolUsuario);
+    //             })
+    //         })
+
+    //         //Dibujar empleados
+    //         $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
+    //             let selectUsuarios = $('#empleadoId');
+    //             selectUsuarios.empty();
+
+    //             usersRolEmpleado.forEach(usuario => {
+    //                 selectUsuarios.append(`
+    //                     <option class="text-center" value="${usuario.id}">Empleado: ${usuario.name + " " +usuario.apellido}</option>
+    //                 `)
+    //                 console.log(usersRolEmpleado);
+    //             })
+    //         })
+
+
+
+
+    //         //registrar cita en la base de datos
+
+    //     $('#citaForm').on('submit', function(e) {
+    //         e.preventDefault();
+    //         console.log($(this));
+
+    //         let serviciosSeleccionados = []; 
+
+
+    //         $('.multiselect-option.selected').each(function() {
+
+
+    //             let servicioId = $(this).data('select-id');
+    //             let tecnicaSeleccionada = $(`#tecnicaSelect${servicioId}`).val();
+    //             serviciosSeleccionados.push({
+    //                 servicioId: servicioId,
+    //                 tecnicaId: tecnicaSeleccionada
+    //             });
+    //         });
+
+          
+
+
+    //         console.log('Servicios seleccionados:', serviciosSeleccionados);
+
+            
+
+    //         $('#serviciosSeleccionados').val(JSON.stringify(serviciosSeleccionados));
+            
+    //         let formData = $(this).serialize();
+            
+    //         $.ajax({
+    //             url: '/RegistroCitaAdmin',
+    //             method: 'POST',
+    //             data: formData,            
+    //             success: function(response) {
+    //                 console.log(response);
+    //                 $('#citaForm')[0].reset();
+    //                 $('.multiselect-option').removeClass('selected');
+    //                 $('select[id^="tecnicaSelect"]').hide();
+    //                 alert('cita creada con exito');
+    //                 window.location.href = '/Ver-Citas';
+    //             },
+    //             error: function(error) {
+    //                 console.log(error);
+    //                 var response = xhr.responseJSON;
+    //                 if (response && response.message == 'Debe seleccionar al menos un servicio') {
+    //                     // Mostrar la alerta con el mensaje de error
+    //                     alert(response.message);
+    //                 } else {
+    //                     // Mostrar un mensaje de error genérico si no hay mensaje específico
+    //                     alert('Se ha producido un error en la solicitud.');
+    //                 }
+    //             }
+    //         });
+
+    //     });
+
+    //     console.log('Valor del input serviciosSeleccionados:', $('#serviciosSeleccionados').val());
+
 
         
-        // Dashboard toggle
-        const body = document.querySelector("body"),
-                sidebar = body.querySelector(".sidebar"),
-                toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay");
 
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-            if (!sidebar.classList.contains("close")) {
-                overlay.style.display = "block";
-            } else {
-                overlay.style.display = "none";
-            }
-        });
+        
+    //     // Dashboard toggle
+    //     const body = document.querySelector("body"),
+    //             sidebar = body.querySelector(".sidebar"),
+    //             toggle = body.querySelector(".toggle"),
+    //             overlay = body.querySelector(".overlay");
 
-        overlay.addEventListener("click", () => {
-            sidebar.classList.add("close");
-            overlay.style.display = "none";
-        });
+    //     toggle.addEventListener("click", () => {
+    //         sidebar.classList.toggle("close");
+    //         if (!sidebar.classList.contains("close")) {
+    //             overlay.style.display = "block";
+    //         } else {
+    //             overlay.style.display = "none";
+    //         }
+    //     });
 
-        // Fin scripts para todas las vistas
+    //     overlay.addEventListener("click", () => {
+    //         sidebar.classList.add("close");
+    //         overlay.style.display = "none";
+    //     });
+
+    //     // Fin scripts para todas las vistas
 
 
 
-    });
+    // });
 
 </script>
 </body>
