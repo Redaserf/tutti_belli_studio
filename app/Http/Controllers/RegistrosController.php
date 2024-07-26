@@ -84,6 +84,12 @@ class RegistrosController extends Controller
         $curso->fechaInicio = $request->fechaInicio;
         $curso->horaInicio = $request->horaInicio;
         $curso->precio = $request->precio;
+
+        if ($request->hasFile('imagenCurso')) {
+            $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
+        }
+
+        $curso->descripcion = $request->descripcion;
         $curso->empleadoId = $request->empleadoId;
         $curso->save();
 

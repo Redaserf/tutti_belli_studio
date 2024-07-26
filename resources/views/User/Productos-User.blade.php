@@ -52,7 +52,7 @@ body, html {
 }
 
 #navbar{
-  font-family: "Josefin Sans", sans-serif !important;  
+  font-family: "Josefin Sans", sans-serif !important;
 }
 
 label{
