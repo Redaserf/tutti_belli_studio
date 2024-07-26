@@ -508,7 +508,7 @@ $(document).ready(function(){
                 $('#AddProductName').val('');
                 $('#AddProductPrice').val('');
                 $('#AddInStock').val('');
-                $('#imagenProducto').val('');
+                // $('#imagenProducto').val('');
                 $('#AddProductDescription').val('');
                 $('#inventarioSelect').val('');
                 document.getElementById('image').src = "https://via.placeholder.com/300";

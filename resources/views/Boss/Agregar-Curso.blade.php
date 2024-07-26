@@ -386,7 +386,14 @@
             <div class="header-section">
                 <h1>Cursos</h1>
             </div>
-
+            <div class="col-md-6">
+                <div class="image-label">
+                    <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
+                    <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
+                    <input type="file" class="form-control" id="imagenCurso" name="imagenCurso">
+                    <img src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
@@ -430,16 +437,14 @@
                 <div class="form-floating mb-3">
                     <select name="" class="form-control" id="empleadoId">
                         <option value="" disabled selected>Empleado</option>
-
                         <!-- Servicios que aparecerán con back-end -->
-
                     </select>
                     <label for="empleadoId">Empleado de la cita</label>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --">
-                        <label for="descripcion">Descripción</label>
+                    <div class="mb-3">
+                        <label for="descripcion">Descripción del curso</label>
+                        <textarea class="form-control" id="descripcion" rows="7" style="resize: none;"></textarea>
                     </div>
                 </div>
                 <div class="col-md-12 text-center">
@@ -542,46 +547,51 @@
         $('#agregarCurso').on('click', function(e) {
             e.preventDefault();
 
-            let courseName = $('#nombre').val();
-            let courseLimit = $('#cupoLimite').val();
-            let courseDateBegining = $('#fechaInicio').val();
-            let courseHourBegining = $('#horaInicio').val();
-            let coursePrice = $('#precio').val();
-            let courseEmployee = $('#empleadoId').val();
+            // let courseName = $('#nombre').val();
+            // let courseLimit = $('#cupoLimite').val();
+            // let courseDateBegining = $('#fechaInicio').val();
+            // let courseHourBegining = $('#horaInicio').val();
+            // let coursePrice = $('#precio').val();
+            // let courseEmployee = $('#empleadoId').val();
+
+            let formData = new FormData();
+            formData.append('_token', $('input[name="_token"]').val());
+            formData.append('nombre', $('#nombre').val());
+            formData.append('cupoLimite', $('#cupoLimite').val());
+            formData.append('fechaInicio', $('#fechaInicio').val());
+            formData.append('horaInicio', $('#horaInicio').val());
+            formData.append('precio',$('#precio').val())
+            formData.append('imagenCurso', $('#imagenCurso')[0].files[0]);
+            formData.append('descripcion', $('#descripcion').val());
+            formData.append('empleadoId', $('#empleadoId').val());
 
             $.ajax({
                 url: '/RegistroCursoAdmin',
                 type: 'POST',
-                data: {
-                    _token: $('input[name="_token"]').val(),
-                    nombre: courseName,
-                    cupoLimite: courseLimit,
-                    fechaInicio: courseDateBegining,
-                    horaInicio: courseHourBegining,
-                    precio: coursePrice,
-                    empleadoId: courseEmployee
-                },
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(response) {
-                    // alert("Curso agregado exitosamente");
+                    alert("Curso agregado exitosamente");
                     let cursoId = response.cursoId;
 
                     saveTecnicas(cursoId, selectedTecnicas);
 
-                    $('#nombre').val('');
-                    $('#cupoLimite').val('');
-                    $('#fechaInicio').val('');
-                    $('#horaInicio').val('');
-                    $('#precio').val('');
-                    $('#empleadoId').val('');
+                    // $('#nombre').val('');
+                    // $('#cupoLimite').val('');
+                    // $('#fechaInicio').val('');
+                    // $('#horaInicio').val('');
+                    // $('#precio').val('');
+                    // $('#empleadoId').val('');
                 },
                 error: function(error) {
-                    // alert('Ocurrió un error al agregar el Curso');
-                    $('#nombre').val('');
-                    $('#cupoLimite').val('');
-                    $('#fechaInicio').val('');
-                    $('#horaInicio').val('');
-                    $('#precio').val('');
-                    $('#empleadoId').val('');
+                    alert('Ocurrió un error al agregar el Curso');
+                    // $('#nombre').val('');
+                    // $('#cupoLimite').val('');
+                    // $('#fechaInicio').val('');
+                    // $('#horaInicio').val('');
+                    // $('#precio').val('');
+                    // $('#empleadoId').val('');
                 }
             });
         });
@@ -608,7 +618,7 @@
                     tecnicas: tecnicas
                 },
                 success: function(response) {
-                    alert("Curso guardadas exitosamente");
+                    alert("Curso guardado exitosamente");
                     location.reload();  // Refresca la página al aceptar el alert
                 },
                 error: function(error) {

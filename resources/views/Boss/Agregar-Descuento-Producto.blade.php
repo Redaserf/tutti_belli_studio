@@ -288,9 +288,9 @@
 
         <div id="contenedor_carga"></div>
         <div class="overlay"></div>
-    
+
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -304,7 +304,7 @@
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -368,16 +368,16 @@
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
-    
+
 
 
 
 <div class="home">
 
     <form action="/RegistroDescuentoProducto" method="POST">
-    @csrf   
+    @csrf
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -387,7 +387,7 @@
                     </div>
                     <div class="form-floating mb-3">
                         <select class="form-control" id="selecService" placeholder="Servicio">
-                            <option value="" disabled selected>-- Seleccione la Categoria--</option>
+                            <option value="" disabled selected>-- --</option>
                             <option value="male">S1</option>
                             <option value="female">S2</option>
                             <option value="other">Otro</option>
@@ -425,7 +425,7 @@
 <script>
 
     // Scripts para todas las vistas
-    
+
             // Pantalla de carga
             var loader = document.getElementById("contenedor_carga");
             var navbar = document.getElementById("navbar");
@@ -433,15 +433,15 @@
                 $('#navbar').css('visibility', 'visible');
                 loader.style.display = "none";
             });
-    
+
         $(document).ready(function(){
-    
+
             // Dashboard toggle
             const body = document.querySelector("body"),
                     sidebar = body.querySelector(".sidebar"),
                     toggle = body.querySelector(".toggle"),
                     overlay = body.querySelector(".overlay");
-    
+
             toggle.addEventListener("click", () => {
                 sidebar.classList.toggle("close");
                 if (!sidebar.classList.contains("close")) {
@@ -450,21 +450,22 @@
                     overlay.style.display = "none";
                 }
             });
-    
+
             overlay.addEventListener("click", () => {
                 sidebar.classList.add("close");
                 overlay.style.display = "none";
             });
-    
+
             // Fin scripts para todas las vistas
-    
-    
+
+            //Script para agregar descuento
+
 
 
 
             // Fin document.ready
         });
-    
+
     </script>
     </body>
     </html>
