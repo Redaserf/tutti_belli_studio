@@ -35,7 +35,9 @@ class RegistrosController extends Controller
 
 
 
-    // Aquí los registros que puede hacer el administrador
+    // -----[ Aquí los registros que puede hacer el administrador ] -----
+
+
     function RegistroServicio(Request $request)
     {
 //        $request->validate([
@@ -99,6 +101,7 @@ class RegistrosController extends Controller
 
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
             'precio' => 'required|numeric',
             'cantidadEnStock' => 'required|integer',
             'imagenProducto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',

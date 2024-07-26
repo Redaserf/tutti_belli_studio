@@ -361,7 +361,7 @@ header {
             <div class="top text-center">
                 <h2>Descuentos</h2>
                 <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
-                <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en servicio<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
+                <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en técnica<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
             </div>
             <div class="section-divider"></div>
 

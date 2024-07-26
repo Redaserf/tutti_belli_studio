@@ -239,7 +239,8 @@ header {
         }
 
         .container-div {
-            height: 100vh;
+            max-width: 100%;
+            height: auto;
             background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -249,6 +250,8 @@ header {
         .image-label img {
             padding-bottom: 20px;
             border-radius: 15px;
+            max-width: 100%;
+            height: auto;
 
         }
 
@@ -392,10 +395,8 @@ header {
 
 
                         <div class="image-label">
-                            <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
-                            <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
                             <input type="file" class="form-control" id="imagenProducto" name="imagenProducto">
-                            <img src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
+                            <img style="margin-top: 30px; border-radius: 12px;" src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -510,6 +511,7 @@ $(document).ready(function(){
                 $('#imagenProducto').val('');
                 $('#AddProductDescription').val('');
                 $('#inventarioSelect').val('');
+                document.getElementById('image').src = "https://via.placeholder.com/300";
             },
             error: function(error) {
                 alert('Ocurrió un error al agregar el producto');
@@ -517,6 +519,18 @@ $(document).ready(function(){
         });
     });
     // Fin script para registrar productos
+
+
+
+    // Mostrar la imagen seleccionada
+    document.getElementById('imagenProducto').addEventListener('change', function() {
+        const [file] = this.files;
+        if (file) {
+            document.getElementById('image').src = URL.createObjectURL(file);
+        }
+    });
+
+
 
     // Fin document.ready
 });
