@@ -229,6 +229,40 @@
             display: none;
         }
 
+                /* Responsive adjustments */
+                @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
         /* Fin Dashboard */
 
 
@@ -288,6 +322,8 @@
 
         <div id="contenedor_carga"></div>
         <div class="overlay"></div>
+        <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
     
         {{-- Sidebar --}}
     
@@ -419,7 +455,7 @@
 </div>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -438,10 +474,11 @@
     
             // Dashboard toggle
             const body = document.querySelector("body"),
-                    sidebar = body.querySelector(".sidebar"),
-                    toggle = body.querySelector(".toggle"),
-                    overlay = body.querySelector(".overlay");
-    
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
+
             toggle.addEventListener("click", () => {
                 sidebar.classList.toggle("close");
                 if (!sidebar.classList.contains("close")) {
@@ -451,10 +488,34 @@
                 }
             });
     
+
             overlay.addEventListener("click", () => {
                 sidebar.classList.add("close");
                 overlay.style.display = "none";
+                sidebar.classList.remove("open");
             });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
     
             // Fin scripts para todas las vistas
     

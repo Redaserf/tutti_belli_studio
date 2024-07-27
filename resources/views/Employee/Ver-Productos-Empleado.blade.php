@@ -233,6 +233,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -246,10 +280,6 @@ header {
                     margin: 100px;
                     box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
                     border-radius: 20px;
-                }
-
-                body{
-                    overflow-y: hidden;
                 }
 
                 .top{
@@ -275,12 +305,62 @@ header {
                 margin-top: 20px;
                 }
 
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.product-card {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    text-align: center;
+}
+
+.product-image {
+  border-radius: 20px;
+    width: 50%;
+    height: 200px; /* Ajusta esta altura según tus necesidades */
+    object-fit:contain; /* Mantiene la proporción de la imagen y recorta si es necesario */
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-title {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+}
+
+.product-description {
+    font-size: 1em;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.product-price {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+}
+
 </style>
 </head>
 
 <body class="hiddenX">
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
     {{-- Sidebar --}}
     
@@ -348,16 +428,22 @@ header {
     </div>
     <div class="section-divider"></div>
 
-    <div>
+        <br>
 
-        {{-- aqui todo --}}
+        <div>
+
+            <div id="productos" class="product-container">
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -372,27 +458,80 @@ header {
         loader.style.display = "none";
     });
 
-$(document).ready(function(){
+              // Dibujar productos
 
-    // Dashboard toggle
-    const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
-
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-        if (!sidebar.classList.contains("close")) {
-            overlay.style.display = "block";
-        } else {
-            overlay.style.display = "none";
+  function dibujarProductos() {
+    $.ajax({
+        url: '/get/productos',
+        method: 'GET',
+        success: function(data) {
+            const productos = $('#productos');
+            productos.empty();
+            data.forEach(producto => {
+                const card = `
+                    <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                        </div>
+                    </div>
+                `;
+                productos.append(card);
+            });
         }
     });
+}
 
-    overlay.addEventListener("click", () => {
-        sidebar.classList.add("close");
-        overlay.style.display = "none";
-    });
+$(document).ready(function(){
+
+    dibujarProductos();
+
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
+
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
+    
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
 
     // Fin scripts para todas las vistas
 
