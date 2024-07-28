@@ -281,6 +281,92 @@
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
 }
+
+    /*.product-card {*/
+    /*    padding: 10px;*/
+    /*    background-color: #fff;*/
+    /*    border: 1px solid #ddd;*/
+    /*    border-radius: 8px;*/
+    /*    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
+    /*    overflow: hidden;*/
+    /*    width: 300px;*/
+    /*    text-align: center;*/
+    /*}*/
+
+    /*.product-image {*/
+    /*    border-radius: 20px;*/
+    /*    width: 50%;*/
+    /*    height: 200px; !* Ajusta esta altura según tus necesidades *!*/
+    /*    object-fit:contain; !* Mantiene la proporción de la imagen y recorta si es necesario *!*/
+    /*}*/
+
+    /*.product-info {*/
+    /*    padding: 16px;*/
+    /*}*/
+
+    /*.product-title {*/
+    /*    font-size: 1.5em;*/
+    /*    margin: 0 0 10px 0;*/
+    /*}*/
+
+    /*.product-description {*/
+    /*    font-size: 1em;*/
+    /*    color: #666;*/
+    /*    margin: 0 0 10px 0;*/
+    /*}*/
+
+    /*.product-price {*/
+    /*    font-size: 1.2em;*/
+    /*    color: #333;*/
+    /*    font-weight: bold;*/
+    /*}*/
+
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        padding: 16px;
+    }
+    .product-card {
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 200px; /* Reducido para que quepan más tarjetas */
+        text-align: center;
+        margin: 10px; /* Añadido margen para separar las tarjetas */
+    }
+
+    .product-image {
+        border-radius: 10px; /* Reducido el radio del borde */
+        width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+        height: 150px; /* Altura reducida */
+        object-fit: contain;
+    }
+
+    .product-info {
+        padding: 10px; /* Reducido el padding */
+    }
+
+    .product-title {
+        font-size: 1.2em; /* Reducido el tamaño de la fuente */
+        margin: 0 0 8px 0; /* Reducido el margen inferior */
+    }
+
+    .product-description {
+        font-size: 0.9em; /* Reducido el tamaño de la fuente */
+        color: #666;
+        margin: 0 0 8px 0; /* Reducido el margen inferior */
+    }
+
+    .product-price {
+        font-size: 1em; /* Reducido el tamaño de la fuente */
+        color: #333;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -376,7 +462,7 @@
 
 <div class="home">
 
-    <form action="/RegistroDescuentoProducto" method="POST">
+
     @csrf
     <div class="col-12">
         <div class="container container-div">
@@ -386,86 +472,208 @@
                         <H2>Agregar Descuento Producto</H2>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-control" id="selecService" placeholder="Servicio">
-                            <option value="" disabled selected>-- --</option>
-                            <option value="male">S1</option>
-                            <option value="female">S2</option>
-                            <option value="other">Otro</option>
-                        </select>
-                        <label for="employeeGender">Categoria</label>
+                        <button id="agregarProductos" type="button" class="btn btn-dark btn-block w-100" data-bs-toggle="modal" data-bs-target="#productosModal" onclick="dibujarProductos()">
+                            Agregar Productos
+                        </button>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-control" id="selectecnica" placeholder="Tecnica">
-                            <option value="" disabled selected>-- Seleccione El producto --</option>
-                            <option value="male">tec1</option>
-                            <option value="female">tec2</option>
-                            <option value="other">Otro</option>
-                        </select>
-                        <label for="employeeGender">Producto</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="porc" placeholder="%">
+                            <input type="number" class="form-control" id="porcentaje" placeholder="%">
                             <label for="porcentaje">Porcentaje de Descuento</label>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100">Agregar Descuento</button>
-                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <button id="agregarDescuento" type="button" class="btn btn-dark btn-block w-100">Agregar Descuento</button>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
-    </form>
 
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productosModalLabel">Selecciona los productos para aplicar el descuento</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="productos" class="product-container">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="cerrar" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id="guardar" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                    </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
+
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
+     let selectedProducts = [];
+// Scripts para todas las vistas
 
-    // Scripts para todas las vistas
+    // Pantalla de carga
+    var loader = document.getElementById("contenedor_carga");
+    var navbar = document.getElementById("navbar");
+    window.addEventListener('load', function(){
+        $('#navbar').css('visibility', 'visible');
+        loader.style.display = "none";
+    });
 
-            // Pantalla de carga
-            var loader = document.getElementById("contenedor_carga");
-            var navbar = document.getElementById("navbar");
-            window.addEventListener('load', function(){
-                $('#navbar').css('visibility', 'visible');
-                loader.style.display = "none";
-            });
+    $(document).ready(function(){
 
-        $(document).ready(function(){
+        // Dashboard toggle
+        const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay");
 
-            // Dashboard toggle
-            const body = document.querySelector("body"),
-                    sidebar = body.querySelector(".sidebar"),
-                    toggle = body.querySelector(".toggle"),
-                    overlay = body.querySelector(".overlay");
-
-            toggle.addEventListener("click", () => {
-                sidebar.classList.toggle("close");
-                if (!sidebar.classList.contains("close")) {
-                    overlay.style.display = "block";
-                } else {
-                    overlay.style.display = "none";
-                }
-            });
-
-            overlay.addEventListener("click", () => {
-                sidebar.classList.add("close");
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if (!sidebar.classList.contains("close")) {
+                overlay.style.display = "block";
+            } else {
                 overlay.style.display = "none";
-            });
-
-            // Fin scripts para todas las vistas
-
-            //Script para agregar descuento
-
-
-
-
-            // Fin document.ready
+            }
         });
 
-    </script>
-    </body>
-    </html>
+        overlay.addEventListener("click", () => {
+            sidebar.classList.add("close");
+            overlay.style.display = "none";
+        });
+
+        // Fin scripts para todas las vistas
+
+        //Script para agregar descuento
+        var discountPercentage;
+
+        $('#cerrar').on('click',function (){
+            selectedProducts = [];
+        });
+
+        $('#guardar').on('click',function (){
+            if(selectedProducts.length > 0) {
+                $('#agregarProductos').prop('disabled', true);
+                $('#agregarProductos').text('Productos seleccionados');
+                console.log(selectedProducts);
+            }else{
+                alert('no ha seleccionado ningun producto para el descuento')
+            }
+        })
+
+        $('#agregarDescuento').on('click', function (e) {
+
+            if(selectedProducts.length > 0) {
+                e.preventDefault();
+                discountPercentage = $('#porcentaje').val();  // Asignar el valor aquí
+                console.log(discountPercentage);  // Para verificar el valor
+                $.ajax({
+                    url: '/RegistroDescuentoProducto',
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        cantidadDescuento: discountPercentage,
+                    },
+                    success: function (response) {
+                        alert("Descuento creado exitosamente");
+                        let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
+                        console.log(descuentoId);  // Para verificar el valor
+
+                        aplicarDescuento(descuentoId, selectedProducts);
+                    },
+                    error: function (error) {
+                        alert('Ocurrió un error al crear el descuento');
+                        console.error(error);  // Para más detalles sobre el error
+                    }
+                });
+            }else{
+                alert('no ha seleccionado productos para añadir descuento')
+            }
+        });
+
+        function aplicarDescuento(descuentoId, productos) {
+            $.ajax({
+                url: '/GuardarDescuentoProducto',
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    cantidadDescuento: discountPercentage,
+                    descuentoId: descuentoId,
+                    productos: productos
+                },
+                success: function (response) {
+                    alert("Descuento aplicado exitosamente");
+                    console.log(productos)
+                    location.reload();  // Refresca la página al aceptar el alert
+                },
+                error: function (error) {
+                    alert('Ocurrió un error al aplicar el descuento');
+                    console.error(error);  // Para más detalles sobre el error
+                    location.reload();  // Refresca la página al aceptar el alert
+                }
+            });
+        }
+
+        // Fin document.ready
+    });
+    //Script para dibujar los productos
+    function dibujarProductos() {
+        $.ajax({
+            url: '/get/productos/sd',
+            method: 'GET',
+            success: function(data) {
+                const productos = $('#productos');
+                productos.empty();
+                data.forEach(producto => {
+                    const card = `
+                        <div class="product-card">
+                            <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                            <div class="product-info">
+                                <h2 class="product-title">${producto.nombre}</h2>
+                                <p class="product-description">${producto.descripcion}</p>
+                                <p class="product-price">$${producto.precio}</p>
+                            </div>
+                            <button style="margin-bottom: 10px;" id="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}" onclick="">Seleccionar para descuento</button>
+                        </div>
+                    `;
+                    productos.append(card);
+                });
+            }
+        });
+    }
+
+
+
+
+     $(document).on('click', '#seleccionar', function() {
+         let productId = $(this).data('id');
+         selectedProducts.push(productId);
+
+         //Prop obtiene propiedades de los elementos
+         //attr para atributos
+         $(this).prop('disabled', true);
+         $(this).text('Seleccionado');
+
+         console.log(selectedProducts);
+     });
+
+
+
+</script>
+</body>
+</html>

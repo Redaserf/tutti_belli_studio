@@ -9,9 +9,9 @@
     <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -215,7 +215,7 @@ header {
     margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
     background: var(--body-color);
     transition: var(--tran-05);
-    
+
 }
 
 .sidebar.close ~ .home {
@@ -260,7 +260,7 @@ header {
                     font-family: "Playwrite FR Moderne";
                     margin-right: 20px;
                 }
-                
+
                 .section-divider {
                 height: 3px;
                 background-color: rgba(0, 0, 0, 0.8);
@@ -275,9 +275,9 @@ header {
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
-    
+
     {{-- Sidebar --}}
-    
+
     <nav class="dashboard-container sidebar close">
         <header>
             <div class="image-text">
@@ -291,7 +291,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -355,19 +355,19 @@ header {
                 </div>
                 </div>
             </nav>
-            
+
             {{-- Fin Sidebar --}}
-            
-            
+
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Empleados</h2>
                     <a class="left" href="/Agregar-Empleado" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Registrar empleado<i style="margin-left: 6px" class="fa-solid fa-user-plus"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
-                
+
                 <div>
-                    
+
                     <table class="table">
                         <thead>
                           <tr>
@@ -382,25 +382,25 @@ header {
                         </tr>
                     </thead>
                     <tbody id="Empleados">
-                        
+
                         {{-- Empleados mediante JS --}}
-                        
+
                     </tbody>
                       </table>
-    
+
                     </div>
-                    
+
                 </section>
-                
-                
+
+
                 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-                
+
                 <script>
-                    
+
                     // Scripts para todas las vistas
-                    
+
                     // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -438,7 +438,7 @@ header {
               }
           });
         }
-        
+
         // Eliminar empleados
 
         function employeeDelete(id){
@@ -457,17 +457,17 @@ header {
 
 
 
-        
+
         $(document).ready(function(){
-            
+
             tablaEmpleados();
-            
+
         // Dashboard toggle
         const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
                 toggle = body.querySelector(".toggle"),
                 overlay = body.querySelector(".overlay");
-    
+
         toggle.addEventListener("click", () => {
             sidebar.classList.toggle("close");
             if (!sidebar.classList.contains("close")) {
@@ -476,16 +476,16 @@ header {
                 overlay.style.display = "none";
             }
         });
-    
+
         overlay.addEventListener("click", () => {
             sidebar.classList.add("close");
             overlay.style.display = "none";
         });
-    
+
         // Fin scripts para todas las vistas
-    
-    
-        function botones(){ 
+
+
+        function botones(){
               if (window.innerWidth <= 960) {
                 $('.top').css('flex-direction', 'column');
                 $('.top').css('gap', '10px');
@@ -496,16 +496,16 @@ header {
           }
           window.addEventListener('resize', botones);
           botones();
-    
 
 
 
 
 
-    
+
+
         // Fin document.ready
     });
-    
+
     </script>
 </body>
 </html>

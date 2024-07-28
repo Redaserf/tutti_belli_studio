@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Producto;
+use App\Models\Tecnica;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,30 @@ class DibujarController extends Controller
     Producto::findOrFail($id)->delete();
     return response()->json(null, 204);
     }
+
+    // ==========[ obtener los productos sin descuento ]==========
+    function productoSinDescuento()
+    {
+        $productos = Producto::where('descuentoId', '=', null)
+            ->where('inventarioId', '=', 1)
+            ->get();
+        return response()->json($productos);
+    }
+
+    // ==========[ obtener los productos con descuento ]==========
+    function productosConDescuento()
+    {
+        $productos = Producto::where('descuentoId', '>', 0)
+            ->where('inventarioId', '=', 1)
+            ->with(['inventario', 'descuento'])
+            ->get();
+        return response()->json($productos);
+
+    }
+
+// =============================================================================================
+
+
 
 // =============================================================================================
 

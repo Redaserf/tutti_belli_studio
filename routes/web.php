@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TecnicaController;
@@ -108,11 +109,11 @@ Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
     Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
     Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
     Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
-    
-    
+
+
     Route::get('/Ver-Citas', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('verCitas');
-    
-    
+
+
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
@@ -189,8 +190,8 @@ Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
 
 
     // =====[ Empleados ]=====
-    
-    Route::get('/get/empleados',[UsuarioController::class,'employeeIndex']);
+
+    Route::get('/get/empleados',[DibujarController::class,'employeeIndex']);
     Route::get('/empleado/eliminar/{id}',[UsuarioController::class,'employeeDelete']);
 
 
@@ -239,8 +240,26 @@ Route::get('/get/inventarios',[InventarioController::class,'index']);
 Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
 Route::get('/get/tecnicas/{servicioId}', [TecnicaController::class, 'show']);
+//Obtener las tecnicas sin descuento
+Route::get('/sinDescuentoTecnica', [TecnicaController::class, 'tecnicaSinDescuento']);
+//Obtener las tecnicas con descuento
+Route::get('/conDescuentoTecnica', [TecnicaController::class, 'tecnicaConDescuento']);
 
 // ===== [Descuentos] =====
+    //descuento de tecnica
 Route::post('/GuardarDescuentos', [DescuentoController::class, 'aplicarDescuento']);
+    //descuento de producto
+Route::post('/GuardarDescuentoProducto', [DescuentoController::class, 'aplicarDescuentoProducto']);
+    //Eliminar descuento del producto
+Route::post('/eliminarDescuentoProducto/{id}', [DescuentoController::class, 'eliminarDescuentoProducto']);
+Route::post('/eliminarDescuentoTecnica/{id}', [DescuentoController::class, 'eliminarDescuentoTecnica']);
+
+
+// ===== [Productos] =====
+    //Obtener los productos sin descuento
+Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']);
+    //Obtener productos con descuento
+Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
+
 
 
