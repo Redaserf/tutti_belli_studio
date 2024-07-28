@@ -293,6 +293,41 @@
             cursor: pointer;
             color: white;
         }
+        /* estilo de la tabla */
+        .table-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 0 auto;
+            width: 0 auto;
+        }
+        .table-container h2 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-body table {
+            width: 0 auto;
+        }
+        .btn-primary {
+            background-color: #e83e8c;
+            border-color: #e83e8c;
+        }
+        .btn-primary:hover {
+            background-color: #d63384;
+            border-color: #d63384;
+        }
+        .btn-secondary {
+            background-color: #f8d7da;
+            border-color: #f8d7da;
+            color: #000;
+        }
+        .btn-secondary:hover {
+            background-color: #f5c6cb;
+            border-color: #f5c6cb;
+        }
 
 /* Fin Dashboard */
 
@@ -400,18 +435,149 @@
                 </div>
             </nav>
                 
-            {{-- Fin Sidebar --}}
+            <!-- {{-- Fin Sidebar --}} -->
 
         
             <section class="home">
-                <div class="top text-center">
-                    <h2>Ventas</h2>
-                </div>
-                <div class="section-divider"></div>
-        
-                <div>
-                    {{-- Aquí los servicios --}}
-                </div>
+                <!-- ESTA TABLA ES VISUALIZAR LAS VENTAS  -->
+                    <div class="table-container mt-5">
+                        <h2>VENTAS</h2>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Precio</th>
+                                    <th>Día</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Citas</td>
+                                    <td>$50</td>
+                                    <td>2024-07-01</td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Citas</td>
+                                    <td>$75</td>
+                                    <td>2024-07-02</td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Compra</td>
+                                    <td>$100</td>
+                                    <td>2024-07-03</td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Curso</td>
+                                    <td>$2000</td>
+                                    <td>2024-07-03</td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Modales -->
+                    <!-- ESTE MODAL SERA PARA LAS CITAS -->
+                    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>servicio</th>
+                                                <th>tecnica</th>
+                                                <th>empleado</th>
+                                                <th>status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>cejas,ojos,labios</td>
+                                                <td>tec1,tec2,tec3</td>
+                                                <td>anyelo</td>
+                                                <td>finalizada</td>
+
+                                            </tr>
+                                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ESTE MODAL SERA PARA LOS PRODUCTOS -->
+                    <div class="modal fade" id="detailsModalProducts" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>imagen</th>
+                                                <th>descripcion</th>
+                                                <th>cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>aqui ira la imagen</td>
+                                                <td>ajfbsjabfjklsabf</td>
+                                                <td>2</td>
+                                            </tr>
+                                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ESTE MODAL ESTA ECHO PARA LOS CURSOS -->
+
+                    <div class="modal fade" id="detailsModalCursos" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Empleado</th>
+                                                <th>CupoLim</th>
+                                                <th>Tecnicas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>maxita</td>
+                                                <td>3</td>
+                                                <td>t1,t2,t3,t4,t5</td>
+                                            </tr>
+                                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </section>
 
 
