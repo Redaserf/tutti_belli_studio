@@ -25,7 +25,7 @@ class DibujarController extends Controller
     Producto::findOrFail($id)->delete();
     return response()->json(null, 204);
     }
-    
+
     // ==========[ Obtener un producto por id ]==========
     public function obtenerProducto($id){
         $producto = Producto::find($id);
@@ -57,13 +57,33 @@ class DibujarController extends Controller
         }
     }
 
+    // ==========[ obtener los productos sin descuento ]==========
+    function productoSinDescuento()
+    {
+        $productos = Producto::where('descuentoId', '=', null)
+            ->where('inventarioId', '=', 1)
+            ->get();
+        return response()->json($productos);
+    }
+
+    // ==========[ obtener los productos con descuento ]==========
+    function productosConDescuento()
+    {
+        $productos = Producto::where('descuentoId', '>', 0)
+            ->where('inventarioId', '=', 1)
+            ->with(['inventario', 'descuento'])
+            ->get();
+        return response()->json($productos);
+
+    }
+
 // =============================================================================================
 
     // ==========[ Obtener todos los productos del carrito ]==========
     public function carritoIndex(){
         $user = Auth::user();
         $carrito = $user->carrito;
-    
+
         if ($carrito) {
             $productos = $carrito->productos()->withPivot('id')->get();
             return response()->json($productos);
@@ -110,7 +130,7 @@ class DibujarController extends Controller
     function carritoDelete($id){
         $user = Auth::user();
         $carrito = $user->carrito;
-    
+
         if ($carrito) {
         // Asegurarse de eliminar la relación específica usando el id de la tabla pivote
         $carrito->productos()->wherePivot('id', $id)->detach();
