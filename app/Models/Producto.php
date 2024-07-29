@@ -40,8 +40,10 @@ class Producto extends Model
         return $this->belongsTo(Descuento::class,'descuentoId');
     }
 
-    public function carritoHasProducto(){
-        return $this->hasMany(CarritoHasProducto::class, 'productoId');
+    public function carritos()
+    {
+        return $this->belongsToMany(Carrito::class, 'carrito_has_productos', 'productoId', 'carritoId')
+                    ->withTimestamps();
     }
 
 }

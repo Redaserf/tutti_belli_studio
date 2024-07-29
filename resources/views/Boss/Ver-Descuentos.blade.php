@@ -10,7 +10,7 @@
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-           
+
 /* Dashboard */
 
 /* Google Font Import - Poppins */
@@ -233,6 +233,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none;
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -263,18 +297,29 @@ header {
       margin-top: 20px;
     }
 
+    /*    css para que las imagenes adapten su tamaño a la hora de dibujar en la tabla*/
+    .producto-imagen {
+        width: 100px;
+        height: 100px;
+        /* mantener relacion de aspecto*/
+        object-fit: cover;
+    }
+
 
 
 </style>
 </head>
 
 <body class="hiddenX">
+<div>
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -288,7 +333,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -352,31 +397,83 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
 
-        <section class="home">
-            <div class="top text-center">
-                <h2>Descuentos</h2>
-                <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
-                <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en servicio<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
-            </div>
-            <div class="section-divider"></div>
+
+
 
             <div>
 
                 {{-- Aquí las cosas con descuento --}}
+                @csrf
+                <section class="home">
+                    <div class="top text-center">
+                        <h2>Descuentos</h2>
+                        <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
+                        <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en técnica<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
+                    </div>
+                    <div class="section-divider"></div>
+
+                    <div>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Inventario</th>
+                                <th scope="col">Descuento</th>
+                                <th scope="col">Elminar</th>
+                            </tr>
+                            </thead>
+                            <tbody id="Productos">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Servicio</th>
+                                <th scope="col">Descuento</th>
+                                <th scope="col">Elminar</th>
+                            </tr>
+                            </thead>
+                            <tbody id="Tecnicas">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </section>
+
 
             </div>
 
-        </section>
-    
+
+
 </div>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -393,30 +490,55 @@ header {
 
 $(document).ready(function(){
 
-    // Dashboard toggle
-    const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
 
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-        if (!sidebar.classList.contains("close")) {
-            overlay.style.display = "block";
-        } else {
-            overlay.style.display = "none";
-        }
-    });
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
 
-    overlay.addEventListener("click", () => {
-        sidebar.classList.add("close");
-        overlay.style.display = "none";
-    });
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() {
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
 
     // Fin scripts para todas las vistas
 
 
-    function botones(){ 
+    function botones(){
               if (window.innerWidth <= 960) {
                 $('.top').css('flex-direction', 'column');
                 $('.top').css('gap', '10px');
@@ -432,9 +554,104 @@ $(document).ready(function(){
           window.addEventListener('resize', botones);
           botones();
 
+    tablaDescuentosProducto();
+    tablaDescuentosTecnicas();
 
     // Fin document.ready
 });
+
+function tablaDescuentosProducto(){
+    $.ajax({
+        url: 'get/productos/cd',
+        method: 'GET',
+        success: function(data) {
+            const tableBody = $('#Productos');
+            tableBody.empty();
+            data.forEach(producto => {
+                const row = `<tr>
+                              <td>${producto.id}</td>
+                              <td>${producto.nombre}</td>
+                              <td> <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="producto-imagen"> </td>
+                              <td>${producto.precio}</td>
+                              <td>${producto.cantidadEnStock}</td>
+                              <td>${producto.descripcion}</td>
+                              <td>${producto.inventario.nombre}</td>
+                              <td>${producto.descuento.cantidadDescuento} %</td>
+                              <td>
+                                  <button class="btn btn-danger" onclick="eliminarDescuentoProducto(${producto.id})"><i class="fa-solid fa-percent icon"></i></a>
+                              </td>
+                          </tr>`;
+                tableBody.append(row);
+            });
+        }
+    });
+}
+
+function tablaDescuentosTecnicas(){
+    $.ajax({
+        url: 'conDescuentoTecnica',
+        method: 'GET',
+        success: function(data) {
+            const tableBody = $('#Tecnicas');
+            tableBody.empty();
+            data.forEach(tecnica => {
+                const row = `<tr>
+                                  <td>${tecnica.id}</td>
+                                  <td>${tecnica.nombre}</td>
+                                  <td>${tecnica.precio}</td>
+                                  <td>${tecnica.descripcion}</td>
+                                  <td>${tecnica.servicios.nombre}</td>
+                                  <td>${tecnica.descuento.cantidadDescuento} %</td>
+                                  <td>
+                                      <button class="btn btn-danger" onclick="eliminarDescuentoTecnica(${tecnica.id})"><i class="fa-solid fa-percent icon"></i></a>
+                                  </td>
+                              </tr>`;
+                tableBody.append(row);
+            });
+        }
+    });
+}
+
+//FUncion para elimar descuento de producto
+//Modificar para prodcuto
+//Investigar como hacer que los descuentos sin productos relacionados se eliminen
+function eliminarDescuentoProducto(id){
+    $.ajax({
+        url: `/eliminarDescuentoProducto/${id}`,
+        method: 'POST',
+        data:{
+
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function(){
+            tablaDescuentosProducto();
+        },
+        error: function(error){
+
+            console.log(id)
+        }
+    });
+}
+
+//FUncion para elimar descuento de tecnica
+//Modificar para prodcuto
+//Investigar como hacer que los descuentos sin productos relacionados se eliminen
+function eliminarDescuentoTecnica(id){
+    $.ajax({
+        url: `/eliminarDescuentoTecnica/${id}`,
+        method: 'POST',
+        data:{
+            _token: $('input[name="_token"]').val(),
+        },
+        success: function(){
+            tablaDescuentosTecnicas();
+
+        },
+        error: function(error){
+            console.log(error)
+        }
+    });
+}
 
 </script>
 

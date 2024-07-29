@@ -229,6 +229,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -239,7 +273,8 @@ header {
         }
 
         .container-div {
-            height: 100vh;
+            max-width: 100%;
+            height: auto;
             background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -249,6 +284,8 @@ header {
         .image-label img {
             padding-bottom: 20px;
             border-radius: 15px;
+            max-width: 100%;
+            height: auto;
 
         }
 
@@ -289,6 +326,8 @@ header {
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
         {{-- Sidebar --}}
 
@@ -392,10 +431,8 @@ header {
 
 
                         <div class="image-label">
-                            <!-- AL dar clic a la imagen dejara agregar imagenes de los productos  -->
-                            <!-- La imagen por defecto seria por ejemplo una imagen gris con el texto "PULSA PARA AGREGAR IMAGEN DEL PRODUCTO" -->
                             <input type="file" class="form-control" id="imagenProducto" name="imagenProducto">
-                            <img src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
+                            <img style="margin-top: 30px; border-radius: 12px;" src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del producto" id="image">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -452,25 +489,50 @@ header {
 
 $(document).ready(function(){
 
-    // Dashboard toggle
-    const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
 
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-        if (!sidebar.classList.contains("close")) {
-            overlay.style.display = "block";
-        } else {
-            overlay.style.display = "none";
-        }
-    });
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
+    
 
-    overlay.addEventListener("click", () => {
-        sidebar.classList.add("close");
-        overlay.style.display = "none";
-    });
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
 
     loadInventarios();
 
@@ -510,6 +572,7 @@ $(document).ready(function(){
                 $('#imagenProducto').val('');
                 $('#AddProductDescription').val('');
                 $('#inventarioSelect').val('');
+                document.getElementById('image').src = "https://via.placeholder.com/300";
             },
             error: function(error) {
                 alert('Ocurrió un error al agregar el producto');
@@ -517,6 +580,18 @@ $(document).ready(function(){
         });
     });
     // Fin script para registrar productos
+
+
+
+    // Mostrar la imagen seleccionada
+    document.getElementById('imagenProducto').addEventListener('change', function() {
+        const [file] = this.files;
+        if (file) {
+            document.getElementById('image').src = URL.createObjectURL(file);
+        }
+    });
+
+
 
     // Fin document.ready
 });
