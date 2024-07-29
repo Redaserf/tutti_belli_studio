@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ProductoHasCursoController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TecnicaController;
@@ -60,19 +61,19 @@ use App\Http\Controllers\DibujarController;
 
     //citas no acpetadas hechas por usuarios con datos del usuario y empleado
     Route::get('/cita/usuario/empleado', [ConsultasController::class, 'citasUsuariosEmpleados']);
-  
+
    //obtener eventos para el calendario
    Route::get('/cita/obtener/eventos', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('cita.obtener.eventos');
 
   //buscador/filtro de servicios y tecnicas
 
   Route::get('/buscar', [ConsultasController::class, 'buscador']);
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
     // ===== [Sevicios] =====
     //devuelve servicio como Json
@@ -270,3 +271,5 @@ Route::post('/eliminarDescuentoTecnica/{id}', [DescuentoController::class, 'elim
 Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']);
 //Obtener productos con descuento
 Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
+//===== [ProductoHasCurso] =====
+Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
