@@ -76,53 +76,100 @@ button{
   padding: 20px;
 }
 .accordion-button {
-  background-color: #f0b4be; /* Botón rosado */
-  color: black;
-  font-weight: bold;
+    background-color: #f0b4be; /* Botón rosado */
+    color: black;
+    font-weight: bold;
 }
 
 .accordion-button:not(.collapsed) {
-            background-color: #f0b4be; /* Botón rosado más oscuro cuando está abierto */
-        }
-        .accordion-item {
-            border: 1px solid black; /* Bordes negros */
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        .accordion-item .form-check {
-            border-top: 1px solid black;
-            padding-top: 10px;
-        }
-        #selected-service-details {
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #ffffff; /* Fondo rosado claro */
-        }
-        .modal-content {
-            border: 2px solid black;
-            border-radius: 10px;
-            background-color: #ffffff; /* Fondo rosado claro */
-        }
-        .btn-primary {
-            background-color: #000000;
-            border: none;
-        }
+    background-color: #f0b4be; /* Botón rosado más oscuro cuando está abierto */
+}
 
+.accordion-item {
+    border: 1px solid black; /* Bordes negros */
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 
-        .btn-primary:hover {
-            background-color: #ff1493;
-        }
+.accordion-item .form-check {
+    border-top: 1px solid black;
+    padding-top: 10px;
+}
 
-        .vertical-separator {
-            display: inline-block;
-            width: 1.5px;
-            height: 30px;
-            background-color: #000;
-            margin: 3px 15px;
-            vertical-align: middle;
+#selected-service-details {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco */
+}
+
+.modal-content {
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #ffffff; /* Fondo blanco */
+}
+
+.btn-primary {
+    background-color: #000000;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #ff1493;
+}
+
+.vertical-separator {
+    display: inline-block;
+    width: 1.5px;
+    height: 30px;
+    background-color: #000;
+    margin: 3px 15px;
+    vertical-align: middle;
+}
+
+.image-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#horariosImagen {
+    max-width: 70%; /* Ajusta el tamaño máximo de la imagen */
+    height: auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.mapa-container {
+    width: 100%;
+    height: 300px; /* Puedes ajustar la altura según tus necesidades */
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
     }
 
+    .col-md-6 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .mapa-container {
+        height: 200px; /* Ajusta la altura del mapa para dispositivos móviles */
+    }
+
+    .image-container {
+        margin-top: 10px;
+    }
+
+    #horariosImagen {
+        max-width: 90%; /* Ajusta el tamaño máximo de la imagen para dispositivos móviles */
+    }
+}
 
 
 /* Aquí tus estilos */
@@ -138,21 +185,117 @@ button{
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Agrega sombra */
 }
 
+.modal-content { 
+    font-family: "Josefin Sans", sans-serif !important;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background-color: #ffb6c1; /* Color rosado claro */
+    color: black;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.modal-header .modal-title {
+    font-weight: 600;
+}
+
+.modal-body {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.btn-pink {
+    background-color: #ffb6c1;
+    color: black;
+    border: none;
+}
+
+.btn-pink:hover {
+    background-color: #ff69b4;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+#fechaCita {
+    border: 1px solid #ff1493;
+    border-radius: 10px;
+    width: 100%;
+    color: #495057;
+    font-size: 1rem;
+}
+
+#horaCita {
+    border: 1px solid #ff1493;
+    border-radius: 10px;
+    width: 100%;
+    color: #495057;
+    font-size: 1rem;
+}
 
 
 /* div de la parte inferior */
-.parte-inferior {
+        .parte-inferior {
+            font-family: "Josefin Sans", sans-serif !important;
             position: fixed;
+            border-top: 2px solid #000; /* Borde superior negro */
             bottom: 0;
             left: 0;
             width: 100%;
             height: 20%;
-            background-color: rgba(0, 0, 0, 0.8); /* Color de fondo semi-transparente */
-            z-index: 9999; /* Asegura que el div esté sobre otros elementos */
-            color: white; /* Color del texto */
+            background-color:white; /* Menos transparente */
+            z-index: 9999;
+            color: black;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between; /* Alinea el contenido y el botón */
+            padding: 0 20px; /* Añade un poco de espacio a los lados */
+            font-size: 18px;
+        }
+
+        .parte-inferior .contenido {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Alinea el contenido a la izquierda */
+        }
+
+        #cantidadTecnicas, #precioTotal {
+            margin-bottom: 5px; /* Espacio entre los elementos */
+        }
+
+        .btn-personalizado {
+            background-color: pink; /* Fondo rosa */
+            color: black; /* Texto e icono negros */
+            border: none; /* Sin borde */
+            padding: 12px 25px; /* Espaciado interior */
+            font-size: 16px; /* Tamaño de la fuente */
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-personalizado i {
+            margin-left: 6px; /* Espacio entre el texto y el icono */
         }
 
         .container {
@@ -254,7 +397,7 @@ button{
   </nav>
 
 
-  <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
+    <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
@@ -270,32 +413,23 @@ button{
                             <label for="fechaCita">Fecha de la cita</label>
                         </div>
                         <div class="form-floating mb-3">
-                        <select style='display: none' class='form-control' id="horaCita" name="horaCita" required>
-                        
-                        </select>
+                            <select style='display: none' class='form-control' id="horaCita" name="horaCita" required>
+                            </select>
                         </div>
                         <div>
-                            <!-- Servicios ya preseleccionados <div class='container'>
-                                <div id="service" class="form-control multiselect-container form-floating mb-3" required></div>
-                            </div> -->
                             <input type="hidden" id="serviciosSeleccionados" name="serviciosSeleccionados">
                         </div>
                         <div class="form-floating mb-3">
                             <input type="hidden" class="form-control" name="usuarioId" value="{{ Auth::user()->id }}" id="usuarioId">
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-control" name="empleadoId" id="empleadoId">\
+                            <select class="form-control" name="empleadoId" id="empleadoId">
                             </select>
                         </div>
-                        <!-- <div style="display: none" class="mb-3">
-                            <label for="notasCita">Notas de la cita</label>
-                            <textarea class="form-control" id="notasCita" name='notasCita' rows="7" required></textarea>
-                        </div> -->
                     </div>
                     <div class="modal-footer">
-                        <!-- <button type="button" style='display:none' id='btnEliminar' class='btn btn-danger'>Eliminar</button> -->
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-dark">Confirmar</button>
+                        <button type="submit" class="btn btn-pink">Confirmar</button>
                     </div>
                 </form>
             </div>
@@ -307,24 +441,28 @@ button{
 
     
 
-    <div class="container">
-        
-        <div class="row">
-            <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
                     <div>
                         <label for="exampleDataList" class="form-label">Servicios y tecnicas</label>
                         <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar...">
-                            <datalist id="datalistOptions">
-                                
-                            </datalist>
+                        <datalist id="datalistOptions"></datalist>
                     </div>
-                <div class="accordion" id="acordionCitas">
-                    
-                </div><!-- fin del accordion -->
-                    <!-- Añadir más servicios según sea necesario -->
+                    <div class="accordion" id="acordionCitas">
+                        <!-- Añadir acordeones aquí -->
+                    </div><!-- fin del accordion -->
+                </div>
+                <div class="col-md-6">
+                    <div id="mapaContainer" class="mapa-container">
+                        <!-- api de maps -->
+                    </div>
+                    <div class="image-container">
+                        <img src="/resources/img/home/horariotutti.jpg" alt="Horarios" class="img-fluid" id="horariosImagen">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
             <!-- <div class="col-md-6">
                     <div class="mt-3">
                         <label for="appointment-date" class="form-label">Fecha</label>
@@ -395,17 +533,14 @@ button{
     
 
 
-    <div class="parte-inferior" style="display: none" id="mostrarServiciosTecnicasSeleccionados">
-            <div>
-
+    <div class="parte-inferior" id="mostrarServiciosTecnicasSeleccionados" style="display: none;">
+        <div class="contenido">
             <div id="cantidadTecnicas"></div>
-                <div id="precioTotal"></div>
-
-            </div>
-        <button id='btnAgregar' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#citasModal"  style="width: curso;">
-            Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
+            <div id="precioTotal"></div>
+        </div>
+        <button id='btnAgregar' class="btn btn-personalizado" data-bs-toggle="modal" data-bs-target="#citasModal">
+            Agendar cita<i class="fa-solid fa-calendar-plus"></i>
         </button>
-
     </div>
 
 
