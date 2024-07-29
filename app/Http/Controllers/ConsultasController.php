@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
+
 
 //Modelos
 use App\Models\User;
@@ -74,43 +76,59 @@ class ConsultasController extends Controller
 
     public function mostrarServiciosTecnicasCitas()
     {
-        $citasHasServicios = CitaHasServicio::with('cita', 'servicio', 'tecnica')->get();
-        $citasGrouped = $citasHasServicios->groupBy('citaId');
+        $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) {
+            $query->where('estadoCita', true);
+        }, 'servicio', 'tecnica'])->get();
         
+        $citasGrouped = $citasHasServicios->groupBy('citaId');
+
         $events = [];
-    
+
         foreach ($citasGrouped as $citaId => $group) {
-            $cita = $group->first()->cita;
-            $serviciosTecnicas = $group->map(function ($item) {
-                return $item->servicio->nombre . ' - ' . $item->tecnica->nombre;
-            })->join(', ');
-    
-            $fechaInicio = new DateTime($cita->fechaCita . ' ' . $cita->horaCita);
-            $fechaFin = clone $fechaInicio;
-            $fechaFin->modify('+60 minutes');
-    
-            $events[] = [
-                'id' => $citaId,
-                'title' => $serviciosTecnicas,
-                'start' => $fechaInicio->format('Y-m-d\TH:i:s'),
-                'end' => $fechaFin->format('Y-m-d\TH:i:s'),
-            ];
+            $primeraCita = $group->first();
+            if ($primeraCita && $primeraCita->cita) {
+                $cita = $primeraCita->cita;
+                $serviciosTecnicas = $group->map(function ($item) {
+                    return $item->servicio->nombre . ' - ' . $item->tecnica->nombre;
+                })->join(', ');
+
+                $fechaInicio = new DateTime($cita->fechaCita . ' ' . $cita->horaCita);
+                $fechaFin = clone $fechaInicio;
+                $fechaFin->modify('+60 minutes');
+
+                $events[] = [
+                    'id' => $citaId,
+                    'title' => $serviciosTecnicas,
+                    'start' => $fechaInicio->format('Y-m-d\TH:i:s'),
+                    'end' => $fechaFin->format('Y-m-d\TH:i:s'),
+                ];
+            } else {
+                // Manejar el caso donde no hay cita
+                Log::warning("No se encontró cita para el grupo con ID $citaId");
+            }
         }
 
-    
-    
         return view('Boss.Ver-Citas', compact('events'));
     }
     
-    //
-
-    public function citasAceptadas() {
-        // Obtener las citas con estado true y sus servicios relacionados
-        $citas = Cita::where('estadoCita', true)->with('servicios')->get();
     
-        // Devolver las citas como una respuesta JSON
-        return response()->json($citas);
-    }
+    //creo que no se van a usar jaajaj
+
+    // public function citasAceptadas() {
+    //     // Obtener las citas con estado true y sus servicios relacionados
+    //     $citas = Cita::where('estadoCita', true)->with('servicios')->get();
+    
+    //     // Devolver las citas como una respuesta JSON
+    //     return response()->json($citas);
+    // }
+
+    // public function citasDenegadas() {
+    //     // Obtener las citas con estado true y sus servicios relacionados
+    //     $citas = Cita::where('estadoCita', false)->with('servicios')->get();
+    
+    //     // Devolver las citas como una respuesta JSON
+    //     return response()->json($citas);
+    // }
 
 
     public function serviciosTecnicasCitas()
@@ -171,8 +189,19 @@ class ConsultasController extends Controller
     
     
     
+    //citas no aceptadas (citas de usuarios) con datos de su usuario y datos del empleado
+    public function citasUsuariosEmpleados() {
+        $citas = Cita::where('estadoCita', '=', false)->orderBy('fechaCita', 'ASC')->with(['usuario' => function($usuario) {
+            $usuario->select(DB::raw("*,CONCAT(name, ' ', apellido) AS clienteNombreCompleto"), 'id');
+        }, 'usuarioEmpleado' => function($empleado) {
+            $empleado->select(DB::raw("*,CONCAT(name, ' ', apellido) AS empleadoNombreCompleto"), 'id');
+
+        }])->get();
+
+        return response()->json($citas);// falta que la consulta se traiga servicios y tecnicas de cada servicio
+    }
     
-    
-    
+
+
 
 }

@@ -46,4 +46,8 @@ class Producto extends Model
                     ->withTimestamps();
     }
 
+    public function productoHasCurso(){
+        return $this->hasMany(ProductoHasCurso::class, 'productoId');
+    }
+
 }

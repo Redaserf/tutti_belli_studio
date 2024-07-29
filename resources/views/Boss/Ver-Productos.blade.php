@@ -233,6 +233,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -268,6 +302,54 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
                 }
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.product-card {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    text-align: center;
+}
+
+.product-image {
+  border-radius: 20px;
+    width: 50%;
+    height: 200px; /* Ajusta esta altura según tus necesidades */
+    object-fit:contain; /* Mantiene la proporción de la imagen y recorta si es necesario */
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-title {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+}
+
+.product-description {
+    font-size: 1em;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.product-price {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: bold;
+}
+
     </style>
 
 </head>
@@ -276,6 +358,8 @@ header {
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
         {{-- Sidebar --}}
     
@@ -359,17 +443,63 @@ header {
                 
             {{-- Fin Sidebar --}}
 
+
+            {{-- Modal para editar producto --}}
+
+            <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="editProductForm" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="edit_id" name="id">
+                                <div class="form-group">
+                                    <label for="edit_nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="edit_nombre" name="nombre">
+                                </div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <label for="edit_descripcion">Descripción</label>
+                                    <input type="text" class="form-control" id="edit_descripcion" name="descripcion">
+                                </div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <label for="edit_precio">Precio</label>
+                                    <input type="number" class="form-control" id="edit_precio" name="precio">
+                                    <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
+                                </div>
+                                <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
+                                    <input type="file" class="form-control" id="edit_imagenProducto" name="imagenProducto">
+                                    <img id="edit_imagenProducto_preview" src="#" alt="Imagen del producto" style="width: 30%; margin-top: 10px;" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+
         
             <section class="home">
                 <div class="top text-center">
                     <h2>Productos</h2>
-                    <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Agregar producto<i style="margin-left: 6px" class="fa-solid fa-box-plus"></i></button></a>
+                    <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Agregar producto<i style="margin-left: 6px" class="fa-solid fa-basket-shopping"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
+
+                <br>
     
                 <div>
     
-                    {{-- aqui todo --}}
+                    <div id="productos" class="product-container">
+
+                    </div>
     
                 </div>
     
@@ -377,7 +507,7 @@ header {
 
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script>
@@ -391,28 +521,165 @@ header {
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
+
+          // Dibujar productos
+
+  function dibujarProductos() {
+    $.ajax({
+        url: '/get/productos',
+        method: 'GET',
+        success: function(data) {
+            const productos = $('#productos');
+            productos.empty();
+            data.forEach(producto => {
+                const card = `
+                    <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                        </div>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-producto" data-id="${producto.id}">Editar producto<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-producto" data-id="${producto.id}">Borrar producto<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                productos.append(card);
+            });
+
+            $('.editar-producto').click(function() {
+                const productId = $(this).data('id');
+                modalEditar(productId);
+            });
+
+            $('.borrar-producto').click(function() {
+                const productId = $(this).data('id');
+                carritoDelete(productId);
+            });
+
+        }
+    });
+}
+
+        // Eliminar un producto
+
+        function carritoDelete(id){
+          $.ajax({
+              url: `/producto/eliminar/${id}`,
+              method: 'GET',
+              success: function(){
+                  dibujarProductos();
+              },
+              error: function(error){
+                  console.log(error)
+              }
+          });
+        }
+    
+
+        // Abrir el modal
+        
+        function modalEditar(id) {
+    $.ajax({
+        url: `/get/producto/${id}`,
+        method: 'GET',
+        success: function(data) {
+            $('#edit_id').val(data.id);
+            $('#edit_nombre').val(data.nombre);
+            $('#edit_descripcion').val(data.descripcion);
+            $('#edit_precio').val(data.precio);
+            $('#edit_imagenProducto_preview').attr('src', `/storage/${data.imagen}`);
+            $('#editProductModal').modal('show');
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al obtener los datos del producto');
+        }
+    });
+}
+
+//Editar un producto
+
+$('#edit_imagenProducto').on('change', function() {
+    const [file] = this.files;
+    if (file) {
+        $('#edit_imagenProducto_preview').attr('src', URL.createObjectURL(file));
+    }
+});
+
+$('#editProductForm').on('submit', function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('_token', $('input[name="_token"]').val());
+
+    $.ajax({
+        url: `/producto/actualizar/${$('#edit_id').val()}`,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            $('#editProductModal').modal('hide');
+            dibujarProductos();
+            alert('Producto actualizado exitosamente');
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al actualizar el producto');
+        }
+    });
+});
+
     
     $(document).ready(function(){
+
+        dibujarProductos();
     
-        // Dashboard toggle
-        const body = document.querySelector("body"),
+            // Dashboard toggle
+            const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
                 toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay");
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
+
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
     
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-            if (!sidebar.classList.contains("close")) {
-                overlay.style.display = "block";
-            } else {
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
                 overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
             }
-        });
-    
-        overlay.addEventListener("click", () => {
-            sidebar.classList.add("close");
-            overlay.style.display = "none";
-        });
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
     
         // Fin scripts para todas las vistas
     

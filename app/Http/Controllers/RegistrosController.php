@@ -132,23 +132,32 @@ class RegistrosController extends Controller
     }
 
     public function RegistroCita(Request $request) {
+
+        $request->validate([
+            'fechaCita' => 'required|date',
+            'horaCita' => 'required|date_format:H:i:s',
+            'usuarioId' => 'required|exists:users,id',
+            'empleadoId' => 'required|exists:users,id',
+            'serviciosSeleccionados' => 'required|json'
+        ]);
+
         // Decodificar los servicios seleccionados
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-    
+
         // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-    
+
         // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->first();
-    
+
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
         try {
             // Crear la cita
@@ -160,7 +169,7 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
-    
+
             // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 CitaHasServicio::create([
@@ -169,7 +178,7 @@ class RegistrosController extends Controller
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
             }
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
@@ -188,30 +197,30 @@ class RegistrosController extends Controller
             'notasCita' => 'nullable|string',
             'serviciosSeleccionados' => 'required|json'
         ]);
-    
+
         // Decodificar los servicios seleccionados
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-    
+
         // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-    
+
         // Verificar si ya existe una cita con la misma fecha y hora (excluyendo la cita actual)
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->where('id', '<>', $id)
                             ->first();
-    
+
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
         try {
             // Obtener la cita
             $cita = Cita::findOrFail($id);
-    
+
             // Actualizar la cita
             $cita->update([
                 "fechaCita" => $request->fechaCita,
@@ -221,10 +230,10 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
-    
+
             // Eliminar las relaciones antiguas
             CitaHasServicio::where('citaId', $id)->delete();
-    
+
             // Crear las nuevas relaciones
             foreach ($serviciosSeleccionados as $servicio) {
                 CitaHasServicio::create([
@@ -233,7 +242,7 @@ class RegistrosController extends Controller
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
             }
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita actualizada con éxito'], 200);
         } catch (\Exception $e) {
@@ -247,13 +256,13 @@ class RegistrosController extends Controller
         try {
             // Obtener la cita
             $cita = Cita::findOrFail($id);
-    
+
             // Eliminar las relaciones entre la cita y los servicios
             CitaHasServicio::where('citaId', $id)->delete();
-    
+
             // Eliminar la cita
             $cita->delete();
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita eliminada con éxito'], 200);
         } catch (\Exception $e) {
@@ -261,14 +270,22 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al eliminar la cita', 'error' => $e->getMessage()], 500);
         }
     }
-    
-    
-    
+
+
+
     function RegistroCitaAdmin(){
 
     }
 
-    function RegistroDescuentoProducto(){
+    function RegistroDescuentoProducto(Request $request){
+
+        $descuento = new Descuento();
+        $descuento->cantidadDescuento = $request->cantidadDescuento;
+        $descuento->save();
+
+        //regresa el id del desuento que se acaba de crear para mandarlo en el ajax
+        // que se encuentra en Desucento-Producto
+        return response()->json(['descuentoId' => $descuento->id]);
 
     }
 
@@ -298,6 +315,65 @@ class RegistrosController extends Controller
         // que se encuentra en Desucento-tecnica
         return response()->json(['descuentoId' => $descuento->id]);
 
+    }
+
+
+
+
+
+    public function RegistroCitaUsuario(Request $request) {
+
+        $request->validate([
+            'fechaCita' => 'required|date',
+            'horaCita' => 'required|date_format:H:i:s',
+            'usuarioId' => 'required|exists:users,id',
+            'empleadoId' => 'required|exists:users,id',
+            'serviciosSeleccionados' => 'required|json'
+        ]);
+
+        $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
+    
+        // Veirficar si los servicios seleccionados están vacíos
+        if (empty($serviciosSeleccionados)) {
+            return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
+        }
+    
+        // Verificar si ya existe una cita con la misma fecha y hora
+        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
+                            ->where('horaCita', $request->horaCita)
+                            ->first();
+    
+        if ($citaExistente) {
+            return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+        }
+    
+        DB::beginTransaction();
+        try {
+            // Crear la cita
+            $cita = Cita::create([
+                "fechaCita" => $request->fechaCita,
+                "horaCita" => $request->horaCita,
+                "usuarioId" => $request->usuarioId,
+                "empleadoId" => $request->empleadoId,
+                "notasCita" => $request->notasCita ?? null,
+                "estadoCita" => false
+            ]);
+    
+            // Crear las relaciones entre la cita y los servicios
+            foreach ($serviciosSeleccionados as $servicio) {
+                CitaHasServicio::create([
+                    'citaId' => $cita->id,
+                    'servicioId' => $servicio['servicioId'],
+                    'tecnicaId' => $servicio['tecnicaId']
+                ]);
+            }
+    
+            DB::commit();
+            return response()->json(['message' => 'Cita creada con éxito'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
+        }
     }
 
 

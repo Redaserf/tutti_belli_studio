@@ -89,6 +89,16 @@ h1, h2, h3{
             background-color: #ffe6f0;
             border: 1px solid #ff99cc;
         }
+        .btn-historial {
+            background-color: #ff66a3;
+            color: #fff;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn-historial:hover {
+            background-color: #ff99cc;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="hiddenX">
@@ -160,6 +170,8 @@ h1, h2, h3{
       <label for="numero" class="form-label">Número de teléfono</label>
       <input type="text" class="form-control" id="numero" value="{{ Auth::user()->numeroTelefono }}" readonly>
   </div>
+  <button type="button" class="btn btn-historial mt-3">Historial</button> 
+  <!-- BOTON PARA REDIRIGIRLO A VISTA DONDE MUESTRE HISTORIAL DE COMPRAS O CITAS DE SU PERFIL -->
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

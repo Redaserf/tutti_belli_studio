@@ -34,4 +34,8 @@ class Curso extends Model
     public function tecnicasHasCursos(){
         return $this->hasMany(TecnicaHasCurso::class);
     }
+
+    public function productoHasCurso(){
+        return $this->hasMany(ProductoHasCurso::class, 'cursoId');
+    }
 }

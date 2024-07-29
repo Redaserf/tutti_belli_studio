@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('fechaCita');
             $table->time('horaCita');
             $table->boolean('estadoCita');
-            $table->string('notasCita', 150);
+            $table->string('notasCita', 150)->nullable();
             $table->unsignedBigInteger('usuarioId');
             $table->unsignedBigInteger('empleadoId');
             $table->timestamps();

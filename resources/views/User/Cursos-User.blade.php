@@ -7,62 +7,108 @@
     <title>Cursos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-                  @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+           @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
 
 
-body, html {
-    margin: 0;
-    padding: 0;
-    background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    min-height: 100vh;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+        .card {
+                    margin: 20px;
+                    border-radius: 10px;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
 
-#navbar{
-  font-family: "Josefin Sans", sans-serif !important;  
-}
+        .card img {
+            border-radius: 10px 10px 0 0;
+        }
+        .card-img-top {
+            width: 0 auto;
+            height: 200px;
+            object-fit: cover;
+        }
 
-label{
-  font-family: "Josefin Sans", sans-serif !important;
-}
-p{
-  font-family: "Josefin Sans", sans-serif !important;
-}
-input{
-  font-family: "Josefin Sans", sans-serif !important;
-}
-button{
-  font-family: "Josefin Sans", sans-serif !important;
-}
+        .card-body {
+            padding: 20px;
+        }
 
-h1, h2, h3{
-  font-family: "Josefin Sans", sans-serif !important;
-}
+        .btn-primary {
+            background-color: #e83e8c;
+            border-color: #e83e8c;
+        }
 
-.hiddenX{
-    overflow-x: hidden;
-}
+        .btn-primary:hover {
+            background-color: #d63384;
+            border-color: #d63384;
+        }
 
-.vertical-separator {
-            display: inline-block;
-            width: 1.5px;
-            height: 30px;
-            background-color: #000;
-            margin: 3px 15px;
-            vertical-align: middle;
-    }
+        .btn-secondary {
+            background-color: #f8d7da;
+            border-color: #f8d7da;
+            color: #000;
+        }
 
-/* ANIMACION DE CARGA */
-#contenedor_carga{
-        background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
-        background-size: 20%;
-        height: 100vh;
-        width: 100%;
-        position: fixed;
-        z-index: 100;
-    }
+        .btn-secondary:hover {
+            background-color: #f5c6cb;
+            border-color: #f5c6cb;
+        }
+        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+
+        #navbar{
+          font-family: "Josefin Sans", sans-serif !important;  
+        }
+
+        label{
+          font-family: "Josefin Sans", sans-serif !important;
+        }
+        p{
+          font-family: "Josefin Sans", sans-serif !important;
+        }
+        input{
+          font-family: "Josefin Sans", sans-serif !important;
+        }
+        button{
+          font-family: "Josefin Sans", sans-serif !important;
+        }
+
+        h1, h2, h3{
+          font-family: "Josefin Sans", sans-serif !important;
+        }
+
+        .hiddenX{
+            overflow-x: hidden;
+        }
+
+        .vertical-separator {
+                    display: inline-block;
+                    width: 1.5px;
+                    height: 30px;
+                    background-color: #000;
+                    margin: 3px 15px;
+                    vertical-align: middle;
+            }
+
+        /* ANIMACION DE CARGA */
+        #contenedor_carga{
+                background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
+                background-size: 20%;
+                height: 100vh;
+                width: 100%;
+                position: fixed;
+                z-index: 100;
+            }
 
 
 
@@ -116,12 +162,72 @@ h1, h2, h3{
 </nav>
 
 
+<div class="container mt-5 pt-5">
+        <div class="row">
+            <!-- ESTAS SON LAS CARTAS DONDE SE DIBUJARA CADA CURSO AMIGAZO  -->
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="/IMG/imgg1.jpg" class="card-img-top" alt="Curso Imagen">
+                    <div class="card-body">
+                        <h5 class="card-title">Curso de Micropigmentación</h5>
+                        <p class="card-text">Descripción: Aprende las técnicas de micropigmentación para cejas, labios y ojos.</p>
+                        <p class="card-text">Técnicas: Técnica 1, Técnica 2, Técnica 3</p>
+                        <p class="card-text">Precio: $300</p>
+                        <p class="card-text">Fecha y Hora: 2024-08-01 10:00 AM</p>
+                        <p class="card-text">Instructor: Anyelo</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inscripcionModal">Inscribirme</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="/IMG/imgg1.jpg" class="card-img-top" alt="Curso Imagen">
+                    <div class="card-body">
+                        <h5 class="card-title">Curso de Micropigmentación</h5>
+                        <p class="card-text">Descripción: Aprende las técnicas de micropigmentación para cejas, labios y ojos.</p>
+                        <p class="card-text">Técnicas: Técnica 1, Técnica 2, Técnica 3</p>
+                        <p class="card-text">Precio: $300</p>
+                        <p class="card-text">Fecha y Hora: 2024-08-01 10:00 AM</p>
+                        <p class="card-text">Instructor: Anyelo</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inscripcionModal">Inscribirme</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="/IMG/imgg1.jpg" class="card-img-top" alt="Curso Imagen">
+                    <div class="card-body">
+                        <h5 class="card-title">Curso de Micropigmentación</h5>
+                        <p class="card-text">Descripción: Aprende las técnicas de micropigmentación para cejas, labios y ojos.</p>
+                        <p class="card-text">Técnicas: Técnica 1, Técnica 2, Técnica 3</p>
+                        <p class="card-text">Precio: $300</p>
+                        <p class="card-text">Fecha y Hora: 2024-08-01 10:00 AM</p>
+                        <p class="card-text">Instructor: Anyelo</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inscripcionModal">Inscribirme</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
-
-    {{-- Aquí tu código papi --}}
-
+    <!-- ESTE MODAL ES PARA LA INSCRIPCION DONDE SALE EL MODAL PARA CONFIRMAR -->
+    <div class="modal fade" id="inscripcionModal" tabindex="-1" aria-labelledby="inscripcionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inscripcionModalLabel">Confirmar Inscripción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de inscribirte en este curso?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Rechazar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarInscripcion">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -132,6 +238,12 @@ h1, h2, h3{
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 
 <script>
+    document.getElementById('confirmarInscripcion').addEventListener('click', function() {
+        const modalBody = document.querySelector('#inscripcionModal .modal-body');
+        modalBody.innerHTML = '<p>Te avisaremos si entras al curso mediante un correo. Gracias.</p>';
+        const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
+        modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
+    });
 
 $(document).ready(function(){
 

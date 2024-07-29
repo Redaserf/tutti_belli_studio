@@ -278,8 +278,87 @@
             display: none;
         }
 
-        /* Fin Dashboard */
+                /* Responsive adjustments */
+                @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none;
+            }
+        }
 
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Fin Dashboard */
+            .product-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+                padding: 16px;
+            }
+            .product-card {
+                padding: 10px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                width: 200px; /* Reducido para que quepan más tarjetas */
+                text-align: center;
+                margin: 10px; /* Añadido margen para separar las tarjetas */
+            }
+
+            .product-image {
+                border-radius: 10px; /* Reducido el radio del borde */
+                width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+                height: 150px; /* Altura reducida */
+                object-fit: contain;
+            }
+
+            .product-info {
+                padding: 10px; /* Reducido el padding */
+            }
+
+            .product-title {
+                font-size: 1.2em; /* Reducido el tamaño de la fuente */
+                margin: 0 0 8px 0; /* Reducido el margen inferior */
+            }
+
+            .product-description {
+                font-size: 0.9em; /* Reducido el tamaño de la fuente */
+                color: #666;
+                margin: 0 0 8px 0; /* Reducido el margen inferior */
+            }
+
+            .product-price {
+                font-size: 1em; /* Reducido el tamaño de la fuente */
+                color: #333;
+                font-weight: bold;
+            }
 
 
     </style>
@@ -290,6 +369,8 @@
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
         {{-- Sidebar --}}
 
@@ -412,13 +493,18 @@
                         <label for="horaInicio">Hora de inicio</label>
                     </div>
                 </div>
+                <div class="form-floating mb-3">
+                    <button id="agregarProductos" type="button" class="btn btn-dark btn-block w-100" data-bs-toggle="modal" data-bs-target="#productosModal" onclick="dibujarProductos()">
+                        Agregar Productos
+                    </button>
+                </div>
                 <div class="form-floating mb-3" id="contenedoTecnicas">
 
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
                         <button type="button" id="anadirTecnica" class="btn btn-dark w-100" name="anadirTecnica">
-                            <label for="anadirTecnica">Añadir tecnica</label>
+                        <label for="anadirTecnica">Añadir tecnica</label>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -450,6 +536,30 @@
         </div>
     </form>
 
+    <!-- Modal -->
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productosModalLabel">Selecciona los productos que se utilizaran en el curso</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div id="productos" class="product-container">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="cerrar" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button id="guardar" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 </div>
 
@@ -458,6 +568,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
+    let selectedProducts = [];
+    let cantidadesProducts = [];
 
     // Scripts para todas las vistas
 
@@ -473,27 +585,53 @@
         let selectCounter = 0; // Variable contador
         let selectedTecnicas = []; // Lista para mantener las técnicas ya seleccionadas
 
-        // Dashboard toggle
-        const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
 
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-            if (!sidebar.classList.contains("close")) {
-                overlay.style.display = "block";
-            } else {
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
+
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
                 overlay.style.display = "none";
-            }
-        });
+                sidebar.classList.remove("open");
+            });
 
-        overlay.addEventListener("click", () => {
-            sidebar.classList.add("close");
-            overlay.style.display = "none";
-        });
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() {
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
 
         loadEmpleados();
+
 
         $('#anadirTecnica').on('click', function(e){
             e.preventDefault();
@@ -566,6 +704,7 @@
                     let cursoId = response.cursoId;
 
                     saveTecnicas(cursoId, selectedTecnicas);
+                    saveProductos(cursoId,selectedProducts, cantidadesProducts)
 
                     $('#nombre').val('');
                     $('#cupoLimite').val('');
@@ -608,14 +747,35 @@
                     tecnicas: tecnicas
                 },
                 success: function(response) {
-                    alert("Curso guardadas exitosamente");
-                    location.reload();  // Refresca la página al aceptar el alert
+                    // alert("Curso guardadas exitosamente");
+                    // location.reload();  // Refresca la página al aceptar el alert
                 },
                 error: function(error) {
-                    alert('Ocurrió un error al guardar el curso');
-                    location.reload();  // Refresca la página al aceptar el alert
+                    // alert('Ocurrió un error al guardar el curso');
+                    // location.reload();  // Refresca la página al aceptar el alert
                 }
             });
+        }
+
+        function saveProductos(cursoId, productos,cantidades){
+                $.ajax({
+                    url: '/productosCursos',
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        cursoId: cursoId,
+                        productos: productos,
+                        cantidades: cantidades
+                    },
+                    success: function(response) {
+                        alert("Productos guardados exitosamente");
+                        // location.reload();  // Refresca la página al aceptar el alert
+                    },
+                    error: function(error) {
+                        alert('Ocurrió un error al guardar los productos');
+                        // location.reload();  // Refresca la página al aceptar el alert
+                    }
+                });
         }
 
         function loadEmpleados(){
@@ -630,6 +790,74 @@
                 // Selecciona el primer valor por defecto
                 empleadoSelect.val(empleados[0].id);
             });
+        }
+
+        $('#cerrar').on('click',function (){
+            selectedProducts = [];
+            cantidadesProducts = [];
+        });
+
+        $('#guardar').on('click',function (){
+            if(selectedProducts.length > 0) {
+                $('#agregarProductos').prop('disabled', true);
+                $('#agregarProductos').text('Productos seleccionados');
+                // console.log(selectedProducts);
+            }else{
+                alert('no ha seleccionado ningun producto para el descuento')
+            }
+        })
+        //fin document ready
+    });
+
+
+
+    //Script para dibujar los productos
+    function dibujarProductos() {
+        $.ajax({
+            url: '/get/productos/sd',
+            method: 'GET',
+            success: function(data) {
+                const productos = $('#productos');
+                productos.empty();
+                data.forEach(producto => {
+                    let cont = producto.id;
+                    let idDinamico = 'cantidad' + cont;
+                    const card = `
+                    <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                            <input type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar">
+                            <label for="${idDinamico}">Cantidad a utilizar</label>
+                        </div>
+                        <button style="margin-bottom: 10px;" id="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para el curso</button>
+                    </div>
+                `;
+                    productos.append(card);
+                });
+            }
+        });
+    }
+
+    $(document).on('click', '#seleccionar', function() {
+        let productId = $(this).data('id');
+        let idDinamico = 'cantidad' + productId;
+        let cantidad = $('#' + idDinamico).val();
+
+        // Comprobamos si cantidad es mayor que 0
+        if (cantidad > 0) {
+            selectedProducts.push(productId);
+            cantidadesProducts.push(cantidad);
+
+            $(this).prop('disabled', true);
+            $(this).text('Seleccionado');
+
+            console.log(selectedProducts);
+            console.log(cantidadesProducts);
+        } else {
+            alert('Inserte un valor numérico válido');
         }
     });
 </script>

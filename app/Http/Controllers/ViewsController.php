@@ -433,7 +433,7 @@ class ViewsController extends Controller
 
         $user = Auth::user();
         if ($user->rolId == 4) {
-            return view('Boss.Ver-Citas');
+            return redirect('/Ver-CitasAdmin');
         } elseif ($user->rolId == 2) {
             return redirect('/Home-usuario');
         } elseif ($user->rolId == 3) {

@@ -26,14 +26,73 @@ class DibujarController extends Controller
     return response()->json(null, 204);
     }
 
+    // ==========[ Obtener un producto por id ]==========
+    public function obtenerProducto($id){
+        $producto = Producto::find($id);
+        if ($producto) {
+            return response()->json($producto);
+        } else {
+            return response()->json(['error' => 'Producto no encontrado'], 404);
+        }
+    }
+
+    // ==========[ Actualizar un producto ]==========
+    public function actualizarProducto(Request $request, $id){
+        $producto = Producto::find($id);
+
+        if ($producto) {
+        $producto->nombre = $request->input('nombre');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->precio = $request->input('precio');
+
+        if ($request->hasFile('imagenProducto')) {
+            $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+        }
+
+        $producto->save();
+
+        return response()->json(['success' => 'Producto actualizado exitosamente']);
+        } else {
+        return response()->json(['error' => 'Producto no encontrado'], 404);
+        }
+    }
+
+    // ==========[ obtener los productos sin descuento ]==========
+    function productoSinDescuento()
+    {
+        $productos = Producto::where('descuentoId', '=', null)
+            ->where('inventarioId', '=', 1)
+            ->get();
+        return response()->json($productos);
+    }
+
+    // ==========[ obtener los productos con descuento ]==========
+    function productosConDescuento()
+    {
+        $productos = Producto::where('descuentoId', '>', 0)
+            ->where('inventarioId', '=', 1)
+            ->with(['inventario', 'descuento'])
+            ->get();
+        return response()->json($productos);
+
+    }
+
 // =============================================================================================
 
     // ==========[ Obtener todos los productos del carrito ]==========
-    function carritoIndex(){
-    $productos = Carrito::all();
-    return response()->json($productos);
+    public function carritoIndex(){
+        $user = Auth::user();
+        $carrito = $user->carrito;
+
+        if ($carrito) {
+            $productos = $carrito->productos()->withPivot('id')->get();
+            return response()->json($productos);
+        } else {
+            return response()->json(['error' => 'El usuario no tiene un carrito asociado'], 404);
+        }
     }
 
+    // ==========[ Agregar producto al carrito ]==========
     function carritoAgregar(Request $request){
         try {
             $user = Auth::user();
@@ -64,6 +123,20 @@ class DibujarController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al agregar producto al carrito: ' . $e->getMessage());
             return response()->json(['error' => 'Hubo un error al agregar el producto al carrito'], 500);
+        }
+    }
+
+    // ==========[ Eliminar un producto del carrito ]==========
+    function carritoDelete($id){
+        $user = Auth::user();
+        $carrito = $user->carrito;
+
+        if ($carrito) {
+        // Asegurarse de eliminar la relación específica usando el id de la tabla pivote
+        $carrito->productos()->wherePivot('id', $id)->detach();
+            return response()->json(['success' => 'Producto eliminado del carrito']);
+        } else {
+            return response()->json(['error' => 'El carrito no existe'], 404);
         }
     }
 

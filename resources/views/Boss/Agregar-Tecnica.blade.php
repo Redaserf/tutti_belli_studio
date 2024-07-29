@@ -229,6 +229,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -292,6 +326,8 @@ header {
 
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
+
 
         {{-- Sidebar --}}
 
@@ -451,25 +487,50 @@ header {
 
 $(document).ready(function(){
 
-    // Dashboard toggle
-    const body = document.querySelector("body"),
-            sidebar = body.querySelector(".sidebar"),
-            toggle = body.querySelector(".toggle"),
-            overlay = body.querySelector(".overlay");
+            // Dashboard toggle
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
 
-    toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-        if (!sidebar.classList.contains("close")) {
-            overlay.style.display = "block";
-        } else {
-            overlay.style.display = "none";
-        }
-    });
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
+    
 
-    overlay.addEventListener("click", () => {
-        sidebar.classList.add("close");
-        overlay.style.display = "none";
-    });
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
+            }
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
 
     loadServicios();
     // Fin scripts para todas las vistas

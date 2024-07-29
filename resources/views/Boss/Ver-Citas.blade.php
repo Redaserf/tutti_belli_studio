@@ -244,6 +244,40 @@ header {
     display: none;
 }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .home {
+                margin-left: 0 !important;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                width: 250px;
+            }
+            .sidebar-btn {
+                display: block;
+            }
+            .sidebar header .toggle {
+                display: none; 
+            }
+        }
+
+        .sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: var(--primary-color);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
 /* Fin Dashboard */
 
 
@@ -387,17 +421,30 @@ header {
             animation-name: slideOut;
         }
         /* Alerta bonita */
+
+        /*jajaja*/
+
+        .jajaja {
+            background-color: red;
+        }
+
+          /* modal de citas, es para que este por encima de cualquier otro modal */
+          #citasModal {
+            z-index: 2000; /* Ajusta este valor según sea necesario */
+        }
     </style>
 
 </head>
 
 <body class="">
-
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-
+    
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    
     <div id="contenedor_carga"></div>
     <div class="overlay"></div>
+    <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
 
         {{-- Sidebar --}}
     
@@ -483,6 +530,11 @@ header {
 
             <section class="home">
         <div class="top text-center">
+
+            <button id='btnVerCitas' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#verCitasModal"  style="width: curso;">
+                ver citas pendientes<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
+            </button>
+
             <h2>Citas pendientes</h2>
             <button id='btnAgregar' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#citasModal"  style="width: curso;">
                 Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
@@ -508,7 +560,7 @@ header {
                                     <input type="hidden" id='id'>
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
-                                        <label for="fechaCita">Fecha de la cita</label>
+                                        <label for="fechaCita" id="labelFechaCita">Fecha de la cita</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                     <select style='display: none' class='form-control' id="horaCita" name="horaCita" required>
@@ -527,13 +579,14 @@ header {
                                     <div class="form-floating mb-3">
                                         <select class="form-control" name="empleadoId" id="empleadoId"></select>
                                     </div>
+                                    <div style="display:none" id="msg"></div>
                                     <div class="mb-3">
                                         <label for="notasCita">Notas de la cita</label>
                                         <textarea class="form-control" id="notasCita" name='notasCita' rows="7" required></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" style='display:none' id='btnEliminar' class='btn btn-danger'>Eliminar</button>
+                                    <button type="button" style='display:none' id='btnEliminar' data-bs-dismiss="modal" class='btn btn-danger'>Eliminar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button type="submit" class="btn btn-dark">Confirmar</button>
                                 </div>
@@ -565,10 +618,71 @@ header {
 
 
 
+            <!-- modal ver citas que aun no son aceptadas -->
+
+            <div class="modal fade" id="verCitasModal" tabindex="-1" aria-labelledby="labelVerCitasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl"> <!-- modal-lg para un modal más grande -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelVerCitasModal">Citas pendientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive"> <!-- Agregar clase table-responsive -->
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha de la cita</th>
+                                <th>Hora de la cita</th>
+                                <th>Nombre del cliente</th>
+                                <th>Numero de telefono</th>
+                                <th>Correo electronico</th>
+                                <th>Nombre del empleado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaCitas">
+                            <!-- Aquí se llenarán las filas de la tabla -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-dark">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal para rechazar cita -->
+
+<div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"> <!-- modal-lg para un modal más grande -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="labelEliminarCitasModal">Rechazar Cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Estas seguro de eliminar la cita?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-danger">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script>
@@ -599,7 +713,7 @@ header {
                         .removeClass("show")
                         .addClass("hide")
                         .fadeOut();
-                }, 6000);
+                }, 6500);
             }
 
          // Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la pagina
@@ -617,7 +731,8 @@ header {
             }
             //alertas
 
-        
+//establecer fecha al minDate si el dia de hoy ya son mas de las 6 pues que muestre el dia siguiente si no pues que muestre el dia de hoy
+
 
             $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
                 dateFormat: 'yy-mm-dd',
@@ -642,67 +757,65 @@ header {
 
                     let select = $('#horaCita');
                     select.show();
-                //     var selectedDate = new Date(dateText);
-                // var fechaActual = new Date();
-                // select.empty(); // Limpiar las opciones anteriores
-
-                // // Comprobar si la fecha seleccionada es hoy
-                // if (selectedDate.toDateString() === fechaActual.toDateString()) {
-                //     // Si es hoy, agregar solo horas futuras
-                //     var horaActual = fechaActual.getHours();
-                //     for (var hora = horaActual + 1; hora < 24; hora++) {
-                //         select.append(new Option(hora + ":00", hora + ":00"));
-                //         select.append(new Option(hora + ":30", hora + ":30"));
-                //     }
-                // } else {
-                //     // Si no es hoy, agregar todas las horas del día
-                //     for (var hora = 0; hora < 24; hora++) {
-                //         select.append(new Option(hora + ":00", hora + ":00"));
-                //         select.append(new Option(hora + ":30", hora + ":30"));
-                //     }
-                // }
+               
                 }
             });
 
+            function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
+                return fecha1.getFullYear() === fecha2.getFullYear() &&
+                fecha1.getMonth() === fecha2.getMonth() &&
+                fecha1.getDate() === fecha2.getDate();
+            }
+
         function actualizarOpcionesSelect(date) {
                 let dia = date.getDay();
-                console.log('fecha seleccionada: ',date);
+                console.log('fecha: ',date);
                 console.log('Hoy: ', new Date());
                 let select = $('#horaCita');
 
                 select.empty();
 
-                if(date.getDay() === new Date().getDay()) {// si el dia es hoy
+                let hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+
+                if(esMismaFecha(date, hoy)) {// si el dia es hoy
+                    console.log(date, hoy);
                     
                 let horaInicio;
                 let horaFin;
-                if(dia>=0 && dia<=4){// lunes a viernes
+                if(dia>=1 && dia<=5){// lunes a viernes
                     horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
                     console.log('hora Actual mas dos horas: ', horaInicio);
                     horaFin = 21;
-                }else if(dia === 5 || dia === 6){//sabados y domingos
+                    if(horaInicio > horaFin) {
+                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                    }
+                }else if(dia === 0 || dia === 6){//sabados y domingos
                     horaInicio = new Date().getHours() + 2;
-                    console.log(horaInicio);
-                    horaFin = 16;
+                    console.log('hora hoy sabado 27 de julio: ', horaInicio);
+                    horaFin = 21;
+                    if(horaInicio > horaFin) {
+                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                    }
                 }
 
                 for (let hora = horaInicio; hora < horaFin; hora++) {
                     const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
-                    console.log(valorTiempo);
+                    console.log('horas del dia de hoy: ',valorTiempo);
                     select.append(new Option(valorTiempo, valorTiempo));
                 }
-
+                    return;
             }
 
 
             let horaInicio;
             let horaFin;
-            if(dia>=0 && dia<=4){
+            if(dia>=1 && dia<=5){
                 horaInicio = 9;
                 horaFin = 21;
-            }else if(dia === 5 || dia === 6){
-                horaInicio = 10;
-                horaFin = 16;
+            }else if(dia === 0 || dia === 6){
+                horaInicio = 9;
+                horaFin = 21;
             }
 
             for (let hora = horaInicio; hora < horaFin; hora++) {
@@ -723,11 +836,17 @@ header {
         let fechaInicio2horas = dosHorasDespues.toISOString().split('T')[0];
         console.log('dos horas despues: ',fechaInicio2horas);
 
+        
 
+        let horasActuales = new Date(fechaAhora.getTime());
+        console.log(horasActuales);
+        let fechaHoraActual = horasActuales.toISOString().split('T')[0];
+
+        console.log(fechaHoraActual);
 
         const eventos = @json($events);
 
-        console.log("eventos", eventos);
+        // console.log("eventos", eventos);
 
         //calendario
         const calendarEl = document.getElementById('calendar');
@@ -739,10 +858,10 @@ header {
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
             validRange: {
-                start: fechaInicio2horas,
+                start: fechaHoraActual,
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
-            events: @json($events),//variable de eventos que agarra el arreglo events de el controlador
+            events: eventos,//variable de eventos que agarra el arreglo events de el controlador
             businessHours: [
                 {
                     daysOfWeek: [1, 2, 3, 4, 5], // Lunes a viernes
@@ -765,7 +884,11 @@ header {
 
                 var citaId = info.event.id;
 
+                var fechaSeleccionada = new Date(info.event.start);
+
+
                 console.log(citaId);
+                actualizarOpcionesSelect(fechaSeleccionada);
 
                 editarCita(citaId);
 
@@ -841,7 +964,7 @@ header {
                 
                 $('#fechaCita').val(fechaFormatoDeseado); 
                 console.log($('#fechaCita').val());
-                actualizarOpcionesSelect(fechaHora);
+                actualizarOpcionesSelect(info.date);
                 $('#horaCita').show();
                 if ($('#horaCita').find(`option[value="${tiempoFormatoDeseado}"]`).length === 0)
                 {
@@ -856,6 +979,20 @@ header {
 
         calendar.render();
 
+
+        // function recargarEventos() {
+        //     $.get('/cita/obtener/eventos', function(response) {
+        //         // Eliminar todos los eventos actuales
+        //         calendar.removeAllEvents();
+        //         // Agregar los nuevos eventos obtenidos desde el backend
+        //         calendar.addEventSource(response.events);
+        //         // Re-renderizar el calendario
+        //         calendar.render();
+        //     });
+        // }
+
+
+
         function eliminarCita(id){
             $.ajax({
                 url: `/eliminar/cita/${id}`,
@@ -864,15 +1001,21 @@ header {
                 },
                 method: 'DELETE',
                 success: function(response){
+                    console.log(response);
+                    // $('#citaForm').hide();
+                    window.location.href = '/Ver-Citas';
+
+
+                    mostrarAlerta('Se eliminó con éxito', 'alert-danger', 'exclamation-triangle-fill')
                      // Guardar el mensaje de alerta en localStorage
-                    localStorage.setItem('alertMessage', 'Se eliminó con éxito');
-                    localStorage.setItem('alertClass', 'alert-danger');
-                    localStorage.setItem('alertIcon', 'exclamation-triangle-fill');
+                    // localStorage.setItem('alertMessage', 'Se eliminó con éxito');
+                    // localStorage.setItem('alertClass', 'alert-danger');
+                    // localStorage.setItem('alertIcon', 'exclamation-triangle-fill');
                     
                     // Redirigir después de un breve retraso para asegurarse de que la alerta se muestre
-                    setTimeout(function() {
-                        window.location.href = '/Ver-Citas';
-                    }, 8000); 
+                    // setTimeout(function() {
+                    //     window.location.href = '/Ver-Citas';
+                    // }, 100); 
                 },
                 error: function(error) {
                     console.log(error);
@@ -904,7 +1047,7 @@ header {
                     $('#horaCita').show();
                     console.log('hora de la cita: ', citasServicios.cita.horaCita);
 
-                    actualizarOpcionesSelect(citaDate);
+                    // actualizarOpcionesSelect(citaDate);//no actualiza las fechas a la hora de editar
                     if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
                     {
                         $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
@@ -1076,7 +1219,6 @@ header {
                         localStorage.setItem('alertClass', alertClass);
                         localStorage.setItem('alertIcon', alertIcon);
                     }
-
                     window.location.href = '/Ver-Citas';
                 },
                 error: function(xhr) {
@@ -1129,29 +1271,169 @@ header {
 
 
 
+        //dibujar citas no aceptadas
+        function citasNoAceptadas(){
+
+            $.get('/cita/usuario/empleado', function(citas) {
+                let tabla = $('#tablaCitas');
+                tabla.empty();
+                
+                citas.forEach(cita => {
+                    console.log(cita.id);
+                    tabla.append(`
+                        <tr>
+                            <td>${cita.fechaCita}</td>
+                            <td>${cita.horaCita}</td>
+                            <td>${cita.usuario.clienteNombreCompleto}</td>
+                            <td>${cita.usuario.numeroTelefono}</td>
+                            <td>${cita.usuario.email}</td>
+                            <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
+                            <td>
+                                <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita <i class="fa-solid fa-trash"></i></button>
+                                <button class="btn btn-success aceptar-cita" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">aceptar cita <i class="fa-solid fa-check"></i></button>
+
+                            </td>
+                        </tr>
+                    `);
+                });
+            });
+
+        }
+
+        citasNoAceptadas();      
+        
+        $(document).on('click', '.aceptar-cita', function() {
+            let citaId = $(this).data('cita-id');
+            agregarNota(citaId);
+        })
+
+
+        $(document).on('click', '.eliminar-cita-btn', function() {
+            let citaId = $(this).data('cita-id');
+            console.log(citaId);
+            $('#rechazarCita').data('cita-id', citaId);
+            // $('#verCitasModal').hide();//cerrar el modal de citas pendientes
+            $('#eliminarCita').modal('show');
+        });
+
+        $('#rechazarCita').on('click', function() {
+            let citaId = $(this).data('cita-id');
+            console.log(citaId);
+            eliminarCita(citaId);
+            citasNoAceptadas();
+            //cerrar el modal
+            $('#eliminarCita').modal('hide');
+        });
+
+
+        function agregarNota(id) {
+            limpiarFormulario();
+            
+            $.get(`/cita/servicios/tecnica/${id}`, function(citasServicios) {
+
+                console.log('Datos recibidos:', citasServicios); 
+                console.log(`Id de la cita: `, citasServicios.cita.id);
+
+
+
+                $('#btnEliminar').show();
+                $('#msg').show();
+                $('#msg').text('Escriba aqui si quiere agregar alguna nota o algun recordatorio');
+
+                    $('#id').val(citasServicios.cita.id);
+                    $('#fechaCita').val(citasServicios.cita.fechaCita);
+
+
+                    const citaDate = new Date(citasServicios.cita.fechaCita);
+                    $('#horaCita').show();
+                    console.log('hora de la cita: ', citasServicios.cita.horaCita);
+
+                    // actualizarOpcionesSelect(citaDate);//no actualiza las fechas a la hora de editar
+                    if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
+                    {
+                        $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
+                    }
+                    $('#horaCita').val(citasServicios.cita.horaCita);
+
+                    citasServicios.servicios.forEach(servicio => {
+
+                        let selectMultipleServicios = $('#service');
+                        let opcion = selectMultipleServicios.find(`div[data-select-id="${servicio.id}"]`);
+                        
+                        if(opcion.length > 0){
+
+                            opcion.addClass('selected');
+
+                            selectMultipleServicios.data('value', servicio.id);
+                        }
+                    
+                    })
+                    citasServicios.cita.servicios.forEach(servicio => {
+                        console.log(servicio);
+                        servicio.tecnicas.forEach(tecnica => {
+                            console.log(tecnica);
+                            $('.multiselect-option.selected').each(function() {
+                                    console.log('ID de la técnica:', tecnica.id);
+                                $(`#tecnicaSelect${servicio.id}`).val(tecnica.id);
+                                $(`#tecnicaSelect${servicio.id}`).show();
+                            });
+                        })
+                    })
+                    $('#usuarioId').val(citasServicios.cita.usuarioId);
+                    $('#empleadoId').val(citasServicios.cita.empleadoId);
+
+                    $('#notasCita').val(citasServicios.cita.notasCita);
+            })
+            $('#citasModal').modal('show');
+        }
 
 
 
     
-        // Dashboard toggle
-        const body = document.querySelector("body"),
+            // Dashboard toggle
+            const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
                 toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay");
+                overlay = body.querySelector(".overlay"),
+                sidebarBtn = body.querySelector(".sidebar-btn");
+
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+                if (!sidebar.classList.contains("close")) {
+                    overlay.style.display = "block";
+                } else {
+                    overlay.style.display = "none";
+                }
+            });
     
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-            if (!sidebar.classList.contains("close")) {
-                overlay.style.display = "block";
-            } else {
+
+            overlay.addEventListener("click", () => {
+                sidebar.classList.add("close");
                 overlay.style.display = "none";
+                sidebar.classList.remove("open");
+            });
+
+            sidebarBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+                if (sidebar.classList.contains("open")) {
+                    sidebar.classList.remove("close");
+                    overlay.style.display = "block";
+                } else {
+                    sidebar.classList.add("close");
+                    overlay.style.display = "none";
+                }
+            });
+
+                        // Botón sidebar
+                        function botonSidebar() { 
+                if (window.innerWidth <= 768) {
+                    $('.sidebar-btn').css('display', 'block');
+                } else {
+                    $('.sidebar-btn').css('display', 'none');
+                }
             }
-        });
-    
-        overlay.addEventListener("click", () => {
-            sidebar.classList.add("close");
-            overlay.style.display = "none";
-        });
+            window.addEventListener('resize', botonSidebar);
+            botonSidebar();
     
         // Fin scripts para todas las vistas
     
