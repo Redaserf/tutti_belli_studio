@@ -42,6 +42,11 @@ Route::get('/', function () {
 
     Route::get('/citas/aceptadas', [ConsultasController::class, 'citasAceptadas']);
 
+    //citas No aceptadas
+
+    Route::get('/citas/noAceptadas', [ConsultasController::class, 'citasDenegadas']);
+
+
     //Citas con sus servicios y tecnicas
     Route::get('/citas/servicios/tecnicas', [ConsultasController::class, 'serviciosTecnicasCitas']);
 
@@ -49,10 +54,25 @@ Route::get('/', function () {
     Route::get('/cita/servicios/tecnica/{id}', [ConsultasController::class, 'unaCitaConServiciosTecnica']);
 
 
-    //verifica disponibilidad de fechas y horas
-    Route::get('/citas/verificar', [ConsultasController::class, 'verificarDisponibilidad']);
+    //verifica disponibilidad de fechas y horas tampoco la usamos
+    // Route::get('/citas/verificar', [ConsultasController::class, 'verificarDisponibilidad']);
 
 
+    //citas no acpetadas hechas por usuarios con datos del usuario y empleado
+    Route::get('/cita/usuario/empleado', [ConsultasController::class, 'citasUsuariosEmpleados']);
+  
+   //obtener eventos para el calendario
+   Route::get('/cita/obtener/eventos', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('cita.obtener.eventos');
+
+  //buscador/filtro de servicios y tecnicas
+
+  Route::get('/buscar', [ConsultasController::class, 'buscador']);
+  
+  
+  
+  
+  
+  
 
     // ===== [Sevicios] =====
     //devuelve servicio como Json
@@ -155,6 +175,8 @@ Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
 Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
 Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
 Route::get('/Logout',[UsuarioController::class, 'Logout']);
+
+Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCitaUsuario']);
 
 // =====[ Empleados ]=====
 
