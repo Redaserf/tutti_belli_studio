@@ -89,10 +89,10 @@ use App\Http\Controllers\DibujarController;
     Route::get('/Login',[ViewsController::class,'LoginVista']);
     Route::get('/Registro',[ViewsController::class,'RegistroVista']);
     Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
-Route::get('/admin', function () {
-    return view('RegistrarAdministradores');
-});
-Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
+    Route::get('/admin', function () {
+        return view('RegistrarAdministradores');
+    });
+    Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
 
 
 
@@ -146,6 +146,7 @@ Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
+    Route::get('/Perfil-Admin',[ViewsController ::class,'bossVerPerfil']);
 
 
 

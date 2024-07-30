@@ -305,6 +305,20 @@ class ViewsController extends Controller
             return redirect('/Home-empleado');
         }
     }
+    public function bossVerPerfil(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Perfil-Admin');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
+    }
 
     public function bossAgregarDescuentoTecnica(){
         if (!Auth::check()) {
