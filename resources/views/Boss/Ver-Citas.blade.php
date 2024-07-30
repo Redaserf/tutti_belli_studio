@@ -1188,14 +1188,15 @@ header {
                     $('#usuarioId').val(citasServicios.cita.usuarioId);
                     $('#empleadoId').val(citasServicios.cita.empleadoId);
 
-                    let selectUsuario = $('#usuarioId');
+                   
+                    let opcion = $('#usuarioId').find('option:selected');
                     let emailInput = $('#emailUsuario');
 
-                    if(citasServicios.cita.usuarioId === 1){
+                    if (citasServicios.cita.usuarioId === 1) {
                         emailInput.val('Usuario No registrado');
-                    }else {
-                        let email = selectUsuario.data('email-usuario');
-
+                    } else {
+                        // Aquí asumo que el email del usuario está incluido en citasServicios.cita.emailUsuario
+                        let email = opcion.data('email-usuario');
                         emailInput.val(email);
                     }
 
