@@ -75,6 +75,7 @@ h1, h2, h3{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 630px;
             width: 630px;
+            margin-top: 66px;
         }
         .profile-container h2 {
             color: #000000;
@@ -147,7 +148,6 @@ h1, h2, h3{
 
 
 
-
 <div class="profile-container">
     <h2>Mi cuenta</h2>
     <div class="mb-3">
@@ -170,8 +170,10 @@ h1, h2, h3{
       <label for="numero" class="form-label">Número de teléfono</label>
       <input type="text" class="form-control" id="numero" value="{{ Auth::user()->numeroTelefono }}" readonly>
   </div>
-  <button type="button" class="btn btn-historial mt-3">Historial</button> 
-  <!-- BOTON PARA REDIRIGIRLO A VISTA DONDE MUESTRE HISTORIAL DE COMPRAS O CITAS DE SU PERFIL -->
+  <a href="/Historial-User">
+    <button type="button" class="btn btn-historial mt-3">Historial</button> 
+    <!-- BOTON PARA REDIRIGIRLO A VISTA DONDE MUESTRE HISTORIAL DE COMPRAS O CITAS DE SU PERFIL -->
+  </a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -112,6 +112,7 @@ Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
     Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
     Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
     Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
+    Route::get('/Historial-User', [ViewsController::class, 'userHistorial']);
 
 
     // =====[ Employee ]=====
@@ -200,6 +201,17 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/get/empleados',[DibujarController::class,'employeeIndex']);
     Route::get('/empleado/eliminar/{id}',[DibujarController::class,'employeeDelete']);
+
+
+
+    // =====[ Cursos ]=====
+
+    Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
+    Route::get('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
+    Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
+    Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
+
+
 
 
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Cursos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -307,6 +308,52 @@ header {
                 margin-top: 20px;
                 }
 
+                        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+        .card {
+                    margin: 20px;
+                    border-radius: 10px;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            border-radius: 10px 10px 0 0;
+        }
+        .card-img-top {
+            width: 0 auto;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background-color: #e83e8c;
+            border-color: #e83e8c;
+        }
+
+        .btn-primary:hover {
+            background-color: #d63384;
+            border-color: #d63384;
+        }
+
+        .btn-secondary {
+            background-color: #f8d7da;
+            border-color: #f8d7da;
+            color: #000;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f5c6cb;
+            border-color: #f5c6cb;
+        }
+        /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
     </style>
 
 </head>
@@ -400,6 +447,60 @@ header {
                 
             {{-- Fin Sidebar --}}
 
+
+                        {{-- Modal para editar curso --}}
+
+                        <div class="modal fade" id="editCursoModal" tabindex="-1" aria-labelledby="editCursoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="editCursoForm" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editCursoModalLabel">Editar Producto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" id="edit_id" name="id">
+                                            <div class="form-group">
+                                                <label for="edit_nombre">Nombre</label>
+                                                <input type="text" class="form-control" id="edit_nombre" name="nombre">
+                                            </div>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="edit_descripcion">Descripción</label>
+                                                <input type="text" class="form-control" id="edit_descripcion" name="descripcion">
+                                            </div>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="edit_date">Fecha de inicio</label>
+                                                <input type="date" class="form-control" id="edit_date" name="date">
+                                            </div>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="edit_hour">Hora de inicio</label>
+                                                <input type="time" class="form-control" id="edit_hour" name="hour">
+                                            </div>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="edit_empleadoId">Empleado a cargo</label>
+                                                <select class="form-control" id="edit_empleadoId" name="empleadoId">
+                                                </select>
+                                            </div>
+                                            <div class="form-group" style="margin-top: 10px;">
+                                                <label for="edit_precio">Precio</label>
+                                                <input type="number" class="form-control" id="edit_precio" name="precio">
+                                                <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
+                                            </div>
+                                            <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
+                                                <input type="file" class="form-control" id="edit_imagenProducto" name="imagenCurso">
+                                                <img id="edit_imagenCurso_preview" src="#" alt="Imagen del producto" style="width: 30%; margin-top: 10px;" />
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
         
             <section class="home">
                 <div class="top text-center">
@@ -410,12 +511,17 @@ header {
     
                 <div>
     
-                    {{-- aqui todo --}}
+                    <div class="container mt-1 pt-5">
+                        <div id="cursos" class="row">
+                          {{-- Cursos mediante backend --}}
+                        </div>
+                      </div>
     
                 </div>
     
             </section>
 
+            <br>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -432,8 +538,154 @@ header {
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
+
+
+            // Dibujar cursos
+
+    function dibujarCursos() {
+  $.ajax({
+    url: '/get/cursos',
+    method: 'GET',
+    success: function(data) {
+      console.log(data); // Verifica los datos recibidos en la consola
+      const cursos = $('#cursos');
+      cursos.empty();
+      if (data.length === 0) {
+        cursos.append(`
+                    <div class="col-12 text-center my-5">
+                        <div class="alert" role="alert">
+                            <h4 class="alert-heading">¡No hay cursos disponibles en este momento!</h4>
+                        </div>
+                    </div>
+                `);
+      } else {
+        data.forEach(curso => {
+          const tecnicas = curso.tecnicas.map(tecnica => tecnica.nombre).join(', ');
+          const card = `
+            <div class="col-md-6 col-lg-4 ">
+              <div class="card">
+                <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
+                <div class="card-body">
+                  <h5 class="card-title">${curso.nombre}</h5>
+                  <p class="card-text">${curso.descripcion}</p>
+                  <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
+                  <p class="card-text">Técnicas: ${tecnicas}</p>
+                  <p class="card-text">Costo de inscripción: $${curso.precio}</p>
+                  <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-curso" data-id="${curso.id}">Editar curso<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+            </div>
+          `;
+          cursos.append(card);
+        });
+        $('.editar-curso').click(function() {
+                const cursoId = $(this).data('id');
+                modalEditar(cursoId);
+            });
+
+            $('.borrar-curso').click(function() {
+                const cursoId = $(this).data('id');
+                cursoDelete(cursoId);
+            });
+      }
+    },
+    error: function(error) {
+      console.error('Error al obtener los cursos:', error);
+    }
+  });
+}
+
+        // Eliminar un curso
+
+        function cursoDelete(id){
+  if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+    $.ajax({
+      url: `/cursos/eliminar/${id}`,
+      method: 'GET',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(){
+        alert('Curso eliminado exitosamente.');
+        dibujarCursos();
+      },
+      error: function(error){
+        console.log(error);
+      }
+    });
+  }
+}
+
+function modalEditar(id) {
+    $.ajax({
+        url: `/get/curso/${id}`,
+        method: 'GET',
+        success: function(data) {
+            const curso = data.curso;
+            const empleados = data.empleados;
+            
+            $('#edit_id').val(curso.id);
+            $('#edit_nombre').val(curso.nombre);
+            $('#edit_descripcion').val(curso.descripcion);
+            $('#edit_date').val(curso.fechaInicio);
+            $('#edit_hour').val(curso.horaInicio);
+            $('#edit_precio').val(curso.precio);
+            $('#edit_imagenCurso_preview').attr('src', `/storage/${curso.imagen}`);
+
+            // Llenar el select de empleados
+            const empleadoSelect = $('#edit_empleadoId');
+            empleadoSelect.empty();
+            empleados.forEach(empleado => {
+                const selected = empleado.id === curso.empleadoId ? 'selected' : '';
+                empleadoSelect.append(`<option value="${empleado.id}" ${selected}>${empleado.name}</option>`);
+            });
+
+            $('#editCursoModal').modal('show');
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al obtener los datos del curso');
+        }
+    });
+}
+
+$('#editCursoForm').on('submit', function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('_token', $('input[name="_token"]').val());
+
+    $.ajax({
+        url: `/cursos/actualizar/${$('#edit_id').val()}`,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            $('#editCursoModal').modal('hide');
+            dibujarCursos();
+            alert('Curso actualizado exitosamente');
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al actualizar el curso');
+        }
+    });
+});
+
+$('#edit_imagenProducto').on('change', function() {
+    const [file] = this.files;
+    if (file) {
+        $('#edit_imagenCurso_preview').attr('src', URL.createObjectURL(file));
+    }
+});
+
     
     $(document).ready(function(){
+
+        dibujarCursos();
     
             // Dashboard toggle
             const body = document.querySelector("body"),
