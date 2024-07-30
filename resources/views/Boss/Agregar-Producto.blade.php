@@ -286,7 +286,6 @@ header {
             border-radius: 15px;
             max-width: 100%;
             height: auto;
-
         }
 
         .form-floating input,
@@ -540,9 +539,8 @@ $(document).ready(function(){
 
     // Fin scripts para todas las vistas
 
-    document.getElementById('image').addEventListener('click', function() {
-        document.getElementById('fileInput').click();
-    });
+
+    
 
     //Script para agregar producto
 

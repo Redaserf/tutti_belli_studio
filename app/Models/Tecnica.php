@@ -22,9 +22,6 @@ class Tecnica extends Model
       //  return $this->hasOne(Cuidado::class);
     //}
 
-    public function tecnicasHasCursos(){
-        return $this->hasMany(TecnicaHasCurso::class);
-    }
 
 //    public function InventarioHasTecnica(){
 //        return $this->hasMany(InventarioHasTecnica::class);
@@ -32,6 +29,10 @@ class Tecnica extends Model
 
     public function servicios(){
         return $this->belongsTo(Servicio::class, 'servicioId');
+    }
+
+    public function cursos() {
+        return $this->belongsToMany(Curso::class, 'tecnicas_has_cursos', 'tecnicaId', 'cursoId');
     }
 
     public function descuento(){

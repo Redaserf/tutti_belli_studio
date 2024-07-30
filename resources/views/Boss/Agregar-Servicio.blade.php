@@ -425,7 +425,7 @@ header {
                     <div class="row ">
                         <H2>Agregar Servicio</H2>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del servicio">
                             <label for="AddServiceName">Nombre del Servicio</label>

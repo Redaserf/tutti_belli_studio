@@ -439,7 +439,7 @@ header {
                         </table>
 
                     </div>
-
+                    <br>
                     <div class="section-divider"></div>
 
                     <div>
@@ -616,6 +616,7 @@ function tablaDescuentosTecnicas(){
 //Modificar para prodcuto
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen
 function eliminarDescuentoProducto(id){
+    if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
     $.ajax({
         url: `/eliminarDescuentoProducto/${id}`,
         method: 'POST',
@@ -631,6 +632,7 @@ function eliminarDescuentoProducto(id){
             console.log(id)
         }
     });
+}
 }
 
 //FUncion para elimar descuento de tecnica

@@ -478,6 +478,7 @@ header {
         // Eliminar empleados
 
         function employeeDelete(id){
+            if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
           $.ajax({
               url: `/empleado/eliminar/${id}`,
               method: 'GET',
@@ -485,9 +486,15 @@ header {
                   tablaEmpleados();
               },
               error: function(error){
-                  console.log(error)
+                if (error.status === 500) {
+                    alert('Este empleado está en un curso asignado.');
+                } else {
+                    alert('Ocurrió un error al eliminar el empleado.');
+                }
+                console.log(error);
               }
           });
+        }
         }
 
 
