@@ -684,7 +684,6 @@ header {
                                         <input class="form-control custom-input" type="email" id="emailUsuario" required>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <select class="form-control" name="empleadoId" id="empleadoId"></select>
                                         <select class="form-control custom-select" name="empleadoId" id="empleadoId"></select>
                                     </div>
                                     <div style="display:none" id="msg"></div>
