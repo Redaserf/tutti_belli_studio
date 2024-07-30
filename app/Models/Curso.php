@@ -15,11 +15,15 @@ class Curso extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'cupoLimite', 'fechaInicio','horaInicio', 'precio', 'empleadoId', 'descuentoId'];
+    protected $fillable = ['nombre', 'cupoLimite', 'fechaInicio','horaInicio', 'precio', 'imagen','descripcion', 'empleadoId', 'descuentoId'];
 
 
-    public function usuariosEmpleados(){
+    public function empleado(){
         return $this->belongsTo(User::class, 'empleadoId');
+    }
+
+    public function tecnicas() {
+        return $this->belongsToMany(Tecnica::class, 'tecnicas_has_cursos', 'cursoId', 'tecnicaId');
     }
 
     public function diasCursos() {
@@ -31,9 +35,6 @@ class Curso extends Model
         return $this->hasMany(Inscripcion::class);
     }
 
-    public function tecnicasHasCursos(){
-        return $this->hasMany(TecnicaHasCurso::class);
-    }
 
     public function productoHasCurso(){
         return $this->hasMany(ProductoHasCurso::class, 'cursoId');

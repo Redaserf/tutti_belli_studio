@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar - Servicio</title>
+    <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
 
@@ -425,7 +426,7 @@ header {
                     <div class="row ">
                         <H2>Agregar Servicio</H2>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del servicio">
                             <label for="AddServiceName">Nombre del Servicio</label>

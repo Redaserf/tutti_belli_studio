@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleados</title>
+    <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <style>
@@ -478,6 +479,7 @@ header {
         // Eliminar empleados
 
         function employeeDelete(id){
+            if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
           $.ajax({
               url: `/empleado/eliminar/${id}`,
               method: 'GET',
@@ -485,9 +487,15 @@ header {
                   tablaEmpleados();
               },
               error: function(error){
-                  console.log(error)
+                if (error.status === 500) {
+                    alert('Este empleado está en un curso asignado.');
+                } else {
+                    alert('Ocurrió un error al eliminar el empleado.');
+                }
+                console.log(error);
               }
           });
+        }
         }
 
 

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Agregar Curso</title>
+        <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <style>
@@ -17,7 +18,7 @@
         }
 
         .container-div {
-            height: 100vh;
+            height: auto;
             background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -469,27 +470,33 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="-- Nombre --">
-                        <label for="nombre">Nombre</label>
+                <div class="col-md-12" style="display: flex; justify-content:center;align-items:center;">
+                    <div class="image-label">
+                        <input style="" type="file" class="form-control" id="imagenCurso" name="imagenCurso" required>
+                        <img style="margin-top: 10px;margin-bottom:20px; border-radius: 12px;" src="https://via.placeholder.com/300" class="img-fluid" alt="Imagen del curso" id="image">
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --">
-                        <label for="cupoLimite">Cupo Limite</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="-- Nombre --" required>
+                        <label for="nombre">Nombre del curso</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                        <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --" required>
+                        <label for="cupoLimite">Cupo límite</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" required>
                         <label for="fechaInicio">Fecha de inicio</label>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="time" class="form-control" id="horaInicio" name="horaInicio" placeholder="-- Hora de inicio del curso --">
+                        <input type="time" class="form-control" id="horaInicio" name="horaInicio" placeholder="-- Hora de inicio del curso --"required>
                         <label for="horaInicio">Hora de inicio</label>
                     </div>
                 </div>
@@ -509,22 +516,22 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --">
-                        <label for="precio">Precio</label>
+                        <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --" required>
+                        <label for="precio">Costo de inscripción</label>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <select name="" class="form-control" id="empleadoId">
+                    <select name="" class="form-control" id="empleadoId" required>
                         <option value="" disabled selected>Empleado</option>
 
-                        <!-- Servicios que aparecerán con back-end -->
+                        <!-- Empleados que aparecerán con back-end -->
 
                     </select>
-                    <label for="empleadoId">Empleado de la cita</label>
+                    <label for="empleadoId">Instructor a cargo del curso</label>
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --">
+                        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="-- Descripcion --" required>
                         <label for="descripcion">Descripción</label>
                     </div>
                 </div>
@@ -680,47 +687,53 @@
         $('#agregarCurso').on('click', function(e) {
             e.preventDefault();
 
-            let courseName = $('#nombre').val();
-            let courseLimit = $('#cupoLimite').val();
-            let courseDateBegining = $('#fechaInicio').val();
-            let courseHourBegining = $('#horaInicio').val();
-            let coursePrice = $('#precio').val();
-            let courseEmployee = $('#empleadoId').val();
+            // let courseName = $('#nombre').val();
+            // let courseLimit = $('#cupoLimite').val();
+            // let courseDateBegining = $('#fechaInicio').val();
+            // let courseHourBegining = $('#horaInicio').val();
+            // let coursePrice = $('#precio').val();
+            // let courseEmployee = $('#empleadoId').val();
+
+            let formData = new FormData();
+            formData.append('_token', $('input[name="_token"]').val());
+            formData.append('nombre', $('#nombre').val());
+            formData.append('cupoLimite', $('#cupoLimite').val());
+            formData.append('fechaInicio', $('#fechaInicio').val());
+            formData.append('horaInicio', $('#horaInicio').val());
+            formData.append('precio',$('#precio').val())
+            formData.append('imagenCurso', $('#imagenCurso')[0].files[0]);
+            formData.append('descripcion', $('#descripcion').val());
+            formData.append('empleadoId', $('#empleadoId').val());
 
             $.ajax({
                 url: '/RegistroCursoAdmin',
                 type: 'POST',
-                data: {
-                    _token: $('input[name="_token"]').val(),
-                    nombre: courseName,
-                    cupoLimite: courseLimit,
-                    fechaInicio: courseDateBegining,
-                    horaInicio: courseHourBegining,
-                    precio: coursePrice,
-                    empleadoId: courseEmployee
-                },
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(response) {
-                    // alert("Curso agregado exitosamente");
+                    alert("Curso agregado exitosamente");
                     let cursoId = response.cursoId;
 
                     saveTecnicas(cursoId, selectedTecnicas);
-                    saveProductos(cursoId,selectedProducts, cantidadesProducts)
+                    window.location.href = '/Ver-Cursos';
 
-                    $('#nombre').val('');
-                    $('#cupoLimite').val('');
-                    $('#fechaInicio').val('');
-                    $('#horaInicio').val('');
-                    $('#precio').val('');
-                    $('#empleadoId').val('');
+
+                    // $('#nombre').val('');
+                    // $('#cupoLimite').val('');
+                    // $('#fechaInicio').val('');
+                    // $('#horaInicio').val('');
+                    // $('#precio').val('');
+                    // $('#empleadoId').val('');
                 },
                 error: function(error) {
-                    // alert('Ocurrió un error al agregar el Curso');
-                    $('#nombre').val('');
-                    $('#cupoLimite').val('');
-                    $('#fechaInicio').val('');
-                    $('#horaInicio').val('');
-                    $('#precio').val('');
-                    $('#empleadoId').val('');
+                    alert('Ocurrió un error al agregar el Curso');
+                    // $('#nombre').val('');
+                    // $('#cupoLimite').val('');
+                    // $('#fechaInicio').val('');
+                    // $('#horaInicio').val('');
+                    // $('#precio').val('');
+                    // $('#empleadoId').val('');
                 }
             });
         });
@@ -806,6 +819,15 @@
                 alert('no ha seleccionado ningun producto para el descuento')
             }
         })
+
+                // Mostrar la imagen seleccionada
+                document.getElementById('imagenCurso').addEventListener('change', function() {
+            const [file] = this.files;
+            if (file) {
+                document.getElementById('image').src = URL.createObjectURL(file);
+            }
+        });
+
         //fin document ready
     });
 
@@ -814,7 +836,7 @@
     //Script para dibujar los productos
     function dibujarProductos() {
         $.ajax({
-            url: '/get/productos/sd',
+            url: '/get/productos',
             method: 'GET',
             success: function(data) {
                 const productos = $('#productos');
@@ -829,7 +851,7 @@
                             <h2 class="product-title">${producto.nombre}</h2>
                             <p class="product-description">${producto.descripcion}</p>
                             <p class="product-price">$${producto.precio}</p>
-                            <input type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar">
+                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar">
                             <label for="${idDinamico}">Cantidad a utilizar</label>
                         </div>
                         <button style="margin-bottom: 10px;" id="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para el curso</button>

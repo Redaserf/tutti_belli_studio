@@ -165,6 +165,21 @@ class ViewsController extends Controller
         }
     }
 
+    public function userHistorial(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Home-administrador');
+        } elseif ($user->rolId == 2) {
+            return view('User.Historial-User');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
+    }
+
 
     // ==========[ Employee ]==========
 
@@ -284,6 +299,20 @@ class ViewsController extends Controller
         $user = Auth::user();
         if ($user->rolId == 4) {
             return view('Boss.Agregar-Descuento-Producto');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
+    }
+    public function bossVerPerfil(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Perfil-Admin');
         } elseif ($user->rolId == 2) {
             return redirect('/Home-usuario');
         } elseif ($user->rolId == 3) {

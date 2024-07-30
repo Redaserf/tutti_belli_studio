@@ -89,10 +89,10 @@ use App\Http\Controllers\DibujarController;
     Route::get('/Login',[ViewsController::class,'LoginVista']);
     Route::get('/Registro',[ViewsController::class,'RegistroVista']);
     Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
-Route::get('/admin', function () {
-    return view('RegistrarAdministradores');
-});
-Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
+    Route::get('/admin', function () {
+        return view('RegistrarAdministradores');
+    });
+    Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
 
 
 
@@ -112,6 +112,7 @@ Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
     Route::get('/Productos-User', [ViewsController::class, 'userProductos']);
     Route::get('/Reservacion-User', [ViewsController::class, 'userReservacion']);
     Route::get('/Carrito-User', [ViewsController::class, 'userCarrito']);
+    Route::get('/Historial-User', [ViewsController::class, 'userHistorial']);
 
 
     // =====[ Employee ]=====
@@ -145,6 +146,7 @@ Route::post('/RegistroAdmin',[RegistrosController::class, 'RegistroAdmin']);
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
+    Route::get('/Perfil-Admin',[ViewsController ::class,'bossVerPerfil']);
 
 
 
@@ -200,6 +202,17 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/get/empleados',[DibujarController::class,'employeeIndex']);
     Route::get('/empleado/eliminar/{id}',[DibujarController::class,'employeeDelete']);
+
+
+
+    // =====[ Cursos ]=====
+
+    Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
+    Route::get('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
+    Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
+    Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
+
+
 
 
 

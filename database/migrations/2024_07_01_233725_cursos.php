@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date('fechaInicio');
             $table->time('horaInicio');
             $table->double('precio');
+            $table->string('imagen');
+            $table->longText('descripcion');
             $table->unsignedBigInteger('empleadoId');
             $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();

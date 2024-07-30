@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cuenta de usuario</title>
+    <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
             @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
@@ -75,6 +76,7 @@ h1, h2, h3{
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 630px;
             width: 630px;
+            margin-top: 66px;
         }
         .profile-container h2 {
             color: #000000;
@@ -147,7 +149,6 @@ h1, h2, h3{
 
 
 
-
 <div class="profile-container">
     <h2>Mi cuenta</h2>
     <div class="mb-3">
@@ -170,8 +171,10 @@ h1, h2, h3{
       <label for="numero" class="form-label">Número de teléfono</label>
       <input type="text" class="form-control" id="numero" value="{{ Auth::user()->numeroTelefono }}" readonly>
   </div>
-  <button type="button" class="btn btn-historial mt-3">Historial</button> 
-  <!-- BOTON PARA REDIRIGIRLO A VISTA DONDE MUESTRE HISTORIAL DE COMPRAS O CITAS DE SU PERFIL -->
+  <a href="/Historial-User">
+    <button type="button" class="btn btn-historial mt-3">Historial</button> 
+    <!-- BOTON PARA REDIRIGIRLO A VISTA DONDE MUESTRE HISTORIAL DE COMPRAS O CITAS DE SU PERFIL -->
+  </a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

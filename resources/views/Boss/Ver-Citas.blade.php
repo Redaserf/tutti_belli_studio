@@ -18,6 +18,7 @@
 
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
         
@@ -432,6 +433,109 @@ header {
           #citasModal {
             z-index: 2000; /* Ajusta este valor según sea necesario */
         }
+        .custom-checkbox-input {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000000; /* Cambia el color del borde */
+            background-color: #fff; /* Cambia el color de fondo */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Agrega sombra */
+        }
+
+        .custom-modal-content {
+        font-family: "Josefin Sans", sans-serif !important;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .custom-modal-header {
+        background-color: #ffb6c1;
+        color: black;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .custom-modal-header .modal-title {
+        font-weight: 600;
+    }
+
+    .custom-modal-body {
+        background-color: #fff;
+        padding: 20px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+    .btn-danger{
+        margin: 4px;
+    }
+    .btn-success{
+        margin-left: 5px !important;
+    }
+
+    .custom-modal-footer {
+        background-color: #f8f9fa;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .btn-pink {
+        background-color: #ffb6c1;
+        color: black;
+        border: none;
+    }
+
+    .btn-pink:hover {
+        background-color: #ff69b4;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .modal-header .btn-close {
+        filter: invert(1);
+    }
+
+    .custom-input {
+        border: 2px solid #e83e8c;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .custom-input:focus {
+        border-color: #e83e8c;
+        box-shadow: 0 0 5px rgba(232, 62, 140, 0.5);
+    }
+
+    .custom-select {
+        border: 2px solid #e83e8c;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+        background-color: white;
+    }
+
+    .custom-select:focus {
+        border-color: #e83e8c;
+        box-shadow: 0 0 5px rgba(232, 62, 140, 0.5);
+    }
+        /*estilos pa los modales pq pusiste jajaja hugo nmms xd*/
     </style>
 
 </head>
@@ -529,18 +633,18 @@ header {
             {{-- Fin Sidebar --}}
 
             <section class="home">
-        <div class="top text-center">
+            <div class="top text-center Titulo-mamalon">
 
-            <button id='btnVerCitas' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#verCitasModal"  style="width: curso;">
-                ver citas pendientes<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
-            </button>
+                <button id='btnVerCitas' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#verCitasModal"  style="width: curso;">
+                    ver citas pendientes<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
+                </button>
 
-            <h2>Citas pendientes</h2>
-            <button id='btnAgregar' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#citasModal"  style="width: curso;">
-                Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
-            </button>
-        </div>
-        <div class="section-divider"></div>
+                <h2>Citas pendientes</h2>
+                <button id='btnAgregar' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#citasModal"  style="width: curso;">
+                    Agendar cita<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
+                </button>
+            </div>
+            <div class="section-divider"></div>
 
 
         <div id='calendar'></div>
@@ -549,38 +653,39 @@ header {
         <!-- Modal -->
                 <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content custom-modal-content">
                             <form id="citaForm">
                                 @csrf   
-                                <div class="modal-header">
+                                <div class="modal-header custom-modal-header">
                                     <h5 class="modal-title" id="labelcitasModal">Crear Cita</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body custom-modal-body">
                                     <input type="hidden" id='id'>
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
+                                        <input type="text" class="form-control custom-input" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
                                         <label for="fechaCita" id="labelFechaCita">Fecha de la cita</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                    <select style='display: none' class='form-control' id="horaCita" name="horaCita" required>
+                                    <select style='display: none' class='form-control custom-select' id="horaCita" name="horaCita" required>
                                     
                                     </select>
                                     </div>
                                     <div>
                                         <div class='container'>
-                                            <div id="service" class="form-control multiselect-container form-floating mb-3" required></div>
+                                            <div id="service" class="form-control multiselect-container form-floating mb-3 custom-select" required></div>
                                         </div>
-                                        <input type="hidden" id="serviciosSeleccionados" name="serviciosSeleccionados">
+                                        <input type="hidden" id="serviciosSeleccionados"  class="custom-input" name="serviciosSeleccionados">
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <select class="form-control" name="usuarioId" id="usuarioId"></select>
+                                        <select class="form-control custom-select" name="usuarioId" id="usuarioId"></select>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" type="email" id="emailUsuario" required>
+                                        <input class="form-control custom-input" type="email" id="emailUsuario" required>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <select class="form-control" name="empleadoId" id="empleadoId"></select>
+                                        <select class="form-control custom-select" name="empleadoId" id="empleadoId"></select>
                                     </div>
                                     <div style="display:none" id="msg"></div>
                                     <div class="mb-3">
@@ -591,7 +696,7 @@ header {
                                 <div class="modal-footer">
                                     <button type="button" style='display:none' id='btnEliminar' data-bs-dismiss="modal" class='btn btn-danger'>Eliminar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-dark">Confirmar</button>
+                                    <button type="submit" class="btn btn-pink">Confirmar</button>
                                 </div>
                             </form>
                         </div>
@@ -625,12 +730,12 @@ header {
 
             <div class="modal fade" id="verCitasModal" tabindex="-1" aria-labelledby="labelVerCitasModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-xl"> <!-- modal-lg para un modal más grande -->
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header custom-modal-header">
                 <h5 class="modal-title" id="labelVerCitasModal">Citas pendientes</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body custom-modal-body">
                 <div class="table-responsive"> <!-- Agregar clase table-responsive -->
                     <table class="table table-hover">
                         <thead>
@@ -652,7 +757,7 @@ header {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-dark">Confirmar</button>
+                <button type="submit" class="btn btn-pink">Confirmar</button>
             </div>
         </div>
     </div>
@@ -662,17 +767,17 @@ header {
 
 <div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"> <!-- modal-lg para un modal más grande -->
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header custom-modal-header">
                 <h5 class="modal-title" id="labelEliminarCitasModal">Rechazar Cita</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body custom-modal-body">
                 Estas seguro de eliminar la cita?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-danger">Confirmar</button>
+                <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-pink">Confirmar</button>
             </div>
         </div>
     </div>

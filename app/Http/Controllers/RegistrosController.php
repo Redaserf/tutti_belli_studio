@@ -86,14 +86,21 @@ class RegistrosController extends Controller
 
     function RegistroCurso(Request $request)
     {
+
         $curso = new Curso();
         $curso->nombre = $request->nombre;
         $curso->cupoLimite = $request->cupoLimite;
         $curso->fechaInicio = $request->fechaInicio;
         $curso->horaInicio = $request->horaInicio;
+        $curso->imagen = $request->imagen;
+        $curso->descripcion = $request->descripcion;
         $curso->precio = $request->precio;
+        if ($request->hasFile('imagenCurso')) {
+            $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
+        }
         $curso->empleadoId = $request->empleadoId;
         $curso->save();
+
 
         //regresa el id del curso que se acaba de crear para mandarlo en el ajax
         // que se encuentra en Cursos

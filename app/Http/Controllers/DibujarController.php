@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
+use App\Models\Curso;
 use App\Models\Producto;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -150,11 +151,71 @@ class DibujarController extends Controller
 
     // ==========[ Eliminar un empleado ]==========
     function employeeDelete($id){
-    User::findOrFail($id)->delete();
-    return response()->json(null, 204);
+        try {
+            $empleado = User::findOrFail($id);
+            $empleado->delete();
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Server Error', 'error' => $e->getMessage()], 500);
+        }
     }
 
 // =============================================================================================
 
+    // ==========[ Obtener todos los cursos ]==========
+    function cursosIndex(){
+    $cursos = Curso::with('empleado', 'tecnicas')->get();
+    return response()->json($cursos);
+    }
 
+    // ==========[ Editar un curso ]==========
+    public function actualizarCurso(Request $request, $id){
+        $curso = Curso::find($id);
+
+        if ($curso) {
+        $curso->nombre = $request->input('nombre');
+        $curso->descripcion = $request->input('descripcion');
+        $curso->precio = $request->input('precio');
+        $curso->fechaInicio = $request->input('date');
+        $curso->horaInicio = $request->input('hour');
+        $curso->empleadoId = $request->input('empleadoId');
+
+        if ($request->hasFile('imagenCurso')) {
+            $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
+        }
+
+        $curso->save();
+
+        return response()->json(['success' => 'Curso actualizado exitosamente']);
+        } else {
+        return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+    }
+
+    
+    // ==========[ Obtener un producto por id ]==========
+    public function obtenerCurso($id){
+        $curso = Curso::with('empleado')->find($id);
+        $empleados = User::where('rolId', 3)->get();
+    
+        if ($curso) {
+            return response()->json(['curso' => $curso, 'empleados' => $empleados]);
+        } else {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+    }
+    
+    // ==========[ Eliminar un curso ]==========
+    public function cursosDelete($id) {
+        try {
+            $curso = Curso::findOrFail($id);
+            $curso->delete();
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Server Error', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    // =============================================================================================
+    
 }
