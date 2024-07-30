@@ -886,7 +886,7 @@ $(document).ready(function(){
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     } else if(response.message === 'Cita actualizada con éxito'){
-                        alertMessage = 'Se confirmo correctamente';
+                        alertMessage = 'Se hizo correctamente';
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     }

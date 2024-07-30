@@ -577,6 +577,9 @@ header {
                                         <select class="form-control" name="usuarioId" id="usuarioId"></select>
                                     </div>
                                     <div class="form-floating mb-3">
+                                        <input class="form-control" type="email" id="emailUsuario" required>
+                                    </div>
+                                    <div class="form-floating mb-3">
                                         <select class="form-control" name="empleadoId" id="empleadoId"></select>
                                     </div>
                                     <div style="display:none" id="msg"></div>
@@ -1041,7 +1044,7 @@ header {
                 
                     $('#id').val(citasServicios.cita.id);
                     $('#fechaCita').val(citasServicios.cita.fechaCita);
-
+                   
 
                     const citaDate = new Date(citasServicios.cita.fechaCita);
                     $('#horaCita').show();
@@ -1080,6 +1083,18 @@ header {
                     })
                     $('#usuarioId').val(citasServicios.cita.usuarioId);
                     $('#empleadoId').val(citasServicios.cita.empleadoId);
+
+                    let selectUsuario = $('#usuarioId');
+                    let emailInput = $('#emailUsuario');
+
+                    if(citasServicios.cita.usuarioId === 1){
+                        emailInput.val('Usuario No registrado');
+                    }else {
+                        let email = selectUsuario.data('email-usuario');
+
+                        emailInput.val(email);
+                    }
+
 
                     $('#notasCita').val(citasServicios.cita.notasCita);
             })
@@ -1132,12 +1147,28 @@ header {
             $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
                 let selectUsuarios = $('#usuarioId');
                 selectUsuarios.empty();
+                let email = $('#emailUsuario');
+                email.empty();
 
                 usersRolUsuario.forEach(usuario => {
                     selectUsuarios.append(`
-                        <option class="text-center" value="${usuario.id}">Cliente: ${usuario.name + " " +usuario.apellido}</option>
+                        <option class="text-center" data-email-usuario="${usuario.email}" value="${usuario.id}">Cliente: ${usuario.name + " " +usuario.apellido}</option>
                     `)
                     console.log(usersRolUsuario);
+                })
+
+                selectUsuarios.change(function() {
+                    let opcionSelected = selectUsuarios.find('option:selected');
+                    let value = $(this).val();
+
+                    if(value === "1"){
+                        email.val('');
+                        email.prop('readonly', false);
+                    }else{
+                        let emailUsuario = opcionSelected.data('email-usuario');
+                        email.val(emailUsuario);
+                        email.prop('readonly', true);
+                    }
                 })
             })
 
@@ -1334,11 +1365,9 @@ header {
                 console.log('Datos recibidos:', citasServicios); 
                 console.log(`Id de la cita: `, citasServicios.cita.id);
 
-
+                $('#usuarioId').prop('disabled', true);
 
                 $('#btnEliminar').show();
-                $('#msg').show();
-                $('#msg').text('Escriba aqui si quiere agregar alguna nota o algun recordatorio');
 
                     $('#id').val(citasServicios.cita.id);
                     $('#fechaCita').val(citasServicios.cita.fechaCita);
@@ -1381,6 +1410,19 @@ header {
                     })
                     $('#usuarioId').val(citasServicios.cita.usuarioId);
                     $('#empleadoId').val(citasServicios.cita.empleadoId);
+
+
+                    let opcion = $('#usuarioId').find('option:selected');
+                    let emailInput = $('#emailUsuario');
+
+                    if (citasServicios.cita.usuarioId === 1) {
+                        emailInput.val('Usuario No registrado');
+                    } else {
+                        // Aquí asumo que el email del usuario está incluido en citasServicios.cita.emailUsuario
+                        let email = opcion.data('email-usuario');
+                        emailInput.val(email);
+                    }
+
 
                     $('#notasCita').val(citasServicios.cita.notasCita);
             })
