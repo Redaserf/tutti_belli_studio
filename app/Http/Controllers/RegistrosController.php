@@ -13,8 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cita;
+use App\Mail\CorreoEspera;
+use App\Mail\CorreoCancelacion;
+use App\Mail\CorreoConfirmacion;
 use Illuminate\Support\Facades\DB;
 use App\Models\CitaHasServicio;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -251,6 +255,9 @@ class RegistrosController extends Controller
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
             }
+              
+            // Enviar correo de confirmación
+             Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
 
             DB::commit();
             return response()->json(['message' => 'Cita actualizada con éxito'], 200);
@@ -265,13 +272,17 @@ class RegistrosController extends Controller
         try {
             // Obtener la cita
             $cita = Cita::findOrFail($id);
-
+            $usuario = $cita->usuario;
+    
             // Eliminar las relaciones entre la cita y los servicios
             CitaHasServicio::where('citaId', $id)->delete();
-
+    
             // Eliminar la cita
             $cita->delete();
-
+    
+            // Enviar correo de rechazo
+            Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
+    
             DB::commit();
             return response()->json(['message' => 'Cita eliminada con éxito'], 200);
         } catch (\Exception $e) {
@@ -279,6 +290,8 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al eliminar la cita', 'error' => $e->getMessage()], 500);
         }
     }
+    
+    
 
 
 
@@ -330,8 +343,8 @@ class RegistrosController extends Controller
 
 
 
-    public function RegistroCitaUsuario(Request $request) {
-
+    public function RegistroCitaUsuario(Request $request)
+    {
         $request->validate([
             'fechaCita' => 'required|date',
             'horaCita' => 'required|date_format:H:i:s',
@@ -341,21 +354,21 @@ class RegistrosController extends Controller
         ]);
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-    
+
         // Veirficar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-    
+
         // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->first();
-    
+
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
         try {
             // Crear la cita
@@ -367,7 +380,7 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita ?? null,
                 "estadoCita" => false
             ]);
-    
+
             // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 CitaHasServicio::create([
@@ -376,7 +389,10 @@ class RegistrosController extends Controller
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
             }
-    
+
+            // Enviar correo de espera
+            Mail::to($request->user()->email)->send(new CorreoEspera($cita));
+
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
@@ -385,5 +401,13 @@ class RegistrosController extends Controller
         }
     }
 
+    // En el modelo Cita
+    public function usuario() {
+    return $this->belongsTo(User::class, 'usuarioId');
+}
+
 
 }
+
+
+
