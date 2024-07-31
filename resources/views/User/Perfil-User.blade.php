@@ -54,7 +54,7 @@ button{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
-h1, h2, h3{
+h1, h2, h3, option, select, a{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
@@ -100,6 +100,12 @@ h1, h2, h3{
         .btn-historial:hover {
             background-color: #ff99cc;
             color: #fff;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
@@ -148,9 +154,60 @@ h1, h2, h3{
 
 
 
+            {{-- Modal para editar perfil --}}
 
-<div class="profile-container">
-    <h2>Mi cuenta</h2>
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <form id="editProfileForm" enctype="multipart/form-data">
+                          @csrf
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <input type="hidden" id="edit_user_id" name="id" value="{{ Auth::user()->id }}">
+                              <div class="form-group">
+                                  <label for="edit_name">Nombre</label>
+                                  <input type="text" class="form-control" id="edit_name" name="name" value="{{ Auth::user()->name }}">
+                              </div>
+                              <div class="form-group" style="margin-top: 10px;">
+                                  <label for="edit_apellidos">Apellidos</label>
+                                  <input type="text" class="form-control" id="edit_apellidos" name="apellidos" value="{{ Auth::user()->apellido }}">
+                              </div>
+                              <div class="form-group" style="margin-top: 10px;">
+                                <label for="edit_gender">Género</label>
+                                <select class="form-control" id="edit_gender" name="gender" >
+                                    <option value="Hombre" {{ Auth::user()->gender == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                                    <option value="Mujer" {{ Auth::user()->gender == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+                                </select>
+                            </div>
+                              <div class="form-group" style="margin-top: 10px;">
+                                  <label for="edit_email">Correo electrónico</label>
+                                  <input type="email" class="form-control" id="edit_email" name="email" value="{{ Auth::user()->email }}">
+                              </div>
+                              <div class="form-group" style="margin-top: 10px;">
+                                  <label for="edit_phone">Número de teléfono</label>
+                                  <input type="number" class="form-control" id="edit_phone" name="phone" value="{{ Auth::user()->numeroTelefono }}" oninput="this.value = this.value.slice(0, 10)">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+
+          <br>
+
+
+    <div class="profile-container">
+      <div class="flex-container">
+        <h2>Mi cuenta</h2>
+        <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar perfil<i style="margin-left: 8px; font-size: 20px;" class="fa-solid fa-user-pen"></i></a>
+      </div>
     <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" value="{{ Auth::user()->name }}" readonly>
@@ -183,6 +240,35 @@ h1, h2, h3{
 
 <script>
 
+$('#editProfileForm').on('submit', function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('_token', $('input[name="_token"]').val());
+
+    $.ajax({
+        url: '/ActualizarPefil',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            $('#editProfileModal').modal('hide');
+            alert('Perfil actualizado exitosamente');
+            location.reload();
+            $('#nombre').val(response.user.name);
+            $('#apellido').val(response.user.apellidos);
+            $('#genero').val(response.user.gender);
+            $('#correo').val(response.user.email);
+            $('#numeroTelefono').val(response.user.numeroTelefono);
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al actualizar el perfil');
+        }
+    });
+});
+
 $(document).ready(function(){
 
   function separadorHidden(){
@@ -200,7 +286,16 @@ $(document).ready(function(){
   window.addEventListener('resize', separadorHidden);
   separadorHidden();
 
+
+    $('body').on('click', '.edit-profile', function() {
+        $('#editProfileModal').modal('show');
+    });
+
+
 });
+
+
+
 
 
 // Pantalla de carga

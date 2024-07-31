@@ -88,6 +88,7 @@ use App\Http\Controllers\DibujarController;
     Route::get('/Home-guest',[ViewsController::class,'guestHome']);
     Route::get('/Login',[ViewsController::class,'LoginVista']);
     Route::get('/Registro',[ViewsController::class,'RegistroVista']);
+    Route::post('/ActualizarPefil', [UsuarioController::class, 'actualizarPerfil']);
     Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
     Route::get('/admin', function () {
         return view('RegistrarAdministradores');

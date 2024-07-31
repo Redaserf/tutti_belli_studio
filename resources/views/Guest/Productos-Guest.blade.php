@@ -46,6 +46,35 @@ body, html {
 
 /* Aquí tus estilos */
 
+/*Footer*/
+.footer {
+    background-color: #000000;
+    color: white;
+    
+    width: 100%;
+}
+.footer a {
+    color: white;
+}
+.footer .links,
+.footer .horario {
+    list-style: none;
+    padding: 0;
+}
+.footer .icons a {
+    margin: 0 10px;
+    color: white;
+    font-size: 24px;
+}
+.footer .row > div {
+    margin-bottom: 20px;
+}
+.footer .container-fluid {
+    padding: 0 40px;
+}
+
+
+
 .fonts3{
   font-family: "Josefin Sans", sans-serif !important;
 }
@@ -67,7 +96,7 @@ button{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4, h5 ,a, li{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
@@ -138,7 +167,7 @@ h1, h2, h3{
   <!-- NAVBAR / ENCABEZADO -->
   <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/Home-guest">
         <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,7 +205,51 @@ h1, h2, h3{
 
       </div>
 
-      <br><br><br>
+      <br><br><br><br><br><br><br>
+
+            <!-- FOOTER -->
+            <footer id="contacto" class="footer" class="fonts3">
+              <div  style="background-color: #1e1b1b;"class="container-fluid">
+                  <div style="" class="row text-center text-md-left">
+                    <br><br><br>
+                      <div  class="col-md-4 text-center">
+                          <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
+                      </div>
+                      <div  class="col-md-4">
+                          <h5>Dirección</h5>
+                          <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
+                          <p>Teléfono: +52 871 382 6767</p>
+                          <p>Email: tuttibellistudiotrc@gmail.com</p>
+                      </div>
+                      <div  class="col-md-4">
+                          <h5>Enlaces</h5>
+                          <ul class="links">
+                              <li><a href="/Home-guest">Inicio</a></li>
+                              <li><a href="/Home-guest#servicios">Servicios</a></li>
+                              <li><a href="/Home-guest#cursos">Cursos</a></li>
+                              <li><a href="/Login">Iniciar sesión</a></li>
+                          </ul>
+                          <h5>Horario</h5>
+                          <ul class="horario">
+                              <li>Lunes a Viernes: 9:00-9:00</li>
+                              <li>Sábado: 10:00-4:00</li>
+                              <li>Domingo: 10:00-4:00</li>
+                          </ul>
+                      </div>
+                      <div  class="col-12">
+                          <div class="icons">
+                              <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
+                              <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
+                              <a href="https://wa.me/5218713826767" class=""><i class="fa-brands fa-whatsapp"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div style="background-color: black !important; margin-bottom: -30px;" class="col-12 text-center mt-2">
+                <p style="margin-bottom: 30px;">&copy;Copyright Tutti Belli Studio. Todos los derechos reservados
+                <br>Diseñada y desarrollada by Deiters</p>
+            </div>
+          </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

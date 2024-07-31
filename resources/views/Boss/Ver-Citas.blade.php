@@ -49,7 +49,7 @@ ul{
 }
 
 #contenedor_carga {
-    background: #ffffff url(/Integradora/resources/imagenes/preloader.gif) no-repeat center center;
+    background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
     background-size: 20%;
     height: 100vh;
     width: 100%;
@@ -635,9 +635,9 @@ header {
             <section class="home">
             <div class="top text-center Titulo-mamalon">
 
-                <button id='btnVerCitas' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#verCitasModal"  style="width: curso;">
-                    ver citas pendientes<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
-                </button>
+            <button id='btnVerCitas' class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#verCitasModal"  style="width: curso; margin-right:20px;">
+                Citas pendientes<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i>
+            </button>
 
                 <h2>Citas pendientes</h2>
                 <button id='btnAgregar' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#citasModal"  style="width: curso;">
@@ -682,6 +682,7 @@ header {
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input class="form-control custom-input" type="email" id="emailUsuario" required>
+                                        <label for="fechaCita" id="labelFechaCita">Correo electrónico</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <select class="form-control custom-select" name="empleadoId" id="empleadoId"></select>
@@ -742,7 +743,7 @@ header {
                                 <th>Fecha de la cita</th>
                                 <th>Hora de la cita</th>
                                 <th>Nombre del cliente</th>
-                                <th>Numero de telefono</th>
+                                <th>Número de telefono</th>
                                 <th>Correo electronico</th>
                                 <th>Nombre del empleado</th>
                                 <th>Acciones</th>
@@ -772,7 +773,7 @@ header {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body custom-modal-body">
-                Estas seguro de eliminar la cita?
+                ¿Estás seguro de eliminar la cita?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -895,14 +896,14 @@ header {
                     console.log('hora Actual mas dos horas: ', horaInicio);
                     horaFin = 21;
                     if(horaInicio > horaFin) {
-                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                        mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
                     }
                 }else if(dia === 0 || dia === 6){//sabados y domingos
                     horaInicio = new Date().getHours() + 2;
                     console.log('hora hoy sabado 27 de julio: ', horaInicio);
                     horaFin = 21;
                     if(horaInicio > horaFin) {
-                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                        mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
                     }
                 }
 
@@ -1113,7 +1114,7 @@ header {
                     window.location.href = '/Ver-Citas';
 
 
-                    mostrarAlerta('Se eliminó con éxito', 'alert-danger', 'exclamation-triangle-fill')
+                    mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill')
                      // Guardar el mensaje de alerta en localStorage
                     // localStorage.setItem('alertMessage', 'Se eliminó con éxito');
                     // localStorage.setItem('alertClass', 'alert-danger');
@@ -1342,11 +1343,11 @@ header {
                     let alertIcon = '';
 
                     if(response.message === 'Cita creada con éxito'){
-                        alertMessage = 'cita creada con exito';
+                        alertMessage = 'Cita creada con éxito.';
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     } else if(response.message === 'Cita actualizada con éxito'){
-                        alertMessage = 'Se edito correctamente';
+                        alertMessage = 'Cita actualizada con éxito.';
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     }
@@ -1366,7 +1367,7 @@ header {
 
                         if (response && response.message) {
                             if (response.message === 'Debe seleccionar al menos un servicio') {
-                                alertMessage = 'Por favor, seleccione al menos un servicio.';
+                                alertMessage = 'Por favor, selecciona al menos un servicio.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
                             } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
@@ -1425,8 +1426,8 @@ header {
                             <td>${cita.usuario.email}</td>
                             <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
                             <td>
-                                <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita <i class="fa-solid fa-trash"></i></button>
-                                <button class="btn btn-success aceptar-cita" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">aceptar cita <i class="fa-solid fa-check"></i></button>
+                                <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
+                                <button class="btn btn-success aceptar-cita" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
 
                             </td>
                         </tr>

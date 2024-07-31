@@ -17,9 +17,7 @@ use App\Models\Cita;
 use App\Models\CitaHasServicio;
 
 use DateTime;
-
-
-
+use Illuminate\Support\Facades\Auth;
 
 class ConsultasController extends Controller
 {
@@ -107,8 +105,18 @@ class ConsultasController extends Controller
                 Log::warning("No se encontró cita para el grupo con ID $citaId");
             }
         }
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
 
-        return view('Boss.Ver-Citas', compact('events'));
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Citas', compact('events'));
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Ver-Citas-Empleado');
+        }
     }
     
     

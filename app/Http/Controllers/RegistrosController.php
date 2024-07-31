@@ -402,13 +402,5 @@ class RegistrosController extends Controller
         }
     }
 
-    // En el modelo Cita
-    public function usuario() {
-    return $this->belongsTo(User::class, 'usuarioId');
-}
-
 
 }
-
-
-

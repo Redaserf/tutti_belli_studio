@@ -62,7 +62,7 @@ body, html {
 label{
   font-family: "Josefin Sans", sans-serif !important;
 }
-p{
+h1, h2, h3, h4, h5 ,a, li, p{
   font-family: "Josefin Sans", sans-serif !important;
 }
 input{
@@ -352,6 +352,33 @@ button{
             animation-name: slideOut;
         }
         /* Alerta bonita */
+
+        /*Footer*/
+.footer {
+    background-color: #000000;
+    color: white;
+    
+    width: 100%;
+}
+.footer a {
+    color: white;
+}
+.footer .links,
+.footer .horario {
+    list-style: none;
+    padding: 0;
+}
+.footer .icons a {
+    margin: 0 10px;
+    color: white;
+    font-size: 24px;
+}
+.footer .row > div {
+    margin-bottom: 20px;
+}
+.footer .container-fluid {
+    padding: 0 40px;
+}
     </style>
 </head>
 <body class="hiddenX">
@@ -565,6 +592,51 @@ button{
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
+<br><br><br>
+
+                  <!-- FOOTER -->
+      <footer id="contacto" class="footer" class="fonts3">
+        <div style="background-color: #1e1b1b;"class="container-fluid">
+            <div class="row text-center text-md-left">
+              <br><br><br>
+                <div class="col-md-4 text-center">
+                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
+                </div>
+                <div class="col-md-4">
+                    <h5>Dirección</h5>
+                    <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
+                    <p>Teléfono: +52 871 382 6767</p>
+                    <p>Email: tuttibellistudiotrc@gmail.com</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces</h5>
+                    <ul class="links">
+                        <li><a href="/Home-usuario">Inicio</a></li>
+                        <li><a href="/Home-usuario#servicios">Servicios</a></li>
+                        <li><a href="/Home-usuario#cursos">Cursos</a></li>
+                        <li><a href="/Logout">Cerrar sesión</a></li>
+                    </ul>
+                    <h5>Horario</h5>
+                    <ul class="horario">
+                        <li>Lunes a Viernes: 9:00-9:00</li>
+                        <li>Sábado: 10:00-4:00</li>
+                        <li>Domingo: 10:00-4:00</li>
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <div class="icons">
+                        <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/5218713826767" class=""><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="background-color: black !important; margin-bottom: -30px;" class="col-12 text-center mt-2">
+          <p style="margin-bottom: 30px;">&copy;Copyright Tutti Belli Studio. Todos los derechos reservados
+          <br>Diseñada y desarrollada by Deiters</p>
+      </div>
+    </footer>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -672,11 +744,11 @@ $(document).ready(function(){
                 let horaFin;
                 if(dia>=1 && dia<=5){// lunes a viernes
                     horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
-                    console.log('hora Actual mas dos horas: ', horaInicio);
+                    console.log('Hora Actual mas dos horas: ', horaInicio);
                     horaFin = 21;
                     if(horaInicio > horaFin) {
                         $('#horaCita').hide();
-                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                        mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
                     }
                 }else if(dia === 0 || dia === 6){//sabados y domingos
                     horaInicio = new Date().getHours() + 2;
@@ -684,7 +756,7 @@ $(document).ready(function(){
                     horaFin = 16;
                     if(horaInicio > horaFin) {
                         $('#horaCita').hide();
-                        mostrarAlerta('por hoy ya no hay horarios disponibles', 'alert-primary', 'info-fill')
+                        mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
                     }
                 }
 
@@ -883,7 +955,7 @@ $(document).ready(function(){
                     let alertIcon = '';
 
                     if(response.message === 'Cita creada con éxito'){
-                        alertMessage = 'cita creada con exito';
+                        alertMessage = 'Cita creada con éxito';
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     } else if(response.message === 'Cita actualizada con éxito'){
@@ -908,11 +980,11 @@ $(document).ready(function(){
                         let alertIcon = 'exclamation-triangle-fill'; //icono de danger
 
                         if (response && response.message) {
-                            if (response.message === 'Debe seleccionar al menos un servicio') {
+                            if (response.message === 'Debe seleccionar al menos un servicio.') {
                                 alertMessage = 'Por favor, seleccione al menos un servicio.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
-                            } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
+                            } else if (response.message == 'Ya existe una cita para esta fecha y hora.') {
                                 alertMessage = 'Ya existe una cita para esta fecha y hora.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
