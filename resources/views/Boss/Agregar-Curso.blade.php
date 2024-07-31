@@ -593,16 +593,16 @@
         let selectCounter = 0; // Variable contador
         let selectedTecnicas = []; // Lista para mantener las técnicas ya seleccionadas
 
-        console.log($('hoaa'))
-        $('.btn-danger').on('click', function() {
+        
+        $(document).on('click', '.btn-danger', function() {
             console.log('holaa');
             let selectId = $(this).data('select-tecnica');
             console.log(selectId);
             let selectTecnica = $(`#${selectId}`);
             selectTecnica.remove();
-            $(this).remove();
-
+            $(this).parent().remove(); // Eliminar el contenedor del select y el botón
         });
+
 
             // Dashboard toggle
             const body = document.querySelector("body"),
@@ -744,6 +744,7 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
+                    console.log(response);
                     alert("Curso agregado exitosamente");
                     let cursoId = response.cursoId;
 
@@ -759,6 +760,7 @@
                     // $('#empleadoId').val('');
                 },
                 error: function(error) {
+                    console.log(error);
                     alert('Ocurrió un error al agregar el Curso');
                     // $('#nombre').val('');
                     // $('#cupoLimite').val('');

@@ -1193,7 +1193,7 @@ header {
                     let emailInput = $('#emailUsuario');
 
                     if (citasServicios.cita.usuarioId === 1) {
-                        emailInput.val('Usuario No registrado');
+                        emailInput.val('UsuarioNoregistrado@example.com');
                     } else {
                         // Aquí asumo que el email del usuario está incluido en citasServicios.cita.emailUsuario
                         let email = opcion.data('email-usuario');
@@ -1521,7 +1521,7 @@ header {
                     let emailInput = $('#emailUsuario');
 
                     if (citasServicios.cita.usuarioId === 1) {
-                        emailInput.val('Usuario No registrado');
+                        emailInput.val('UsuarioNoregistrado@example.com');
                     } else {
                         // Aquí asumo que el email del usuario está incluido en citasServicios.cita.emailUsuario
                         let email = opcion.data('email-usuario');
