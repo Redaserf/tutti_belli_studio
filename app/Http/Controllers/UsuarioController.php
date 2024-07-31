@@ -37,8 +37,8 @@ class UsuarioController extends Controller
 
         // Poner un mensaje de que hubo un error al loguearse
         return response()->json([
-            'email' => 'Cambiar esto a algo más bonito xd',
-        ]);
+            'error' => 'Correo o contraseña incorrectas. Por favor, intente de nuevo.'
+        ], 401);
     }
 
 
@@ -55,6 +55,24 @@ class UsuarioController extends Controller
         ]);
         Auth::login($user);
         return redirect('/Home-usuario');
+    }
+
+    public function actualizarPerfil(Request $request) {
+        $user = Auth::user();
+
+        if ($user) {
+            $user->name = $request->input('name');
+            $user->apellido = $request->input('apellidos');
+            $user->gender = $request->input('gender');
+            $user->email = $request->input('email');
+            $user->numeroTelefono = $request->input('phone');
+    
+            $user->save();
+    
+            return response()->json(['success' => 'Perfil actualizado exitosamente']);
+        } else {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
     }
 
 
