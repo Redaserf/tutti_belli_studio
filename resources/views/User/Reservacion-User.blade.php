@@ -980,11 +980,11 @@ $(document).ready(function(){
                         let alertIcon = 'exclamation-triangle-fill'; //icono de danger
 
                         if (response && response.message) {
-                            if (response.message === 'Debe seleccionar al menos un servicio.') {
+                            if (response.message === 'Debe seleccionar al menos un servicio') {
                                 alertMessage = 'Por favor, seleccione al menos un servicio.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
-                            } else if (response.message == 'Ya existe una cita para esta fecha y hora.') {
+                            } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
                                 alertMessage = 'Ya existe una cita para esta fecha y hora.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
@@ -992,7 +992,7 @@ $(document).ready(function(){
                                 alertMessage = 'Por favor, complete todos los campos correctamente.';
                             }
                         } else {
-                            alertMessage = 'Se ha producido un error en la solicitud.';
+                            alertMessage = 'Se ha producido un error en la solicitud';
                         }
 
                         if (alertMessage) {
