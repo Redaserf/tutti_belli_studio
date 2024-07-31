@@ -507,6 +507,7 @@
                 </div>
                 <div class="form-floating mb-3" id="contenedoTecnicas">
 
+
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
@@ -592,6 +593,17 @@
         let selectCounter = 0; // Variable contador
         let selectedTecnicas = []; // Lista para mantener las técnicas ya seleccionadas
 
+        console.log($('hoaa'))
+        $('.btn-danger').on('click', function() {
+            console.log('holaa');
+            let selectId = $(this).data('select-tecnica');
+            console.log(selectId);
+            let selectTecnica = $(`#${selectId}`);
+            selectTecnica.remove();
+            $(this).remove();
+
+        });
+
             // Dashboard toggle
             const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
@@ -656,11 +668,19 @@
                 selectCounter++;
 
                 //crae el nuevo select al pulsar el boton de añadir y le pone su id
-                var newSelect = $('<select class="form-control mb-3" name="tecnicas[]"></select>');
-                newSelect.attr('id', 'tecnicaSelect' + selectCounter);
+                let newDiv = $('<div style="display:flex; flex-direction:row" ></div>');
+                var newSelect = $(`<select id="tecnicaSelect${selectCounter}" class="form-control mb-3" name="tecnicas[]"></select>`);
+                var newButton = $(`<button id="botonEliminar" data-select-tecnica="tecnicaSelect${selectCounter}" style="width: 15%" class="btn btn-danger mb-3"><i style="font-size:25px" class="fa-solid fa-delete-left"></i></button>`);
+                // newSelect.attr('id', 'tecnicaSelect' + selectCounter);
+
+
 
                 //lo adhiere al div donde apareceran los select dinamicos
-                $('#contenedoTecnicas').append(newSelect);
+                
+                newDiv.append(newSelect);
+                newDiv.append(newButton);
+                $('#contenedoTecnicas').append(newDiv);
+                
 
                 //Dibuja en el select las opciones que todavia no han sido seleccionadas
                 filteredTecnicas.forEach(tecnica => {
@@ -683,6 +703,18 @@
                 newSelect.trigger('change');
             });
         });
+
+
+
+        // $('.btn-danger').on('click', function() {
+        //     console.log('holaa');
+        //     let selectId = $(this).data('select-tecnica');
+        //     console.log(selectId);
+        //     let selectTecnica = $(`#${selectId}`);
+        //     selectTecnica.remove();
+        //     $(this).remove();
+        // });
+
 
         $('#agregarCurso').on('click', function(e) {
             e.preventDefault();

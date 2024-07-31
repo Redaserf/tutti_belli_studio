@@ -156,6 +156,7 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
 
+        
 
 
         // Verificar si ya existe una cita con la misma fecha y hora

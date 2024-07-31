@@ -1308,7 +1308,7 @@ header {
             let serviciosSeleccionados = []; 
 
 
-            $('.multiselect-option.selected').each(function() {
+            $('.multiselect-option.selected').each(function() {//ousheo servicios y tecnicas
 
 
                 let servicioId = $(this).data('select-id');
