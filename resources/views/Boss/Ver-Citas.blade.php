@@ -1377,7 +1377,7 @@ header {
                                 alertMessage = 'Por favor, complete todos los campos correctamente.';
                             }
                         } else {
-                            alertMessage = 'Se ha producido un error en la solicitud.';
+                            alertMessage = 'Se ha producido un error en la solicitud verifique los campos.';
                         }
 
                         if (alertMessage) {
@@ -1440,7 +1440,7 @@ header {
         
         $(document).on('click', '.aceptar-cita', function() {
             let citaId = $(this).data('cita-id');
-            agregarNota(citaId);
+            editarCita(citaId);
         })
 
 
@@ -1461,78 +1461,6 @@ header {
             $('#eliminarCita').modal('hide');
         });
 
-
-        function agregarNota(id) {
-            limpiarFormulario();
-            
-            $.get(`/cita/servicios/tecnica/${id}`, function(citasServicios) {
-
-                console.log('Datos recibidos:', citasServicios); 
-                console.log(`Id de la cita: `, citasServicios.cita.id);
-
-                $('#usuarioId').prop('disabled', true);
-
-                $('#btnEliminar').show();
-
-                    $('#id').val(citasServicios.cita.id);
-                    $('#fechaCita').val(citasServicios.cita.fechaCita);
-
-
-                    const citaDate = new Date(citasServicios.cita.fechaCita);
-                    $('#horaCita').show();
-                    console.log('hora de la cita: ', citasServicios.cita.horaCita);
-
-                    // actualizarOpcionesSelect(citaDate);//no actualiza las fechas a la hora de editar
-                    if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
-                    {
-                        $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
-                    }
-                    $('#horaCita').val(citasServicios.cita.horaCita);
-
-                    citasServicios.servicios.forEach(servicio => {
-
-                        let selectMultipleServicios = $('#service');
-                        let opcion = selectMultipleServicios.find(`div[data-select-id="${servicio.id}"]`);
-                        
-                        if(opcion.length > 0){
-
-                            opcion.addClass('selected');
-
-                            selectMultipleServicios.data('value', servicio.id);
-                        }
-                    
-                    })
-                    citasServicios.cita.servicios.forEach(servicio => {
-                        console.log(servicio);
-                        servicio.tecnicas.forEach(tecnica => {
-                            console.log(tecnica);
-                            $('.multiselect-option.selected').each(function() {
-                                    console.log('ID de la técnica:', tecnica.id);
-                                $(`#tecnicaSelect${servicio.id}`).val(tecnica.id);
-                                $(`#tecnicaSelect${servicio.id}`).show();
-                            });
-                        })
-                    })
-                    $('#usuarioId').val(citasServicios.cita.usuarioId);
-                    $('#empleadoId').val(citasServicios.cita.empleadoId);
-
-
-                    let opcion = $('#usuarioId').find('option:selected');
-                    let emailInput = $('#emailUsuario');
-
-                    if (citasServicios.cita.usuarioId === 1) {
-                        emailInput.val('UsuarioNoregistrado@example.com');
-                    } else {
-                        // Aquí asumo que el email del usuario está incluido en citasServicios.cita.emailUsuario
-                        let email = opcion.data('email-usuario');
-                        emailInput.val(email);
-                    }
-
-
-                    $('#notasCita').val(citasServicios.cita.notasCita);
-            })
-            $('#citasModal').modal('show');
-        }
 
 
 

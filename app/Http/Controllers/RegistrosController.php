@@ -257,8 +257,8 @@ class RegistrosController extends Controller
                 ]);
             }
               
-            // Enviar correo de confirmación
-             Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
+            //Enviar correo de confirmación
+            Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
 
             DB::commit();
             return response()->json(['message' => 'Cita actualizada con éxito'], 200);
