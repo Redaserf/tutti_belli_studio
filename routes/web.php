@@ -255,6 +255,8 @@ Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecn
 // ===== [Sevicios] =====
 //devuelve servicio como Json
 Route::get('/get/servicios',[ServicioController::class,'index']);
+//dar de altra servicio con tecnica y producto
+Route::post('/crearServicioConTecnicas',[ServicioController::class, 'crear']);
 
 // ===== [Inventario] =====
 //devulve inventario como Json
@@ -287,3 +289,5 @@ Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']
 Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
 //===== [ProductoHasCurso] =====
 Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
+
+
