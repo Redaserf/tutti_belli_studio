@@ -535,6 +535,17 @@ header {
         border-color: #e83e8c;
         box-shadow: 0 0 5px rgba(232, 62, 140, 0.5);
     }
+    .custom-select-tec{
+        border: 2px solid #00ffff;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+        background-color: white;
+    }
+    .custom-select-tec:focus {
+        border-color: #00ffff;
+        box-shadow: 0 0 5px rgba(232, 62, 140, 0.5);
+    }
         /*estilos pa los modales pq pusiste jajaja hugo nmms xd*/
     </style>
 
@@ -679,7 +690,7 @@ header {
                                     </div>
                                     <div>
                                         <div class='container'>
-                                            <div id="service" class="form-control multiselect-container form-floating mb-3 custom-select" required></div>
+                                            <div id="service" class="form-control multiselect-container form-floating mb-3" required></div>
                                         </div>
                                         <input type="hidden" id="serviciosSeleccionados"  class="custom-input" name="serviciosSeleccionados">
                                     </div>
@@ -1224,10 +1235,10 @@ header {
                         console.log(servicio.tecnicas);//si lo manda
                         selectServiciosMul.append(`
 
-                            <div class="multiselect-option form-control" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
+                            <div class="multiselect-option form-control custom-select" data-value="${servicio.id}" data-select-id="${servicio.id}">${servicio.nombre}</div>
 
                             <div class="form-floating mb-3">
-                                <select class="form-control" id="tecnicaSelect${servicio.id}" style="display: none" required></select>
+                                <select class="form-control custom-select-tec" id="tecnicaSelect${servicio.id}" style="display: none" required></select>
                             </div>
 
                     `)

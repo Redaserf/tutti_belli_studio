@@ -413,14 +413,169 @@ header {
                     <h2>Inventario</h2>
                 </div>
                 <div class="section-divider"></div>
-    
-                <div>
-    
-                    {{-- aqui todo --}}
-    
+
+                <!-- Pestañas de navegación -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="productos-servicios-tab" data-bs-toggle="tab" href="#productos-servicios" role="tab" aria-controls="productos-servicios" aria-selected="true">Productos y Servicios</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="productos-ventas-tab" data-bs-toggle="tab" href="#productos-ventas" role="tab" aria-controls="productos-ventas" aria-selected="false">Productos en Ventas</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="productos-curso-tab" data-bs-toggle="tab" href="#productos-curso" role="tab" aria-controls="productos-curso" aria-selected="false">Productos en Curso</a>
+                    </li>
+                </ul>
+
+                <!-- Contenido de las pestañas -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="productos-servicios" role="tabpanel" aria-labelledby="productos-servicios-tab">
+                        <div class="table-container mt-5">
+                            <h2 class="text-center">Productos en Servicios</h2>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Eliminar</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="path/to/image1.jpg" alt="Producto 1" class="img-thumbnail" width="100"></td>
+                                        <td>Producto 1</td>
+                                        <td>Descripción del producto 1</td>
+                                        <td>10</td>
+                                        <td>$15</td>
+                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
+                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
+                                    </tr>
+                                    <!-- Más filas aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
+                        <div class="table-container mt-5">
+                            <h2 class="text-center">Productos en Ventas</h2>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Eliminar</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="path/to/image2.jpg" alt="Producto 2" class="img-thumbnail" width="100"></td>
+                                        <td>Producto 2</td>
+                                        <td>Descripción del producto 2</td>
+                                        <td>5</td>
+                                        <td>$30</td>
+                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
+                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
+                                    </tr>
+                                    <!-- Más filas aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
+                        <div class="table-container mt-5">
+                            <h2 class="text-center">Productos en Curso</h2>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Eliminar</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="path/to/image3.jpg" alt="Producto 3" class="img-thumbnail" width="100"></td>
+                                        <td>Producto 3</td>
+                                        <td>Descripción del producto 3</td>
+                                        <td>20</td>
+                                        <td>$25</td>
+                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
+                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
+                                    </tr>
+                                    <!-- Más filas aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-    
             </section>
+
+            <!-- Modales -->
+            <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Formulario de edición aquí -->
+                            <form>
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="productName" value="Nombre del producto">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productDescription" class="form-label">Descripción</label>
+                                    <textarea class="form-control" id="productDescription">Descripción del producto</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productQuantity" class="form-label">Cantidad</label>
+                                    <input type="number" class="form-control" id="productQuantity" value="10">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="productPrice" class="form-label">Precio Unitario</label>
+                                    <input type="text" class="form-control" id="productPrice" value="$15">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteProductModalLabel">Eliminar Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de que deseas eliminar este producto?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
