@@ -314,7 +314,7 @@
         }
         .btn-primary {
             background-color: #e83e8c;
-            border-color: #e83e8c;
+            border-color: #e83e8c; 
         }
         .btn-primary:hover {
             background-color: #d63384;
@@ -423,6 +423,12 @@
                               <span class="text nav-text">Empleados</span>
                             </a>
                           </li>
+                          <li class="nav-link">
+                          <a href="/Ver-Ventas">
+                              <i class="fa-solid fa-money-bill-trend-up icon"></i>
+                            <span class="text nav-text">Ventas</span>
+                          </a>
+                        </li>
                         </ul>
                       </div>
                       <div class="bottom-content">
@@ -449,7 +455,9 @@
                                     <th>Tipo</th>
                                     <th>Precio</th>
                                     <th>Día</th>
-                                    <th>Acciones</th>
+                                    <th>Detalles</th>
+                                    <th>Rechazar</th>
+                                    <th>Editar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -458,31 +466,31 @@
                                     <td>$50</td>
                                     <td>2024-07-01</td>
                                     <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Citas</td>
-                                    <td>$75</td>
-                                    <td>2024-07-02</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
                                 </tr>
                                 <tr>
                                     <td>Compra</td>
                                     <td>$100</td>
                                     <td>2024-07-03</td>
                                     <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
                                 </tr>
                                 <tr>
                                     <td>Curso</td>
                                     <td>$2000</td>
                                     <td>2024-07-03</td>
                                     <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Modales -->
-                    <!-- ESTE MODAL SERA PARA LAS CITAS -->
+                    <!-- ESTE MODAL SERA PARA LAS CITAS DETALLES -->
                     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -505,7 +513,7 @@
                                                 <td>cejas,ojos,labios</td>
                                                 <td>tec1,tec2,tec3</td>
                                                 <td>anyelo</td>
-                                                <td>finalizada</td>
+                                                <td>Pendiente</td>
 
                                             </tr>
                                             <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
@@ -515,9 +523,159 @@
                             </div>
                         </div>
                     </div>
+                    <!-- ESTE MODAL ES PARA EDITAR PRODUCTOS DE UN CURSO -->
+                    <div class="modal fade" id="editCourseProductsModal" tabindex="-1" aria-labelledby="editCourseProductsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editCourseProductsModalLabel">Productos del Curso</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre del Producto</th>
+                                                <th>Cantidad</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="courseProductsTableBody">
+                                            <tr>
+                                                <td><input type="text" class="form-control" value="Producto 1" readonly></td>
+                                                <td><input type="number" class="form-control product-quantity" value="1"></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm remove-product">Eliminar</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" class="form-control" value="Producto 2" readonly></td>
+                                                <td><input type="number" class="form-control product-quantity" value="2"></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm remove-product">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-end align-items-center">
+                                        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ESTE MODAL ES PARA EDITAR LOS ELEMENTOS DE UNA COMPRA -->
+                    <div class="modal fade" id="editAppointmentProductsModal" tabindex="-1" aria-labelledby="editAppointmentProductsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editAppointmentProductsModalLabel">Editar Productos de Compra</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre del Producto</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="appointmentProductsTableBody">
+                                            <tr>
+                                                <td><input type="text" class="form-control"  value="Producto 1" readonly></td>
+                                                <td><input type="number" class="form-control product-quantity"  value="1"></td>
+                                                <td><input type="number" class="form-control product-price"  value="1000" readonly></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm remove-product">Eliminar</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" class="form-control"  value="Producto 2" readonly></td>
+                                                <td><input type="number" class="form-control product-quantity"  value="2"></td>
+                                                <td><input type="number" class="form-control product-price" value="1000" readonly></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm ">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-primary me-2">Guardar Cambios</button>
+                                        </div>
+                                        <div class="me-3">
+                                            <label for="totalAmount" class="form-label">Total:</label>
+                                            <input type="text" id="totalAmount" class="form-control form-control-sm" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ESTE MODALS SON PARA CITAS EDITAR -->
+                    <div class="modal fade" id="editAppointmentModalCit" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editAppointmentModalLabel">Editar Cita</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Técnica</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Micropigmentación de Cejas</td>
+                                                <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal1">Productos</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Micropigmentación de Labios</td>
+                                                <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal2">Productos</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ESTE ES EJEMPLO CUANDO PIQUE A PRODUCTOS DE UNA TECNICA EN CITAS-->
+                    <div class="modal fade" id="editProductsModal1" tabindex="-1" aria-labelledby="editProductsModal1Label" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editProductsModal1Label">Micropigmentación de Cejas - Productos</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Pigmento</td>
+                                                <td><input type="number" class="form-control" value="1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aguja</td>
+                                                <td><input type="number" class="form-control" value="1"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                
 
 
-                    <!-- ESTE MODAL SERA PARA LOS PRODUCTOS -->
+
+                    <!-- ESTE MODAL SERA PARA LOS PRODUCTOS DETALLES -->
                     <div class="modal fade" id="detailsModalProducts" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -548,7 +706,7 @@
                         </div>
                     </div>
 
-                    <!-- ESTE MODAL ESTA ECHO PARA LOS CURSOS -->
+                    <!-- ESTE MODAL ESTA ECHO PARA LOS CURSOS  DETALLES Y RECHAZAR-->
 
                     <div class="modal fade" id="detailsModalCursos" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -561,16 +719,22 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Empleado</th>
-                                                <th>CupoLim</th>
-                                                <th>Tecnicas</th>
+                                                <th>Usuario</th>
+                                                <th>Accion</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>maxita</td>
-                                                <td>3</td>
-                                                <td>t1,t2,t3,t4,t5</td>
+                                                <td>Angela</td>
+                                                <td><button type="button" class="btn btn-danger">Rechazar</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Aaron</td>
+                                                <td><button type="button" class="btn btn-danger">Rechazar</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hugo</td>
+                                                <td><button type="button" class="btn btn-danger">Rechazar</button></td>
                                             </tr>
                                             <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
                                         </tbody>
@@ -578,7 +742,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>                
             </section>
 
 

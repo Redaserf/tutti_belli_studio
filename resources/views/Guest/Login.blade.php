@@ -170,10 +170,6 @@ a:hover {
                 </div>
                 <button type="submit" class="btn btn-dark w-100">Ingresar</button>
             </form>
-            <p class="mt-3">o ingresa con</p>
-            <button class="google-button">
-                <img src="/resources/img/Login - Register/google-icon-1.png" alt="Google Logo"> Google
-            </button>
             <p class="mt-3">Si no tienes cuenta <a href="/Registro">Regístrate aquí</a></p>
             <p>Al hacer clic en continuar, aceptas nuestros <a href="#">Términos de servicio</a> y <a href="#">Política de privacidad</a>.</p>
         </div>
