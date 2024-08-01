@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8VQ4y5rYuOOG3LOJGlgU8KnJ9UXr83Eo&callback=console.debug&libraries=maps,marker&v=beta">
+    </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
@@ -32,6 +34,12 @@
   font-family: "Josefin Sans", sans-serif !important; 
   /* letra principal */
 }
+gmp-map {
+        height: 100%;
+        width: 100%;
+        height: 500px; /* Puedes ajustar la altura según tus necesidades */
+        border-radius: 10px;
+      }
 .hiddenX{
     overflow-x: hidden;
 }
@@ -639,7 +647,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <section class="fonts3" class="Pink_background_for_services_section" style="padding: 0px;">
       <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
         <div data-aos="fade-up" data-aos-duration="1000" class="row">
-          <img class="img-fluid" src="/resources/img/home/api.jpg" alt="">
+              <gmp-map center="25.55710792541504,-103.3420181274414" zoom="14" map-id="DEMO_MAP_ID">
+              <gmp-advanced-marker position="25.55710792541504,-103.3420181274414" title="My location"></gmp-advanced-marker>
+              </gmp-map>
         </div>
         <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
         <div data-aos="fade-up" data-aos-duration="1000" class="row">
