@@ -245,7 +245,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -415,8 +415,6 @@ header {
 
 <div class="home">
 
-
-    <form action="/RegistroTecnica" method="POST">
     @csrf
     <div class="col-12">
         <div class="container container-div">
@@ -455,7 +453,45 @@ header {
             </div>
         </div>
     </div>
-    </form>
+
+    <div class="col-12">
+        <div class="container container-div">
+            <div class="container full-height d-flex justify-content-center align-items-center">
+                <div class="row w-100">
+                    <div class="row ">
+                        <H2>Agregar técnica</H2>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <select name="" class="form-control" id="servicioId">
+                                <option value="" disabled selected>Servicios</option>
+
+                                <!-- Servicios que aparecerán con back-end -->
+
+                            </select>
+                            <label for="TecnicService">Servicio al que pertenece la técnica</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="AddTecnicName" placeholder="nombre de la técnica">
+                            <label for="AddTecnicName">Nombre de la técnica</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica">
+                            <label for="AddTecnicPrice">Precio de la técnica</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="AddTecnicDescription">Descripción de la técnica</label>
+                            <textarea class="form-control" id="AddTecnicDescription" rows="7" style="resize: none;"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-dark btn-block w-100" id="AddTecnicaButon" style="margin-bottom: 20px;">Agregar técnica</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -465,6 +501,7 @@ header {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
+    let cambiosSinGuardar =true;
 
 // Scripts para todas las vistas
 
@@ -493,7 +530,7 @@ $(document).ready(function(){
                     overlay.style.display = "none";
                 }
             });
-    
+
 
             overlay.addEventListener("click", () => {
                 sidebar.classList.add("close");
@@ -513,7 +550,7 @@ $(document).ready(function(){
             });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -524,6 +561,7 @@ $(document).ready(function(){
             botonSidebar();
 
     loadServicios();
+    alert('es necesario que todos los servicios tengan tecnica para el buen funcionamiento de la plataforma')
     // Fin scripts para todas las vistas
 
     //script para agregar tecnica
@@ -547,10 +585,12 @@ $(document).ready(function(){
             },
             success: function(response) {
                 alert("Tecnica agregada exitosamente");
+                cambiosSinGuardar = false;
                 $('#AddTecnicName').val('');
                 $('#AddTecnicPrice').val('');
                 $('#AddTecnicDescription').val('');
                 $('#servicioId').val('');
+
             },
             error: function(error) {
                 alert('Ocurrió un error al agregar el servicio');
@@ -580,6 +620,16 @@ function loadServicios(){
 
     });
 }
+    console.log(cambiosSinGuardar);
+    window.addEventListener('beforeunload', function (e) {
+        if (cambiosSinGuardar) {
+
+            const mensaje = "Para el buen funcionamiento de la pagina es necesario que todos los servicios tengan una tecnica asignada, ¿deseas salir de todos modos?";
+            e.preventDefault();
+            e.returnValue = mensaje;
+            return mensaje;
+        }
+    });
 
 </script>
 </body>

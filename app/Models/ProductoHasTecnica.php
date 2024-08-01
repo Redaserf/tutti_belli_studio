@@ -9,11 +9,14 @@ class ProductoHasTecnica extends Model
 {
 
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
+    protected $table = 'producto_has_tecnicas';
+
     public $timestamps = false;
 
     protected $fillable = [
         'productoId',
-        'tecnicaId'
+        'tecnicaId',
+        'cantidadDeUso'
     ];
 
     use HasFactory;

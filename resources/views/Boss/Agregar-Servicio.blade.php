@@ -245,7 +245,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -317,6 +317,58 @@ header {
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
     }
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+}
+.product-card {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 200px; /* Reducido para que quepan más tarjetas */
+    text-align: center;
+    margin: 10px; /* Añadido margen para separar las tarjetas */
+}
+
+.product-image {
+    border-radius: 10px; /* Reducido el radio del borde */
+    width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+    height: 150px; /* Altura reducida */
+    object-fit: contain;
+}
+
+.product-info {
+    padding: 10px; /* Reducido el padding */
+}
+
+.product-title {
+    font-size: 1.2em; /* Reducido el tamaño de la fuente */
+    margin: 0 0 8px 0; /* Reducido el margen inferior */
+}
+
+.product-description {
+    font-size: 0.9em; /* Reducido el tamaño de la fuente */
+    color: #666;
+    margin: 0 0 8px 0; /* Reducido el margen inferior */
+}
+
+.product-price {
+    font-size: 1em; /* Reducido el tamaño de la fuente */
+    color: #333;
+    font-weight: bold;
+}
+
+.hidden{
+    display: none;
+}
+
     </style>
 </head>
 
@@ -414,9 +466,6 @@ header {
 
 
 <div class="home">
-
-
-    <form action="/RegistroServicio" method="POST">
     @csrf
     <div class="col-12">
         <div class="container container-div">
@@ -430,25 +479,90 @@ header {
                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del servicio">
                             <label for="AddServiceName">Nombre del Servicio</label>
                         </div>
+                        <div class="form-floating mb-3">
+                            <button id="agregarTecnica" type="button" class="btn btn-dark btn-block w-100" onclick="">
+                                Agregar Tecnica
+                            </button>
+                        </div>
                         <div>
-                            <button type="button" class="btn btn-dark btn-block w-100" id="AddServiceButon">Agregar Servicio</button>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </form>
 
 
 
+    <!-- Modal Tecnicas -->
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="tecnicasModal" tabindex="-1" aria-labelledby="tecnicasModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tecnicasModalLabel">Tecnica</h5>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nombreTecnica" placeholder="nombre de la técnica">
+                        <label for="nombreTecnica">Nombre de la técnica</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="precioTecnica" placeholder="precio de la técnica">
+                        <label for="precioTecnica">Precio de la técnica</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcionTecnica">Descripción de la técnica</label>
+                        <textarea class="form-control" id="descripcionTecnica" rows="7" style="resize: none;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button id="botonProductos" class="btn btn-dark btn-block w-100">Productos utilizados en la tecnica</button>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cerrarTecnica" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Productos -->
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productosModalLabel">Productos</h5>
+                </div>
+                <div class="modal-body product-container" id="contenedorProductos">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+                    <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
+                </div>
+        </div>
+    </div>
 </div>
+
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
 
+    $('#productosModal').on('hide.bs.modal', function (e) {
+        console.log('El modal está a punto de cerrarse');
+    });
+
+    let selectedProducts = [];
+    let cantidadesProducts = [];
+    var nombreServicio;
+    let tecnicas = [];
 // Scripts para todas las vistas
 
     // Pantalla de carga
@@ -459,8 +573,9 @@ header {
         loader.style.display = "none";
     });
 
-$(document).ready(function(){
 
+
+    $(document).ready(function(){
             // Dashboard toggle
             const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
@@ -476,7 +591,7 @@ $(document).ready(function(){
                     overlay.style.display = "none";
                 }
             });
-    
+
 
             overlay.addEventListener("click", () => {
                 sidebar.classList.add("close");
@@ -496,7 +611,7 @@ $(document).ready(function(){
             });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -506,7 +621,50 @@ $(document).ready(function(){
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
 
+    dibujarProductos();
+
     // Fin scripts para todas las vistas
+
+
+    //Script para agregar las tecnias
+    $('#agregarTecnica').on('click',function (){
+        nombreServicio = $('#nombre').val();
+        console.log(nombreServicio)
+
+        if(nombreServicio.length >0){
+            $('#tecnicasModal').modal('show');
+        }else{
+            alert('Debes agregar nombre para la tecnica')
+        }
+    });
+
+    $('#guardarTecnica').on('click', function (){
+        if($('#nombreTecnica').val() !== "" && $('#precioTecnica').val() >0 && $('#descripcionTecnica').val() !== "" && selectedProducts.length > 0){
+            let tecnicaPorGuardar = {nombre: $('#nombreTecnica').val(),precio: $('#precioTecnica').val(),descripcion: $('#descripcionTecnica').val()};
+            console.log(tecnicaPorGuardar);
+            tecnicas.push(tecnicaPorGuardar);
+
+            console.log(nombreServicio);
+
+            $('#nombre').val('');
+            $('#precioTecnica').val('');
+            $('#descripcionTecnica').val('');
+
+            $('#agregarTecnica').prop('disabled', true);
+            $('#agregarTecnica').text('tecnica seleccionada');
+
+            $('#guardarTecnica').modal('hide');
+
+        }
+        else{
+
+            alert('completa los campos faltantes')
+        }
+
+    });
+
+
+
 
     //Script para agregar servicio
     $('#AddServiceButon').on('click', function(e) {
@@ -522,8 +680,9 @@ $(document).ready(function(){
                 nombre: serviceName
             },
             success: function(response) {
-                alert("Servicio agregado exitosamente");
-                $('#nombre').val('');
+                // alert("Servicio agregado exitosamente");
+                window.location.href = '/Agregar-Tecnica';
+                // $('#nombre').val('');
             },
             error: function(error) {
                 alert('Ocurrió un error al agregar el servicio');
@@ -535,6 +694,158 @@ $(document).ready(function(){
 
     // Fin document.ready
 });
+
+    function dibujarProductos() {
+        $.ajax({
+            url: '/get/productos',
+            method: 'GET',
+            success: function(data) {
+                const productos = $('#contenedorProductos');
+                productos.empty();
+                data.forEach(producto => {
+                    let cont = producto.id;
+                    let idDinamico = 'cantidad' + cont;
+                    const card = `
+                    <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                            <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
+<!--                            obtiene como data-stock el valor del stock del producto-->
+                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}">
+                            <label for="${idDinamico}">Cantidad a utilizar</label>
+                        </div>
+                        <button style="margin-bottom: 10px;" id="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>
+                    </div>
+                `;
+                    productos.append(card);
+                });
+            }
+        });
+    }
+
+    function cerrar() {
+        nombreServicio = "";
+
+        $('#nombre').val('');
+        $('#nombreTecnica').val('');
+        $('#precioTecnica').val('');
+        $('#descripcionTecnica').val('');
+
+        selectedProducts = [];
+        cantidadesProducts = [];
+        tecnicas = [];
+
+        // Reiniciar todos los campos de cantidad
+        $('input[name="cantidadUtilizar"]').val('');
+        // Habilitar todos los botones de seleccionar
+        $('#contenedorProductos button #seleccionar').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+    }
+
+
+    $('#guardarProductos').on('click', function() {
+        if(selectedProducts.length > 0) {
+            // $('#agregarTecnica').prop('disabled', true);
+            // $('#agregarTecnica').text('Productos seleccionados');
+            //
+            // console.log(selectedProducts);
+            //
+            // $('#productosModal').modal('hide');
+            // $('#tecnicasModal').modal('hide');
+
+            if($('#nombreTecnica').val() !== "" && $('#precioTecnica').val() > 0 && $('#descripcionTecnica').val() !== "" && selectedProducts.length > 0){
+                let tecnicaPorGuardar = {
+                    nombre: $('#nombreTecnica').val(),
+                    precio: $('#precioTecnica').val(),
+                    descripcion: $('#descripcionTecnica').val()
+                };
+                // console.log(tecnicaPorGuardar);
+                // tecnicas.push(tecnicaPorGuardar);
+                // console.log(tecnicas);
+
+                // console.log(nombreServicio);
+
+                $('#nombreTecnica').val('');
+                $('#precioTecnica').val('');
+                $('#descripcionTecnica').val('');
+
+                console.log(nombreServicio)
+                console.log(tecnicaPorGuardar)
+                console.log(selectedProducts)
+                console.log(cantidadesProducts)
+
+                $.ajax({
+                    url: '/crearServicioConTecnicas',
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        nombreServicio: nombreServicio,
+                        tecnica: tecnicaPorGuardar,
+                        arregloProductos: selectedProducts,
+                        arregloCantidades: cantidadesProducts,
+                    },
+                    success: function(response) {
+                        alert("Se te redirigira a agregar tecnicas");
+                        // location.reload();  // Refresca la página al aceptar el alert
+                    },
+                    error: function(error) {
+                        alert('ERROR EN DAR DE ALTA');
+                        console.log(error)
+                        // location.reload();  // Refresca la página al aceptar el alert
+                    }
+                });
+
+                $('#guardarTecnica').modal('hide');
+            } else {
+                alert('Completa los campos faltantes');
+            }
+
+            // Reiniciar todos los campos de cantidad
+            $('input[name="cantidadUtilizar"]').val('');
+            // Habilitar todos los botones de seleccionar
+            $('#contenedorProductos button #seleccionar').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+
+        } else {
+            alert('Completa los datos correctamente');
+        }
+    });
+
+    $(document).on('click', '#seleccionar', function() {
+        //obtener id dinamico
+        let productId = $(this).data('id');
+        let idDinamico = 'cantidad' + productId;
+        let cantidad = $('#' + idDinamico).val();
+        let stock = $('#' + idDinamico).data('stock');  // Obtener el stock del atributo data-stock
+
+        // Comprobar que la cantidad ingresada sea mayor que 0 y menor o igual a la cantidad en stock
+        if (cantidad > 0 && cantidad <= stock) {
+            selectedProducts.push(productId);
+            cantidadesProducts.push(cantidad);
+
+            $(this).prop('disabled', true);
+            $(this).text('Seleccionado');
+
+            console.log(selectedProducts);
+            console.log(cantidadesProducts);
+        } else {
+            alert('Inserte una cantidad válida que sea menor o igual al stock disponible');
+        }
+    });
+
+
+
+    $('#botonProductos').on('click',function (){
+        if($('#nombreTecnica').val() !== "" && $('#precioTecnica').val() >0 && $('#descripcionTecnica').val() !== ""){
+            $('#productosModal').modal('show');
+
+        }
+        else{
+
+            alert('completa los campos faltantes')
+        }
+    });
 
 </script>
 </body>
