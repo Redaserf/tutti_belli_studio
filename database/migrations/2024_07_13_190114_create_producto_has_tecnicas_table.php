@@ -17,6 +17,7 @@ return new class extends Migration
             //Llaves foraneas
             $table->unsignedBigInteger('tecnicaId');
             $table->unsignedBigInteger('productoId');
+            $table->integer('cantidadDeUso');
             $table->timestamps();
 
             $table->foreign('tecnicaId')->references('id')->on('tecnicas');
