@@ -681,7 +681,7 @@ header {
                                         <select class="form-control custom-select" name="usuarioId" id="usuarioId"></select>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control custom-input" type="email" id="emailUsuario" required>
+                                        <input class="form-control custom-input" type="email" id="emailUsuario">
                                         <label for="fechaCita" id="labelFechaCita">Correo electrónico</label>
                                     </div>
                                     <div class="form-floating mb-3">

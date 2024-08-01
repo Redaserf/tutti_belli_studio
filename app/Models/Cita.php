@@ -15,7 +15,7 @@ class Cita extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     // public $timestamps = false;
 
-    protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId'];
+    protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId', 'ventaId'];
 
     public function usuario(){
         return $this->belongsTo(User::class, 'usuarioId');
@@ -30,6 +30,10 @@ class Cita extends Model
     {
         return $this->belongsToMany(Servicio::class, 'citas_has_servicios', 'citaId', 'servicioId')
                     ->withPivot('tecnicaId');
+    }
+
+    public function venta(){
+        return $this->belongsTo(Venta::class, 'ventaId');
     }
 
     //public function resenias(){

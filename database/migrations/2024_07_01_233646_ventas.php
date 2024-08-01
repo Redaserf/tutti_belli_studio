@@ -16,12 +16,11 @@ return new class extends Migration
 
             $table->id();
             $table->double('total');
-            $table->dateTime('fechaVenta');
-            $table->unsignedBigInteger('usuarioId');
+            $table->date('fechaVenta');
+            $table->boolean('estadoVenta')->default(true);
             // checar atributo estatus faltante en el diagrama
             $table->timestamps();
 
-            $table->foreign('usuarioId')->references('id')->on('users');
 
 
 

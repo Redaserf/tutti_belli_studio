@@ -69,7 +69,8 @@ use App\Http\Controllers\DibujarController;
 
   Route::get('/buscar', [ConsultasController::class, 'buscador']);
 
-
+    //todas las tecnicas que estan en citas_has_servicios
+    Route::get('/tecnicas-en-citas-has-servicios', [ConsultasController::class, 'tecnicasConCitas']);
 
 
 

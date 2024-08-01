@@ -26,8 +26,13 @@ class DetalleTecnica extends Model
         return $this->belongsTo(Venta::class, 'ventaId');
     }
 
-    public function detalleTecnicaHasTecnica(){
-        return $this->hasMany(DetalleTecnicaHasTecnica::class, 'detalleTecnicaId');
+    // public function detalleTecnicaHasTecnica(){
+    //     return $this->hasMany(DetalleTecnicaHasTecnica::class, 'detalleTecnicaId');
+    // }
+
+    public function tecnicas()
+    {
+        return $this->belongsToMany(Tecnica::class, 'detalle_tecnicas_has_tecnicas', 'detalleTecnicaId', 'tecnicaId');
     }
 
 }

@@ -39,4 +39,28 @@ class Tecnica extends Model
         return $this->belongsTo(Descuento::class,'descuentoId');
     }
 
+      public function detalleTecnicas()
+    {
+        return $this->belongsToMany(DetalleTecnica::class, 'detalle_tecnica_has_tecnicas', 'tecnicas_tecnica_id', 'detalle_tecnica_id');
+    }
+
+    public function citasHasServicios()
+    {
+        return $this->hasMany(CitaHasServicio::class, 'tecnicaId', 'id');
+    }
+
+    // public function citas()
+    // {
+    //     return $this->hasManyThrough(
+    //         Cita::class,              // El modelo final al que queremos acceder
+    //         CitaHasServicio::class,   // El modelo intermedio
+    //         'tecnicaId',              // Foreign key en el modelo intermedio (CitaHasServicio) que se refiere a Tecnica(modelo)
+    //         'id',                     // Foreign key en el modelo final (Cita) que se refiere al modelo intermedio
+    //         'id',                     // Local key en el modelo Tecnica
+    //         'citaId'                  // Local key de citas en el modelo intermedio (CitaHasServicio)
+    //     );
+    // }
+
+    
+
 }

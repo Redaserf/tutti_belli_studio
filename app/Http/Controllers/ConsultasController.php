@@ -210,6 +210,18 @@ class ConsultasController extends Controller
     }
     
 
+    public function tecnicasConCitas(){//hacer
+        $tecnicasIds = CitaHasServicio::select('tecnicaId')->with('tecnica')->get();
 
+        return response()->json($tecnicasIds);
+    }
+
+    // Traer ventas de todas las citas
+
+    public function ventasCitas(){
+        $ventasCitas = Venta::with('cita')->get();
+
+        return response()->json($ventasCitas);
+    }
 
 }
