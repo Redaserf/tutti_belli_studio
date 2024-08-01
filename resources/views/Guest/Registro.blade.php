@@ -153,10 +153,6 @@
                         <input type="email" name="email" class="form-control" id="correo" placeholder="Email válido" required>
                     </div>
                 </div>
-                <button type="button" class="social-button mt-3">
-                    <img src="/resources/img/Login - Register/google-icon-1.png" alt="Google logo">
-                    Continuar con Google
-                </button>
                 <hr>
                 <div class="mb-3">
                     <label for="contrasena" class="form-label">Crear una contraseña</label>
