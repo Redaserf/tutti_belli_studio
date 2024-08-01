@@ -395,6 +395,12 @@
                           <span class="text nav-text">Empleados</span>
                         </a>
                       </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Ventas">
+                              <i class="fa-solid fa-money-bill-trend-up icon"></i>
+                            <span class="text nav-text">Ventas</span>
+                          </a>
+                      </li>
                     </ul>
                   </div>
                   <div class="bottom-content">

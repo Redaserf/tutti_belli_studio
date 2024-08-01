@@ -672,7 +672,13 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                               <i class="fa-solid fa-user-tie icon"></i>
                             <span class="text nav-text">Empleados</span>
                           </a>
-                        </li>
+                      </li>
+                      <li class="nav-link">
+                          <a href="/Ver-Ventas">
+                              <i class="fa-solid fa-money-bill-trend-up icon"></i>
+                            <span class="text nav-text">Ventas</span>
+                          </a>
+                      </li>
                       </ul>
                     </div>
                     <div class="bottom-content">
