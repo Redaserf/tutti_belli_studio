@@ -314,7 +314,11 @@
                             <hr>
                             <p class="mb-0">Mientras tanto, puedes explorar otros servicios y productos que ofrecemos.</p>
                         </div>
+                        <br>
+                        <br>
+                        <br>
                     </div>
+                  
                 `);
             } else {
                 data.forEach(curso => {
