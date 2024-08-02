@@ -452,49 +452,160 @@
 
         
             <section class="home">
-                <!-- ESTA TABLA ES VISUALIZAR LAS VENTAS  -->
-                    <div class="table-container mt-5">
-                        <h2>VENTAS</h2>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Precio</th>
-                                    <th>Día</th>
-                                    <th>Detalles</th>
-                                    <th>Rechazar</th>
-                                    <th>Editar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Citas</td>
-                                    <td>$50</td>
-                                    <td>2024-07-01</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Compra</td>
-                                    <td>$100</td>
-                                    <td>2024-07-03</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Curso</td>
-                                    <td>$2000</td>
-                                    <td>2024-07-03</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="top text-center">
+                    <h2>Ventas</h2>
+                    <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"></a>
+                </div>
+                <div class="section-divider"></div>
 
+                <br>
+                    <!-- Navegación de pestañas -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" role="tab" aria-controls="citas" aria-selected="false">Citas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="false">Compras</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab" aria-controls="cursos" aria-selected="false">Cursos</button>
+                        </li>
+                    </ul>
+
+                    <!-- Contenido de las pestañas -->
+                    <div class="tab-content" id="myTabContent">
+                        <!-- Pestaña General -->
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="table-container mt-5">
+                                <h2>VENTAS</h2>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Precio</th>
+                                            <th>Día</th>
+                                            <th>Detalles</th>
+                                            <th>Rechazar</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Citas</td>
+                                            <td>$50</td>
+                                            <td>2024-07-01</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Compra</td>
+                                            <td>$100</td>
+                                            <td>2024-07-03</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Curso</td>
+                                            <td>$2000</td>
+                                            <td>2024-07-03</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Pestaña Citas -->
+                        <div class="tab-pane fade" id="citas" role="tabpanel" aria-labelledby="citas-tab">
+                            <div class="table-container mt-5">
+                                <h2>CITAS</h2>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Precio</th>
+                                            <th>Día</th>
+                                            <th>Detalles</th>
+                                            <th>Rechazar</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Citas</td>
+                                            <td>$50</td>
+                                            <td>2024-07-01</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Pestaña Compras -->
+                        <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
+                            <div class="table-container mt-5">
+                                <h2>COMPRAS</h2>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Precio</th>
+                                            <th>Día</th>
+                                            <th>Detalles</th>
+                                            <th>Rechazar</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Compra</td>
+                                            <td>$100</td>
+                                            <td>2024-07-03</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Pestaña Cursos -->
+                        <div class="tab-pane fade" id="cursos" role="tabpanel" aria-labelledby="cursos-tab">
+                            <div class="table-container mt-5">
+                                <h2>CURSOS</h2>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Precio</th>
+                                            <th>Día</th>
+                                            <th>Detalles</th>
+                                            <th>Rechazar</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Curso</td>
+                                            <td>$2000</td>
+                                            <td>2024-07-03</td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Modales -->
                     <!-- ESTE MODAL SERA PARA LAS CITAS DETALLES -->
                     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">

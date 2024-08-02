@@ -53,7 +53,7 @@
         font-family: "Josefin Sans", sans-serif !important;
         }
 
-        h1, h2, h3{
+        h1, h2, h3,h4,h5,a,select,option,label,input{
         font-family: "Josefin Sans", sans-serif !important;
         }
 
@@ -69,7 +69,7 @@
             }
 
         .profile-container {
-            background-color: transparent;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -127,10 +127,6 @@
             --tran-05: all 0.5s ease;
         }
 
-        body {
-            height: 100vh;
-            background: var(--body-color);
-        }
 
         .sidebar {
             position: fixed;
