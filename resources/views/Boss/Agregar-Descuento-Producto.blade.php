@@ -264,6 +264,9 @@
             color: white;
         }
 
+    .sidebar.close .header-text {
+    display: none;
+    }
         /* Fin Dashboard */
 
 
@@ -382,7 +385,9 @@
                         <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                     </span>
                     <div class="text header-text">
-                        <span class="name">{{ Auth::user()->name }}</span>
+                        <a style="text-decoration:none; color: #707070;" href="/Perfil-Admin">
+                            <span class="name">{{ Auth::user()->name }}<i style="margin-left:6px;" class="fa-solid fa-pen-to-square"></i></span>
+                        </a>
                         <span class="rol">Administrador</span>
                     </div>
                 </div>
@@ -537,39 +542,38 @@
 
         $(document).ready(function(){
 
-            // Dashboard toggle
-            const body = document.querySelector("body"),
-                sidebar = body.querySelector(".sidebar"),
-                toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay"),
-                sidebarBtn = body.querySelector(".sidebar-btn");
+// Dashboard toggle
+const body = document.querySelector("body"),
+    sidebar = body.querySelector(".sidebar"),
+    toggle = body.querySelector(".toggle"),
+    overlay = body.querySelector(".overlay"),
+    sidebarBtn = body.querySelector(".sidebar-btn");
 
-            toggle.addEventListener("click", () => {
-                sidebar.classList.toggle("close");
-                if (!sidebar.classList.contains("close")) {
-                    overlay.style.display = "block";
-                } else {
-                    overlay.style.display = "none";
-                }
-            });
+toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("close");
+    if (!sidebar.classList.contains("close")) {
+        overlay.style.display = "block";
+    } else {
+        overlay.style.display = "none";
+    }
+});
 
+overlay.addEventListener("click", () => {
+    sidebar.classList.add("close");
+    overlay.style.display = "none";
+    sidebar.classList.remove("open");
+});
 
-            overlay.addEventListener("click", () => {
-                sidebar.classList.add("close");
-                overlay.style.display = "none";
-                sidebar.classList.remove("open");
-            });
-
-            sidebarBtn.addEventListener("click", () => {
-                sidebar.classList.toggle("open");
-                if (sidebar.classList.contains("open")) {
-                    sidebar.classList.remove("close");
-                    overlay.style.display = "block";
-                } else {
-                    sidebar.classList.add("close");
-                    overlay.style.display = "none";
-                }
-            });
+sidebarBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+    if (sidebar.classList.contains("open")) {
+        sidebar.classList.remove("close");
+        overlay.style.display = "block";
+    } else {
+        sidebar.classList.add("close");
+        overlay.style.display = "none";
+    }
+});
 
                         // Botón sidebar
                         function botonSidebar() {

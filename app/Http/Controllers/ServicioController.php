@@ -15,6 +15,40 @@ class ServicioController extends Controller
         return response()->json($servicios);
     }
 
+    public function index2($id)
+    {
+        try {
+            $servicio = Servicio::findOrFail($id);
+            return response()->json($servicio);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Servicio no encontrado', 'error' => $e->getMessage()], 404);
+        }
+    }
+
+    public function borrarServicio($id) {
+        try {
+            $servicio = Servicio::findOrFail($id);
+            $servicio->delete();
+            return response()->json(['success' => 'Servicio eliminado con éxito']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al eliminar el servicio', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function actualizarServicio(Request $request, $id){
+        $servicio = Servicio::find($id);
+
+        if ($servicio) {
+        $servicio->nombre = $request->input('nombre');
+
+        $servicio->save();
+
+        return response()->json(['success' => 'Servicio actualizado con éxito']);
+        } else {
+        return response()->json(['error' => 'Servicio no encontrado'], 404);
+        }
+    }
+
         function crear(Request $request){
             // Crear el servicio
             $servicio = Servicio::create([

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Servicios</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
@@ -214,6 +214,10 @@
             margin-left: 90px; /* Cuando la sidebar está cerrada, deja menos espacio */
         }
 
+    .sidebar.close .header-text {
+    display: none;
+    }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -309,7 +313,9 @@
                     <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                 </span>
                 <div class="text header-text">
-                    <span class="name">{{ Auth::user()->name }}</span>
+                        <a style="text-decoration:none; color: #707070;" href="/Perfil-Admin">
+                            <span class="name">{{ Auth::user()->name }}<i style="margin-left:6px;" class="fa-solid fa-pen-to-square"></i></span>
+                        </a>
                     <span class="rol">Administrador</span>
                 </div>
             </div>
@@ -399,14 +405,92 @@
         <div class="section-divider"></div>
 
         <div>
-            {{-- Aquí los servicios --}}
+            <table class="table">
+                <thead>
+                  <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Servicio</th>
+                      <th scope="col">Técnicas</th>
+                      <th scope="col">Modificar</th>
+                  </tr>
+                </thead>
+                <tbody id="Servicios">
+                    {{-- Servicios mediante JS --}}
+                </tbody>
+            </table>
         </div>
-    </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="tecnicasModal" tabindex="-1" aria-labelledby="tecnicasModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="tecnicasModalLabel">Técnicas</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody" style="padding: 40px;">
+                        <!-- Técnicas mediante JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Modal para editar técnicas -->
+            <div class="modal fade" id="editarTecnicaModal" tabindex="-1" aria-labelledby="editarTecnicaModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="editarTecnicaModalLabel">Editar Técnica</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="editarModalBody">
+                            <!-- Formulario de edición mediante JS -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="deleteTecnica" >Borrar técnica</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-success" id="saveChanges">Guardar cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- Modal para editar el servicio -->
+                        <div class="modal fade" id="editarServicioModal" tabindex="-1" aria-labelledby="editarTecnicaModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="editarTecnicaModalLabel">Editar servicio</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="modal2">
+                                        <!-- Formulario de edición mediante JS -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-success" id="saveChanges2">Guardar cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+        </section>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+
         // Scripts para todas las vistas
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -415,7 +499,203 @@
             loader.style.display = "none";
         });
 
+        // Dibujar servicios
+        function tablaServicios(){
+            $.ajax({
+                url: '/get/servicios',
+                method: 'GET',
+                success: function(data) {
+                    const tableBody = $('#Servicios');
+                    tableBody.empty();
+                    data.forEach(servicio => {
+                        const row = `<tr>
+                            <td>${servicio.id}</td>
+                            <td>${servicio.nombre}</td>
+                            <td>
+                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal">Ver técnicas</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
+                                <button style="margin-left:15px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
+                            </td>
+                        </tr>`;
+                        tableBody.append(row);
+                    });
+                }
+            });
+        }
+
+        function verTecnicas(servicioId) {
+    $.ajax({
+        url: `/get/tecnicas/${servicioId}`,
+        method: 'GET',
+        success: function(data) {
+            const modalBody = $('#modalBody');
+            modalBody.empty();
+            if (data.length > 0) {
+                const list = $('<ul></ul>');
+                data.forEach(tecnica => {
+                    list.append(`<li>| ${tecnica.nombre} | $${tecnica.precio} | ${tecnica.descripcion} | <button class="btn" onclick="editarTecnica(${tecnica.id}, ${servicioId})" data-bs-toggle="modal" data-bs-target="#editarTecnicaModal"><i class="fa-solid fa-pen-to-square"></i></button></li>`);
+                });
+                modalBody.append(list);
+            } else {
+                modalBody.append('<p>No hay técnicas disponibles para este servicio.</p>');
+            }
+        },
+        error: function(error) {
+            const modalBody = $('#modalBody');
+            modalBody.empty();
+            modalBody.append('<p>Error al cargar las técnicas.</p>');
+        }
+    });
+}
+
+
+// Modal editar técnicas
+function editarTecnica(tecnicaId, servicioId) {
+    $.ajax({
+        url: `/get/tecnica/${tecnicaId}`,
+        method: 'GET',
+        success: function(data) {
+            const editarModalBody = $('#editarModalBody');
+            editarModalBody.empty();
+            const form = `
+                <form id="editarTecnicaForm">
+                    <div class="mb-3">
+                        <label for="tecnicaNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="tecnicaNombre" value="${data.nombre}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tecnicaPrecio" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tecnicaDescripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="tecnicaDescripcion">${data.descripcion}</textarea>
+                    </div>
+                </form>
+            `;
+            editarModalBody.append(form);
+        },
+        error: function(error) {
+            const editarModalBody = $('#editarModalBody');
+            editarModalBody.empty();
+            editarModalBody.append('<p>Error al cargar los detalles de la técnica.</p>');
+        }
+    });
+
+    // Función para guardar cambios de la técnica
+    $('#saveChanges').off('click').on('click', function() {
+        const updatedTecnica = {
+            nombre: $('#tecnicaNombre').val(),
+            precio: $('#tecnicaPrecio').val(),
+            descripcion: $('#tecnicaDescripcion').val()
+        };
+
+        $.ajax({
+            url: `/update/tecnica/${tecnicaId}`,
+            method: 'POST',
+            data: updatedTecnica,
+            success: function(response) {
+                alert("Técnica actualizada con éxito")
+                $('#editarTecnicaModal').modal('hide');
+                verTecnicas(servicioId);
+            },
+            error: function(error) {
+                alert('Error al actualizar la técnica.');
+            }
+        });
+    });
+
+    // Borrar técnica
+    $('#deleteTecnica').off('click').on('click', function() {
+        if (confirm('¿Estás seguro de que deseas eliminar esta técnica?')) {
+            $.ajax({
+                url: `/borrar/tecnica/${tecnicaId}`,
+                method: 'DELETE',
+                success: function(response) {
+                    alert('Técnica eliminada con éxito');
+                    $('#editarTecnicaModal').modal('hide');
+                    verTecnicas(servicioId);
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert('Actualmente esta técnica se encuentra en uso, eliminala de los sitios en donde se use para poder eliminarla.');
+                }
+            });
+        }
+    });
+}
+
+
+function servicioUpdate(servicioId) {
+    $.ajax({
+        url: `/get/servicio/${servicioId}`,
+        method: 'GET',
+        success: function(data) {
+            const modalBody = $('#modal2');
+            modalBody.empty();
+            const form = `
+                <form id="actualizarServicioForm">
+                    <div class="mb-3">
+                        <label for="servicioNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="servicioNombre" value="${data.nombre}">
+                    </div>
+                </form>
+            `;
+            modalBody.append(form);
+            
+            // Mostrar el modal para actualizar el servicio
+            $('#editarServicioModal').modal('show');
+
+            // Función para guardar cambios del servicio
+            $('#saveChanges2').off('click').on('click', function() {
+                const updatedServicio = {
+                    nombre: $('#servicioNombre').val()
+                };
+
+                $.ajax({
+                    url: `/update/servicio/${servicioId}`,
+                    method: 'POST',
+                    data: updatedServicio,
+                    success: function(response) {
+                        $('#editarServicioModal').modal('hide');
+                        alert("Servicio actualizado con éxito.");
+                        tablaServicios();
+                    },
+                    error: function(error) {
+                        alert('Error al actualizar el servicio.');
+                    }
+                });
+            });
+        },
+        error: function(error) {
+            alert('Error al cargar los datos del servicio.');
+        }
+    });
+}
+
+function servicioDelete(servicioId) {
+    if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
+        $.ajax({
+            url: `/borrar/servicio/${servicioId}`,
+            method: 'DELETE',
+            success: function(response) {
+                alert('Servicio eliminado con éxito');
+                tablaServicios();
+            },
+            error: function(error) {
+                alert('Error al eliminar el servicio.');
+            }
+        });
+    }
+}
+
+
         $(document).ready(function(){
+
+            tablaServicios();
+
             // Dashboard toggle
             const body = document.querySelector("body"),
                 sidebar = body.querySelector(".sidebar"),
@@ -459,7 +739,7 @@
             }
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
-            
+
             // Ajustes de botones en top
             function botones() { 
                 if (window.innerWidth <= 960) {

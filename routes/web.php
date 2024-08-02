@@ -260,6 +260,9 @@ Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecn
 // ===== [Sevicios] =====
 //devuelve servicio como Json
 Route::get('/get/servicios',[ServicioController::class,'index']);
+Route::get('/get/servicio/{id}',[ServicioController::class,'index2']);
+Route::post('/update/servicio/{id}', [ServicioController::class, 'actualizarServicio']);
+Route::delete('/borrar/servicio/{id}', [ServicioController::class, 'borrarServicio']);
 //dar de altra servicio con tecnica y producto
 Route::post('/crearServicioConTecnicas',[ServicioController::class, 'crear']);
 
@@ -271,6 +274,9 @@ Route::get('/get/inventarios',[InventarioController::class,'index']);
 Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
 Route::get('/get/tecnicas/{servicioId}', [TecnicaController::class, 'show']);
+Route::get('/get/tecnica/{tecnicaid}', [TecnicaController::class, 'index2']);
+Route::post('/update/tecnica/{tecnicaId}', [TecnicaController::class, 'actualizarTecnica']);
+Route::delete('/borrar/tecnica/{id}', [TecnicaController::class, 'borrarTecnica']);
 
 //Obtener las tecnicas sin descuento
 Route::get('/sinDescuentoTecnica', [TecnicaController::class, 'tecnicaSinDescuento']);
