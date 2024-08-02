@@ -249,7 +249,9 @@
             display: none;
         }
 
-
+    .sidebar.close .header-text {
+    display: none;
+    }
 
 
  /* ==========[ Home ]========= */
@@ -615,7 +617,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                       <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                   </span>
                   <div class="text header-text">
-                      <span class="name">{{ Auth::user()->name }}</span>
+                    <a style="text-decoration:none; color: #707070;" href="/Perfil-Admin">
+                            <span class="name">{{ Auth::user()->name }}<i style="margin-left:6px;" class="fa-solid fa-pen-to-square"></i></span>
+                        </a>
                       <span class="rol">Administrador</span>
                   </div>
               </div>
