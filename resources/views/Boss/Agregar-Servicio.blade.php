@@ -486,7 +486,6 @@ header {
                             </button>
                         </div>
                         <div>
-
                         </div>
                     </div>
                 </div>
@@ -543,7 +542,7 @@ header {
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="">Cerrar</button>
                     <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
                 </div>
         </div>
@@ -706,6 +705,7 @@ header {
                 data.forEach(producto => {
                     let cont = producto.id;
                     let idDinamico = 'cantidad' + cont;
+                    // let idBoton = 'boton'+cont;
                     const card = `
                     <div class="product-card">
                         <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
@@ -718,7 +718,7 @@ header {
                             <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}">
                             <label for="${idDinamico}">Cantidad a utilizar</label>
                         </div>
-                        <button style="margin-bottom: 10px;" id="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>
+                        <button type="button" style="margin-bottom: 10px;" id="seleccionar" name="seleccionarBoton"  class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>
                     </div>
                 `;
                     productos.append(card);
@@ -726,6 +726,21 @@ header {
             }
         });
     }
+
+    $('#cerrarProductos').on('click',function (){
+        $('#nombreTecnica').val('');
+        $('#precioTecnica').val('');
+        $('#descripcionTecnica').val('');
+
+        selectedProducts = [];
+        cantidadesProducts = [];
+        tecnicas = [];
+
+        // Reiniciar todos los campos de cantidad
+        $('input[name="cantidadUtilizar"]').val('');
+        // Habilitar todos los botones de seleccionar
+        $('button[name="seleccionarBoton"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+    });
 
     function cerrar() {
         nombreServicio = "";
@@ -742,7 +757,8 @@ header {
         // Reiniciar todos los campos de cantidad
         $('input[name="cantidadUtilizar"]').val('');
         // Habilitar todos los botones de seleccionar
-        $('#contenedorProductos button #seleccionar').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+        $('button[name="seleccionarBoton"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+
     }
 
 
@@ -790,6 +806,7 @@ header {
                     success: function(response) {
                         alert("Se te redirigira a agregar tecnicas");
                         // location.reload();  // Refresca la página al aceptar el alert
+                        window.location.href = '/Agregar-Tecnica';
                     },
                     error: function(error) {
                         alert('ERROR EN DAR DE ALTA');
@@ -806,7 +823,7 @@ header {
             // Reiniciar todos los campos de cantidad
             $('input[name="cantidadUtilizar"]').val('');
             // Habilitar todos los botones de seleccionar
-            $('#contenedorProductos button #seleccionar').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+            $('[name="seleccionar"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
 
         } else {
             alert('Completa los datos correctamente');

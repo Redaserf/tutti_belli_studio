@@ -15,7 +15,7 @@ class DetalleProducto extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['precioUnitario', 'cantidadProductos', 'precioTotal','ventaId'];
+    protected $fillable = ['nombre', 'precio', 'descripcion', 'ventaId','productoId'];
 
     //Hay que llegar a un acuerdo con los detalles de las ventas
 
@@ -25,6 +25,10 @@ class DetalleProducto extends Model
 
     public function venta(){
         return $this->belongsTo(Venta::class,'ventaId');
+    }
+
+    public function producto(){
+        return $this->belongsTo(Producto::class,'productoId');
     }
 
     function detalleProductoHasProducto(){

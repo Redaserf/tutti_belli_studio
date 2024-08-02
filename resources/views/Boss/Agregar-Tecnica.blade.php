@@ -320,6 +320,52 @@ header {
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
 }
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        padding: 16px;
+    }
+    .product-card {
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 200px; /* Reducido para que quepan más tarjetas */
+        text-align: center;
+        margin: 10px; /* Añadido margen para separar las tarjetas */
+    }
+
+    .product-image {
+        border-radius: 10px; /* Reducido el radio del borde */
+        width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+        height: 150px; /* Altura reducida */
+        object-fit: contain;
+    }
+
+    .product-info {
+        padding: 10px; /* Reducido el padding */
+    }
+
+    .product-title {
+        font-size: 1.2em; /* Reducido el tamaño de la fuente */
+        margin: 0 0 8px 0; /* Reducido el margen inferior */
+    }
+
+    .product-description {
+        font-size: 0.9em; /* Reducido el tamaño de la fuente */
+        color: #666;
+        margin: 0 0 8px 0; /* Reducido el margen inferior */
+    }
+
+    .product-price {
+        font-size: 1em; /* Reducido el tamaño de la fuente */
+        color: #333;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -442,12 +488,16 @@ header {
                             <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica">
                             <label for="AddTecnicPrice">Precio de la técnica</label>
                         </div>
+
                         <div class="mb-3">
                             <label for="AddTecnicDescription">Descripción de la técnica</label>
                             <textarea class="form-control" id="AddTecnicDescription" rows="7" style="resize: none;"></textarea>
                         </div>
+                        <div class="form-floating mb-3">
+                            <button  class="btn btn-dark btn-block w-100" id="productosTecnica">Agregar productos</button>
+                        </div>
                         <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100" id="AddTecnicaButon" style="margin-bottom: 20px;">Agregar técnica</button>
+                            <button  class="btn btn-dark btn-block w-100" id="AddTecnicaButon" style="margin-bottom: 20px;">Agregar técnica</button>
                         </div>
                     </div>
                 </div>
@@ -455,54 +505,32 @@ header {
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="container container-div">
-            <div class="container full-height d-flex justify-content-center align-items-center">
-                <div class="row w-100">
-                    <div class="row ">
-                        <H2>Agregar técnica</H2>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-floating mb-3">
-                            <select name="" class="form-control" id="servicioId">
-                                <option value="" disabled selected>Servicios</option>
+    <!-- Modal Productos -->
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-                                <!-- Servicios que aparecerán con back-end -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productosModalLabel">Productos</h5>
+                </div>
+                <div class="modal-body product-container" id="contenedorProductos">
 
-                            </select>
-                            <label for="TecnicService">Servicio al que pertenece la técnica</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="AddTecnicName" placeholder="nombre de la técnica">
-                            <label for="AddTecnicName">Nombre de la técnica</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica">
-                            <label for="AddTecnicPrice">Precio de la técnica</label>
-                        </div>
-                        <div class="mb-3">
-                            <label for="AddTecnicDescription">Descripción de la técnica</label>
-                            <textarea class="form-control" id="AddTecnicDescription" rows="7" style="resize: none;"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-dark btn-block w-100" id="AddTecnicaButon" style="margin-bottom: 20px;">Agregar técnica</button>
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+                    <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
 </div>
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
-    let cambiosSinGuardar =true;
+    selectedProducts = [];
+    cantidadesProducts = [];
 
 // Scripts para todas las vistas
 
@@ -562,44 +590,47 @@ $(document).ready(function(){
             botonSidebar();
 
     loadServicios();
-    alert('es necesario que todos los servicios tengan tecnica para el buen funcionamiento de la plataforma')
+    dibujarProductos();
+
     // Fin scripts para todas las vistas
+    $('#productosTecnica').on('click', function (){
+        $('#productosModal').modal('show');
+    });
 
     //script para agregar tecnica
-    $('#AddTecnicaButon').on('click',function (e){
-        e.preventDefault();
-
-        let tecnicName = $('#AddTecnicName').val();
-        let tecnicPrice = $('#AddTecnicPrice').val();
-        let tecnicDescripcion = $('#AddTecnicDescription').val();
-        let serviceId = $('#servicioId').val();
-
-        $.ajax({
-            url: '/RegistroTecnica',
-            type: 'POST',
-            data: {
-                _token: $('input[name="_token"]').val(),
-                nombre: tecnicName,
-                precio: tecnicPrice,
-                descripcion: tecnicDescripcion,
-                servicioId: serviceId
-            },
-            success: function(response) {
-                alert("Tecnica agregada exitosamente");
-                cambiosSinGuardar = false;
-                $('#AddTecnicName').val('');
-                $('#AddTecnicPrice').val('');
-                $('#AddTecnicDescription').val('');
-                $('#servicioId').val('');
-
-            },
-            error: function(error) {
-                alert('Ocurrió un error al agregar el servicio');
-                $('#AddTecnicName').val('');
-            }
-        });
-
-    });
+    // $('#AddTecnicaButon').on('click',function (e){
+    //     e.preventDefault();
+    //
+    //     let tecnicName = $('#AddTecnicName').val();
+    //     let tecnicPrice = $('#AddTecnicPrice').val();
+    //     let tecnicDescripcion = $('#AddTecnicDescription').val();
+    //     let serviceId = $('#servicioId').val();
+    //
+    //     $.ajax({
+    //         url: '/RegistroTecnica',
+    //         type: 'POST',
+    //         data: {
+    //             _token: $('input[name="_token"]').val(),
+    //             nombre: tecnicName,
+    //             precio: tecnicPrice,
+    //             descripcion: tecnicDescripcion,
+    //             servicioId: serviceId
+    //         },
+    //         success: function(response) {
+    //             alert("Tecnica agregada exitosamente");
+    //             $('#AddTecnicName').val('');
+    //             $('#AddTecnicPrice').val('');
+    //             $('#AddTecnicDescription').val('');
+    //             $('#servicioId').val('');
+    //
+    //         },
+    //         error: function(error) {
+    //             alert('Ocurrió un error al agregar el servicio');
+    //             $('#AddTecnicName').val('');
+    //         }
+    //     });
+    //
+    // });
     //Fin del script para agregar tecnica
 
     // Fin document.ready
@@ -621,16 +652,136 @@ function loadServicios(){
 
     });
 }
-    console.log(cambiosSinGuardar);
-    window.addEventListener('beforeunload', function (e) {
-        if (cambiosSinGuardar) {
+//Script para dibujar los productos en el modal
+    function dibujarProductos() {
+        $.ajax({
+            url: '/get/productos',
+            method: 'GET',
+            success: function(data) {
+                const productos = $('#contenedorProductos');
+                productos.empty();
+                data.forEach(producto => {
+                    let cont = producto.id;
+                    let idDinamico = 'cantidad' + cont;
+                    const card = `
+                    <div class="product-card">
+                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                        <div class="product-info">
+                            <h2 class="product-title">${producto.nombre}</h2>
+                            <p class="product-description">${producto.descripcion}</p>
+                            <p class="product-price">$${producto.precio}</p>
+                            <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
+<!--                            obtiene como data-stock el valor del stock del producto-->
+                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}">
+                            <label for="${idDinamico}">Cantidad a utilizar</label>
+                        </div>
+                        <button style="margin-bottom: 10px;" id="seleccionar" name="seleccionar" type="button" class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>
+                    </div>
+                `;
+                    productos.append(card);
+                });
+            }
+        });
+    }
 
-            const mensaje = "Para el buen funcionamiento de la pagina es necesario que todos los servicios tengan una tecnica asignada, ¿deseas salir de todos modos?";
-            e.preventDefault();
-            e.returnValue = mensaje;
-            return mensaje;
+    function cerrar() {
+
+        $('#AddTecnicName').val('');
+        $('#AddTecnicPrice').val('');
+        $('#precioTecnica').val('');
+        $('#AddTecnicDescription').val('');
+
+        selectedProducts = [];
+        cantidadesProducts = [];
+
+
+        // Reinicia todos los campos de cantidad
+        $('input[name="cantidadUtilizar"]').val('');
+        // Habilitar todos los botones de seleccionar buscandolos por name = seleccionar
+        $('#contenedorProductos button[name="seleccionar"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+    }
+
+    $(document).on('click', '#seleccionar', function() {
+        //obtener id dinamico
+        let productId = $(this).data('id');
+        let idDinamico = 'cantidad' + productId;
+        let cantidad = $('#' + idDinamico).val();
+        let stock = $('#' + idDinamico).data('stock');  // Obtener el stock del atributo data-stock
+
+        // Comprobar que la cantidad ingresada sea mayor que 0 y menor o igual a la cantidad en stock
+        if (cantidad > 0 && cantidad <= stock) {
+            selectedProducts.push(productId);
+            cantidadesProducts.push(cantidad);
+
+            $(this).prop('disabled', true);
+            $(this).text('Seleccionado');
+
+            console.log(selectedProducts);
+            console.log(cantidadesProducts);
+        } else {
+            alert('Inserte una cantidad válida que sea menor o igual al stock disponible');
         }
     });
+
+    $('#guardarProductos').on('click', function() {
+        if(selectedProducts.length > 0) {
+
+            $('#productosModal').modal('hide');
+            $('#productosTecnica').prop('disabled', true).text('Productos seleccionados');
+
+            // Reiniciar todos los campos de cantidad
+            $('input[name="cantidadUtilizar"]').val('');
+            // Habilitar todos los botones de seleccionar
+            $('[name="seleccionar"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
+
+        } else {
+            alert('Completa los datos correctamente');
+        }
+    });
+
+    $('#AddTecnicaButon').on('click',function (){
+
+        if($('#AddTecnicName').val() !== "" && $('#AddTecnicPrice').val() > 0 && $('#AddTecnicDescription').val() !== ""){
+            var tecnicaPorGuardar = {
+                nombre: $('#AddTecnicName').val(),
+                precio: $('#AddTecnicPrice').val(),
+                descripcion: $('#AddTecnicDescription').val()
+            };
+
+            let serviceId = $('#servicioId').val();
+
+            console.log(tecnicaPorGuardar)
+            console.log(selectedProducts)
+            console.log(cantidadesProducts)
+
+            $.ajax({
+                url: '/crearTecnica',
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    servicioId: serviceId,
+                    tecnica: tecnicaPorGuardar,
+                    arregloProductos: selectedProducts,
+                    arregloCantidades: cantidadesProducts,
+                },
+                success: function(response) {
+                    alert("Se agrego la tecnica correctamente");
+                    location.reload();  // Refresca la página al aceptar el alert
+                },
+                error: function(error) {
+                    alert('ERROR EN DAR DE ALTA');
+                    console.log(error)
+                    // location.reload();  // Refresca la página al aceptar el alert
+                }
+            });
+
+
+
+        } else {
+            alert('Completa los campos faltantes');
+        }
+    });
+
 
 </script>
 </body>

@@ -266,6 +266,8 @@ Route::get('/get/inventarios',[InventarioController::class,'index']);
 Route::get('/get/tecnicas',[TecnicaController::class,'index']);
 Route::post('/GuardarTecnicasCurso', [TecnicaHasCursoController::class, 'store']);
 Route::get('/get/tecnicas/{servicioId}', [TecnicaController::class, 'show']);
+//crear una tecnica asociada a un curso - NO USANDO REGISTRO TECNICA
+Route::post('crearTecnica', [TecnicaController::class, 'guardar']);
 
 //Obtener las tecnicas sin descuento
 Route::get('/sinDescuentoTecnica', [TecnicaController::class, 'tecnicaSinDescuento']);
@@ -289,5 +291,9 @@ Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']
 Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
 //===== [ProductoHasCurso] =====
 Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
+
+// ======== [Compra Productos] ==========
+//Realizar la compra de un producto
+Route::post('/CompraEnLinea',);
 
 

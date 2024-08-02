@@ -21,7 +21,7 @@ class ServicioController extends Controller
                 "nombre" => $request->nombreServicio,  // Corregir nombre de la variable
             ]);
 
-            // Decodificar los JSON
+
             $arregloProductos = $request->arregloProductos;
             $arregloCantidadesProducto = $request->arregloCantidades;
 //            $arregloProductos = json_decode($request->arregloProductos, true);
