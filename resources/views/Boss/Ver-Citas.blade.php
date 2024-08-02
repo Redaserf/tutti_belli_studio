@@ -533,6 +533,10 @@ header {
         padding: 10px;
         font-size: 1rem;
         background-color: white;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .custom-select:focus {
@@ -545,6 +549,10 @@ header {
         padding: 10px;
         font-size: 1rem;
         background-color: white;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .custom-select-tec:focus {
         border-color: #00ffff;
