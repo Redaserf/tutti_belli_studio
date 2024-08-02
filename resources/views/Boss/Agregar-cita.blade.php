@@ -352,7 +352,9 @@
                         <img src="/resources/img/dashboard-navbar/furina.jpg" alt="">
                     </span>
                     <div class="text header-text">
-                        <span class="name">{{ Auth::user()->name }}</span>
+                        <a href="/Perfil-Admin">
+                            <span class="name">{{ Auth::user()->name }}</span>
+                        </a>
                         <span class="rol">Administrador</span>
                     </div>
                 </div>
