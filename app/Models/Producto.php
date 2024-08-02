@@ -50,4 +50,8 @@ class Producto extends Model
         return $this->hasMany(ProductoHasCurso::class, 'productoId');
     }
 
+    public function detalleProducto(){
+
+    }
+
 }

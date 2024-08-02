@@ -15,16 +15,18 @@ return new class extends Migration
         Schema::create('detalle_productos', function(Blueprint $table){
 
             $table->id();
-            $table->double('precioUnitario');
-            $table->integer('cantidadProductos');
-            $table->double('precioTotal');
+            $table->string('nombre');
+            $table->double('precio');
+//            $table->integer('cantidadProductos');
 //            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->unsignedBigInteger('ventaId');
+            $table->unsignedBigInteger('productoId');
             $table->timestamps();
 
             //Cambiar la relacion de descuentos
 //            $table->foreign('descuentoId')->references('id')->on('descuentos');
 
+            $table->foreign('productoId')->references('id')->on('productos');
             $table->foreign('ventaId')->references('id')->on('ventas');
 
 
