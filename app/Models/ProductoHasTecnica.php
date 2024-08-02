@@ -29,5 +29,9 @@ class ProductoHasTecnica extends Model
         return $this->belongsTo(Tecnica::class,'tecnicaId');
     }
 
+    // function detalleTecnica() {
+    //     return $this->hasMany(DetalleTecnica::class, 'productoHasTecnicaId');
+    // }
+
 //    use HasFactory;
 }

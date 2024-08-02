@@ -17,13 +17,9 @@ return new class extends Migration
             $table->id();
             $table->double('total');
             $table->date('fechaVenta');
-            $table->boolean('estadoVenta')->default(true);
+            $table->boolean('estadoVenta');
             // checar atributo estatus faltante en el diagrama
             $table->timestamps();
-
-
-
-
         });
     }
 

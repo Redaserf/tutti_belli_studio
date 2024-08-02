@@ -798,8 +798,8 @@ header {
                         // location.reload();  // Refresca la página al aceptar el alert
                     },
                     error: function(error) {
-                        alert('ERROR EN DAR DE ALTA');
                         console.log(error)
+                        alert('ERROR EN DAR DE ALTA');
                         // location.reload();  // Refresca la página al aceptar el alert
                     }
                 });

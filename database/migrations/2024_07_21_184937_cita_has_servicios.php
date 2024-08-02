@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('citaId');
             $table->unsignedBigInteger('servicioId');
             $table->unsignedBigInteger('tecnicaId');
-            $table->int('cantidadProductoTecnica');
             $table->timestamps();
 
 

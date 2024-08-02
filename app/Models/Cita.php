@@ -39,4 +39,8 @@ class Cita extends Model
     //public function resenias(){
       //  return $this->hasOne(Resenia::class);
     //}
+
+    public function detalleTecnica() {
+        return $this->hasMany(DetalleTecnica::class, 'citaId');
+    }
 }

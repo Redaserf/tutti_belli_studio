@@ -12,18 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('detalle_tecnicas_has_tecnicas', function(Blueprint $table){
-
+        Schema::create('detalle_tecnicas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('detalleTecnicaId');
+            $table->unsignedBigInteger('citaId');
             $table->unsignedBigInteger('tecnicaId');
+            $table->unsignedBigInteger('productoId');
+            $table->integer('cantidadProducto');
             $table->timestamps();
 
-            $table->foreign('detalleTecnicaId')->references('id')->on('detalle_tecnicas');
+            $table->foreign('citaId')->references('id')->on('citas');
             $table->foreign('tecnicaId')->references('id')->on('tecnicas');
-
-            
-
+            $table->foreign('productoId')->references('id')->on('productos');
         });
     }
 
@@ -33,7 +32,7 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('detalle_tecnicas_has_tecnicas');
+        Schema::dropIfExists('detalle_tecnicas');
 
     }
 };

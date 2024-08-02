@@ -33,4 +33,8 @@ class CitaHasServicio extends Model
         return $this->belongsTo(Cita::class, 'citaId', 'id');
     }
 
+    // public function productosTecnicas()
+    // {
+    //     return $this->hasMany(CitasServiciosProductosTecnicas::class, 'citaHasServicioId');
+    // }
 }

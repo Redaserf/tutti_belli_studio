@@ -61,6 +61,25 @@ class Tecnica extends Model
     //     );
     // }
 
-    
+    public function productosHasTecnica()
+    {
+        return $this->hasMany(ProductoHasTecnica::class, 'tecnicaId', 'id');
+    }
 
+
+    public function productos()
+    {
+        return $this->hasManyThrough(
+            Producto::class,
+            ProductoHasTecnica::class,
+            'tecnicaId', // Foreign key on ProductoHasTecnica table
+            'id', // Foreign key on Producto table
+            'id', // Local key on Tecnica table
+            'productoId' // Local key on ProductoHasTecnica table
+        )->with('detalleTecnica');
+    }
+
+    public function detalleTecnica() {
+        return $this->hasMany(DetalleTecnica::class, 'tecnicaId');
+    }
 }

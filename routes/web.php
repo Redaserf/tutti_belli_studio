@@ -72,8 +72,12 @@ use App\Http\Controllers\DibujarController;
     //todas las tecnicas que estan en citas_has_servicios
     Route::get('/tecnicas-en-citas-has-servicios', [ConsultasController::class, 'tecnicasConCitas']);
 
+//tecnicas con sus productos
 
+    Route::get('/tecnicas/productos', [ConsultasController::class, 'tecnicasProductos']);
 
+    //ventas de citas con servicios, tecnicas y productos de tecnica
+    Route::get('/venta/citas', [ConsultasController::class, 'citasTecnicaProductos']);
 
 
     // ===== [Sevicios] =====
