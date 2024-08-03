@@ -215,7 +215,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 </nav>
 
 <br><br><br><br>
-
+  @csrf
 <div class="main-container">
   <div class="table-container">
       <table class="table">
@@ -314,6 +314,33 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     var total = 0;
     var productosComprados = [];
 
+    function obtenerFechaHoraActualMexico() {
+        // Crear una nueva instancia de la fecha actual
+        const fechaActual = new Date();
+
+        // Convertir la fecha actual a la zona horaria de México
+        const opciones = {
+            timeZone: 'America/Mexico_City',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+        const fechaHoraMexico = fechaActual.toLocaleString('en-CA', opciones);
+
+        // Formatear la fecha y hora en formato DATETIME
+        const [fecha, hora] = fechaHoraMexico.split(', ');
+        const [dia, mes, anio] = fecha.split('/');
+        const fechaHoraFormatoDATETIME = `${anio}-${mes}-${dia} ${hora}`;
+
+        return fechaHoraFormatoDATETIME;
+    }
+
+    // Guardar la fecha y hora actual en una variable
+    const fechaHoraActualMexico = obtenerFechaHoraActualMexico();
+
 
 function dibujarCarrito() {
             $.ajax({
@@ -326,6 +353,7 @@ function dibujarCarrito() {
                     total = 0;
                     data.forEach(producto => {
                         productosComprados.push({
+                            id: producto.id,
                             nombre: producto.nombre,
                             descripcion: producto.descripcion,
                             precio: producto.precio
@@ -346,6 +374,7 @@ function dibujarCarrito() {
                     });
                     costoTotal.text('Costo Total: $' + total);
                     console.log(productosComprados);
+                    console.log(fechaHoraActualMexico);
                 },
                 error: function(error) {
                   console.log(error);
@@ -431,9 +460,26 @@ $(document).ready(function(){
 
 
     // Scripts aquí
+    const randomDateTime = '2023-08-02 14:35:47';
+
     $('#comprar').on('click',function (){
         $.ajax({
-            url:
+            url:'crearCompra',
+            method: 'POST',
+            data:
+            {
+                _token: $('input[name="_token"]').val(),
+                total: total,
+                productosComprados: productosComprados,
+                // fechaVenta: fechaHoraActualMexico
+                fechaVenta: randomDateTime
+            },
+            success: function (){
+                alert('se han creado los registros correctamnete')
+            },
+            error: function (error){
+                console.log(error);
+            }
         })
     });
 

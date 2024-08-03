@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->double('precio');
+            $table->string('descripcion');
 //            $table->integer('cantidadProductos');
 //            $table->unsignedBigInteger('descuentoId')->nullable();
             $table->unsignedBigInteger('ventaId');
