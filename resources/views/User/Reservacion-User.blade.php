@@ -81,6 +81,10 @@ button{
     background-color: #f0b4be; /* Botón rosado */
     color: black;
     font-weight: bold;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .accordion-button:not(.collapsed) {
