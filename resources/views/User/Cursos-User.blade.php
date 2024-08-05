@@ -163,6 +163,16 @@
         border-top: 2px solid #000000;
     }
 
+    .btn-cancelar {
+        background-color: red;
+        border-color: red;
+        color: white;
+    }
+
+    .btn-cancelar:hover {
+        background-color: darkred;
+        border-color: darkred;
+    }
     </style>
 </head>
 <body class="hiddenX">
@@ -236,7 +246,7 @@
     </div>
 
 
-<br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
@@ -289,7 +299,7 @@
 <script>
     document.getElementById('confirmarInscripcion').addEventListener('click', function() {
         const modalBody = document.querySelector('#inscripcionModal .modal-body');
-        modalBody.innerHTML = '<p>Te avisaremos si entras al curso mediante un correo. Gracias.</p>';
+        modalBody.innerHTML = '<p>Te enviaremos un correo con la información necesaria para proceder con la inscripción del curso.</p>';
         const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
         modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
     });
@@ -298,58 +308,106 @@
     // Dibujar cursos
 
     function dibujarCursos() {
-    $.ajax({
+      $.ajax({
         url: '/get/cursos',
         method: 'GET',
         success: function(data) {
-            console.log(data);
-            const cursos = $('#cursos');
-            cursos.empty();
-            if (data.length === 0) {
-                cursos.append(`
-                    <div class="col-12 text-center my-5">
-                        <div class="custom-alert" role="alert">
-                            <h4 class="alert-heading">¡No hay cursos disponibles en este momento!</h4>
-                            <p>Actualmente no hay cursos programados. Vuelve más tarde para ver si hay cursos disponibles.</p>
-                            <hr>
-                            <p class="mb-0">Mientras tanto, puedes explorar otros servicios y productos que ofrecemos.</p>
-                        </div>
-                        <br>
-                        <br>
-                        <br>
+          console.log(data);
+          const cursos = $('#cursos');
+          cursos.empty();
+          if (data.length === 0) {
+            cursos.append(`
+              <div class="col-12 text-center my-5">
+                <div class="custom-alert" role="alert">
+                  <h4 class="alert-heading">¡No hay cursos disponibles en este momento!</h4>
+                  <p>Actualmente no hay cursos programados. Vuelve más tarde para ver si hay cursos disponibles.</p>
+                  <hr>
+                  <p class="mb-0">Mientras tanto, puedes explorar otros servicios y productos que ofrecemos.</p>
+                </div>
+                <br>
+                <br>
+                <br>
+              </div>
+            `);
+          } else {
+            data.forEach(curso => {
+              const tecnicas = curso.tecnicas.map(tecnica => tecnica.nombre).join(', ');
+              const buttonText = curso.inscrito ? 'Inscrito' : 'Inscribirme';
+              const buttonDisabled = curso.inscrito ? 'disabled' : '';
+              const card = `
+                <div class="col-md-4">
+                  <div class="card">
+                    <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
+                    <div class="card-body">
+                      <h5 class="card-title">${curso.nombre}</h5>
+                      <p class="card-text">${curso.descripcion}</p>
+                      <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
+                      <p class="card-text">Técnicas: ${tecnicas}</p>
+                      <p class="card-text">Costo de inscripción: $${curso.precio}</p>
+                      <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
+                      <button class="btn btn-primary inscribirme-btn" data-curso-id="${curso.id}" ${buttonDisabled} data-bs-toggle="modal" data-bs-target="#inscripcionModal">${buttonText}</button>
                     </div>
-                  
-                `);
-            } else {
-                data.forEach(curso => {
-                    const tecnicas = curso.tecnicas.map(tecnica => tecnica.nombre).join(', ');
-                    const card = `
-                        <div class="col-md-4">
-                          <div class="card">
-                            <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
-                            <div class="card-body">
-                              <h5 class="card-title">${curso.nombre}</h5>
-                              <p class="card-text">${curso.descripcion}</p>
-                              <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
-                              <p class="card-text">Técnicas: ${tecnicas}</p>
-                              <p class="card-text">Costo de inscripción: $${curso.precio}</p>
-                              <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
-                              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inscripcionModal">Inscribirme</button>
-                            </div>
-                          </div>
-                        </div>
-                    `;
-                    cursos.append(card);
-                });
-            }
+                  </div>
+                </div>
+              `;
+              cursos.append(card);
+            });
+          }
         },
         error: function(error) {
-            console.error('Error al obtener los cursos:', error);
+          console.error('Error al obtener los cursos:', error);
         }
+      });
+    }
+
+
+    let cursoIdActual;
+
+    $(document).on('click', '.inscribirme-btn', function() {
+      cursoIdActual = $(this).data('curso-id');
+      const modalBody = document.querySelector('#inscripcionModal .modal-body');
+      modalBody.innerHTML = '¿Estás seguro de inscribirte en este curso?';
+      const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
+      modalFooter.innerHTML = `
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Rechazar</button>
+        <button type="button" class="btn btn-primary" id="confirmarInscripcion">Aceptar</button>
+      `;
+
+      $('#confirmarInscripcion').off('click').on('click', function() {
+        $.ajax({
+          url: '/inscripcion',
+          method: 'POST',
+          data: {
+            cursoId: cursoIdActual,
+            _token: '{{ csrf_token() }}'
+          },
+          success: function(response) {
+            if (response.success) {
+              $(`[data-curso-id=${cursoIdActual}]`).text('Inscrito').prop('disabled', true);
+              $('#inscripcionModal').modal('hide');
+
+              $('#inscripcionModal').on('hidden.bs.modal', function() {
+                mostrarMensajeInscripcion();
+                $('#inscripcionModal').off('hidden.bs.modal');
+              });
+            } else {
+              alert('Ocurrió un error al inscribirse. Inténtalo de nuevo.');
+            }
+          },
+          error: function(xhr, status, error) {
+            alert('Ocurrió un error al inscribirse. Inténtalo de nuevo.');
+          }
+        });
+      });
     });
-}
 
-
+    function mostrarMensajeInscripcion() {
+      const modalBody = document.querySelector('#inscripcionModal .modal-body');
+      modalBody.innerHTML = '<p>Te enviaremos un correo con la información necesaria para proceder con la inscripción del curso.</p>';
+      const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
+      modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
+      $('#inscripcionModal').modal('show');
+    }
 
 
 

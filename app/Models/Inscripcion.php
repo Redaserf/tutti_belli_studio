@@ -15,7 +15,7 @@ class Inscripcion extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['fechaInscripcion', 'precio', 'estado', 'usuarioId', 'cursoId']; //el precio igual lo podemos sacar del curso (duplicidad de datos)
+    protected $fillable = ['fechaInscripcion', 'estado', 'usuarioId', 'cursoId'];
 
 
     public function usuarios(){

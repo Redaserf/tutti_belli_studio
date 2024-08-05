@@ -43,15 +43,15 @@ class TecnicaController extends Controller
     }
 
     public function borrarTecnica($id) {
-        DB::beginTransaction();
-        try {
-            $tecnica = Tecnica::findOrFail($id);
+        $tecnica = Tecnica::find($id);
+
+        if ($tecnica) {
+            $tecnica->productos()->detach();
             $tecnica->delete();
-            DB::commit();
-            return response()->json(['success' => 'Técnica eliminada con éxito'], 204);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Error del servidor', 'error' => $e->getMessage()], 500);
+    
+            return response()->json(['success' => 'Técnica eliminada correctamente.']);
+        } else {
+            return response()->json(['error' => 'Técnica no encontrada'], 404);
         }
     }
 
