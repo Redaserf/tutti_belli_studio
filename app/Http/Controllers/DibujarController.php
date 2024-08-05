@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\Curso;
+use App\Models\Inscripcion;
 use App\Models\Producto;
+use App\Models\Inventario;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +21,7 @@ class DibujarController extends Controller
     function productosIndex(){
     $productos = Producto::all();
     return response()->json($productos);
-    }
-
+    }   
     // ==========[ Eliminar un producto ]==========
     function productoDelete($id){
     Producto::findOrFail($id)->delete();
@@ -36,6 +37,7 @@ class DibujarController extends Controller
             return response()->json(['error' => 'Producto no encontrado'], 404);
         }
     }
+    
 
     // ==========[ Actualizar un producto ]==========
     public function actualizarProducto(Request $request, $id){
@@ -55,6 +57,33 @@ class DibujarController extends Controller
         return response()->json(['success' => 'Producto actualizado exitosamente']);
         } else {
         return response()->json(['error' => 'Producto no encontrado'], 404);
+        }
+    }
+
+    public function actualizarProductoInv(Request $request, $id)
+    {
+        $producto = Producto::find($id);
+
+        if ($producto) {
+            $producto->nombre = $request->input('nombre');
+            $producto->descripcion = $request->input('descripcion');
+            $producto->cantidadEnStock = $request->input('cantidad');
+            $producto->precio = $request->input('precio');
+
+            if ($request->hasFile('imagenProducto')) {
+                // Elimina la imagen antigua si existe
+                if ($producto->imagen) {
+                    Storage::disk('public')->delete($producto->imagen);
+                }
+                // Guarda la nueva imagen
+                $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+            }
+
+            $producto->save();
+
+            return response()->json(['success' => 'Producto actualizado exitosamente']);
+        } else {
+            return response()->json(['error' => 'Producto no encontrado'], 404);
         }
     }
 
@@ -164,8 +193,18 @@ class DibujarController extends Controller
 
     // ==========[ Obtener todos los cursos ]==========
     function cursosIndex(){
-    $cursos = Curso::with('empleado', 'tecnicas')->get();
-    return response()->json($cursos);
+        $cursos = Curso::with(['tecnicas', 'empleado'])->get();
+        $usuarioId = Auth::id();
+
+        // Ajusta la lógica para verificar si el usuario ya está inscrito en cada curso.
+        $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->pluck('cursoId')->toArray();
+    
+        $cursos = $cursos->map(function($curso) use ($inscripciones) {
+            $curso->inscrito = in_array($curso->id, $inscripciones);
+            return $curso;
+        });
+    
+        return response()->json($cursos);
     }
 
     // ==========[ Editar un curso ]==========
@@ -207,12 +246,15 @@ class DibujarController extends Controller
     
     // ==========[ Eliminar un curso ]==========
     public function cursosDelete($id) {
-        try {
-            $curso = Curso::findOrFail($id);
+        $curso = Curso::find($id);
+
+        if ($curso) {
+            $curso->inscripciones()->delete();
             $curso->delete();
-            return response()->json(null, 204);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Server Error', 'error' => $e->getMessage()], 500);
+    
+            return response()->json(['success' => 'Curso eliminado junto con sus inscripciones.']);
+        } else {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
         }
     }
 

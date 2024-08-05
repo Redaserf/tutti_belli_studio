@@ -21,9 +21,13 @@ class Producto extends Model
         return $this->belongsTo(Inventario::class,'inventarioId');
     }
 
-    function productoHasTecnica()
+    public function detalleProducto(){
+        return $this->hasMany(DetalleProducto::class,'productoId');
+    }
+
+    public function tecnicas()
     {
-        return $this-> hasMany( ProductoHasTecnica::class, 'productoId');
+        return $this->belongsToMany(Tecnica::class, 'producto_has_tecnicas', 'productoId', 'tecnicaId')->withPivot('cantidadDeUso');
     }
 
     function productoHasInscripcion()

@@ -281,7 +281,7 @@
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -318,7 +318,7 @@
         }
         .btn-primary {
             background-color: #e83e8c;
-            border-color: #e83e8c; 
+            border-color: #e83e8c;
         }
         .btn-primary:hover {
             background-color: #d63384;
@@ -364,7 +364,7 @@
     <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -380,7 +380,7 @@
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -450,10 +450,10 @@
                     </div>
                 </div>
             </nav>
-                
+
             <!-- {{-- Fin Sidebar --}} -->
 
-        
+            @csrf
             <section class="home">
             <div class="top text-center">
                     <h2>Ventas</h2>
@@ -546,33 +546,54 @@
                             </div>
                         </div>
                         <!-- Pestaña Compras -->
+
                         <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
+
+                            <!-- navegacion de pestaña de compras -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="compras-totales-tab" data-bs-toggle="tab" data-bs-target="#compras-totales" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" role="tab" aria-controls="citas" aria-selected="false">Citas</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="false">Compras</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab" aria-controls="cursos" aria-selected="false">Cursos</button>
+                                </li>
+                            </ul>
+
+
+                        </div>
+
+{{--                        Pestaña compras totales--}}
+                        <div class="tab-pane fade" id="compras-totales" role="tabpanel" aria-labelledby="compras-tab">
                             <div class="table-container mt-5">
                                 <h2>COMPRAS</h2>
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Precio</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                            <th>Rechazar</th>
-                                            <th>Editar</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Id de compra</th>
+                                        <th>Total</th>
+                                        <th>Día</th>
+                                        <th>Detalles</th>
+                                        <th>Aceptar</th>
+                                        <th>Rechazar</th>
+                                    </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Compra</td>
-                                            <td>$100</td>
-                                            <td>2024-07-03</td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
-                                        </tr>
+                                    <tbody id="ventasProductos">
+                                    <tr>
+
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
+
                         <!-- Pestaña Cursos -->
                         <div class="tab-pane fade" id="cursos" role="tabpanel" aria-labelledby="cursos-tab">
                             <div class="table-container mt-5">
@@ -783,7 +804,7 @@
                         </div>
                     </div>
 
-                
+
 
 
 
@@ -799,20 +820,57 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>imagen</th>
+                                                <th>nombre</th>
                                                 <th>descripcion</th>
-                                                <th>cantidad</th>
+                                                <th>precio</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="detallesIndividualProducto">
                                             <tr>
-                                                <td>aqui ira la imagen</td>
-                                                <td>ajfbsjabfjklsabf</td>
-                                                <td>2</td>
+
                                             </tr>
                                             <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    {{--                        MODAL DE ACEPTACION DE COMPRA--}}
+                    <div class="modal" tabindex="-1" id="confirmModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">CONFIRMAR</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-body-text">Deseas confirmar que la compra de los productos se ha realizado exitosamente</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="modal-confirm-btn">Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--MODAL DE RECHAZO DE COMPRA--}}
+                    <div class="modal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Modal body text goes here.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
@@ -881,7 +939,7 @@
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
    function dibujarCitasVentasTecnicasProductos() {
         $.get('/venta/citas', function (citasVentas) {
@@ -1083,7 +1141,7 @@
 
 
     // Scripts para todas las vistas
-    
+
         // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -1091,9 +1149,9 @@
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
-    
+
     $(document).ready(function(){
-    
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -1128,7 +1186,7 @@ sidebarBtn.addEventListener("click", () => {
 });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -1137,16 +1195,117 @@ sidebarBtn.addEventListener("click", () => {
             }
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-    
-    
-    
+        dibujarCompras();
+
+
+
+
         // Fin document.ready
     });
-    
-    </script>
+
+    //script para vista de ventas de compra
+    function dibujarCompras() {
+        $.ajax({
+            url: '/productosCompras',
+            method: 'GET',
+            success: function (data) {
+                var cont = 0;
+                data.forEach(venta => {
+                    const detallesCompra = $('#ventasProductos');
+                    cont = venta.id;
+                    var idDinamicoConfirmacion = 'confirmacion' + cont;
+                    var idDinamicoEliminacion = 'eliminacion' + cont;
+                    const fila = `
+                        <tr>
+                            <td>Compra</td>
+                            <th>${venta.id}</th>
+                            <td>${venta.total}</td>
+                            <td>${venta.fechaVenta}</td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
+                            <td><button class="btn btn-success" id="${idDinamicoConfirmacion}" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="prepararConfirmacion(${venta.id})">Aceptar</button></td>
+                            <td><button class="btn btn-danger" id="${idDinamicoEliminacion}" data-bs-toggle="modal" data-bs-target="" onclick="rechazarCompra(${venta.id})">Rechazar</button></td>
+                        </tr>
+                    `;
+                    detallesCompra.append(fila);
+                });
+            }
+        });
+    }
+
+    function prepararConfirmacion(ventaId) {
+        $('#modal-body-text').text(`Deseas confirmar que la compra de los productos con ID ${ventaId} se ha realizado exitosamente`);
+        $('#modal-confirm-btn').attr('onclick', `confirmarCompra(${ventaId})`);
+    }
+
+    let ticketsDibujado;
+    function dibujarTicket(id){
+        $.ajax({
+            url:'/get/compras/'+id,
+            method: 'GET',
+            success: function (data){
+                //si ticket aun no se encuentra dentro del arreglo de ticekts dibujados
+                if (ticketsDibujado !== id) {
+                    const detallesIndividualProducto = $('#detallesIndividualProducto');
+                    detallesIndividualProducto.empty();
+                    data.forEach(detalle=> {
+                        //Limpia el modal para que se puedan dibujar los elementos del ticket seleccionado
+
+                        const fila =`
+                            <tr class="fila-dinamica">
+                               <td>${detalle.nombre}</td>
+                               <td>${detalle.descripcion}</td>
+                               <td>${detalle.precio}</td>
+                            </tr>
+                        `;
+                        detallesIndividualProducto.append(fila);
+                    });
+                    ticketsDibujado = id;
+                }
+            }
+        })
+    }
+
+    function confirmarCompra($id){
+        $.ajax({
+
+            url: '/confirmarCompra/' + $id,
+            method: 'POST',
+            data:{
+                _token: $('input[name="_token"]').val(),
+            },
+            success: function (){
+                alert('Compra confirmada')
+                let btnconf = $('#confirmacion' + $id);
+
+                btnconf.text('confirmado');
+
+                $('#confirmModal').modal('hide');
+
+            },
+            error: function (error){
+                console.log(error)
+            }
+        });
+    }
+
+    function rechazarCompra($id){
+        $.ajax({
+
+            url: '/rechazarCompra/' + $id,
+            method: 'POST',
+            data:{
+                _token: $('input[name="_token"]').val(),
+            },
+            success: function (){
+                alert('Compra Rechazada')
+            },
+            error: function (error){
+                console.log(error)
+            }
+        });
+    }
+</script>
 </body>
 </html>
