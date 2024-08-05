@@ -545,6 +545,16 @@ header {
         success: function(data) {
             const productos = $('#productos');
             productos.empty();
+            if (data.length === 0) {
+                // Mostrar mensaje si no hay productos
+                productos.append(`
+                    <div class="col-12 text-center my-5">
+                        <div class="alert" role="alert">
+                            <h4 class="alert-heading">¡No hay prodcutos disponibles en este momento!</h4>
+                        </div>
+                    </div>
+                `);
+            } 
             data.forEach(producto => {
                 const card = `
                     <div class="product-card">

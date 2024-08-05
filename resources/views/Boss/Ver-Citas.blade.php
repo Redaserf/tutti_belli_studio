@@ -1444,7 +1444,11 @@ header {
 
             $.get('/cita/usuario/empleado', function(citas) {
                 let tabla = $('#tablaCitas');
-                tabla.empty();              
+                tabla.empty(); 
+                if (citas.length === 0) {
+                    // Mostrar mensaje si no hay citas
+                    tabla.append('<tr><td colspan="7" class="text-center">No hay citas para mostrar</td></tr>');
+                }             
                 citas.forEach(cita => {
                     console.log(cita.id);
                     tabla.append(`

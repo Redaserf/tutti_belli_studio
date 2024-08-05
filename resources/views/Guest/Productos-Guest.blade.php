@@ -157,6 +157,25 @@ h1, h2, h3, h4, h5 ,a, li{
     color: #333;
     font-weight: bold;
 }
+.custom-alert {
+        background-color: #e0e0e0; /* Color rosado */
+        border: 1px solid #e0e0e0;
+        color: #000000;
+        border-radius: 5px;
+        padding: 20px;
+        font-family: "Josefin Sans", sans-serif;
+    }
+    .custom-alert .alert-heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .custom-alert p {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    .custom-alert hr {
+        border-top: 2px solid #000000;
+    }
 
 
     </style>
@@ -266,6 +285,23 @@ h1, h2, h3, h4, h5 ,a, li{
         success: function(data) {
           const productos = $('#productos');
           productos.empty();
+          if (data.length === 0) {
+            productos.append(`
+              <div class="col-12 text-center my-5">
+                <div class="custom-alert" role="alert">
+                  <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
+                  <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
+                  <hr>
+                  <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+              </div>
+            `);
+          }
           data.forEach(producto => {
                 const card = `
                 <div class="product-card">

@@ -507,6 +507,10 @@ $.ajaxSetup({
                 success: function(data) {
                     const tableBody = $('#Servicios');
                     tableBody.empty();
+                    if (data.length === 0) {
+                        // Mostrar mensaje si no hay servicios
+                        tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
+                    }                     
                     data.forEach(servicio => {
                         const row = `<tr>
                             <td>${servicio.id}</td>
