@@ -19,7 +19,11 @@ return new class extends Migration
             $table->date('fechaVenta');
             $table->boolean('estadoVenta');
             // checar atributo estatus faltante en el diagrama
+
+            $table->unsignedBigInteger('usuarioId')->nullable();
             $table->timestamps();
+
+            $table->foreign('usuarioId')->references('id')->on('users');
         });
     }
 
