@@ -46,7 +46,7 @@ class TecnicaController extends Controller
         $tecnica = Tecnica::find($id);
 
         if ($tecnica) {
-            $tecnica->productos()->detach();
+            $tecnica->productosTecnica2()->detach();
             $tecnica->delete();
     
             return response()->json(['success' => 'Técnica eliminada correctamente.']);
