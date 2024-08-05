@@ -198,6 +198,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
         Route::get('/get/productos',[DibujarController::class,'productosIndex']);
         Route::get('/get/producto/{id}', [DibujarController::class, 'obtenerProducto']);
         Route::post('/producto/actualizar/{id}', [DibujarController::class, 'actualizarProducto']);
+        Route::get('/productos/{id}', [DibujarController::class, 'obtenerProducto']);
+        Route::post('/productos/{id}', [DibujarController::class, 'actualizarProductoInv']);
         Route::get('/producto/eliminar/{id}', [DibujarController::class, 'productoDelete']);
 
         // ===[ Carrito ]===

@@ -412,11 +412,10 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 }
 .logo-img {
-  border-radius: 20px;
-      height: 50%;
+      height: auto;
       width: 0 auto;
-      max-height: 50%;
-      max-width: 100%;
+      max-height: 90%;
+      max-width: 90%;
       margin-bottom: 20px;
     }
 
