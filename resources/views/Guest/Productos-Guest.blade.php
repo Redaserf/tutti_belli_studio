@@ -261,7 +261,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
   function dibujarProductos() {
           $.ajax({
-        url: '/get/productos',
+        url: '/productosCompras',
         method: 'GET',
         success: function(data) {
           const productos = $('#productos');

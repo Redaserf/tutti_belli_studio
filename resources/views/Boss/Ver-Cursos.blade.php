@@ -737,7 +737,7 @@ function editarInscripcion(inscripcionId){
   if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
     $.ajax({
       url: `/cursos/eliminar/${id}`,
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
@@ -747,7 +747,7 @@ function editarInscripcion(inscripcionId){
       },
       error: function(error){
         alert('Hubo un error al eliminar el curso');
-        console.log(error);
+        console.error('Error al eliminar el curso:', error);
       }
     });
   }
