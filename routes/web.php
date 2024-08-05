@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\DescuentoController;
+use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoHasCursoController;
 use App\Http\Controllers\RegistrosController;
 use App\Http\Controllers\ServicioController;
@@ -304,7 +306,25 @@ Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento'
 //===== [ProductoHasCurso] =====
 Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
 
-//
+//productos inventario citas
+Route::get('/productosCitas',[ProductoController::class,'productosCitas']);
+//productos inventario cursos
+Route::get('/productosCursos',[ProductoController::class,'productosCursos']);
+//productos inventario productos
+Route::get('/productosCompras',[ProductoController::class,'productosCompras']);
+
+//====[Compras]====
+//Crea una una compra con su venta y sus detalles
 Route::post('/crearCompra', [VentaController::class, 'crearCompra']);
+//Obtiene todas las compras realizadas
+Route::get('/get/compras',[DetalleProductoController::class,'comprasIndex']);
+//Obtiene los detalles de toda la venta seleccionada
+Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
+//Confirma la compra
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
+
+
+
+
 
 

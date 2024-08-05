@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductoHasTecnica;
 use App\Models\Tecnica;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TecnicaController extends Controller
 {
@@ -42,11 +43,14 @@ class TecnicaController extends Controller
     }
 
     public function borrarTecnica($id) {
+        DB::beginTransaction();
         try {
             $tecnica = Tecnica::findOrFail($id);
             $tecnica->delete();
+            DB::commit();
             return response()->json(['success' => 'Técnica eliminada con éxito'], 204);
         } catch (\Exception $e) {
+            DB::rollback();
             return response()->json(['message' => 'Error del servidor', 'error' => $e->getMessage()], 500);
         }
     }
@@ -72,36 +76,41 @@ class TecnicaController extends Controller
 
     function guardar(Request $request)
     {
+        DB::beginTransaction();
+        try {
+            $arregloProductos = $request->arregloProductos;
+            $arregloCantidadesProducto = $request->arregloCantidades;
+            //$arregloProductos = json_decode($request->arregloProductos, true);
+            //$arregloCantidadesProducto = json_decode($request->arregloCantidades, true);
+            $tecnicaData = $request->tecnica;
 
+            // Añadir el ID del servicio a los datos de la técnica
+            $tecnicaData['servicioId'] = $request->servicioId;
 
-        $arregloProductos = $request->arregloProductos;
-        $arregloCantidadesProducto = $request->arregloCantidades;
-//            $arregloProductos = json_decode($request->arregloProductos, true);
-//            $arregloCantidadesProducto = json_decode($request->arregloCantidades, true);
-        $tecnicaData = $request->tecnica;
+            $tecnicaData = [
+                'nombre' => $request->tecnica['nombre'],
+                'precio' => (double) $request->tecnica['precio'],
+                'descripcion' => $request->tecnica['descripcion'],
+                'servicioId' => (int) $request->servicioId
+            ];
 
-        // Añadir el ID del servicio a los datos de la técnica
-        $tecnicaData['servicioId'] = $request->servicioId;
+            // Crear la técnica con todos los datos necesarios
+            $tecnica = Tecnica::create($tecnicaData);
 
-        $tecnicaData = [
-            'nombre' => $request->tecnica['nombre'],
-            'precio' => (double) $request->tecnica['precio'],
-            'descripcion' => $request->tecnica['descripcion'],
-            'servicioId' => (int) $request->servicioId
-        ];
-//
-        // Crear la técnica con todos los datos necesarios
-        $tecnica = Tecnica::create($tecnicaData);
-
-        // Relacionar productos con la técnica
-        for ($i = 0; $i < count($arregloProductos); $i++) {
-            ProductoHasTecnica::create([
-                'productoId' => $arregloProductos[$i],
-                'tecnicaId' => $tecnica->id,  // Usar el ID de la técnica creada
-                'cantidadDeUso' => $arregloCantidadesProducto[$i],
-            ]);
+            // Relacionar productos con la técnica
+            for ($i = 0; $i < count($arregloProductos); $i++) {
+                ProductoHasTecnica::create([
+                    'productoId' => $arregloProductos[$i],
+                    'tecnicaId' => $tecnica->id,  // Usar el ID de la técnica creada
+                    'cantidadDeUso' => $arregloCantidadesProducto[$i],
+                ]);
+            }
+            DB::commit();
+            return response()->json(['message' => 'técnica creadas con éxito']);
+        }catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Error al crear la tecnica'], 500);
         }
 
-        return response()->json(['message' => 'Servicio y técnicas creadas con éxito']);
     }
 }

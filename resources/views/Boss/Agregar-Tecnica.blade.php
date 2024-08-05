@@ -666,7 +666,7 @@ function loadServicios(){
 //Script para dibujar los productos en el modal
     function dibujarProductos() {
         $.ajax({
-            url: '/get/productos',
+            url: '/productosCitas',
             method: 'GET',
             success: function(data) {
                 const productos = $('#contenedorProductos');

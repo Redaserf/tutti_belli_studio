@@ -708,7 +708,7 @@ sidebarBtn.addEventListener("click", () => {
 
     function dibujarProductos() {
         $.ajax({
-            url: '/get/productos',
+            url: '/productosCitas',
             method: 'GET',
             success: function(data) {
                 const productos = $('#contenedorProductos');
@@ -846,6 +846,7 @@ sidebarBtn.addEventListener("click", () => {
         let productId = $(this).data('id');
         let idDinamico = 'cantidad' + productId;
         let cantidad = $('#' + idDinamico).val();
+
         let stock = $('#' + idDinamico).data('stock');  // Obtener el stock del atributo data-stock
 
         // Comprobar que la cantidad ingresada sea mayor que 0 y menor o igual a la cantidad en stock

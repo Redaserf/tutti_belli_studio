@@ -314,33 +314,6 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     var total = 0;
     var productosComprados = [];
 
-    function obtenerFechaHoraActualMexico() {
-        // Crear una nueva instancia de la fecha actual
-        const fechaActual = new Date();
-
-        // Convertir la fecha actual a la zona horaria de México
-        const opciones = {
-            timeZone: 'America/Mexico_City',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        };
-        const fechaHoraMexico = fechaActual.toLocaleString('en-CA', opciones);
-
-        // Formatear la fecha y hora en formato DATETIME
-        const [fecha, hora] = fechaHoraMexico.split(', ');
-        const [dia, mes, anio] = fecha.split('/');
-        const fechaHoraFormatoDATETIME = `${anio}-${mes}-${dia} ${hora}`;
-
-        return fechaHoraFormatoDATETIME;
-    }
-
-    // Guardar la fecha y hora actual en una variable
-    const fechaHoraActualMexico = obtenerFechaHoraActualMexico();
-
 
 function dibujarCarrito() {
             $.ajax({
@@ -374,7 +347,7 @@ function dibujarCarrito() {
                     });
                     costoTotal.text('Costo Total: $' + total);
                     console.log(productosComprados);
-                    console.log(fechaHoraActualMexico);
+
                 },
                 error: function(error) {
                   console.log(error);
@@ -458,29 +431,66 @@ $(document).ready(function(){
             }
             //alertas
 
+    // Función para obtener la fecha y hora actual en formato DATETIME y zona horaria de México
+    function obtenerFechaHoraActualMexico() {
+        // Crear una nueva instancia de la fecha actual
+        let fechaActual = new Date();
 
+        // Convertir la fecha actual a la zona horaria de México
+        let opciones = {
+            timeZone: 'America/Mexico_City',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        let fechaHoraMexico = fechaActual.toLocaleString('en-CA', opciones);
+
+        // Formatear la fecha y hora en formato DATETIME
+        let [fecha, hora] = fechaHoraMexico.split(', ');
+        let [anio, mes, dia] = fecha.split('-');
+        let fechaHoraFormatoDATETIME = `${anio}-${mes}-${dia} ${hora}`;
+
+        return fechaHoraFormatoDATETIME;
+    }
+
+// Guardar la fecha y hora actual en una variable
+    let fechaHoraActualMexico = obtenerFechaHoraActualMexico();
+
+// Mostrar la fecha y hora actual en formato DATETIME y zona horaria de México
+    console.log(fechaHoraActualMexico);
     // Scripts aquí
     const randomDateTime = '2023-08-02 14:35:47';
 
     $('#comprar').on('click',function (){
-        $.ajax({
-            url:'crearCompra',
-            method: 'POST',
-            data:
-            {
-                _token: $('input[name="_token"]').val(),
-                total: total,
-                productosComprados: productosComprados,
-                // fechaVenta: fechaHoraActualMexico
-                fechaVenta: randomDateTime
-            },
-            success: function (){
-                alert('se han creado los registros correctamnete')
-            },
-            error: function (error){
-                console.log(error);
-            }
-        })
+        if(productosComprados.length > 0){
+            $.ajax({
+                url:'crearCompra',
+                method: 'POST',
+                data:
+                    {
+                        _token: $('input[name="_token"]').val(),
+                        total: total,
+                        productosComprados: productosComprados,
+                        // fechaVenta: fechaHoraActualMexico
+                        fechaVenta: fechaHoraActualMexico
+                    },
+                success: function (){
+                    alert('Se ha realizado la compra correctamnete')
+                    productosComprados = [];
+                    dibujarCarrito();
+                },
+                error: function (error){
+                    console.log(error);
+                }
+            })
+        }else{
+            alert('Debes agregar los productos al carrito')
+        }
+
     });
 
 });

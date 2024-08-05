@@ -8,6 +8,8 @@ use App\Models\Servicio;
 use App\Models\Tecnica;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class ServicioController extends Controller
 {
     function index(){
@@ -17,6 +19,7 @@ class ServicioController extends Controller
 
     public function index2($id)
     {
+
         try {
             $servicio = Servicio::findOrFail($id);
             return response()->json($servicio);
@@ -26,30 +29,41 @@ class ServicioController extends Controller
     }
 
     public function borrarServicio($id) {
+        DB::beginTransaction();
         try {
             $servicio = Servicio::findOrFail($id);
             $servicio->delete();
+
+            DB::commit();
             return response()->json(['success' => 'Servicio eliminado con éxito']);
         } catch (\Exception $e) {
+            DB::rollback();
             return response()->json(['message' => 'Error al eliminar el servicio', 'error' => $e->getMessage()], 500);
         }
     }
 
     public function actualizarServicio(Request $request, $id){
-        $servicio = Servicio::find($id);
+        DB::beginTransaction();
+        try{
+            $servicio = Servicio::find($id);
 
-        if ($servicio) {
-        $servicio->nombre = $request->input('nombre');
+            $servicio->nombre = $request->input('nombre');
 
-        $servicio->save();
-
-        return response()->json(['success' => 'Servicio actualizado con éxito']);
-        } else {
-        return response()->json(['error' => 'Servicio no encontrado'], 404);
+            $servicio->save();
+            DB::commit();
+            return response()->json(['success' => 'Servicio actualizado con éxito']);
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['error' => 'Servicio no encontrado'], 404);
         }
+
     }
 
-        function crear(Request $request){
+    function crear(Request $request){
+
+        DB::beginTransaction();
+
+        try {
             // Crear el servicio
             $servicio = Servicio::create([
                 "nombre" => $request->nombreServicio,  // Corregir nombre de la variable
@@ -58,8 +72,8 @@ class ServicioController extends Controller
 
             $arregloProductos = $request->arregloProductos;
             $arregloCantidadesProducto = $request->arregloCantidades;
-//            $arregloProductos = json_decode($request->arregloProductos, true);
-//            $arregloCantidadesProducto = json_decode($request->arregloCantidades, true);
+            //$arregloProductos = json_decode($request->arregloProductos, true);
+            //$arregloCantidadesProducto = json_decode($request->arregloCantidades, true);
             $tecnicaData = $request->tecnica;
 
             // Añadir el ID del servicio a los datos de la técnica
@@ -67,11 +81,11 @@ class ServicioController extends Controller
 
             $tecnicaData = [
                 'nombre' => $request->tecnica['nombre'], // string
-                'precio' => (double) $request->tecnica['precio'], // float
+                'precio' => (double)$request->tecnica['precio'], // float
                 'descripcion' => $request->tecnica['descripcion'], // string
-                'servicioId' => (int) $servicio->id // integer
+                'servicioId' => (int)$servicio->id // integer
             ];
-//
+
             // Crear la técnica con todos los datos necesarios
             $tecnica = Tecnica::create($tecnicaData);
 
@@ -84,6 +98,17 @@ class ServicioController extends Controller
                 ]);
             }
 
+            DB::commit();
+
             return response()->json(['message' => 'Servicio y técnicas creadas con éxito']);
+
+        } catch (\Exception $e) {
+            // Si ocurre algún error, revierte la transacción
+            DB::rollBack();
+
+            // Maneja el error según sea necesario, puedes lanzar una excepción o devolver una respuesta de error
+            return response()->json(['error' => 'Hubo un problema al crear el servicio y la técnica.'], 500);
         }
+    }
+
 }
