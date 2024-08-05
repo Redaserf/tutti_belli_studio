@@ -1444,8 +1444,7 @@ header {
 
             $.get('/cita/usuario/empleado', function(citas) {
                 let tabla = $('#tablaCitas');
-                tabla.empty();
-                
+                tabla.empty();              
                 citas.forEach(cita => {
                     console.log(cita.id);
                     tabla.append(`

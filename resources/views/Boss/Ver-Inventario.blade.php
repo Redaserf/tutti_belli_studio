@@ -620,6 +620,9 @@ $.ajax({
         // Función para agregar productos a una tabla
         function agregarProductosATabla(tablaSelector, productos) {
             var targetTable = $(tablaSelector);
+            if(productos.length === 0){
+                targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
+            }
             productos.forEach(function(producto) {
                 var row = '<tr>' +
                     '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
@@ -698,20 +701,21 @@ $(document).ready(function () {
     searchTable('search-productos-servicios', 'table-productos-servicios');
     searchTable('search-productos-ventas', 'table-productos-ventas');
     searchTable('search-productos-curso', 'table-productos-curso');
+    
 });
 
        
 
                         // Botón sidebar
-                        function botonSidebar() { 
-                if (window.innerWidth <= 768) {
-                    $('.sidebar-btn').css('display', 'block');
-                } else {
-                    $('.sidebar-btn').css('display', 'none');
-                }
-            }
-            window.addEventListener('resize', botonSidebar);
-            botonSidebar();
+    function botonSidebar() { 
+    if (window.innerWidth <= 768) {
+        $('.sidebar-btn').css('display', 'block');
+    } else {
+        $('.sidebar-btn').css('display', 'none');
+    }
+    }
+    window.addEventListener('resize', botonSidebar);
+    botonSidebar();
     
         // Fin scripts para todas las vistas
     
