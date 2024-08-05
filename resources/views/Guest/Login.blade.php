@@ -107,6 +107,25 @@ a:hover {
         padding: 0.4rem;
     }
 }
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+.alert{
+    margin-top:20px;
+    background-color:white;
+    color:red;
+    border:0;
+
+}
+
 
                 /* Alerta bonita */
 
@@ -146,7 +165,6 @@ a:hover {
             animation-name: slideOut;
         }
         /* Alerta bonita */
-
     </style>
 
 </head>
@@ -160,8 +178,11 @@ a:hover {
             </div>
             <h2>Ingresa con tu cuenta</h2>
             <p>Ingresa tu email y contraseña para continuar</p>
-            <form action="/LoginUsuario" method="POST">
+            <form action="/LoginUsuario" method="POST" id="login-form">
                 @csrf
+                @if(session('error'))
+                <div class="alert alert-danger" id="error-message">{{ session('error') }}</div>
+                @endif
                 <div class="mb-3">
                     <input type="email" name="email" class="form-control" placeholder="Correo" required>
                 </div>
@@ -169,11 +190,14 @@ a:hover {
                     <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
                 </div>
                 <button type="submit" class="btn btn-dark w-100">Ingresar</button>
+                <br>
+                
             </form>
             <p class="mt-3">Si no tienes cuenta <a href="/Registro">Regístrate aquí</a></p>
             <p>Al hacer clic en continuar, aceptas nuestros <a href="#">Términos de servicio</a> y <a href="#">Política de privacidad</a>.</p>
         </div>
     </div>
+
 
 
      <!-- alerta -->
@@ -240,6 +264,13 @@ a:hover {
                 localStorage.removeItem('alertIcon');
             }
             //alertas
+            if ($('#error-message').length) {
+        var loginContainer = $('.login-container');
+        loginContainer.addClass('shake');
+        setTimeout(function() {
+            loginContainer.removeClass('shake');
+        }, 500);
+    }
 
 
     });

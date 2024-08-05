@@ -268,6 +268,10 @@ gmp-map {
     color: #495057;
     font-size: 1rem;
 }
+#termsModal{
+    z-index: 200000;
+
+}
 
 
 /* div de la parte inferior */
@@ -468,10 +472,15 @@ gmp-map {
                             <select class="form-control" name="empleadoId" id="empleadoId">
                             </select>
                         </div>
+                        <div class="mt-3 text-center">
+                        <p>
+                            <input class="form-check-input text-center"id="CheckBoxCondiciones" type="checkbox" style="margin-right:12px;"><a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a></input></p>
+                        </div>
                     </div>
+                   
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-pink">Confirmar</button>
+                        <button id="BotonConfirmar"type="submit" class="btn btn-pink">Confirmar</button>
                     </div>
                 </form>
             </div>
@@ -696,6 +705,20 @@ $(document).ready(function(){
             //alertas
 
 
+            $('#CheckBoxCondiciones').change(function() {
+            if ($(this).is(':checked')) {
+                $('#BotonConfirmar').prop('disabled', false);
+            } else {
+                $('#BotonConfirmar').prop('disabled', true);
+            }
+        });
+
+        // Verificar el estado inicial del checkbox al cargar la página
+        if ($('#CheckBoxCondiciones').is(':checked')) {
+            $('#BotonConfirmar').prop('disabled', false);
+        } else {
+            $('#BotonConfirmar').prop('disabled', true);
+        }
 
     $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
             dateFormat: 'yy-mm-dd',

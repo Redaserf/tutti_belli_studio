@@ -33,6 +33,8 @@ class UsuarioController extends Controller
             }  elseif ($user->rolId == 4) {
                 return redirect('/Home-administrador');
             }
+        }else {
+            return redirect()->back()->with('error', 'Correo o contraseña incorrecto. Intente de nuevo.');
         }
 
         // Poner un mensaje de que hubo un error al loguearse
