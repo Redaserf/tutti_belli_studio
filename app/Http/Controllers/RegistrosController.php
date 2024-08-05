@@ -9,6 +9,7 @@ use App\Models\Producto;
 use App\Models\Servicio;
 use App\Models\Tecnica;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,8 @@ use App\Mail\CorreoConfirmacion;
 use Illuminate\Support\Facades\DB;
 use App\Models\CitaHasServicio;
 use Illuminate\Support\Facades\Mail;
+use App\Models\DetalleTecnica;
+
 
 
 
@@ -143,7 +146,6 @@ class RegistrosController extends Controller
     }
 
     public function RegistroCita(Request $request) {
-
         $request->validate([
             'fechaCita' => 'required|date',
             'horaCita' => 'required|date_format:H:i:s',
@@ -151,48 +153,79 @@ class RegistrosController extends Controller
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
         ]);
-
-        // Decodificar los servicios seleccionados
+    
+        // Decodificar el JSON
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-
+    
         // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-
-        
-
-
+    
+        // Validar formato de serviciosSeleccionados
+        foreach ($serviciosSeleccionados as $servicio) {
+            if (!isset($servicio['servicioId']) || !isset($servicio['tecnicaId'])) {
+                return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
+            }
+        }
+    
         // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-                            ->where('horaCita', $request->horaCita)
-                            ->first();
-
+                             ->where('horaCita', $request->horaCita)
+                             ->first();
+    
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-
+    
         DB::beginTransaction();
         try {
+            // Crear una venta
+            $venta = Venta::create([
+                'fechaVenta' => $request->fechaCita,
+                'total' => 0,
+                'estadoVenta' => true,
+            ]);
+    
             // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
+                "ventaId" => $venta->id,
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
-
+    
             // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
-                CitaHasServicio::create([
+                $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
+    
+                $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+    
+                foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
+                    DetalleTecnica::create([
+                        'citaId' => $cita->id,
+                        'tecnicaId' => $servicio['tecnicaId'],
+                        'productoId' => $productoHasTecnica->productoId,
+                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                    ]);
+                }
             }
-
+    
+            // Calcular el precio total de las técnicas para esta cita
+            $totalVenta = CitaHasServicio::where('citaId', $cita->id)
+                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
+                ->sum('tecnicas.precio');
+    
+            // Actualiza el precio total en la tabla ventas
+            $venta->update(['total' => $totalVenta]);
+    
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
@@ -200,6 +233,8 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
         }
     }
+
+    
 
     public function editarCita(Request $request, $id) {
         // Validación de los datos del request
@@ -211,30 +246,30 @@ class RegistrosController extends Controller
             'notasCita' => 'nullable|string',
             'serviciosSeleccionados' => 'required|json'
         ]);
-
+    
         // Decodificar los servicios seleccionados
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-
+    
         // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-
+    
         // Verificar si ya existe una cita con la misma fecha y hora (excluyendo la cita actual)
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->where('id', '<>', $id)
                             ->first();
-
+    
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-
+    
         DB::beginTransaction();
         try {
             // Obtener la cita
             $cita = Cita::findOrFail($id);
-
+    
             // Actualizar la cita
             $cita->update([
                 "fechaCita" => $request->fechaCita,
@@ -244,22 +279,46 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
-
+    
             // Eliminar las relaciones antiguas
             CitaHasServicio::where('citaId', $id)->delete();
-
+            DetalleTecnica::where('citaId', $id)->delete();
+    
             // Crear las nuevas relaciones
             foreach ($serviciosSeleccionados as $servicio) {
-                CitaHasServicio::create([
+                $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
+    
+                $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+    
+                foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
+                    DetalleTecnica::create([
+                        'citaId' => $cita->id,
+                        'tecnicaId' => $servicio['tecnicaId'],
+                        'productoId' => $productoHasTecnica->productoId,
+                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                    ]);
+                }
             }
-              
-            //Enviar correo de confirmación
+    
+            // Recalcular el precio total de las técnicas para esta cita
+            $totalVenta = CitaHasServicio::where('citaId', $cita->id)
+                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
+                ->sum('tecnicas.precio');
+    
+            // Actualizar la fecha y el precio total en la tabla ventas
+            Venta::where('id', $cita->ventaId)->update([
+                'fechaVenta' => $request->fechaCita,
+                'total' => $totalVenta,
+                'estadoVenta' => true
+            ]);
+    
+            // Enviar correo de confirmación
             Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
-
+    
             DB::commit();
             return response()->json(['message' => 'Cita actualizada con éxito'], 200);
         } catch (\Exception $e) {
@@ -267,6 +326,8 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al actualizar la cita', 'error' => $e->getMessage()], 500);
         }
     }
+    
+    
 
     public function eliminarCita($id) {
         DB::beginTransaction();
@@ -275,17 +336,25 @@ class RegistrosController extends Controller
             $cita = Cita::findOrFail($id);
             $usuario = $cita->usuario;
     
+            // Obtener el ID de la venta asociada
+            $ventaId = $cita->ventaId;
+    
             // Eliminar las relaciones entre la cita y los servicios
             CitaHasServicio::where('citaId', $id)->delete();
+            DetalleTecnica::where('citaId', $id)->delete();
+
     
             // Eliminar la cita
             $cita->delete();
     
-            // Enviar correo de rechazo
+            // Eliminar la venta asociada
+            Venta::where('id', $ventaId)->delete();
+    
+            // Enviar correo de cancelación
             Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
     
             DB::commit();
-            return response()->json(['message' => 'Cita eliminada con éxito'], 200);
+            return response()->json(['message' => 'Cita y venta eliminadas con éxito'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error al eliminar la cita', 'error' => $e->getMessage()], 500);
@@ -293,13 +362,7 @@ class RegistrosController extends Controller
     }
     
     
-
-
-
-    function RegistroCitaAdmin(){
-
-    }
-
+    
     function RegistroDescuentoProducto(Request $request){
 
         $descuento = new Descuento();
@@ -353,47 +416,74 @@ class RegistrosController extends Controller
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
         ]);
-
+    
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-
-        // Veirficar si los servicios seleccionados están vacíos
+    
+        // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-
+    
         // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->first();
-
+    
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-
+    
         DB::beginTransaction();
         try {
+            // Crear la venta
+            $venta = Venta::create([
+                'fechaVenta' => $request->fechaCita,
+                'total' => 0,
+                'estadoVenta' => true,
+            ]);
+    
             // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
+                "ventaId" => $venta->id,
                 "notasCita" => $request->notasCita ?? null,
                 "estadoCita" => false
             ]);
-
+    
             // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
-                CitaHasServicio::create([
+                $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
                     'tecnicaId' => $servicio['tecnicaId']
                 ]);
+    
+                $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+    
+                foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
+                    DetalleTecnica::create([
+                        'citaId' => $cita->id,
+                        'tecnicaId' => $servicio['tecnicaId'],
+                        'productoId' => $productoHasTecnica->productoId,
+                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                    ]);
+                }
             }
-
+    
+            // Calcular el precio total de las técnicas para esta cita
+            $totalVenta = CitaHasServicio::where('citaId', $cita->id)
+                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
+                ->sum('tecnicas.precio');
+            
+            // Actualizar el precio total en la tabla ventas
+            $venta->update(['total' => $totalVenta]);
+    
             // Enviar correo de espera
             Mail::to($request->user()->email)->send(new CorreoEspera($cita));
-
+    
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
@@ -401,6 +491,10 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
         }
     }
+    
 
+
+
+ 
 
 }

@@ -12,18 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('detalle_tecnicas_has_tecnicas', function(Blueprint $table){
+        Schema::create('ventas', function(Blueprint $table){
 
             $table->id();
-            $table->unsignedBigInteger('detalleTecnicaId');
-            $table->unsignedBigInteger('tecnicaId');
+            $table->double('total');
+            $table->date('fechaVenta');
+            $table->boolean('estadoVenta');
+            // checar atributo estatus faltante en el diagrama
+
+            $table->unsignedBigInteger('usuarioId')->nullable();
             $table->timestamps();
 
-            $table->foreign('detalleTecnicaId')->references('id')->on('detalle_tecnicas');
-            $table->foreign('tecnicaId')->references('id')->on('tecnicas');
-
-            
-
+            $table->foreign('usuarioId')->references('id')->on('users');
         });
     }
 
@@ -33,7 +33,7 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('detalle_tecnicas_has_tecnicas');
+        Schema::dropIfExists('ventas');
 
     }
 };

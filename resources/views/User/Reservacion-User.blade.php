@@ -81,6 +81,10 @@ button{
     background-color: #f0b4be; /* Botón rosado */
     color: black;
     font-weight: bold;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .accordion-button:not(.collapsed) {
@@ -130,7 +134,7 @@ button{
 }
 
 .image-container {
-    margin-top: 20px;
+    margin-top: 50px;
     display: flex;
     justify-content: center;
 }
@@ -140,6 +144,7 @@ button{
     height: auto;
     border: 1px solid black;
     border-radius: 5px;
+    
 }
 
 .mapa-container {
@@ -165,11 +170,12 @@ button{
     }
 
     .image-container {
-        margin-top: 10px;
+        margin-top: 30px;
     }
 
     #horariosImagen {
         max-width: 90%; /* Ajusta el tamaño máximo de la imagen para dispositivos móviles */
+        margin-top: 100px;
     }
 }
 gmp-map {

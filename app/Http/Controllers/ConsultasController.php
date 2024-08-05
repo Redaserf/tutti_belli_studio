@@ -15,6 +15,9 @@ use App\Models\Servicio;
 use App\Models\Tecnica;
 use App\Models\Cita;
 use App\Models\CitaHasServicio;
+use App\Models\ProductoHasTecnica;
+use App\Models\Venta;
+
 
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -139,28 +142,28 @@ class ConsultasController extends Controller
     // }
 
 
-    public function serviciosTecnicasCitas()
-    {
-        $citasHasServicios = CitaHasServicio::with('cita', 'servicio', 'tecnica')->get();
+    // public function serviciosTecnicasCitas()
+    // {
+    //     $citasHasServicios = CitaHasServicio::with('cita', 'servicio', 'tecnica')->get();
 
-        // Estructurar los datos para la respuesta
-        $result = $citasHasServicios->groupBy('citaId')->map(function ($group) {
-            $cita = $group->first()->cita;
-            $servicios = $group->map(function ($item) {
-                return [
-                    'servicio' => $item->servicio,
-                    'tecnica' => $item->tecnica
-                ];
-            });
+    //     // Estructurar los datos para la respuesta
+    //     $result = $citasHasServicios->groupBy('citaId')->map(function ($group) {
+    //         $cita = $group->first()->cita;
+    //         $servicios = $group->map(function ($item) {
+    //             return [
+    //                 'servicio' => $item->servicio,
+    //                 'tecnica' => $item->tecnica
+    //             ];
+    //         });
 
-            return [
-                'cita' => $cita,
-                'servicios' => $servicios
-            ];
-        });
+    //         return [
+    //             'cita' => $cita,
+    //             'servicios' => $servicios
+    //         ];
+    //     });
 
-        return response()->json($result->values());
-    }
+    //     return response()->json($result->values());
+    // }
 
     public function unaCitaConServiciosTecnica($id)
     {
@@ -210,6 +213,119 @@ class ConsultasController extends Controller
     }
     
 
+    // public function tecnicasConCitas(){//hacer
+    //     $tecnicasIds = CitaHasServicio::select('tecnicaId')->with('tecnica')->get();
+
+    //     return response()->json($tecnicasIds);
+    // }
+
+ 
 
 
+//     //consulta para traerse las citas con sus tecnicas y los productos de las tecnicas de esas citas
+//     public function serviciosTecnicasCitas(): JsonResponse
+//     {
+//         // Obtén las citas con sus técnicas y productos
+//         $citas = CitaHasServicio::with('productosTecnicas.productoHasTecnica')->get();
+
+//         // Prepara la estructura de datos para el JSON
+//         $resultados = $citas->map(function ($cita) {
+//             return [
+//                 'cita_id' => $cita->id,
+//                 'productos_tecnicas' => $cita->productosTecnicas->map(function ($productoTecnica) {
+//                     return [
+//                         'tecnica' => $productoTecnica->productoHasTecnica->tecnica->nombre ?? 'No disponible',
+//                         'producto' => $productoTecnica->productoHasTecnica->producto->nombre ?? 'No disponible',
+//                         'cantidad_producto' => $productoTecnica->cantidadProducto,
+//                     ];
+//                 }),
+//             ];
+//         });
+
+//         // Retorna los resultados como JSON
+//         return response()->json($resultados);
+//     }
+
+
+// //todas las citas con sus servicios, tecnicas y los productos de la tecnica 
+//    public function tecnicasConProductos()
+//    {
+//        // Obtener citas con servicios, técnicas y productos relacionados
+//        $citas = CitaHasServicio::with(['cita' => function ($query) {
+//            $query->where('estadoCita', true);
+//        }, 'servicio', 'tecnica.productos'])->get();
+       
+//        // Agrupar las citas por ID
+//        $citasGrouped = $citas->groupBy('citaId');
+   
+//        $data = $citasGrouped->map(function ($group) {
+//            // Obtener la primera cita del grupo
+//            $primeraCita = $group->first()->cita;
+   
+//            // Crear detalles para cada técnica
+//            $serviciosTecnicas = $group->map(function ($item) {
+//                $tecnica = $item->tecnica;
+//                $productos = $tecnica->productos->map(function ($producto) {
+//                    return $producto->toArray(); // Devuelve todos los atributos del producto
+//                });
+   
+//                return [
+//                    'id' => $tecnica->id,
+//                    'nombre' => $tecnica->nombre,
+//                    'descripcion' => $tecnica->descripcion, // Incluye todos los atributos de la técnica
+//                    'productos' => $productos
+//                ];
+//            });
+   
+//            return [
+//                'id' => $primeraCita->id,
+//                'fechaCita' => $primeraCita->fechaCita,
+//                'horaCita' => $primeraCita->horaCita,
+//                'estadoCita' => $primeraCita->estadoCita,
+//                'notasCita' => $primeraCita->notasCita,
+//                'usuarioId' => $primeraCita->usuarioId,
+//                'empleadoId' => $primeraCita->empleadoId,
+//                'ventaId' => $primeraCita->ventaId,
+//                'servicios' => $group->map(function ($item) {
+//                    return [
+//                        'id' => $item->servicio->id,
+//                        'nombre' => $item->servicio->nombre,
+//                        // Incluye otros atributos del servicio si es necesario
+//                    ];
+//                })->unique(), // Asegúrate de tener servicios únicos
+//                'tecnicas' => $serviciosTecnicas
+//            ];
+//        });
+   
+//        // Retornar los detalles de citas, servicios, técnicas y productos en formato JSON
+//        return response()->json($data);
+//    }
+
+//    public function citasTecnicaProductos() {
+//     $venta = Venta::with(['cita.servicios.tecnicas.productosHasTecnica.producto', 'cita.servicios.tecnicas.productosHasTecnica.detalleTecnica'])->get();
+
+//     return response()->json($venta);
+//    }
+   
+    
+
+//    public function citasTecnicaProductos() {
+//         $cita = 
+//    }
+    
+
+public function tecnicasProductos(){
+    $jaja = Tecnica::with('productosHasTecnica')->get();
+
+
+    return response()->json($jaja);
 }
+
+   // Traer ventas de todas las citas
+
+   public function ventasCitas(){
+        $ventasCitas = Venta::with('cita')->get();
+
+        return response()->json($ventasCitas);
+    }
+}    

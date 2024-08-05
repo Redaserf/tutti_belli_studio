@@ -67,9 +67,9 @@ class User extends Authenticatable
         return $this->hasMany(Cita::class,'empleadoId');
     }
 
-    public function ventas(){
-        return $this->hasMany(Venta::class,'usuarioId');
-    }
+     public function ventas(){
+         return $this->hasMany(Venta::class,'usuarioId');
+     }
 
 
     public function ususariosEmpleadoCursos(){

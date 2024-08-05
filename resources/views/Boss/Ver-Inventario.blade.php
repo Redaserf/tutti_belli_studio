@@ -6,7 +6,6 @@
     <title>Inventario</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
@@ -423,7 +422,7 @@ header {
                 <!-- Pestañas de navegación -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="productos-servicios-tab" data-bs-toggle="tab" href="#productos-servicios" role="tab" aria-controls="productos-servicios" aria-selected="true">Productos y Servicios</a>
+                        <a class="nav-link active" id="productos-servicios-tab" data-bs-toggle="tab" href="#productos-servicios" role="tab" aria-controls="productos-servicios" aria-selected="true">Productos en Servicios</a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="productos-ventas-tab" data-bs-toggle="tab" href="#productos-ventas" role="tab" aria-controls="productos-ventas" aria-selected="false">Productos en Ventas</a>
@@ -438,6 +437,7 @@ header {
                     <div class="tab-pane fade show active" id="productos-servicios" role="tabpanel" aria-labelledby="productos-servicios-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Servicios</h2>
+                            <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre...">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -446,21 +446,11 @@ header {
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
-                                        <th>Eliminar</th>
                                         <th>Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><img src="path/to/image1.jpg" alt="Producto 1" class="img-thumbnail" width="100"></td>
-                                        <td>Producto 1</td>
-                                        <td>Descripción del producto 1</td>
-                                        <td>10</td>
-                                        <td>$15</td>
-                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
-                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
-                                    </tr>
-                                    <!-- Más filas aquí -->
+                                <tbody id="table-productos-servicios">
+                                    <!-- Los productos serán insertados aquí por jQuery -->
                                 </tbody>
                             </table>
                         </div>
@@ -468,6 +458,7 @@ header {
                     <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Ventas</h2>
+                            <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre...">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -476,21 +467,11 @@ header {
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
-                                        <th>Eliminar</th>
                                         <th>Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><img src="path/to/image2.jpg" alt="Producto 2" class="img-thumbnail" width="100"></td>
-                                        <td>Producto 2</td>
-                                        <td>Descripción del producto 2</td>
-                                        <td>5</td>
-                                        <td>$30</td>
-                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
-                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
-                                    </tr>
-                                    <!-- Más filas aquí -->
+                                <tbody id="table-productos-ventas">
+                                    <!-- Los productos serán insertados aquí por jQuery -->
                                 </tbody>
                             </table>
                         </div>
@@ -498,6 +479,7 @@ header {
                     <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Curso</h2>
+                            <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre...">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -506,21 +488,11 @@ header {
                                         <th>Descripción</th>
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
-                                        <th>Eliminar</th>
                                         <th>Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><img src="path/to/image3.jpg" alt="Producto 3" class="img-thumbnail" width="100"></td>
-                                        <td>Producto 3</td>
-                                        <td>Descripción del producto 3</td>
-                                        <td>20</td>
-                                        <td>$25</td>
-                                        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductModal">Eliminar</button></td>
-                                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal">Editar</button></td>
-                                    </tr>
-                                    <!-- Más filas aquí -->
+                                <tbody id="table-productos-curso">
+                                    <!-- Los productos serán insertados aquí por jQuery -->
                                 </tbody>
                             </table>
                         </div>
@@ -530,62 +502,49 @@ header {
 
             <!-- Modales -->
             <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Formulario de edición aquí -->
-                            <form>
-                                <div class="mb-3">
-                                    <label for="productName" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="productName" value="Nombre del producto">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="productDescription" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="productDescription">Descripción del producto</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="productQuantity" class="form-label">Cantidad</label>
-                                    <input type="number" class="form-control" id="productQuantity" value="10">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="productPrice" class="form-label">Precio Unitario</label>
-                                    <input type="text" class="form-control" id="productPrice" value="$15">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Guardar cambios</button>
-                        </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario de edición aquí -->
+                        <form id="editProductForm" enctype="multipart/form-data">
+                        @csrf
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="productName" name="nombre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="productDescription" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="productDescription" name="descripcion"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="productQuantity" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="productQuantity" name="cantidad">
+                            </div>
+                            <div class="mb-3">
+                                <label for="productPrice" class="form-label">Precio Unitario</label>
+                                <input type="text" class="form-control" id="productPrice" name="precio">
+                            </div>
+                            <div class="mb-3">
+                                <label for="productImage" class="form-label">Imagen</label>
+                                <input type="file" class="form-control" id="productImage" name="imagenProducto">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="saveProductChanges">Guardar cambios</button>
                     </div>
                 </div>
             </div>
-
-            <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteProductModalLabel">Eliminar Producto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            ¿Estás seguro de que deseas eliminar este producto?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
 
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script>
@@ -634,6 +593,114 @@ sidebarBtn.addEventListener("click", () => {
         overlay.style.display = "none";
     }
 });
+$.ajax({
+    url: '/get/productos',
+    method: 'GET',
+    success: function(data) {
+        // Limpiar las tablas
+        $('#productos-servicios tbody').empty();
+        $('#productos-ventas tbody').empty();
+        $('#productos-curso tbody').empty();
+
+        // Agrupar los productos por inventario_id
+        var productosPorInventario = {
+            1: [], // Productos en ventas
+            2: [], // Productos en servicios
+            3: []  // Productos en curso
+        };
+
+        data.forEach(function(producto) {
+            if (productosPorInventario.hasOwnProperty(producto.inventarioId)) {
+                productosPorInventario[producto.inventarioId].push(producto);
+            } else {
+                console.error('ID de inventario no reconocido:', producto.inventarioId);
+            }
+        });
+
+        // Función para agregar productos a una tabla
+        function agregarProductosATabla(tablaSelector, productos) {
+            var targetTable = $(tablaSelector);
+            productos.forEach(function(producto) {
+                var row = '<tr>' +
+                    '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                    '<td>' + producto.nombre + '</td>' +
+                    '<td>' + producto.descripcion + '</td>' +
+                    '<td>' + producto.cantidadEnStock + '</td>' +
+                    '<td>' + producto.precio + '</td>' +
+                    '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
+                    '</tr>';
+                targetTable.append(row);
+            });
+        }
+
+        // Agregar productos a las tablas correspondientes
+        agregarProductosATabla('#productos-ventas tbody', productosPorInventario[1]);
+        agregarProductosATabla('#productos-servicios tbody', productosPorInventario[2]);
+        agregarProductosATabla('#productos-curso tbody', productosPorInventario[3]);
+    },
+    error: function(error) {
+        console.error("Error al obtener los productos:", error);
+    }
+});
+$('#editProductModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var productId = button.data('id');
+    var modal = $(this);
+
+    // Cargar los datos del producto en el modal
+    $.ajax({
+        url: '/productos/' + productId,
+        method: 'GET',
+        success: function(data) {
+            modal.find('#productName').val(data.nombre);
+            modal.find('#productDescription').val(data.descripcion);
+            modal.find('#productQuantity').val(data.cantidadEnStock); // Asegúrate de usar el campo correcto
+            modal.find('#productPrice').val(data.precio);
+            // Muestra la imagen actual si existe
+            modal.find('#productImagePreview').attr('src', '/storage/' + data.imagen); // Asume que hay un <img id="productImagePreview"> en el modal
+        },
+        error: function(error) {
+            console.error('Error al obtener el producto:', error);
+        }
+    });
+
+    // Guardar cambios
+    $('#saveProductChanges').off('click').on('click', function() {
+        var formData = new FormData($('#editProductForm')[0]);
+        $.ajax({
+            url: '/productos/' + productId,
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Producto actualizado exitosamente');
+                $('#editProductModal').modal('hide');
+                location.reload(); // Opcional: Recargar la página para reflejar los cambios
+            },
+            error: function(error) {
+                console.error('Error al actualizar el producto:', error);
+            }
+        });
+    });
+});
+$(document).ready(function () {
+    function searchTable(inputId, tableId) {
+        $('#' + inputId).on('keyup', function () {
+            var value = $(this).val().toLowerCase();
+            $('#' + tableId + ' tr').filter(function () {
+                $(this).toggle($(this).children('td').eq(1).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    }
+
+    // Inicializar búsqueda para cada tabla
+    searchTable('search-productos-servicios', 'table-productos-servicios');
+    searchTable('search-productos-ventas', 'table-productos-ventas');
+    searchTable('search-productos-curso', 'table-productos-curso');
+});
+
+       
 
                         // Botón sidebar
                         function botonSidebar() { 

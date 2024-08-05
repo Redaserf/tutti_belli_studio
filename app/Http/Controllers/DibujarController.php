@@ -7,6 +7,7 @@ use App\Models\Carrito;
 use App\Models\Curso;
 use App\Models\Inscripcion;
 use App\Models\Producto;
+use App\Models\Inventario;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +21,7 @@ class DibujarController extends Controller
     function productosIndex(){
     $productos = Producto::all();
     return response()->json($productos);
-    }
-
+    }   
     // ==========[ Eliminar un producto ]==========
     function productoDelete($id){
     Producto::findOrFail($id)->delete();
@@ -37,6 +37,7 @@ class DibujarController extends Controller
             return response()->json(['error' => 'Producto no encontrado'], 404);
         }
     }
+    
 
     // ==========[ Actualizar un producto ]==========
     public function actualizarProducto(Request $request, $id){
@@ -56,6 +57,33 @@ class DibujarController extends Controller
         return response()->json(['success' => 'Producto actualizado exitosamente']);
         } else {
         return response()->json(['error' => 'Producto no encontrado'], 404);
+        }
+    }
+
+    public function actualizarProductoInv(Request $request, $id)
+    {
+        $producto = Producto::find($id);
+
+        if ($producto) {
+            $producto->nombre = $request->input('nombre');
+            $producto->descripcion = $request->input('descripcion');
+            $producto->cantidadEnStock = $request->input('cantidad');
+            $producto->precio = $request->input('precio');
+
+            if ($request->hasFile('imagenProducto')) {
+                // Elimina la imagen antigua si existe
+                if ($producto->imagen) {
+                    Storage::disk('public')->delete($producto->imagen);
+                }
+                // Guarda la nueva imagen
+                $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+            }
+
+            $producto->save();
+
+            return response()->json(['success' => 'Producto actualizado exitosamente']);
+        } else {
+            return response()->json(['error' => 'Producto no encontrado'], 404);
         }
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Inventario;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -44,8 +43,4 @@ class InventarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inventario $inventario)
-    {
-        //
-    }
 }
