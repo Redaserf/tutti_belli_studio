@@ -596,6 +596,7 @@ header {
                   dibujarProductos();
               },
               error: function(error){
+                alert("Error al eliminar el producto, actualmente se encuentra en uso.");
                   console.log(error)
               }
           });

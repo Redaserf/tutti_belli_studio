@@ -469,7 +469,7 @@ header {
 
   function dibujarProductos() {
     $.ajax({
-        url: '/get/productos',
+        url: '/productosCompras',
         method: 'GET',
         success: function(data) {
             const productos = $('#productos');

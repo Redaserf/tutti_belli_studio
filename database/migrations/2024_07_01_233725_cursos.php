@@ -22,7 +22,7 @@ return new class extends Migration
             $table->double('precio');
             $table->string('imagen');
             $table->longText('descripcion');
-            $table->unsignedBigInteger('empleadoId');
+            $table->unsignedBigInteger('empleadoId')->nullable();
             $table->unsignedBigInteger('descuentoId')->nullable();
             $table->timestamps();
 

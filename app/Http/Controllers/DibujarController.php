@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 
 class DibujarController extends Controller
@@ -248,15 +249,20 @@ class DibujarController extends Controller
     
     // ==========[ Eliminar un curso ]==========
     public function cursosDelete($id) {
-        $curso = Curso::find($id);
-
-        if ($curso) {
+        DB::beginTransaction();
+        try {
+            $curso = Curso::findOrFail($id);
             $curso->inscripciones()->delete();
+            $curso->empleado()->dissociate();
+            $curso->tecnicas()->detach();
+    
             $curso->delete();
     
-            return response()->json(['success' => 'Curso eliminado junto con sus inscripciones.']);
-        } else {
-            return response()->json(['error' => 'Curso no encontrado'], 404);
+            DB::commit();
+            return response()->json(['success' => 'Curso eliminado con éxito.']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'Error al eliminar el curso: ' . $e->getMessage()], 500);
         }
     }
 

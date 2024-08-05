@@ -631,7 +631,7 @@ function editarTecnica(tecnicaId, servicioId) {
     });
 }
 
-
+// Actualizar servicio
 function servicioUpdate(servicioId) {
     $.ajax({
         url: `/get/servicio/${servicioId}`,
@@ -679,6 +679,7 @@ function servicioUpdate(servicioId) {
     });
 }
 
+// Borrar servicio
 function servicioDelete(servicioId) {
     if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
         $.ajax({
@@ -689,7 +690,7 @@ function servicioDelete(servicioId) {
                 tablaServicios();
             },
             error: function(error) {
-                alert('Error al eliminar el servicio.');
+                alert('Error al eliminar el servicio, primero elimina sus técnicas.');
             }
         });
     }

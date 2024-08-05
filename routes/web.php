@@ -225,7 +225,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     // =====[ Cursos ]=====
 
     Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
-    Route::get('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
+    Route::delete('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
     Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);

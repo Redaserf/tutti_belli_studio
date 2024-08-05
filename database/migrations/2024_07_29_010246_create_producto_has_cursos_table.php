@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('cantidadPorUsar');
             $table->timestamps();
 
-            $table->foreign('cursoId')->references('id')->on('cursos');
-            $table->foreign('productoId')->references('id')->on('productos');
+            $table->foreign('cursoId')->references('id')->on('cursos')->onDelete('cascade');
+            $table->foreign('productoId')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 
