@@ -353,6 +353,9 @@
 
 </head>
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 <body class="hiddenX">
 
     <div id="contenedor_carga"></div>
@@ -529,22 +532,15 @@
                                     <thead>
                                         <tr>
                                             <th>Tipo</th>
-                                            <th>Precio</th>
+                                            <th>Total</th>
                                             <th>Día</th>
                                             <th>Detalles</th>
-                                            <th>Rechazar</th>
-                                            <th>Editar</th>
+                                            <th>No llevada a cabo</th>
+                                            <th>Aceptar</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Citas</td>
-                                            <td>$50</td>
-                                            <td>2024-07-01</td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
-                                        </tr>
+                                    <tbody id="dibujarVenta">
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -622,17 +618,16 @@
                                                 <th>servicio</th>
                                                 <th>tecnica</th>
                                                 <th>empleado</th>
-                                                <th>status</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody id="dibujarDetalles">
+                                            <!-- <tr>
                                                 <td>cejas,ojos,labios</td>
                                                 <td>tec1,tec2,tec3</td>
                                                 <td>anyelo</td>
                                                 <td>Pendiente</td>
 
-                                            </tr>
+                                            </tr> -->
                                             <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
                                         </tbody>
                                     </table>
@@ -736,18 +731,18 @@
                                         <thead>
                                             <tr>
                                                 <th>Técnica</th>
-                                                <th>Acciones</th>
+                                                <th>Productos</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody id="dibujarDetalleTecnicas">
+                                            <!-- <tr>
                                                 <td>Micropigmentación de Cejas</td>
                                                 <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal1">Productos</button></td>
                                             </tr>
                                             <tr>
                                                 <td>Micropigmentación de Labios</td>
                                                 <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal2">Productos</button></td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                     <button type="button" class="btn btn-primary">Guardar Cambios</button>
@@ -771,18 +766,18 @@
                                                 <th>Cantidad</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
+                                        <tbody id="dibujarProductos">
+                                            <!-- <tr>
                                                 <td>Pigmento</td>
                                                 <td><input type="number" class="form-control" value="1"></td>
                                             </tr>
                                             <tr>
                                                 <td>Aguja</td>
                                                 <td><input type="number" class="form-control" value="1"></td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                    <button type="sumbit" class="btn btn-primary editarDetalleTecnica" id="guardarCambios">Guardar Cambios</button>
                                 </div>
                             </div>
                         </div>
@@ -859,7 +854,27 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                
+                    </div>     
+                    
+                    
+                        <!-- modal para eliminarCita -->
+                    <div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"> <!-- modal-lg para un modal más grande -->
+                            <div class="modal-content custom-modal-content">
+                                <div class="modal-header custom-modal-header">
+                                    <h5 class="modal-title" id="labelEliminarCitasModal">Rechazar Cita</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body custom-modal-body">
+                                    ¿Estás seguro de eliminar la cita?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-secondary">Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </section>
 
 
@@ -868,7 +883,205 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script>
+   function dibujarCitasVentasTecnicasProductos() {
+        $.get('/venta/citas', function (citasVentas) {
+            console.log(citasVentas);
+
+            let tablaVenta = $('#dibujarVenta');
+            tablaVenta.empty();
+
+            $.each(citasVentas, function (citaId, citaData) {
+                console.log('Cita ID:', citaId);
+                console.log('Datos de la Cita:', citaData.cita);
+
+                if (citaData.cita.venta) {
+                    let venta = citaData.cita.venta;
+                    console.log('Venta:', venta);
+
+                    tablaVenta.append(`
+                        <tr>
+                            <td>Cita ${citaId}</td>
+                            <td>${venta.total}</td>
+                            <td>${venta.fechaVenta}</td>
+                            <td><button class="btn btn-primary ver-detalles" data-cita-id="${citaId}" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                            <td><button data-cita-id="${citaId}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita">No asistió</button></td>
+                            <td><button class="btn btn-success modificarProductos" data-cita-id="${citaId}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Aceptar</button></td>
+                        </tr>
+                    `);
+                }
+
+                console.log(citaData.cita.serviciosTecnicas);
+            });
+
+            // Asignar eventos ver-detalles después de que se ha llenado la tabla
+            $('.ver-detalles').off('click').on('click', function () {
+                let citaId = $(this).data('cita-id');
+                let citaData = citasVentas[citaId];
+
+                let tablaDetalles = $('#dibujarDetalles');
+                tablaDetalles.empty();
+
+                citaData.cita.serviciosTecnicas.forEach(servicioConTecnica => {
+                    let servicio = servicioConTecnica.servicio;
+                    let servicioNombre = servicio.nombre; // Obtiene el nombre del servicio
+
+                    let tecnica = servicioConTecnica.tecnica;
+                    let tecnicaNombre = tecnica.nombre; // Obtiene el nombre de la técnica
+
+                    let empleadoNombre = citaData.cita.empleado ? (citaData.cita.empleado.nombre + " " + citaData.cita.empleado.apellido) : 'No asignado';
+
+                    tablaDetalles.append(`
+                        <tr>
+                            <td>${servicioNombre}</td>
+                            <td>${tecnicaNombre}</td>
+                            <td>${empleadoNombre}</td>
+                        </tr>
+                    `);
+                });
+            });
+
+            // Asignar eventos modificarProductos después de que se ha llenado la tabla
+            $('.modificarProductos').off('click').on('click', function () {
+                let citaId = $(this).data('cita-id');
+                let citaData = citasVentas[citaId];
+                let tablaModificar = $('#dibujarDetalleTecnicas');
+                tablaModificar.empty();
+
+                let tablaDetallesTecnicas = $('#dibujarProductos');
+                tablaDetallesTecnicas.empty();
+
+                let cambios = {}; // Objeto para guardar cambios
+
+                citaData.cita.tecnicas.forEach(tecnica => {
+                    console.log('Técnica:', tecnica);
+
+                    tablaModificar.append(`
+                        <tr>
+                            <td>${tecnica.nombre}</td>
+                            <td><button type="button" data-tecnica-id="${tecnica.id}" class="btn btn-primary btn-sm productos" data-bs-toggle="modal" data-bs-target="#editProductsModal1">Productos/Modificar Cantidades</button></td>
+                        </tr>
+                    `);
+                });
+
+                // Asignar evento para los productos
+                $('#dibujarDetalleTecnicas').off('click', '.productos').on('click', '.productos', function () {
+                    let tecnicaId = $(this).data('tecnica-id');
+
+                    let tecnica = citaData.cita.tecnicas.find(t => t.id === tecnicaId);
+
+                    if (tecnica) {
+                        tablaDetallesTecnicas.empty();
+                        tecnica.productos.forEach(producto => {
+                            console.log('Producto:', producto);
+
+                            tablaDetallesTecnicas.append(`
+                                <tr>
+                                    <td>${producto.nombre}</td>
+                                    <td><input type="number" min="1" required id="cantidadInput${producto.detalleTecnicaId}" value="${producto.cantidad}" data-producto-id="${producto.detalleTecnicaId}" class="form-control cantidadProducto"></td>
+                                </tr>
+                            `);
+                        });
+                    }
+                });
+
+                // Evento input para la cantidad
+                $('#dibujarProductos').off('input', '.cantidadProducto').on('input', '.cantidadProducto', function () {
+                    let detalleTecnicaId = $(this).data('producto-id');
+                    let nuevaCantidad = $(this).val();
+                    cambios[detalleTecnicaId] = nuevaCantidad;
+                });
+
+                // Asignar evento para guardar cambios
+                $('#guardarCambios').off('click').on('click', function () {
+                    $.ajax({
+                        url: `/detalleTecnica/actualizar`,
+                        method: 'PUT',
+                        data: {
+                            changes: cambios,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            console.log('Cantidad actualizada:', response);
+                            dibujarCitasVentasTecnicasProductos();
+
+                            mostrarAlerta('Cantidades actualizadas correctamente.', 'alert-success', 'check-circle-fill');
+                        },
+                        error: function (error) {
+                            if (error.responseJSON) {
+                                console.log('Errores:', error.responseJSON.errors);
+                                alert('Error: ' + error.responseJSON.message);
+                            }
+
+                            mostrarAlerta('Error al actualizar las cantidades.', 'alert-danger', 'exclamation-triangle-fill');
+                        }
+                    });
+                });
+            });
+        });
+    }
+
+//    $(document).on('click', '.editarDetalleTecnica', function() {
+//         let detalleTecnicaId = $(this).data('detalle-id');
+//         let cantidad = $(this).data('cantidad');
+
+//         if (detalleTecnicaId && cantidad !== undefined) {
+           
+//         } else {
+//             console.error('Datos no válidos para actualizar');
+//             mostrarAlerta('Error: no se pueden actualizar los datos.', 'alert-danger', 'exclamation-triangle-fill');
+//         }
+//     });
+
+
+
+
+    dibujarCitasVentasTecnicasProductos();
+
+    $(document).on('click', '.eliminarCita', function() {
+        let citaId = $(this).data('cita-id');
+        $('#rechazarCita').attr('data-cita-id', citaId);
+    })
+
+    $('#rechazarCita').on('click', function() {
+        let citaId = $(this).data('cita-id');
+
+        eliminarCita(citaId);
+    });
     
+
+    function eliminarCita(id){
+        $.ajax({
+            url: `/eliminar/cita/${id}`,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            method: 'DELETE',
+            success: function(response){
+                console.log(response);
+                // $('#citaForm').hide();
+                dibujarCitasVentasTecnicasProductos();
+
+                mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill')
+                    // Guardar el mensaje de alerta en localStorage
+                // localStorage.setItem('alertMessage', 'Se eliminó con éxito');
+                // localStorage.setItem('alertClass', 'alert-danger');
+                // localStorage.setItem('alertIcon', 'exclamation-triangle-fill');
+                
+                // Redirigir después de un breve retraso para asegurarse de que la alerta se muestre
+                // setTimeout(function() {
+                //     window.location.href = '/Ver-Citas';
+                // }, 100); 
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+
+
+
     // Scripts para todas las vistas
     
         // Pantalla de carga

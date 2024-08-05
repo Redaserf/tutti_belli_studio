@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetalleTecnica extends Model
+class DetalleTecnicaProducto extends Model
 {
     use HasFactory;
 
-    protected $table = 'detalle_tecnicas';
+    protected $table = 'detalle_tecnicas_productos';
     protected $primaryKey= 'id';
 
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
@@ -46,5 +46,4 @@ class DetalleTecnica extends Model
     public function producto() {
         return $this->belongsTo(Producto::class, 'productoId');
     }
-
 }

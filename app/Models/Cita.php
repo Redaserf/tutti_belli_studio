@@ -25,6 +25,10 @@ class Cita extends Model
         return $this->belongsTo(User::class, 'empleadoId');
     }
 
+    public function citasHasServicios() {
+        return $this->hasMany(CitaHasServicio::class, 'citaId');
+    }
+
 
     public function servicios()
     {
@@ -41,6 +45,6 @@ class Cita extends Model
     //}
 
     public function detalleTecnica() {
-        return $this->hasMany(DetalleTecnica::class, 'citaId');
+        return $this->hasMany(DetalleTecnicaProducto::class, 'citaId');
     }
 }

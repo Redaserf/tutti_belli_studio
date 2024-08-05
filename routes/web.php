@@ -65,20 +65,23 @@ use App\Http\Controllers\DibujarController;
    //obtener eventos para el calendario
    Route::get('/cita/obtener/eventos', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('cita.obtener.eventos');
 
-  //buscador/filtro de servicios y tecnicas
+//   //buscador/filtro de servicios y tecnicas
 
-  Route::get('/buscar', [ConsultasController::class, 'buscador']);
+//   Route::get('/buscar', [ConsultasController::class, 'buscador']);
 
-    //todas las tecnicas que estan en citas_has_servicios
-    Route::get('/tecnicas-en-citas-has-servicios', [ConsultasController::class, 'tecnicasConCitas']);
 
 //tecnicas con sus productos
-
     Route::get('/tecnicas/productos', [ConsultasController::class, 'tecnicasProductos']);
 
     //ventas de citas con servicios, tecnicas y productos de tecnica
-    Route::get('/venta/citas', [ConsultasController::class, 'citasTecnicaProductos']);
+    Route::get('/venta/citas', [ConsultasController::class, 'ventasCitas']);
 
+
+
+
+
+
+    
 
     // ===== [Sevicios] =====
     //devuelve servicio como Json
@@ -254,6 +257,10 @@ Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecn
 
     //eliminar cita Administradir
     Route::delete('/eliminar/cita/{id}', [RegistrosController::class, 'eliminarCita']);
+
+    //editar detalleTecnica
+    Route::put('/detalleTecnica/actualizar', [RegistrosController::class, 'actualizarDetalleTecnica']);
+
 
 
 

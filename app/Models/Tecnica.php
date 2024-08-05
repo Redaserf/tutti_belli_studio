@@ -80,6 +80,6 @@ class Tecnica extends Model
     }
 
     public function detalleTecnica() {
-        return $this->hasMany(DetalleTecnica::class, 'tecnicaId');
+        return $this->hasMany(DetalleTecnicaProducto::class, 'tecnicaId');
     }
 }

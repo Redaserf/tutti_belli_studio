@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CitaHasServicio;
 use Illuminate\Support\Facades\Mail;
 use App\Models\DetalleTecnica;
+use App\Models\DetalleTecnicaProducto;
 
 
 
@@ -184,7 +185,7 @@ class RegistrosController extends Controller
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
-                'estadoVenta' => true,
+                'estadoVenta' => false,
             ]);
     
             // Crear la cita
@@ -209,7 +210,7 @@ class RegistrosController extends Controller
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnica::create([
+                    DetalleTecnicaProducto::create([
                         'citaId' => $cita->id,
                         'tecnicaId' => $servicio['tecnicaId'],
                         'productoId' => $productoHasTecnica->productoId,
@@ -282,7 +283,7 @@ class RegistrosController extends Controller
     
             // Eliminar las relaciones antiguas
             CitaHasServicio::where('citaId', $id)->delete();
-            DetalleTecnica::where('citaId', $id)->delete();
+            DetalleTecnicaProducto::where('citaId', $id)->delete();
     
             // Crear las nuevas relaciones
             foreach ($serviciosSeleccionados as $servicio) {
@@ -295,7 +296,7 @@ class RegistrosController extends Controller
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnica::create([
+                    DetalleTecnicaProducto::create([
                         'citaId' => $cita->id,
                         'tecnicaId' => $servicio['tecnicaId'],
                         'productoId' => $productoHasTecnica->productoId,
@@ -313,7 +314,7 @@ class RegistrosController extends Controller
             Venta::where('id', $cita->ventaId)->update([
                 'fechaVenta' => $request->fechaCita,
                 'total' => $totalVenta,
-                'estadoVenta' => true
+                'estadoVenta' => false
             ]);
     
             // Enviar correo de confirmación
@@ -341,7 +342,7 @@ class RegistrosController extends Controller
     
             // Eliminar las relaciones entre la cita y los servicios
             CitaHasServicio::where('citaId', $id)->delete();
-            DetalleTecnica::where('citaId', $id)->delete();
+            DetalleTecnicaProducto::where('citaId', $id)->delete();
 
     
             // Eliminar la cita
@@ -439,7 +440,7 @@ class RegistrosController extends Controller
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
-                'estadoVenta' => true,
+                'estadoVenta' => false,
             ]);
     
             // Crear la cita
@@ -464,7 +465,7 @@ class RegistrosController extends Controller
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnica::create([
+                    DetalleTecnicaProducto::create([
                         'citaId' => $cita->id,
                         'tecnicaId' => $servicio['tecnicaId'],
                         'productoId' => $productoHasTecnica->productoId,
@@ -493,6 +494,50 @@ class RegistrosController extends Controller
     }
     
 
+    public function actualizarDetalleTecnica(Request $request)
+    {
+        $request->validate([
+            'changes' => 'required|array', // Validar que 'changes' es un array
+            'changes.*' => 'required|integer|min:1', // Cada entrada debe ser un entero positivo
+        ]);
+    
+        $changes = $request->input('changes');
+    
+        DB::beginTransaction();
+        try {
+            foreach ($changes as $detalleTecnicaId => $cantidad) {
+                $detalleTecnica = DetalleTecnicaProducto::find($detalleTecnicaId);
+                
+                if (!$detalleTecnica) {
+                    throw new \Exception("Detalle técnica con ID $detalleTecnicaId no encontrado.");
+                }
+    
+                $producto = Producto::find($detalleTecnica->productoId);
+                
+                if (!$producto) {
+                    throw new \Exception("Producto asociado con el detalle técnica no encontrado.");
+                }
+    
+                // Verificar que la cantidad solicitada no excede el stock disponible
+                if ($cantidad > $producto->cantidadEnStock - 10) {
+                    throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' excede el stock disponible.");
+                }
+    
+                // Si todo está bien, actualizar la cantidad
+                $detalleTecnica->update(['cantidadProducto' => $cantidad]);
+            }
+            
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Cantidades actualizadas correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+        }
+    }
+    
+    
+
+    
 
 
  

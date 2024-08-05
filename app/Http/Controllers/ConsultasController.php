@@ -17,6 +17,7 @@ use App\Models\Cita;
 use App\Models\CitaHasServicio;
 use App\Models\ProductoHasTecnica;
 use App\Models\Venta;
+use App\Models\DetalleTecnicaProducto;
 
 
 use DateTime;
@@ -321,11 +322,117 @@ public function tecnicasProductos(){
     return response()->json($jaja);
 }
 
-   // Traer ventas de todas las citas
+public function ventasCitas()
+{
+    $detalles = DetalleTecnicaProducto::with([
+        'cita.usuario', 
+        'cita.usuarioEmpleado', 
+        'tecnica.productosHasTecnica', 
+        'cita.venta'
+    ])
+    ->whereHas('cita', function ($query) {
+        $query->where('estadoCita', true)
+              ->whereHas('venta', function ($ventaQuery) {
+                  $ventaQuery->where('estadoVenta', false); // Filtrar por estadoVenta false
+              });
+    })
+    ->get();
+    
+    $citaIds = $detalles->pluck('cita.id')->unique();
+    
+    $citasHasServicios = CitaHasServicio::with(['servicio', 'tecnica'])
+        ->whereIn('citaId', $citaIds)
+        ->get()
+        ->groupBy('citaId');
+    
+    $detallesGrouped = $detalles->groupBy('citaId');
 
-   public function ventasCitas(){
-        $ventasCitas = Venta::with('cita')->get();
+    $formattedCitas = $detallesGrouped->map(function ($items) use ($citasHasServicios) {
+        $firstItem = $items->first();
+        $cita = $firstItem->cita;
+        $venta = $cita->venta;
 
-        return response()->json($ventasCitas);
-    }
+        // Obtener los servicios y técnicas para la cita actual
+        $serviciosTecnicas = $citasHasServicios->get($cita->id, collect())->map(function ($item) {
+            return [
+                'servicio' => [
+                    'id' => $item->servicio->id,
+                    'nombre' => $item->servicio->nombre,
+                    'descripcion' => $item->servicio->descripcion,
+                ],
+                'tecnica' => [
+                    'id' => $item->tecnica->id,
+                    'nombre' => $item->tecnica->nombre,
+                    'precio' => $item->tecnica->precio,
+                    'descripcion' => $item->tecnica->descripcion,
+                ]
+            ];
+        });
+
+        $tecnicas = $items->groupBy('tecnicaId')->map(function ($group) {
+            $tecnica = $group->first()->tecnica;
+            return [
+                'id' => $tecnica->id,
+                'nombre' => $tecnica->nombre,
+                'precio' => $tecnica->precio,
+                'descripcion' => $tecnica->descripcion,
+                'productos' => $tecnica->productos->map(function ($producto) use ($group) {
+                    // Encuentra el detalle_tecnica_id para este producto
+                    $detalle = $group->firstWhere('productoId', $producto->id);
+                    return [
+                        'id' => $producto->id,
+                        'nombre' => $producto->nombre,
+                        'precio' => $producto->precio,
+                        'descripcion' => $producto->descripcion,
+                        'cantidad' => $detalle ? $detalle->cantidadProducto : 0, // Usa la cantidad del detalle_tecnica
+                        'detalleTecnicaId' => $detalle ? $detalle->id : null, // Incluye el id del detalle_tecnica
+                        'inventarioId' => $producto->inventarioId // Incluye el id del inventario
+                    ];
+                })->toArray()
+            ];
+        })->values();
+
+        return [
+            'cita' => [
+                'id' => $cita->id,
+                'fechaCita' => $cita->fechaCita,
+                'horaCita' => $cita->horaCita,
+                'estadoCita' => $cita->estadoCita,
+                'notasCita' => $cita->notasCita,
+                'venta' => $venta ? [
+                    'id' => $venta->id,
+                    'total' => $venta->total,
+                    'fechaVenta' => $venta->fechaVenta,
+                    'estadoVenta' => $venta->estadoVenta,
+                ] : null,
+                'usuario' => [
+                    'id' => $cita->usuario->id,
+                    'nombre' => $cita->usuario->name,
+                    'apellido' => $cita->usuario->apellido,
+                ],
+                'empleado' => [
+                    'id' => $cita->usuarioEmpleado->id,
+                    'nombre' => $cita->usuarioEmpleado->name,
+                    'apellido' => $cita->usuarioEmpleado->apellido,
+                ],
+                'tecnicas' => $tecnicas,
+                'serviciosTecnicas' => $serviciosTecnicas
+            ]
+        ];
+    });
+
+    // Retorna todas las citas con sus técnicas, servicios, usuario, empleado y productos asociadas
+    return response()->json($formattedCitas);
+}
+
+   
+   
+   public function cursos() {
+    $jaja = Curso::with('inscripcion')->count()->get();
+
+    
+   }
+   
+   
+    
 }    
