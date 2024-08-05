@@ -536,6 +536,59 @@ header {
 
             <br>
 
+            {{-- Modal para ver inscripciones --}}
+            <div class="modal fade" id="inscripcionesModal" tabindex="-1" aria-labelledby="inscripcionesModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inscripcionesModalLabel">Inscripciones del Curso</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-bodyInscripciones" style="padding:35px;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    {{-- Modal para editar una inscripción --}}
+    <div class="modal fade" id="inscripcionModal" tabindex="-1" aria-labelledby="inscripcionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inscripcionModalLabel">Editar Inscripción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarInscripcionForm">
+                        <div class="mb-3">
+                            <label for="inscripcionNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="inscripcionNombre" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inscripcionFecha" class="form-label">Fecha de inscripción</label>
+                            <input type="date" class="form-control" id="inscripcionFecha" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inscripcionEstado" class="form-label">Estado</label>
+                            <select class="form-control" id="inscripcionEstado">
+                                <option value="0">Pendiente</option>
+                                <option value="1">Aceptado</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-success" id="saveChanges">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -560,7 +613,7 @@ header {
     url: '/get/cursos',
     method: 'GET',
     success: function(data) {
-      console.log(data); // Verifica los datos recibidos en la consola
+      console.log(data);
       const cursos = $('#cursos');
       cursos.empty();
       if (data.length === 0) {
@@ -587,6 +640,7 @@ header {
                   <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-curso" data-id="${curso.id}">Editar curso<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones" data-id="${curso.id}">Ver inscripciones<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
                 </div>
               </div>
             </div>
@@ -602,13 +656,80 @@ header {
                 const cursoId = $(this).data('id');
                 cursoDelete(cursoId);
             });
-      }
-    },
-    error: function(error) {
-      console.error('Error al obtener los cursos:', error);
-    }
-  });
+
+            $('.ver-inscripciones').click(function() {
+                    const cursoId = $(this).data('id');
+                    mostrarInscripciones(cursoId);
+                });
+            }
+        },
+        error: function(error) {
+            console.error('Error al obtener los cursos:', error);
+        }
+    });
 }
+
+
+function mostrarInscripciones(cursoId) {
+    $.ajax({
+        url: `/get/inscripciones/${cursoId}`,
+        method: 'GET',
+        success: function(response) {
+            const inscripciones = response.inscripciones;
+            const curso = response.curso;
+            let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
+            inscripciones.forEach(inscripcion => {
+                if (inscripcion.estado == 0){
+                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Pendiente<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                }
+                else {
+                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Aceptado<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                }
+            });
+            inscripcionesHtml += '</ul>';
+            $('#inscripcionesModal .modal-bodyInscripciones').html(inscripcionesHtml);
+            $('#inscripcionesModal').modal('show');
+        },
+        error: function(error) {
+            console.error('Error al obtener las inscripciones:', error);
+        }
+    });
+}
+
+function editarInscripcion(inscripcionId){
+            $.ajax({
+                url: `/get/inscripcion/${inscripcionId}`,
+                method: 'GET',
+                success: function(data) {
+                    $('#inscripcionNombre').val(`${data.usuarios.name} ${data.usuarios.apellido}`);
+                    $('#inscripcionFecha').val(data.fechaInscripcion);
+                    $('#inscripcionEstado').val(data.estado);
+                    $('#saveChanges').off('click').on('click', function() {
+                        const updatedInscripcion = {
+                            estado: $('#inscripcionEstado').val(),
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        };
+                        $.ajax({
+                            url: `/update/inscripcion/${inscripcionId}`,
+                            method: 'POST',
+                            data: updatedInscripcion,
+                            success: function(response) {
+                                alert("Inscripción actualizada con éxito");
+                                $('#inscripcionModal').modal('hide');
+                                mostrarInscripciones(data.cursoId);
+                            },
+                            error: function(error) {
+                                alert('Error al actualizar la inscripción.');
+                            }
+                        });
+                    });
+                },
+                error: function(error) {
+                    alert('Error al cargar los detalles de la inscripción.');
+                }
+            });
+        }
+
 
         // Eliminar un curso
 
@@ -625,6 +746,7 @@ header {
         dibujarCursos();
       },
       error: function(error){
+        alert('Hubo un error al eliminar el curso');
         console.log(error);
       }
     });
