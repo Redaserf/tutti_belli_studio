@@ -553,26 +553,22 @@
 
                         <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
                             <!-- navegacion de pestaña de compras -->
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs" id="comprasTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="compras-totales-tab" data-bs-toggle="tab" data-bs-target="#comprastotales" type="button" role="tab" aria-controls="general" aria-selected="true">Compras Totales</button>
+                                    <button class="nav-link active" id="compras-totales-tab" data-bs-toggle="tab" data-bs-target="#comprasTotales" type="button" role="tab" aria-controls="general" aria-selected="true">Compras Totales</button>
                                 </li>
-{{--                                <li class="nav-item" role="presentation">--}}
-{{--                                    <button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" role="tab" aria-controls="citas" aria-selected="false">Citas</button>--}}
-{{--                                </li>--}}
-{{--                                <li class="nav-item" role="presentation">--}}
-{{--                                    <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="false">Compras</button>--}}
-{{--                                </li>--}}
-{{--                                <li class="nav-item" role="presentation">--}}
-{{--                                    <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab" aria-controls="cursos" aria-selected="false">Cursos</button>--}}
-{{--                                </li>--}}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#compras-aceptadas" type="button" role="tab" aria-controls="general" aria-selected="true">Compras Aceptadas</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="compras-rechazadas-tab" data-bs-toggle="tab" data-bs-target="#compras-rechazadas" type="button" role="tab" aria-controls="general" aria-selected="true">Compras Rechazadas</button>
+                                </li>
                             </ul>
-
 
                         </div>
 
 {{--                        Pestaña compras totales--}}
-                        <div class="tab-pane fade" id="comprastotales" role="tabpanel" aria-labelledby="compras-tab">
+                        <div class="tab-pane fade" id="comprasTotales" role="tabpanel" aria-labelledby="compras-tab">
                             <div class="table-container mt-5">
                                 <h2>COMPRAS</h2>
                                 <table class="table table-striped">
@@ -589,7 +585,6 @@
                                     </thead>
                                     <tbody id="ventasProductos">
                                     <tr>
-
                                     </tr>
                                     </tbody>
                                 </table>

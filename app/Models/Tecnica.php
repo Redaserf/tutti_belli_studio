@@ -38,12 +38,12 @@ class Tecnica extends Model
     public function descuento(){
         return $this->belongsTo(Descuento::class,'descuentoId');
     }
-  
+
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'producto_has_tecnicas', 'tecnicaId', 'productoId')->withPivot('cantidadDeUso');
     }
-  
+
       public function detalleTecnicas()
     {
         return $this->belongsToMany(DetalleTecnica::class, 'detalle_tecnica_has_tecnicas', 'tecnicas_tecnica_id', 'detalle_tecnica_id');
@@ -72,17 +72,17 @@ class Tecnica extends Model
     }
 
 
-    public function productos()
-    {
-        return $this->hasManyThrough(
-            Producto::class,
-            ProductoHasTecnica::class,
-            'tecnicaId', // Foreign key on ProductoHasTecnica table
-            'id', // Foreign key on Producto table
-            'id', // Local key on Tecnica table
-            'productoId' // Local key on ProductoHasTecnica table
-        )->with('detalleTecnica');
-    }
+//    public function productos()
+//    {
+//        return $this->hasManyThrough(
+//            Producto::class,
+//            ProductoHasTecnica::class,
+//            'tecnicaId', // Foreign key on ProductoHasTecnica table
+//            'id', // Foreign key on Producto table
+//            'id', // Local key on Tecnica table
+//            'productoId' // Local key on ProductoHasTecnica table
+//        )->with('detalleTecnica');
+//    }
 
     public function detalleTecnica() {
         return $this->hasMany(DetalleTecnica::class, 'tecnicaId');
