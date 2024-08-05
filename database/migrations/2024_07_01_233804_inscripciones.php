@@ -16,10 +16,9 @@ return new class extends Migration
 
             $table->id();
             $table->date('fechaInscripcion');
-            $table->double('precio');
             $table->boolean('estado');
             $table->unsignedBigInteger('usuarioId');
-            $table->unsignedBigInteger('cursoId');
+            $table->unsignedBigInteger('cursoId')->onDelete('cascade');
             $table->timestamps();
 
             $table->foreign('usuarioId')->references('id')->on('users');

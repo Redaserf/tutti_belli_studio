@@ -38,7 +38,12 @@ class Tecnica extends Model
     public function descuento(){
         return $this->belongsTo(Descuento::class,'descuentoId');
     }
-
+  
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'producto_has_tecnicas', 'tecnicaId', 'productoId')->withPivot('cantidadDeUso');
+    }
+  
       public function detalleTecnicas()
     {
         return $this->belongsToMany(DetalleTecnica::class, 'detalle_tecnica_has_tecnicas', 'tecnicas_tecnica_id', 'detalle_tecnica_id');

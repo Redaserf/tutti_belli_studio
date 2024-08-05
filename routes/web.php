@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DibujarController;
+use App\Http\Controllers\InscripcionController;
 
 // ==========[ Vistas ]==========
 
@@ -171,11 +172,12 @@ use App\Http\Controllers\DibujarController;
 
 Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCitaUsuario']);
 
-// =====[ Empleados ]=====
+
     // =====[ Empleados ]=====
 
     Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
 
+    
     // =====[ Agregar (Administrador) ]=====
 
     Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
@@ -186,6 +188,10 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::post('/RegistroServicio',[RegistrosController::class, 'RegistroServicio']);
     Route::post('/RegistroTecnica',[RegistrosController::class, 'RegistroTecnica']);
 
+
+    // =====[ Inscripciones ]=====
+
+    Route::post('/inscripcion', [InscripcionController::class, 'inscribirse'])->name('inscribirse')->middleware('auth');
 
 
 
@@ -222,8 +228,9 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
     Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
-
-
+    Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
+    Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
+    Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
 
 
 
