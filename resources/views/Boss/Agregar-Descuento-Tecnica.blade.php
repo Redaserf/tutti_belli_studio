@@ -40,7 +40,7 @@
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     /* Dashboard CSS */
@@ -591,6 +591,10 @@ sidebarBtn.addEventListener("click", () => {
 
     $('#agregarDescuento').on('click', function (e) {
         e.preventDefault();
+
+                // Mostrar la pantalla de carga
+                $('#contenedor_carga').css('display', 'block');
+
         discountPercentage = $('#porcentaje').val();  // Asignar el valor aquí
         console.log(discountPercentage);  // Para verificar el valor
         $.ajax({
@@ -601,13 +605,16 @@ sidebarBtn.addEventListener("click", () => {
                 cantidadDescuento: discountPercentage,
             },
             success: function (response) {
-                alert("Descuento creado exitosamente");
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
                 console.log(descuentoId);  // Para verificar el valor
 
                 aplicarDescuento(descuentoId, selectedTecnicas);
             },
             error: function (error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Ocurrió un error al crear el descuento');
                 console.error(error);  // Para más detalles sobre el error
             }

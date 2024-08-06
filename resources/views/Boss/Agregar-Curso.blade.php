@@ -92,7 +92,7 @@
             height: 100vh;
             width: 100%;
             position: fixed;
-            z-index: 100;
+            z-index: 300000;
         }
 
         /* Dashboard CSS */
@@ -730,6 +730,9 @@ sidebarBtn.addEventListener("click", () => {
         $('#agregarCurso').on('click', function(e) {
             e.preventDefault();
 
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
             // let courseName = $('#nombre').val();
             // let courseLimit = $('#cupoLimite').val();
             // let courseDateBegining = $('#fechaInicio').val();
@@ -755,6 +758,8 @@ sidebarBtn.addEventListener("click", () => {
                 contentType: false,
                 processData: false,
                 success: function(response) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     console.log(response);
                     alert("Curso agregado exitosamente");
                     let cursoId = response.cursoId;
@@ -771,6 +776,8 @@ sidebarBtn.addEventListener("click", () => {
                     // $('#empleadoId').val('');
                 },
                 error: function(error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     console.log(error);
                     alert('Ocurrió un error al agregar el Curso');
                     // $('#nombre').val('');

@@ -65,7 +65,7 @@
                 height: 100vh;
                 width: 100%;
                 position: fixed;
-                z-index: 100;
+                z-index: 300000;
             }
 
         .profile-container {
@@ -529,6 +529,9 @@
 $('#editProfileForm').on('submit', function(e) {
     e.preventDefault();
 
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
+
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
@@ -539,8 +542,10 @@ $('#editProfileForm').on('submit', function(e) {
         contentType: false,
         processData: false,
         success: function(response) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             $('#editProfileModal').modal('hide');
-            alert('Perfil actualizado exitosamente');
+            alert('Perfil actualizado con éxito.');
             location.reload();
             $('#nombre').val(response.user.name);
             $('#apellido').val(response.user.apellidos);
@@ -549,6 +554,8 @@ $('#editProfileForm').on('submit', function(e) {
             $('#numeroTelefono').val(response.user.numeroTelefono);
         },
         error: function(error) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             console.log(error);
             alert('Hubo un error al actualizar el perfil');
         }

@@ -66,7 +66,7 @@ h1, h2, h3, option, select, a{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
         .profile-container {

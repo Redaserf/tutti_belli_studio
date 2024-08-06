@@ -50,7 +50,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     .main-container {
@@ -466,6 +466,8 @@ $(document).ready(function(){
     const randomDateTime = '2023-08-02 14:35:47';
 
     $('#comprar').on('click',function (){
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
         if(productosComprados.length > 0){
             $.ajax({
                 url:'crearCompra',
@@ -479,15 +481,21 @@ $(document).ready(function(){
                         fechaVenta: fechaHoraActualMexico
                     },
                 success: function (){
-                    alert('Se ha realizado la compra correctamnete')
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                    alert('Se ha realizado la compra correctamente.')
                     productosComprados = [];
                     dibujarCarrito();
                 },
                 error: function (error){
                     console.log(error);
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 }
             })
         }else{
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Debes agregar los productos al carrito')
         }
 

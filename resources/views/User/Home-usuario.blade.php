@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 /* FIN ANIMACION DE CARGA */

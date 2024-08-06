@@ -39,7 +39,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -775,6 +775,10 @@ sidebarBtn.addEventListener("click", () => {
 
     $('#guardarProductos').on('click', function() {
         if(selectedProducts.length > 0) {
+
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
             // $('#agregarTecnica').prop('disabled', true);
             // $('#agregarTecnica').text('Productos seleccionados');
             //
@@ -815,19 +819,25 @@ sidebarBtn.addEventListener("click", () => {
                         arregloCantidades: cantidadesProducts,
                     },
                     success: function(response) {
-                        alert("Se te redirigira a agregar tecnicas");
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                        alert("Servicio junto con su técnica agregado con éxtio.");
                         // location.reload();  // Refresca la página al aceptar el alert
-                        window.location.href = '/Agregar-Tecnica';
+                        window.location.href = '/Ver-Servicios';
                     },
                     error: function(error) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                         console.log(error)
-                        alert('ERROR EN DAR DE ALTA');
+                        alert('Parece que hubo un error, vuelve a intentarlo más tarde.');
                         // location.reload();  // Refresca la página al aceptar el alert
                     }
                 });
 
                 $('#guardarTecnica').modal('hide');
             } else {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Completa los campos faltantes');
             }
 
@@ -837,6 +847,8 @@ sidebarBtn.addEventListener("click", () => {
             $('[name="seleccionar"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
 
         } else {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Completa los datos correctamente');
         }
     });
