@@ -39,7 +39,7 @@
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     /* Dashboard CSS */
@@ -543,6 +543,9 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarEmpleado').on('click', function(e) {
         e.preventDefault();
 
+                // Mostrar la pantalla de carga
+                $('#contenedor_carga').css('display', 'block');
+
         let employeeName = $('#employeeName').val();
         let employeeLastname = $('#employeeLastname').val();
         let employeeGender = $('#employeeGender').val();
@@ -566,10 +569,14 @@ sidebarBtn.addEventListener("click", () => {
                 rolId: 3
             },
             success: function(response) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert("Empleado agregado exitosamente");
                 window.location.href = '/Ver-Empleados';
             },
             error: function(error) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert('Ocurrió un error al agregar al empleado');
                 $('#employeeName').val('');
                 $('#employeeLastname').val('');

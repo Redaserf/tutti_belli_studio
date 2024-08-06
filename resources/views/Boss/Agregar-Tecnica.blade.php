@@ -39,7 +39,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -752,6 +752,9 @@ function loadServicios(){
 
     $('#AddTecnicaButon').on('click',function (){
 
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
         if($('#AddTecnicName').val() !== "" && $('#AddTecnicPrice').val() > 0 && $('#AddTecnicDescription').val() !== ""){
             var tecnicaPorGuardar = {
                 nombre: $('#AddTecnicName').val(),
@@ -776,11 +779,15 @@ function loadServicios(){
                     arregloCantidades: cantidadesProducts,
                 },
                 success: function(response) {
-                    alert("Se agrego la tecnica correctamente");
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                    alert("Se agregó la técnica correctamente");
                     location.reload();  // Refresca la página al aceptar el alert
                 },
                 error: function(error) {
-                    alert('ERROR EN DAR DE ALTA');
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                    alert('Parece que hubo un error, vuelve a intentarlo más tarde.');
                     console.log(error)
                     // location.reload();  // Refresca la página al aceptar el alert
                 }
@@ -789,6 +796,8 @@ function loadServicios(){
 
 
         } else {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Completa los campos faltantes');
         }
     });

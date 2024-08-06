@@ -49,7 +49,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 .fonts3{
@@ -965,6 +965,9 @@ $(document).ready(function(){
         $('#citaForm').on('submit', function(e) {
             e.preventDefault();
 
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
             let serviciosSeleccionados = [];
 
             $('.custom-checkbox-input:checked').each(function() {
@@ -988,7 +991,11 @@ $(document).ready(function(){
                 method: 'POST',
                 data: formData,
                 success: function(response) {
-                    limpiarFormulario();                    
+                    limpiarFormulario();              
+                    
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+
                     let alertMessage = '';
                     let alertClass = '';
                     let alertIcon = '';
@@ -1037,10 +1044,14 @@ $(document).ready(function(){
                         if (alertMessage) {
                             mostrarAlerta(alertMessage, alertClass, alertIcon);
                         }
-                }
-            })
 
-        })
+                // Ocultar la pantalla de carga si hay un error
+                $('#contenedor_carga').css('display', 'none');
+
+                }
+            });
+
+        });
 
 
             

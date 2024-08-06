@@ -54,7 +54,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -1133,6 +1133,8 @@ header {
 
 
         function eliminarCita(id){
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
             $.ajax({
                 url: `/eliminar/cita/${id}`,
                 headers: {
@@ -1140,6 +1142,8 @@ header {
                 },
                 method: 'DELETE',
                 success: function(response){
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     console.log(response);
                     // $('#citaForm').hide();
                     window.location.href = '/Ver-Citas';
@@ -1157,6 +1161,9 @@ header {
                     // }, 100); 
                 },
                 error: function(error) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                    alert("Hubo un error al tratar de eliminar la cita.")
                     console.log(error);
                 }
             })
@@ -1167,6 +1174,7 @@ header {
         })
 
         function editarCita(id){
+            
             limpiarFormulario();
             
             $.get(`/cita/servicios/tecnica/${id}`, function(citasServicios) {
@@ -1331,6 +1339,8 @@ header {
             e.preventDefault();
             console.log($(this));
 
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
 
             let id = $('#id').val();
             let url = id ? `/editar/cita/${id}` : '/RegistroCitaAdmin';
@@ -1367,6 +1377,8 @@ header {
                 method: method,
                 data: formData,            
                 success: function(response) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     console.log(response);
                     limpiarFormulario();                    
                     let alertMessage = '';
@@ -1390,6 +1402,8 @@ header {
                     window.location.href = '/Ver-Citas';
                 },
                 error: function(xhr) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                         console.log(xhr);
                         var response = xhr.responseJSON;
                         let alertMessage = '';

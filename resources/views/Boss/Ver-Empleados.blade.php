@@ -43,7 +43,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -492,16 +492,25 @@ header {
 
         function employeeDelete(id){
             if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+                // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
           $.ajax({
               url: `/empleado/eliminar/${id}`,
               method: 'GET',
               success: function(){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert("Empleado eliminado con éxito.")
                   tablaEmpleados();
               },
               error: function(error){
                 if (error.status === 500) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     alert('Este empleado está en un curso asignado.');
                 } else {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     alert('Ocurrió un error al eliminar el empleado.');
                 }
                 console.log(error);

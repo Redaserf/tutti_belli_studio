@@ -36,6 +36,17 @@
             vertical-align: middle;
         }
 
+        /* ANIMACION DE CARGA */
+        #contenedor_carga{
+        background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
+        background-size: 20%;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        z-index: 300000;
+        }
+
+
         #navbar {
             font-family: "Josefin Sans", sans-serif !important;  
         }
