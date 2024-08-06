@@ -184,7 +184,7 @@ h1, h2, h3, h4, h5 ,a, li{
             }
         }
 
-        .custom-alert {
+        .custom-alerts {
         background-color: #e0e0e0; /* Color rosado */
         border: 1px solid #e0e0e0;
         color: #000000;
@@ -192,17 +192,55 @@ h1, h2, h3, h4, h5 ,a, li{
         padding: 20px;
         font-family: "Josefin Sans", sans-serif;
     }
-    .custom-alert .alert-heading {
+    .custom-alerts .alert-heading {
         font-size: 1.5rem;
         font-weight: bold;
     }
-    .custom-alert p {
+    .custom-alerts p {
         font-size: 1.1rem;
         margin-bottom: 0;
     }
-    .custom-alert hr {
+    .custom-alerts hr {
         border-top: 2px solid #000000;
     }
+    /* Alerta bonita */
+
+    @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
 
         
 
@@ -366,7 +404,7 @@ h1, h2, h3, h4, h5 ,a, li{
             if (data.length === 0) {
             productos.append(`
               <div class="col-12 text-center my-5">
-                <div class="custom-alert" role="alert">
+                <div class="custom-alerts">
                   <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
                   <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
                   <hr>

@@ -45,6 +45,11 @@ class UsuarioController extends Controller
 
 
     public function Registro(Request $request){
+
+        $existingUser = User::where('email', $request->email)->first();
+        if ($existingUser) {
+            return redirect()->back()->with('error', 'Este correo ya está en uso. Por favor, utiliza otro correo.')->withInput();
+        }
         $user = User::create([
             'name' => $request->nombre,
             'apellido' => $request->apellidos,

@@ -438,63 +438,70 @@ header {
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Servicios</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-servicios">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-servicios">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Ventas</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-ventas">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-ventas">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Curso</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-curso">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-curso">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

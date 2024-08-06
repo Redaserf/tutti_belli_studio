@@ -216,29 +216,31 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
 <br><br><br><br>
   @csrf
-<div class="main-container">
-  <div class="table-container">
-      <table class="table">
-          <thead>
-              <tr>
-                  <th scope="col">Imagen</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Descripción</th>
-                  <th scope="col">Costo</th>
-                  <th scope="col">Eliminar</th>
-              </tr>
-          </thead>
-          <tbody id="carritoTabla">
-
-          </tbody>
-      </table>
-  </div>
-  <div class="summary-container">
-      <div id="costo-total" class="total-price"></div>
-      <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
-  </div>
+  
+  <div class="row">
+    <div class="col-12 d-flex flex-column">
+        <div class="table-responsive table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="carritoTabla">
+                    <!-- Aquí se llenarán los datos de la tabla -->
+                </tbody>
+            </table>
+        </div>
+        <div class="summary-container mt-3">
+            <div id="costo-total" class="total-price"></div>
+            <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
+        </div>
+    </div>
 </div>
-
 <br><br><br><br><br><br><br><br><br><br><br>
 
       <!-- FOOTER -->

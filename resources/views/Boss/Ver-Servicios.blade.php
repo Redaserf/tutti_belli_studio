@@ -404,7 +404,7 @@
         </div>
         <div class="section-divider"></div>
 
-        <div>
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                   <tr>

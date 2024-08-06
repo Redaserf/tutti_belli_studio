@@ -314,7 +314,9 @@
   background: rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
+.footer-pers{
 
+}
 .overlay-text {
   color:black;
   position: absolute;
@@ -389,9 +391,9 @@
   }
 }
   .img-horario{
-    width: 350px;
-    height: 500px;
-    margin-left: 0 auto;
+    width: 450px;
+    height: 600px;
+    margin-top: 0 auto;
   }
 
 
@@ -871,16 +873,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div  class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="#">Inicio</a></li>

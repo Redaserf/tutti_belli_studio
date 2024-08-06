@@ -430,7 +430,7 @@ header {
                     </div>
                     <div class="section-divider"></div>
 
-                    <div>
+                    <div class="table-responsive">
 
                         <table class="table">
                             <thead>
@@ -455,7 +455,7 @@ header {
                     <br>
                     <div class="section-divider"></div>
 
-                    <div>
+                    <div class="table-responsive">
 
                         <table class="table">
                             <thead>
