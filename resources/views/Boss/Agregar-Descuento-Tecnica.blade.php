@@ -437,10 +437,6 @@
                         <H2>Agregar Descuento Tecnica</H2>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="nombreDescuento" placeholder="">
-                        <label for="nombreDescuento">Nombre del descuento</label>
-                    </div>
-                    <div class="form-floating mb-3">
                         <select name="" class="form-control" id="servicioId">
                             <option value="" disabled selected>Servicios</option>
                             <!-- Servicios que aparecerán con back-end -->

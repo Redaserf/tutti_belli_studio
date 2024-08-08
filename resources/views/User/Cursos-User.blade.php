@@ -449,11 +449,15 @@
 
     function mostrarMensajeInscripcion() {
       const modalBody = document.querySelector('#inscripcionModal .modal-body');
-      modalBody.innerHTML = '<p>Te enviaremos un correo con la información necesaria para proceder con la inscripción del curso.</p>';
+      modalBody.innerHTML = '<p>Estás inscrito a este curso, para más información acerca del pago dirigete a tu historial de tu perfil.</p>';
       const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
-      modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
+      modalFooter.innerHTML = '<button type="button" id="cerrarModalxd" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
       $('#inscripcionModal').modal('show');
-    }
+      
+      document.getElementById('cerrarModalxd').addEventListener('click', function() {
+      window.location.href = '/Historial-User';
+  });
+  }
 
 
 
