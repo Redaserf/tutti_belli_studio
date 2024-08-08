@@ -19,6 +19,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             min-height: 100vh;
+            overflow-x: hidden; 
         }
         /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
         .card {
@@ -256,7 +257,7 @@
   </div>
 </nav>
 
-<br>
+<br><br>
 
 <div class="container mt-5 pt-5">
   <div id="cursos" class="row">
@@ -373,7 +374,7 @@
               const buttonText = curso.inscrito ? 'Inscrito' : 'Inscribirme';
               const buttonDisabled = curso.inscrito ? 'disabled' : '';
               const card = `
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4 col-xl-4 col-sm-12">
                   <div class="card">
                     <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
                     <div class="card-body">

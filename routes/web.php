@@ -32,7 +32,7 @@ use App\Http\Controllers\InscripcionController;
     // ===== [Consultas] =====
 
     //Consulta para traer los usuarios con sus roles
-    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
+    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles -S
 
     //servicios con sus tecnicas
 
