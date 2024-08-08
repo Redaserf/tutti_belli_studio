@@ -19,6 +19,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             min-height: 100vh;
+            overflow-x: hidden; 
         }
         /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
         .card {
@@ -263,7 +264,7 @@
   </div>
 </nav>
 
-<br>
+<br><br>
 
 <div class="container mt-5 pt-5">
   <div id="cursos" class="row">
@@ -380,7 +381,7 @@
               const buttonText = curso.inscrito ? 'Inscrito' : 'Inscribirme';
               const buttonDisabled = curso.inscrito ? 'disabled' : '';
               const card = `
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4 col-xl-4 col-sm-12">
                   <div class="card">
                     <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
                     <div class="card-body">
@@ -448,11 +449,15 @@
 
     function mostrarMensajeInscripcion() {
       const modalBody = document.querySelector('#inscripcionModal .modal-body');
-      modalBody.innerHTML = '<p>Te enviaremos un correo con la información necesaria para proceder con la inscripción del curso.</p>';
+      modalBody.innerHTML = '<p>Estás inscrito a este curso, para más información acerca del pago dirigete a tu historial de tu perfil.</p>';
       const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
-      modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
+      modalFooter.innerHTML = '<button type="button" id="cerrarModalxd" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
       $('#inscripcionModal').modal('show');
-    }
+      
+      document.getElementById('cerrarModalxd').addEventListener('click', function() {
+      window.location.href = '/Historial-User';
+  });
+  }
 
 
 

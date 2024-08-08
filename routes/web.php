@@ -23,7 +23,7 @@ use App\Http\Controllers\InscripcionController;
 // ==========[ Vistas ]==========
 
     Route::get('/', function () {
-        return view('Guest.Home-Guest');
+        return view('Guest.Home-guest');
     });
 
 
@@ -32,7 +32,7 @@ use App\Http\Controllers\InscripcionController;
     // ===== [Consultas] =====
 
     //Consulta para traer los usuarios con sus roles
-    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles
+    Route::get('/usuarios/roles', [ConsultasController::class, 'usuariosConSuRol']);//usuarios con sus roles -S
 
     //servicios con sus tecnicas
 
@@ -93,13 +93,7 @@ use App\Http\Controllers\InscripcionController;
     //devulve inventario como Json
     Route::get('/get/inventarios',[InventarioController::class,'index']);
 
-    // =====[ Guest ]=====
 
-    Route::get('/Home-guest',[ViewsController::class,'guestHome']);
-    Route::get('/Login',[ViewsController::class,'LoginVista']);
-    Route::get('/Registro',[ViewsController::class,'RegistroVista']);
-    Route::post('/ActualizarPefil', [UsuarioController::class, 'actualizarPerfil']);
-    Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
     Route::get('/admin', function () {
         return view('RegistrarAdministradores');
     });

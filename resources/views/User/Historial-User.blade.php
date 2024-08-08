@@ -324,8 +324,10 @@ function mostrarCitaModal(citaId) {
                         inscripcion.estado = "<span style='color: #39BF3D;'>Aceptado</span>";
                     }
                     const detalleInscripcion = `<div class="modalInfo">
-                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado} <br> Inicia el ${curso.fechaInicio}
-                        a las ${curso.horaInicio} y su instructor oficial es ${empleado.name}.<br><br>Técnicas a enseñar en el curso:
+                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}. Cupos disponibles: ${curso.cupoLimite} <br> Inicia el ${curso.fechaInicio}
+                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <br> Instructor oficial es ${empleado.name}.
+                        
+                        <br><br>Técnicas a enseñar en el curso:
                     </div>`;
                     inscripcionModal.append(detalleInscripcion);
                     if (tecnicas.length > 0){

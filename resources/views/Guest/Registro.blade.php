@@ -151,8 +151,7 @@
                     <div class="col-6 col-md-6">
                         <label for="genero" class="form-label">Género</label>
                         <select class="form-control" name="genero" id="genero" required>
-                            <option selected disabled>Escoge una opción</option>
-                            <option value="Hombre" {{ old('genero') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                            <option selected value="Hombre" {{ old('genero') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
                             <option value="Mujer" {{ old('genero') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
                         </select>
                     </div>
