@@ -22,6 +22,9 @@
             background-position: center center;
             min-height: 100vh;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
 
         .hiddenX {
             overflow-x: hidden;
