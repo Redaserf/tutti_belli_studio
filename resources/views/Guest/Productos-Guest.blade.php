@@ -204,7 +204,7 @@ h1, h2, h3, h4, h5 ,a, li{
             <a class="nav-link active texto1" aria-current="page" href="/Home-guest#servicios" style="color: #000000;">Servicios</a>
           </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Productos-guest" style="color: #000000;">Productos</a>
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="/Home-guest#cursos" style="color: #000000;">Cursos</a>
