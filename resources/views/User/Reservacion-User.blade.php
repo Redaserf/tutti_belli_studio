@@ -488,7 +488,7 @@ gmp-map {
     </div>
 
 
-<br>
+<br><br>
 
     
 
@@ -950,7 +950,7 @@ $(document).ready(function(){
 
 
                 selectUsuarios.append(`
-                    <option class="text-center" value="${empleadoAleatorio}" selected>-- cualquier empleado --</option>
+                    <option class="text-center" value="${empleadoAleatorio}" selected>Cualquier empleado</option>
                 `)
 
                 usersRolEmpleado.forEach(usuario => {

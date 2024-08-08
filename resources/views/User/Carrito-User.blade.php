@@ -19,6 +19,7 @@ body, html {
     background-repeat: no-repeat;
     background-position: center center;
     min-height: 100vh;
+    overflow-x: hidden; 
 }
 
 

@@ -29,6 +29,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    overflow-x: hidden; 
 }
 .fonts3{
   font-family: "Josefin Sans", sans-serif !important; 
@@ -45,7 +46,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
-.hiddenX{
+.hiddenX, .home{
     overflow-x: hidden;
 }
 /* BOTON PARA RESERVAR CITA MEJORADO ESTE ES EL BOTON PRINCIPAL */

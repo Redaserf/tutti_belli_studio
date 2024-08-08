@@ -23,6 +23,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    overflow-x: hidden; 
 }
 .fonts3{
   font-family: "Josefin Sans", sans-serif !important; 
@@ -34,7 +35,7 @@ gmp-map {
         height: 500px; /* Puedes ajustar la altura según tus necesidades */
         border-radius: 10px;
       }
-.hiddenX{
+.hiddenX, .home{
     overflow-x: hidden;
 }
 /* BOTON PARA RESERVAR CITA MEJORADO ESTE ES EL BOTON PRINCIPAL */

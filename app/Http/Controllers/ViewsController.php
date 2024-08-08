@@ -29,7 +29,7 @@ class ViewsController extends Controller
 
     public function guestProductos(){
         if (!Auth::check()) {
-            return view('Guest.Productos-guest');
+            return view('Guest.Productos-Guest');
         }
 
         $user = Auth::user();
