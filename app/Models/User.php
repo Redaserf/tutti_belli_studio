@@ -86,5 +86,9 @@ class User extends Authenticatable
         return $this->hasOne(Carrito::class,'usuarioId');
     }
 
+    public function historial()
+    {
+        return $this->hasMany(Historial::class,'usuarioId');
+    }
 
 }

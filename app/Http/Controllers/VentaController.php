@@ -25,6 +25,7 @@ class VentaController extends Controller
             $venta = Venta::create([
                 'total' => $request->total,
                 'fechaVenta' => $request->fechaVenta,
+                "fechaCreacion" => now(),
                 'estadoVenta' => false,
                 'usuarioId' => $usuario->id
             ]);
