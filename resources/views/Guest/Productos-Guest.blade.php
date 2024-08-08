@@ -192,7 +192,7 @@ h1, h2, h3, h4, h5 ,a, li{
   <!-- NAVBAR / ENCABEZADO -->
   <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/Home-guest">
+      <a class="navbar-brand" href="/Home-Guest">
         <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -201,16 +201,16 @@ h1, h2, h3, h4, h5 ,a, li{
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
           <li class="nav-item">
-            <a class="nav-link active texto1" aria-current="page" href="/Home-guest#servicios" style="color: #000000;">Servicios</a>
+            <a class="nav-link active texto1" aria-current="page" href="/Home-Guest#servicios" style="color: #000000;">Servicios</a>
           </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#cursos" style="color: #000000;">Cursos</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Home-Guest#cursos" style="color: #000000;">Cursos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-guest#contacto" style="color: #000000;">Contacto</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Home-Guest#contacto" style="color: #000000;">Contacto</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #000000;">Iniciar sesión</a>
