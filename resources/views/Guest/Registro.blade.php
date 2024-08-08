@@ -204,6 +204,7 @@
                 return true;
             }
         }
+        
 
         passwordConfirm.addEventListener('input', validatePassword);
 

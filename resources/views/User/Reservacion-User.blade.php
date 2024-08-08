@@ -412,6 +412,16 @@ gmp-map {
 .footer .container-fluid {
     padding: 0 40px;
 }
+.footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
+@media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
     </style>
 </head>
 <body class="hiddenX">
@@ -422,7 +432,7 @@ gmp-map {
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="/Home-usuario">
-        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -642,16 +652,16 @@ gmp-map {
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>

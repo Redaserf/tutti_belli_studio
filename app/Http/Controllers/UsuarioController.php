@@ -45,6 +45,14 @@ class UsuarioController extends Controller
 
 
     public function Registro(Request $request){
+        
+        $fechaNacimiento = new \DateTime($request->fechaNacimiento);
+        $hoy = new \DateTime();
+        $edad = $hoy->diff($fechaNacimiento)->y;
+
+        if ($edad < 18) {
+            return redirect()->back()->with('error', 'Debes ser mayor de 18 años para registrarte.')->withInput();
+        }
 
         $existingUser = User::where('email', $request->email)->first();
         if ($existingUser) {

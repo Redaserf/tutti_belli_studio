@@ -175,6 +175,12 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         .btn-light:hover{
       background-color:#fa3284;
     }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
         /* Alerta bonita */
 
     </style>
@@ -187,7 +193,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
