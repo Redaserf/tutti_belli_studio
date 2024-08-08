@@ -550,7 +550,7 @@ header {
                 productos.append(`
                     <div class="col-12 text-center my-5">
                         <div class="alert" role="alert">
-                            <h4 class="alert-heading">¡No hay prodcutos disponibles en este momento!</h4>
+                            <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
                         </div>
                     </div>
                 `);

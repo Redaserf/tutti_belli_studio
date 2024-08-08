@@ -438,6 +438,7 @@ class RegistrosController extends Controller
             // Crear la venta
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
+                "fechaCreacion" => now(),
                 'total' => 0,
                 'estadoVenta' => true,
             ]);
@@ -445,6 +446,7 @@ class RegistrosController extends Controller
             // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
+                "fechaCreacion" => now(),
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
