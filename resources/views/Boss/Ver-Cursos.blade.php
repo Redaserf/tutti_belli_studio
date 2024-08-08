@@ -11,9 +11,9 @@
     <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -251,7 +251,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -313,7 +313,7 @@ header {
                 margin-top: 20px;
                 }
 
-                        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+                        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/
         .card {
                     margin: 20px;
                     border-radius: 10px;
@@ -358,7 +358,7 @@ header {
             background-color: #f5c6cb;
             border-color: #f5c6cb;
         }
-        /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+        /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/
     </style>
 
 </head>
@@ -371,7 +371,7 @@ header {
 
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -387,7 +387,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -457,7 +457,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -514,24 +514,24 @@ header {
                             </div>
                         </div>
 
-        
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Cursos</h2>
                     <a class="left" href="/Agregar-Curso" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Crear curso<i style="margin-left: 6px;" class="fa-solid fa-pencil"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
-    
+
                 <div>
-    
+
                     <div class="container mt-1 pt-5">
                         <div id="cursos" class="row">
                           {{-- Cursos mediante backend --}}
                         </div>
                       </div>
-    
+
                 </div>
-    
+
             </section>
 
             <br>
@@ -592,11 +592,11 @@ header {
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
-    
+
     // Scripts para todas las vistas
-    
+
         // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -683,7 +683,7 @@ function mostrarInscripciones(cursoId) {
                     inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Pendiente<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
                 else {
-                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Aceptado<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Inscrito<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
             });
             inscripcionesHtml += '</ul>';
@@ -704,6 +704,15 @@ function editarInscripcion(inscripcionId){
                     $('#inscripcionNombre').val(`${data.usuarios.name} ${data.usuarios.apellido}`);
                     $('#inscripcionFecha').val(data.fechaInscripcion);
                     $('#inscripcionEstado').val(data.estado);
+
+                    if (data.estado === 1) {
+                        $('#saveChanges').prop('disabled', true);
+                        $('#saveChanges').text('Usuario aceptado');
+                    } else {
+                        $('#saveChanges').prop('disabled', false);
+                        $('#saveChanges').text('Guardar cambios');
+                    }
+
                     $('#saveChanges').off('click').on('click', function() {
                         const updatedInscripcion = {
                             estado: $('#inscripcionEstado').val(),
@@ -714,7 +723,7 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
-                                alert("Inscripción actualizada con éxito");
+                                alert(response);
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
                             },
@@ -760,7 +769,7 @@ function modalEditar(id) {
         success: function(data) {
             const curso = data.curso;
             const empleados = data.empleados;
-            
+
             $('#edit_id').val(curso.id);
             $('#edit_nombre').val(curso.nombre);
             $('#edit_descripcion').val(curso.descripcion);
@@ -817,11 +826,11 @@ $('#edit_imagenProducto').on('change', function() {
     }
 });
 
-    
+
     $(document).ready(function(){
 
         dibujarCursos();
-    
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -856,7 +865,7 @@ sidebarBtn.addEventListener("click", () => {
 });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -865,11 +874,11 @@ sidebarBtn.addEventListener("click", () => {
             }
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-        function botones(){ 
+
+
+        function botones(){
               if (window.innerWidth <= 960) {
                 $('.top').css('flex-direction', 'column');
                 $('.top').css('gap', '10px');
@@ -880,11 +889,11 @@ sidebarBtn.addEventListener("click", () => {
           }
           window.addEventListener('resize', botones);
           botones();
-    
-    
+
+
         // Fin document.ready
     });
-    
+
     </script>
 </body>
 </html>
