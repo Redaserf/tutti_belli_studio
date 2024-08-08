@@ -25,6 +25,9 @@
         img {
           max-width: 100%;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
 
         header {
           display: flex;

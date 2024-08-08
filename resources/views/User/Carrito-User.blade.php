@@ -78,6 +78,10 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
             flex-direction: column;
             align-items: center;
         }
+        .footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
 
         .total-price {
             font-size: 1.5em;
@@ -167,6 +171,9 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         .custom-alert.hide {
             animation-name: slideOut;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
         /* Alerta bonita */
 
     </style>
@@ -248,16 +255,16 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>

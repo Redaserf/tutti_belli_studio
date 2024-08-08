@@ -75,6 +75,9 @@
             transition: background-color 0.3s;
             width: 100%;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
         .social-button:hover {
             background-color: #f1f1f1;
         }

@@ -254,6 +254,9 @@ section{
 .Color_del_footer_xd{
     background-color: #1E1B1B;
 }
+.btn-light:hover{
+      background-color:#fa3284;
+    }
 
 /* SERVICIOS PARTE DE AARON */
 .container {
@@ -589,7 +592,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
             <a href="/Reservacion-User">
-              <button onclick="" class="btn btn-dark">Reservar cita</button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
             </a>
           </div>
         </div> 

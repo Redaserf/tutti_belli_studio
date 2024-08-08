@@ -253,6 +253,10 @@ section{
     gap:30px;
     padding: 20px;
 }
+.btn-personalizado:hover{
+      background-color:#fa3284;
+      border:0;
+    }
 .card {
     background: white;
     border-radius: 8px;
