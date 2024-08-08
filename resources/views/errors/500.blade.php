@@ -124,7 +124,7 @@ body, html {
 <div class="form-container">
   <h2>Parece que hubo un error</h2>
   <p>500 | Vuelve a intentarlo más tarde</p>
-  <a href="/Home-guest"><button class="btn btn-outline-dark">Volver</button></a>
+  <a href="/Home-Guest"><button class="btn btn-outline-dark">Volver</button></a>
 </div>
 
 
