@@ -23,7 +23,7 @@ use App\Http\Controllers\InscripcionController;
 // ==========[ Vistas ]==========
 
     Route::get('/', function () {
-        return view('Guest.Home-Guest');
+        return view('Guest.Home-guest');
     });
 
 
@@ -93,7 +93,7 @@ use App\Http\Controllers\InscripcionController;
     //devulve inventario como Json
     Route::get('/get/inventarios',[InventarioController::class,'index']);
 
-    
+
     Route::get('/admin', function () {
         return view('RegistrarAdministradores');
     });
