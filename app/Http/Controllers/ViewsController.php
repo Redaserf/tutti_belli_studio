@@ -14,7 +14,7 @@ class ViewsController extends Controller
 
     public function guestHome(){
         if (!Auth::check()) {
-            return view('Guest.home-Guest');
+            return view('Guest.home-guest');
         }
         
         $user = Auth::user();
@@ -77,7 +77,7 @@ class ViewsController extends Controller
 
     public function userHome(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -92,7 +92,7 @@ class ViewsController extends Controller
 
     public function userPerfil(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -107,7 +107,7 @@ class ViewsController extends Controller
 
     public function userCursos(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -137,7 +137,7 @@ class ViewsController extends Controller
 
     public function userReservacion(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -152,7 +152,7 @@ class ViewsController extends Controller
 
     public function userCarrito(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -167,7 +167,7 @@ class ViewsController extends Controller
 
     public function userHistorial(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -185,7 +185,7 @@ class ViewsController extends Controller
 
     public function employeeHome(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -200,7 +200,7 @@ class ViewsController extends Controller
 
     public function employeeAgregarCita(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -215,7 +215,7 @@ class ViewsController extends Controller
 
     public function employeeVerCitas(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
         
         $user = Auth::user();
@@ -248,7 +248,7 @@ class ViewsController extends Controller
 
     public function bossHome(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -263,7 +263,7 @@ class ViewsController extends Controller
 
     public function bossAgregarCita(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -278,7 +278,7 @@ class ViewsController extends Controller
 
     public function bossAgregarCurso(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -293,7 +293,7 @@ class ViewsController extends Controller
 
     public function bossAgregarDescuentoProducto(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -307,7 +307,7 @@ class ViewsController extends Controller
     }
     public function bossVerPerfil(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -322,7 +322,7 @@ class ViewsController extends Controller
 
     public function bossAgregarDescuentoTecnica(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -337,7 +337,7 @@ class ViewsController extends Controller
 
     public function bossAgregarEmpleado(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -352,7 +352,7 @@ class ViewsController extends Controller
 
     public function bossAgregarProducto(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -367,7 +367,7 @@ class ViewsController extends Controller
 
     public function bossAgregarServicio(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -382,7 +382,7 @@ class ViewsController extends Controller
 
     public function bossAgregarTecnica(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -397,7 +397,7 @@ class ViewsController extends Controller
 
     public function bossVerInventario(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -412,7 +412,7 @@ class ViewsController extends Controller
 
     public function bossVerVentas(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -427,7 +427,7 @@ class ViewsController extends Controller
 
     public function bossVerEmpleados(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -442,7 +442,7 @@ class ViewsController extends Controller
 
     public function bossVerDescuentos(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -457,7 +457,7 @@ class ViewsController extends Controller
 
     public function bossVerCitas(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -472,7 +472,7 @@ class ViewsController extends Controller
 
     public function bossVerCursos(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
@@ -502,7 +502,7 @@ class ViewsController extends Controller
 
     public function bossVerServicios(){
         if (!Auth::check()) {
-            return redirect('/home-Guest');
+            return redirect('/home-guest');
         }
 
         $user = Auth::user();
