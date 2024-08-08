@@ -122,7 +122,7 @@ body, html {
       <div class="form-container">
         <h2>Página no encontrada o inexistente</h2>
         <p>404 | Página no encontrada</p>
-        <a href="/Home-guest"><button class="btn btn-outline-dark">Volver</button></a>
+        <a href="/Home-Guest"><button class="btn btn-outline-dark">Volver</button></a>
       </div>
 
 
