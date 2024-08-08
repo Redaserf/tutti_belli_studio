@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->double('total');
             $table->date('fechaVenta');
+            $table->date('fechaCreacion')->nullable();
             $table->boolean('estadoVenta');
             // checar atributo estatus faltante en el diagrama
 

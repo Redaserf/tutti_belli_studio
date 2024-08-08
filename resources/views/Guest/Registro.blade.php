@@ -75,6 +75,9 @@
             transition: background-color 0.3s;
             width: 100%;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
         .social-button:hover {
             background-color: #f1f1f1;
         }
@@ -82,6 +85,11 @@
             width: 20px;
             height: 20px;
             margin-right: 10px;
+        }
+        .alert-danger{
+            color:red;
+            background-color:white;
+            border:0;
         }
         .btn {
             border-radius: 5px;
@@ -124,34 +132,37 @@
                 <div class="row g-3">
                     <div class="col-6 col-md-6">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre" required>
+                        <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre" value="{{ old('nombre') }}" required>
                     </div>
                     <div class="col-6 col-md-6">
                         <label for="apellidos" class="form-label">Apellidos</label>
-                        <input type="text" name="apellidos" class="form-control" id="apellidos" placeholder="Apellidos" required>
+                        <input type="text" name="apellidos" class="form-control" id="apellidos" placeholder="Apellidos" value="{{ old('apellidos') }}" required>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                    <input type="date" name="fechaNacimiento" class="form-control" id="fechaNacimiento" required>
+                    <input type="date" name="fechaNacimiento" class="form-control" id="fechaNacimiento" value="{{ old('fechaNacimiento') }}" required>
                 </div>
                 <div class="row g-3">
                     <div class="col-6 col-md-6">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="number" name="telefono" class="form-control" id="telefono" placeholder="Número de teléfono" required oninput="this.value = this.value.slice(0, 10)">
+                        <input type="number" name="telefono" class="form-control" id="telefono" placeholder="Número de teléfono" value="{{ old('telefono') }}" required oninput="this.value = this.value.slice(0, 10)">
                     </div>
                     <div class="col-6 col-md-6">
                         <label for="genero" class="form-label">Género</label>
                         <select class="form-control" name="genero" id="genero" required>
                             <option selected disabled>Escoge una opción</option>
-                            <option value="Hombre">Hombre</option>
-                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre" {{ old('genero') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                            <option value="Mujer" {{ old('genero') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="correo" class="form-label">Correo Electrónico</label>
-                        <input type="email" name="email" class="form-control" id="correo" placeholder="Email válido" required>
-                    </div>
+                </div>
+                @if (session('error'))
+                    <div class="alert alert-danger" id="error-message">{{ session('error') }}</div>
+                @endif
+                <div class="mb-3">
+                    <label for="correo" class="form-label">Correo Electrónico</label>
+                    <input type="email" name="email" class="form-control" id="correo" placeholder="Email válido" value="{{ old('email') }}" required>
                 </div>
                 <hr>
                 <div class="mb-3">
@@ -169,8 +180,7 @@
             </form>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6/Mni1fEZ+4pGnc5DGeRdhxXwFW2" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6/Mni1fEZ+4pGnc5DGeRdhxXwFW2" crossorigin="anonymous"></script>
 
     <script>
 

@@ -39,7 +39,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -559,6 +559,9 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarProducto').on('click', function(e) {
         e.preventDefault();
 
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
         let formData = new FormData();
         formData.append('_token', $('input[name="_token"]').val());
         formData.append('nombre', $('#AddProductName').val());
@@ -575,6 +578,8 @@ sidebarBtn.addEventListener("click", () => {
             contentType: false,
             processData: false,
             success: function(response) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert("Producto agregado exitosamente");
                 $('#AddProductName').val('');
                 $('#AddProductPrice').val('');
@@ -585,6 +590,8 @@ sidebarBtn.addEventListener("click", () => {
                 document.getElementById('image').src = "https://via.placeholder.com/300";
             },
             error: function(error) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert('Ocurrió un error al agregar el producto');
             }
         });

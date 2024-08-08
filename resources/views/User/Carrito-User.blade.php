@@ -50,7 +50,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     .main-container {
@@ -78,6 +78,10 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
             flex-direction: column;
             align-items: center;
         }
+        .footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
 
         .total-price {
             font-size: 1.5em;
@@ -167,6 +171,9 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         .custom-alert.hide {
             animation-name: slideOut;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
         /* Alerta bonita */
 
     </style>
@@ -216,29 +223,31 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
 <br><br><br><br>
   @csrf
-<div class="main-container">
-  <div class="table-container">
-      <table class="table">
-          <thead>
-              <tr>
-                  <th scope="col">Imagen</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Descripción</th>
-                  <th scope="col">Costo</th>
-                  <th scope="col">Eliminar</th>
-              </tr>
-          </thead>
-          <tbody id="carritoTabla">
-
-          </tbody>
-      </table>
-  </div>
-  <div class="summary-container">
-      <div id="costo-total" class="total-price"></div>
-      <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
-  </div>
+  
+  <div class="row">
+    <div class="col-12 d-flex flex-column">
+        <div class="table-responsive table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="carritoTabla">
+                    <!-- Aquí se llenarán los datos de la tabla -->
+                </tbody>
+            </table>
+        </div>
+        <div class="summary-container mt-3">
+            <div id="costo-total" class="total-price"></div>
+            <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
+        </div>
+    </div>
 </div>
-
 <br><br><br><br><br><br><br><br><br><br><br>
 
       <!-- FOOTER -->
@@ -246,16 +255,16 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>
@@ -466,6 +475,8 @@ $(document).ready(function(){
     const randomDateTime = '2023-08-02 14:35:47';
 
     $('#comprar').on('click',function (){
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
         if(productosComprados.length > 0){
             $.ajax({
                 url:'crearCompra',
@@ -479,15 +490,21 @@ $(document).ready(function(){
                         fechaVenta: fechaHoraActualMexico
                     },
                 success: function (){
-                    alert('Se ha realizado la compra correctamnete')
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                    alert('Se ha realizado la compra correctamente.')
                     productosComprados = [];
                     dibujarCarrito();
                 },
                 error: function (error){
                     console.log(error);
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 }
             })
         }else{
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Debes agregar los productos al carrito')
         }
 

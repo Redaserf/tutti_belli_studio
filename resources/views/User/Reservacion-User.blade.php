@@ -49,7 +49,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 .fonts3{
@@ -212,6 +212,9 @@ gmp-map {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
+.btn-light:hover{
+      background-color:#fa3284;
+    }
 
 .modal-header .modal-title {
     font-weight: 600;
@@ -275,61 +278,73 @@ gmp-map {
 
 
 /* div de la parte inferior */
-        .parte-inferior {
-            font-family: "Josefin Sans", sans-serif !important;
-            position: fixed;
-            border-top: 2px solid #000; /* Borde superior negro */
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 20%;
-            background-color:white; /* Menos transparente */
-            z-index: 9999;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Alinea el contenido y el botón */
-            padding: 0 20px; /* Añade un poco de espacio a los lados */
-            font-size: 18px;
-        }
+.parte-inferior {
+    font-family: "Josefin Sans", sans-serif !important;
+    position: fixed;
+    border-top: 2px solid #000; /* Borde superior negro */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background-color: white; /* Menos transparente */
+    z-index: 9999;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinea el contenido y el botón */
+    padding: 0 20px; /* Añade un poco de espacio a los lados */
+    font-size: 18px;
+}
 
-        .parte-inferior .contenido {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Alinea el contenido a la izquierda */
-        }
+.parte-inferior .contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+}
 
-        #cantidadTecnicas, #precioTotal {
-            margin-bottom: 5px; /* Espacio entre los elementos */
-        }
+#cantidadTecnicas, #precioTotal {
+    margin-bottom: 5px; /* Espacio entre los elementos */
+}
 
-        .btn-personalizado {
-            background-color: pink; /* Fondo rosa */
-            color: black; /* Texto e icono negros */
-            border: none; /* Sin borde */
-            padding: 12px 25px; /* Espaciado interior */
-            font-size: 16px; /* Tamaño de la fuente */
-            display: flex;
-            align-items: center;
-        }
+.parte-inferior p, .parte-inferior a {
+    margin: 5px 0; /* Espacio entre los nuevos textos */
+}
 
-        .btn-personalizado i {
-            margin-left: 6px; /* Espacio entre el texto y el icono */
-        }
+.parte-inferior a {
+    color: #e83e8c; /* Color del enlace */
+    text-decoration: underline;
+}
 
-        .container {
-            margin-bottom: 10%; /* Espacio en la parte inferior igual a la altura del div fijo */
-        }
+.btn-personalizado {
+    background-color: pink; /* Fondo rosa */
+    color: black; /* Texto e icono negros */
+    border: none; /* Sin borde */
+    padding: 12px 25px; /* Espaciado interior */
+    font-size: 16px; /* Tamaño de la fuente */
+    display: flex;
+    align-items: center;
+}
 
-        @media (max-width: 600px) {
-            .parte-inferior {
-                height: 15%; /* Ajusta la altura en dispositivos móviles si es necesario */
-            }
+.btn-personalizado i {
+    margin-left: 6px; /* Espacio entre el texto y el icono */
+}
 
-            .container {
-                margin-bottom: 30%; /* Ajusta el margen inferior para dispositivos móviles */
-            }
-        }
+.container {
+    margin-bottom: 10%; /* Espacio en la parte inferior igual a la altura del div fijo */
+}
+
+@media (max-width: 600px) {
+    .parte-inferior {
+        height: 15%; /* Ajusta la altura en dispositivos móviles si es necesario */
+    }
+
+    .container {
+        margin-bottom: 30%; /* Ajusta el margen inferior para dispositivos móviles */
+    }
+    .parte-inferior p, .parte-inferior a {
+        font: size 14px;
+    }
+}
 
 
                 /* Alerta bonita */
@@ -443,7 +458,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
+    <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
@@ -475,6 +490,8 @@ gmp-map {
                         <div class="mt-3 text-center">
                         <p>
                             <input class="form-check-input text-center"id="CheckBoxCondiciones" type="checkbox" style="margin-right:12px;"><a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a></input></p>
+                            <p>Para que los resultados del tratamiento realizados durante la cita sean exitosos se deberá seguir con los tratamientos proporcionados al pie de la letra.</p>
+                            <a href="https://drive.google.com/your-document-link" target="_blank">Lista de Tratamientos</a>
                         </div>
                     </div>
                    
@@ -672,6 +689,16 @@ gmp-map {
 <script>
 
 $(document).ready(function(){
+    // ESTO ME LO DIO CHAT ME ESTRESE PQ SE CERRABA OTRO MODAL VA
+    $('a[data-bs-target="#termsModal"]').click(function(e){
+            e.preventDefault();
+            $('#termsModal').modal('show');
+        });
+
+        
+        $('#termsModal').on('hidden.bs.modal', function () {
+            $('#citasModal').modal('show');
+        });
 
 
     function mostrarAlerta(text, alertClass, iconId) {
@@ -965,6 +992,9 @@ $(document).ready(function(){
         $('#citaForm').on('submit', function(e) {
             e.preventDefault();
 
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
             let serviciosSeleccionados = [];
 
             $('.custom-checkbox-input:checked').each(function() {
@@ -988,7 +1018,11 @@ $(document).ready(function(){
                 method: 'POST',
                 data: formData,
                 success: function(response) {
-                    limpiarFormulario();                    
+                    limpiarFormulario();              
+                    
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+
                     let alertMessage = '';
                     let alertClass = '';
                     let alertIcon = '';
@@ -1037,10 +1071,14 @@ $(document).ready(function(){
                         if (alertMessage) {
                             mostrarAlerta(alertMessage, alertClass, alertIcon);
                         }
-                }
-            })
 
-        })
+                // Ocultar la pantalla de carga si hay un error
+                $('#contenedor_carga').css('display', 'none');
+
+                }
+            });
+
+        });
 
 
             

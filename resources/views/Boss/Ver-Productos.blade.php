@@ -44,7 +44,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -550,7 +550,7 @@ header {
                 productos.append(`
                     <div class="col-12 text-center my-5">
                         <div class="alert" role="alert">
-                            <h4 class="alert-heading">¡No hay prodcutos disponibles en este momento!</h4>
+                            <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
                         </div>
                     </div>
                 `);
@@ -589,13 +589,20 @@ header {
 
         function productoDelete(id){
         if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
           $.ajax({
               url: `/producto/eliminar/${id}`,
               method: 'GET',
               success: function(){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert("Producto eliminado con éxito.");
                   dibujarProductos();
               },
               error: function(error){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert("Error al eliminar el producto, actualmente se encuentra en uso.");
                   console.log(error)
               }
@@ -637,6 +644,9 @@ $('#edit_imagenProducto').on('change', function() {
 $('#editProductForm').on('submit', function(e) {
     e.preventDefault();
 
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
+
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
@@ -648,11 +658,15 @@ $('#editProductForm').on('submit', function(e) {
         processData: false,
         success: function(response) {
             $('#editProductModal').modal('hide');
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             dibujarProductos();
             alert('Producto actualizado exitosamente');
         },
         error: function(error) {
             console.log(error);
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Hubo un error al actualizar el producto');
         }
     });

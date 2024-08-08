@@ -84,7 +84,7 @@
             height: 100vh;
             width: 100%;
             position: fixed;
-            z-index: 100;
+            z-index: 300000;
         }
 
         /* Dashboard CSS */

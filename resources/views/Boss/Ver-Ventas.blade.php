@@ -525,28 +525,30 @@
                         <div class="tab-pane fade" id="citas" role="tabpanel" aria-labelledby="citas-tab">
                             <div class="table-container mt-5">
                                 <h2>CITAS</h2>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Precio</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                            <th>Rechazar</th>
-                                            <th>Editar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Citas</td>
-                                            <td>$50</td>
-                                            <td>2024-07-01</td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Precio</th>
+                                                <th>Día</th>
+                                                <th>Detalles</th>
+                                                <th>Rechazar</th>
+                                                <th>Editar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Citas</td>
+                                                <td>$50</td>
+                                                <td>2024-07-01</td>
+                                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <!-- Pestaña Compras -->

@@ -36,7 +36,7 @@
             height: 100vh;
             width: 100%;
             position: fixed;
-            z-index: 100;
+            z-index: 300000;
         }
 
         :root {
@@ -404,7 +404,7 @@
         </div>
         <div class="section-divider"></div>
 
-        <div>
+        <div class="table-responsive">
             <table class="table">
                 <thead>
                   <tr>
@@ -590,6 +590,10 @@ function editarTecnica(tecnicaId, servicioId) {
 
     // Función para guardar cambios de la técnica
     $('#saveChanges').off('click').on('click', function() {
+
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
         const updatedTecnica = {
             nombre: $('#tecnicaNombre').val(),
             precio: $('#tecnicaPrecio').val(),
@@ -601,11 +605,15 @@ function editarTecnica(tecnicaId, servicioId) {
             method: 'POST',
             data: updatedTecnica,
             success: function(response) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert("Técnica actualizada con éxito")
                 $('#editarTecnicaModal').modal('hide');
                 verTecnicas(servicioId);
             },
             error: function(error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Error al actualizar la técnica.');
             }
         });
@@ -614,16 +622,22 @@ function editarTecnica(tecnicaId, servicioId) {
     // Borrar técnica
     $('#deleteTecnica').off('click').on('click', function() {
         if (confirm('¿Estás seguro de que deseas eliminar esta técnica?')) {
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
             $.ajax({
                 url: `/borrar/tecnica/${tecnicaId}`,
                 method: 'DELETE',
                 success: function(response) {
+                    // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     alert('Técnica eliminada con éxito');
                     $('#editarTecnicaModal').modal('hide');
                     verTecnicas(servicioId);
                 },
                 error: function(error) {
                     console.log(error);
+                    // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     alert('Actualmente esta técnica se encuentra en uso, eliminala de los sitios en donde se use para poder eliminarla.');
                 }
             });
@@ -654,6 +668,10 @@ function servicioUpdate(servicioId) {
 
             // Función para guardar cambios del servicio
             $('#saveChanges2').off('click').on('click', function() {
+
+                // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
                 const updatedServicio = {
                     nombre: $('#servicioNombre').val()
                 };
@@ -664,10 +682,14 @@ function servicioUpdate(servicioId) {
                     data: updatedServicio,
                     success: function(response) {
                         $('#editarServicioModal').modal('hide');
+                        // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                         alert("Servicio actualizado con éxito.");
                         tablaServicios();
                     },
                     error: function(error) {
+                        // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                         alert('Error al actualizar el servicio.');
                     }
                 });
@@ -682,14 +704,20 @@ function servicioUpdate(servicioId) {
 // Borrar servicio
 function servicioDelete(servicioId) {
     if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
         $.ajax({
             url: `/borrar/servicio/${servicioId}`,
             method: 'DELETE',
             success: function(response) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Servicio eliminado con éxito');
                 tablaServicios();
             },
             error: function(error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Error al eliminar el servicio, primero elimina sus técnicas.');
             }
         });

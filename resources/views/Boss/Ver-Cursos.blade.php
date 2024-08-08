@@ -44,7 +44,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -705,6 +705,8 @@ function editarInscripcion(inscripcionId){
                     $('#inscripcionFecha').val(data.fechaInscripcion);
                     $('#inscripcionEstado').val(data.estado);
                     $('#saveChanges').off('click').on('click', function() {
+                        // Mostrar la pantalla de carga
+                        $('#contenedor_carga').css('display', 'block');
                         const updatedInscripcion = {
                             estado: $('#inscripcionEstado').val(),
                             _token: $('meta[name="csrf-token"]').attr('content')
@@ -714,17 +716,23 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
+                                // Ocultar la pantalla de carga
+                        $('#contenedor_carga').css('display', 'none');
                                 alert("Inscripción actualizada con éxito");
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
                             },
                             error: function(error) {
+                                // Ocultar la pantalla de carga
+                        $('#contenedor_carga').css('display', 'none');
                                 alert('Error al actualizar la inscripción.');
                             }
                         });
                     });
                 },
                 error: function(error) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     alert('Error al cargar los detalles de la inscripción.');
                 }
             });
@@ -735,6 +743,8 @@ function editarInscripcion(inscripcionId){
 
         function cursoDelete(id){
   if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
     $.ajax({
       url: `/cursos/eliminar/${id}`,
       method: 'DELETE',
@@ -742,10 +752,14 @@ function editarInscripcion(inscripcionId){
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(){
+        // Ocultar la pantalla de carga
+        $('#contenedor_carga').css('display', 'none');
         alert('Curso eliminado exitosamente.');
         dibujarCursos();
       },
       error: function(error){
+        // Ocultar la pantalla de carga
+        $('#contenedor_carga').css('display', 'none');
         alert('Hubo un error al eliminar el curso');
         console.error('Error al eliminar el curso:', error);
       }
@@ -789,6 +803,9 @@ function modalEditar(id) {
 $('#editCursoForm').on('submit', function(e) {
     e.preventDefault();
 
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
+
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
@@ -800,12 +817,16 @@ $('#editCursoForm').on('submit', function(e) {
         processData: false,
         success: function(response) {
             $('#editCursoModal').modal('hide');
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             dibujarCursos();
-            alert('Curso actualizado exitosamente');
+            alert('Curso actualizado con éxito.');
         },
         error: function(error) {
             console.log(error);
-            alert('Hubo un error al actualizar el curso');
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert('Hubo un error al actualizar el curso.');
         }
     });
 });

@@ -42,7 +42,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 
@@ -143,6 +143,10 @@ h1, h2, h3, h4, h5 ,a, li{
     
     width: 100%;
 }
+.footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
 .footer a {
     color: white;
 }
@@ -184,7 +188,7 @@ h1, h2, h3, h4, h5 ,a, li{
             }
         }
 
-        .custom-alert {
+        .custom-alerts {
         background-color: #e0e0e0; /* Color rosado */
         border: 1px solid #e0e0e0;
         color: #000000;
@@ -192,17 +196,58 @@ h1, h2, h3, h4, h5 ,a, li{
         padding: 20px;
         font-family: "Josefin Sans", sans-serif;
     }
-    .custom-alert .alert-heading {
+    .custom-alerts .alert-heading {
         font-size: 1.5rem;
         font-weight: bold;
     }
-    .custom-alert p {
+    .custom-alerts p {
         font-size: 1.1rem;
         margin-bottom: 0;
     }
-    .custom-alert hr {
+    .custom-alerts hr {
         border-top: 2px solid #000000;
     }
+    .btn-light:hover{
+      background-color:#fa3284;
+    }
+    /* Alerta bonita */
+
+    @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
 
         
 
@@ -290,16 +335,16 @@ h1, h2, h3, h4, h5 ,a, li{
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>
@@ -366,7 +411,7 @@ h1, h2, h3, h4, h5 ,a, li{
             if (data.length === 0) {
             productos.append(`
               <div class="col-12 text-center my-5">
-                <div class="custom-alert" role="alert">
+                <div class="custom-alerts">
                   <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
                   <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
                   <hr>

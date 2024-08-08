@@ -22,6 +22,9 @@
             background-position: center center;
             min-height: 100vh;
         }
+        .btn-light:hover{
+      background-color:#fa3284;
+    }
 
         .hiddenX {
             overflow-x: hidden;
@@ -35,6 +38,17 @@
             margin: 3px 15px;
             vertical-align: middle;
         }
+
+        /* ANIMACION DE CARGA */
+        #contenedor_carga{
+        background: #ffffff url(/resources/img/home/preloader.gif) no-repeat center center;
+        background-size: 20%;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        z-index: 300000;
+        }
+
 
         #navbar {
             font-family: "Josefin Sans", sans-serif !important;  
@@ -77,6 +91,10 @@
         .btn-secondary:hover {
             background-color: #f5c6cb;
             border-color: #f5c6cb;
+        }
+
+        .modalInfo{
+            padding: 16px;
         }
     </style>
 </head>
@@ -130,96 +148,59 @@
                 <tr>
                     <th>Tipo</th>
                     <th>Precio</th>
-                    <th>Día</th>
-                    <th>Acciones</th>
+                    <th>Realizado</th>
+                    <th>Detalles</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Servicio A</td>
-                    <td>$50</td>
-                    <td>2024-07-01</td>
-                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                </tr>
-                <tr>
-                    <td>Servicio B</td>
-                    <td>$75</td>
-                    <td>2024-07-02</td>
-                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                </tr>
-                <tr>
-                    <td>Compra</td>
-                    <td>$100</td>
-                    <td>2024-07-03</td>
-                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
-                </tr>
+            <tbody id="bodyHistorial">
+
             </tbody>
         </table>
         <a href="/Perfil-User" class="btn btn-secondary mt-3">Volver</a>
     </div>
 
     <!-- Modales -->
-     <!-- ESTE MODAL SERA PARA LAS CITAS -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+
+    <!-- Modal para citas -->
+    <div class="modal fade" id="citaModal" tabindex="-1" aria-labelledby="citaModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                    <h5 class="modal-title" id="citaModalLabel">Detalles de la Cita</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>servicio</th>
-                                <th>tecnica</th>
-                                <th>empleado</th>
-                                <th>status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>cejas,ojos,labios</td>
-                                <td>tec1,tec2,tec3</td>
-                                <td>anyelo</td>
-                                <td>finalizada</td>
+                <div id="modal-bodyCitas">
 
-                            </tr>
-                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- ESTE MODAL SERA PARA LOS PRODUCTOS -->
-    <div class="modal fade" id="detailsModalProducts" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <!-- Modal para inscripciones -->
+    <div class="modal fade" id="inscripcionModal" tabindex="-1" aria-labelledby="inscripcionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                    <h5 class="modal-title" id="inscripcionModalLabel">Detalles de la Inscripción</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>imagen</th>
-                                <th>descripcion</th>
-                                <th>cantidad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>aqui ira la imagen</td>
-                                <td>ajfbsjabfjklsabf</td>
-                                <td>2</td>
-                            </tr>
-                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
-                        </tbody>
-                    </table>
+                <div id="modal-bodyInscripcion">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para productos -->
+    <div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productoModalLabel">Detalles de la Compra</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="productoModalBody">
+
                 </div>
             </div>
         </div>
@@ -230,7 +211,181 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script>
+
+
+        // Dibujar historial
+
+        function dibujarHistorial() {
+      $.ajax({
+        url: '/get/historial',
+        method: 'GET',
+        success: function(data) {
+          console.log(data);
+          const historiales = $('#bodyHistorial');
+          historiales.empty();
+          const { citas, inscripciones, ventas } = data;
+
+    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
+        historiales.append(`
+            <tr>
+                <td colspan="4">No hay historial disponible.</td>
+            </tr>
+        `);
+    } else {
+        citas.forEach(cita => {
+            const infoCitas = `<tr>
+                <td>Cita</td>
+                <td>${cita.venta ? cita.venta.total : 'N/A'}</td>
+                <td>${cita.fechaCreacion}</td>
+                <td>
+                    <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+            historiales.append(infoCitas);
+        });
+
+        inscripciones.forEach(inscripcion => {
+            const infoInscripciones = `<tr>
+                <td>Inscripción</td>
+                <td>${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                <td>${inscripcion.fechaInscripcion}</td>
+                <td>
+                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+            historiales.append(infoInscripciones);
+        });
+
+        ventas.forEach(venta => {
+            const infoVentas = `<tr>
+                <td>Compra</td>
+                <td>${venta.total}</td>
+                <td>${venta.fechaCreacion}</td>
+                <td>
+                    <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+            historiales.append(infoVentas);
+        });
+    }
+    },
+        error: function(error) {
+        console.error('Error al obtener el historial', error);
+        }
+    });
+}
+
+
+function mostrarCitaModal(citaId) {
+            $.ajax({
+                url: `/get/ServicioTecnica/${citaId}`,
+                method: 'GET',
+                success: function(data) {
+                    const bodyCitas = $('#modal-bodyCitas');
+                    bodyCitas.empty();
+                    const { citaHasServicios, cita, empleado } = data;
+                    if (citaHasServicios.length > 0) {
+                citaHasServicios.forEach(item => {
+                    const servicios = `<div class="modalInfo">
+                        Servicio: ${item.servicio ? item.servicio.nombre : 'N/A'} <br>
+                        Técnica: ${item.tecnica ? item.tecnica.nombre : 'N/A'} <br>
+                        Costo de la técnica: ${item.tecnica ? item.tecnica.precio : 'N/A'} <br>
+                    </div>`;
+                    bodyCitas.append(servicios);
+                });
+            } else {
+                bodyCitas.append('<div class="modalInfo">No se encontraron servicios para esta cita.</div>');
+            }
+            const detalleCita = `
+                <div class="modalInfo">
+                    Cita programada para el ${cita.fechaCita}
+                    a las ${cita.horaCita} con el empleado ${empleado.name}.
+            `;
+            bodyCitas.append(detalleCita);
+            $('#citaModal').modal('show');
+        },
+        error: function(error) {
+            console.error('Error al obtener los detalles de la cita', error);
+        }
+    });
+}
+
+        function mostrarInscripcionModal(inscripcionId) {
+            $.ajax({
+                url: `/get/inscripcion2/${inscripcionId}`,
+                method: 'GET',
+                success: function(data) {
+                    const inscripcionModal = $('#modal-bodyInscripcion');
+                    inscripcionModal.empty();
+                    const { curso, empleado, tecnicas, inscripcion } = data;
+                    if (inscripcion.estado == 0){
+                        inscripcion.estado = "<span style='color: #D5B533;'>Pendiente</span>";
+                    } else {
+                        inscripcion.estado = "<span style='color: #39BF3D;'>Aceptado</span>";
+                    }
+                    const detalleInscripcion = `<div class="modalInfo">
+                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado} <br> Inicia el ${curso.fechaInicio}
+                        a las ${curso.horaInicio} y su instructor oficial es ${empleado.name}.<br><br>Técnicas a enseñar en el curso:
+                    </div>`;
+                    inscripcionModal.append(detalleInscripcion);
+                    if (tecnicas.length > 0){
+                        tecnicas.forEach(item => {
+                            const tecnicasInfo = `<div class="">
+                        <li style="padding:0px;margin-left:15px;">${item.tecnicas ? item.tecnicas.nombre : 'N/A'}</li>
+                    </div>`;
+                    inscripcionModal.append(tecnicasInfo);
+                        });
+                        inscripcionModal.append("<br>")
+                    } else {
+                        inscripcionModal.append('<div class="modalInfo">Este curso no cuenta con técnicas para enseñar.</div>');
+                        console.log(tecnica);
+                    }
+                    $('#inscripcionModal').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error al obtener los detalles de la inscripción', error);
+                }
+            });
+        }
+
+        function mostrarProductoModal(ventaId) {
+            $.ajax({
+                url: `/get/ventaProductos/${ventaId}`,
+                method: 'GET',
+                success: function(data) {
+                    const productoModalBody = $('#productoModalBody');
+                    productoModalBody.empty();
+                    const { venta, producto } = data;
+                    if (producto.length > 0) {
+                        producto.forEach (item => {
+                            const detalleProducto = `<div class="modalInfo">
+                                <img src="/storage/${item.producto.imagen}" alt="Producto" width="80" height="80">  
+                                  ${item.producto.nombre} - $${item.producto.precio}
+                                </div>`;
+                                productoModalBody.append(detalleProducto);
+                                console.log(producto)
+                            });
+                    } else {
+                        productoModalBody.append('<div class="modalInfo">No se encontraron productos para esta venta.</div>');
+                    }
+                    const infoExtra = `<div class="modalInfo text-center">
+                        Compra con ${producto.length} productos.
+                        <br>Costo total: $${venta.total}<br>
+                    </div>`;
+                    productoModalBody.append(infoExtra);
+                    $('#productoModal').modal('show');
+                },
+                error: function(error) {
+                    console.error('Error al obtener los detalles del producto', error);
+                }
+            });
+        }
+
+
         $(document).ready(function(){
+
+            dibujarHistorial();
+
             function separadorHidden(){
                 var cuentaLi = document.getElementById("cuenta");
                 var carrito = document.getElementById("carrito");

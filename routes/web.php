@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\InventarioController;
@@ -223,7 +224,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
 
     // =====[ Cursos ]=====
-
+    
     Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
     Route::delete('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
@@ -231,9 +232,15 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
     Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
+    
+    
+    
+    // =====[ Historial ]=====
 
-
-
+    Route::get('/get/historial',[DibujarController::class, 'historial']);
+    Route::get('/get/ServicioTecnica/{citaId}', [DibujarController::class, 'obtenerServicioTecnica']);
+    Route::get('/get/inscripcion2/{inscripcionId}', [DibujarController::class, 'index']);
+    Route::get('/get/ventaProductos/{ventaId}', [DibujarController::class, 'indexProductos']);
 
 
 // ==========[ Cosas de Hugo ]==========

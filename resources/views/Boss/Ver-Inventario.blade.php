@@ -42,7 +42,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -438,63 +438,70 @@ header {
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Servicios</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-servicios">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-servicios">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Ventas</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-ventas">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-ventas">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Curso</h2>
                             <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre...">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-productos-curso">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagen</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-productos-curso">
+                                        <!-- Los productos serán insertados aquí por jQuery -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -544,7 +551,7 @@ header {
 
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script>
@@ -669,6 +676,8 @@ $('#editProductModal').on('show.bs.modal', function(event) {
 
     // Guardar cambios
     $('#saveProductChanges').off('click').on('click', function() {
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
         var formData = new FormData($('#editProductForm')[0]);
         $.ajax({
             url: '/productos/' + productId,
@@ -677,11 +686,15 @@ $('#editProductModal').on('show.bs.modal', function(event) {
             processData: false,
             contentType: false,
             success: function(response) {
-                alert('Producto actualizado exitosamente');
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert('Producto actualizado con éxito.');
                 $('#editProductModal').modal('hide');
                 location.reload(); // Opcional: Recargar la página para reflejar los cambios
             },
             error: function(error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 console.error('Error al actualizar el producto:', error);
             }
         });

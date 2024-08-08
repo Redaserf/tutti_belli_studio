@@ -43,7 +43,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -430,7 +430,7 @@ header {
                     </div>
                     <div class="section-divider"></div>
 
-                    <div>
+                    <div class="table-responsive">
 
                         <table class="table">
                             <thead>
@@ -455,7 +455,7 @@ header {
                     <br>
                     <div class="section-divider"></div>
 
-                    <div>
+                    <div class="table-responsive">
 
                         <table class="table">
                             <thead>
@@ -629,6 +629,8 @@ function tablaDescuentosTecnicas(){
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen
 function eliminarDescuentoProducto(id){
     if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
     $.ajax({
         url: `/eliminarDescuentoProducto/${id}`,
         method: 'POST',
@@ -637,10 +639,15 @@ function eliminarDescuentoProducto(id){
             _token: $('input[name="_token"]').val(),
         },
         success: function(){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Descuento eliminado con éxito.");
             tablaDescuentosProducto();
         },
         error: function(error){
-
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Error al borrar el descuento.");
             console.log(id)
         }
     });
@@ -651,6 +658,9 @@ function eliminarDescuentoProducto(id){
 //Modificar para prodcuto
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen
 function eliminarDescuentoTecnica(id){
+    if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
     $.ajax({
         url: `/eliminarDescuentoTecnica/${id}`,
         method: 'POST',
@@ -658,13 +668,20 @@ function eliminarDescuentoTecnica(id){
             _token: $('input[name="_token"]').val(),
         },
         success: function(){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Descuento eliminado con éxito.");
             tablaDescuentosTecnicas();
-
+            
         },
         error: function(error){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Error al borrar el descuento.");
             console.log(error)
         }
     });
+}
 }
 
 </script>

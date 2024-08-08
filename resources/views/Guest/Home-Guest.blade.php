@@ -71,9 +71,19 @@ gmp-map {
 
   .reserve-button:hover {
     color: #212121; /* Cambia el color del texto a negro mate */
-    background-color: #e0e0e0; /* Cambia el fondo a gris claro */
+    background-color: #fa3284; /* Cambia el fondo a gris claro */
   }
-
+  .btn-light:hover{
+      background-color:#fa3284;
+    }
+    .btn-personalizado:hover{
+      background-color:#fa3284;
+      border:0;
+    }
+    .footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
   @media (max-width: 768px) {
     .reserve-button {
       font-size: 16px;
@@ -195,9 +205,10 @@ gmp-map {
   }
 }
   .img-horario{
-    width: 350px;
-    height: 500px;
-    margin-left: 0 auto;
+    width: 450px;
+    height: 600px;
+    margin-top: 0 auto;
+    
   }
 
   
@@ -211,7 +222,7 @@ gmp-map {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 /* FIN ANIMACION DE CARGA */
@@ -242,6 +253,10 @@ section{
     gap:30px;
     padding: 20px;
 }
+.btn-personalizado:hover{
+      background-color:#fa3284;
+      border:0;
+    }
 .card {
     background: white;
     border-radius: 8px;
@@ -429,6 +444,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     .fonts2{
       font-family: "Merriweather", serif;
     }
+    
     </style>
 </head>
 <body class="hiddenX">
@@ -553,7 +569,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
             <a href="/Login">
-              <button onclick="" class="btn btn-dark">Reservar cita</button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
             </a>
           </div>
         </div> 
@@ -566,28 +582,24 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img1g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img4g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>    
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img3g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>              
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img2g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
             </div>
           </div>
@@ -613,7 +625,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
       <section class="text-center">
             <a href="/Cursos-User">
-              <button onclick="" class="btn btn-dark">Mas Informacion -></button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Mas Informacion -></button>
             </a>
       </section>
       
@@ -669,16 +681,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div  style="background-color: #1e1b1b;"class="container-fluid">
             <div style="" class="row text-center text-md-left">
               <br><br><br>
-                <div  class="col-md-4 text-center">
+                <div  class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div  class="col-md-4">
+                <div  class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div  class="col-md-4">
+                <div  class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="#">Inicio</a></li>
@@ -687,7 +699,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                         <li><a href="/Login">Iniciar sesión</a></li>
                     </ul>
                     <h5>Horario</h5>
-                    <ul class="horario">
+                    <ul class="horario ">
                         <li>Lunes a Viernes: 9:00-9:00</li>
                         <li>Sábado: 10:00-4:00</li>
                         <li>Domingo: 10:00-4:00</li>
