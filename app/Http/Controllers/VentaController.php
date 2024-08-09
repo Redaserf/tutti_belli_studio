@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
+    //COMPRA DE LOS PRODUCTOS
     function crearCompra(Request $request)
     {
         // Inicia la transacción
@@ -24,6 +25,9 @@ class VentaController extends Controller
             // Da de alta la venta
             $venta = Venta::create([
                 'total' => $request->total,
+                'fechaCreacion' => now(),
+                //Compra en espera
+                'estadoVenta' => null,
                 'fechaVenta' => $request->fechaVenta,
                 'usuarioId' => $usuario->id
             ]);
@@ -39,6 +43,23 @@ class VentaController extends Controller
                     'productoId' => $request->productosComprados[$i]['id']
                 ]);
             }
+
+
+            //SCRIPT PARA DESCONTAR DEL INVENTARIO.
+
+            $detalles = $venta->detalleProductos;
+
+            foreach ($detalles as $detalle) {
+                // Obtener el producto relacionado con el detalle
+                $producto = $detalle->producto;
+
+                // Reducir el stock del producto en 1 unidad
+                $producto->cantidadEnStock = $producto->cantidadEnStock - 1;
+
+                // Guardar los cambios en el producto
+                $producto->save();
+            }
+
             //Script para vacial el carrito del usuario
             //Obtiene el carrito del usuario
             $carritoUsuario = $usuario->carrito;
@@ -68,20 +89,20 @@ class VentaController extends Controller
             $venta->estadoVenta = true;
 
             // Obtener los detalles de productos relacionados con esa venta
-            $detalles = $venta->detalleProductos;
+//            $detalles = $venta->detalleProductos;
 
             $venta->save();
 
-            foreach ($detalles as $detalle) {
-                // Obtener el producto relacionado con el detalle
-                $producto = $detalle->producto;
-
-                // Reducir el stock del producto en 1 unidad
-                $producto->cantidadEnStock -= 1;
-
-                // Guardar los cambios en el producto
-                $producto->save();
-            }
+//            foreach ($detalles as $detalle) {
+//                // Obtener el producto relacionado con el detalle
+//                $producto = $detalle->producto;
+//
+//                // Reducir el stock del producto en 1 unidad
+//                $producto->cantidadEnStock = $producto->cantidadEnStock - 1;
+//
+//                // Guardar los cambios en el producto
+//                $producto->save();
+//            }
 
             DB::commit();
             return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);
@@ -103,6 +124,22 @@ class VentaController extends Controller
             $venta->estadoVenta = false;
 
             $venta->save();
+
+           // Obtener los detalles de productos relacionados con esa venta
+           $detalles = $venta->detalleProductos;
+
+           foreach ($detalles as $detalle) {
+                // Obtener el producto relacionado con el detalle
+                $producto = $detalle->producto;
+
+                // Aumetar el stock de los productos en 1 unidad
+                $producto->cantidadEnStock = $producto->cantidadEnStock + 1;
+
+                // Guardar los cambios en el producto
+                $producto->save();
+            }
+
+
 
             DB::commit();
             return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);
