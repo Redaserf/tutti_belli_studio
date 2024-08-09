@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class DetalleProductoController extends Controller
 {
+    //Compras en espera
     function comprasIndex(){
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
@@ -20,6 +21,7 @@ class DetalleProductoController extends Controller
         return response()->json($ventas);
     }
 
+    //Compras confirmadas
     function comprasConfirmadas(){
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
@@ -29,6 +31,7 @@ class DetalleProductoController extends Controller
         return response()->json($ventas);
     }
 
+    //Compras rechazadas
     function comprasRechazadas()
     {
         $ventas = Venta::has('detalleProductos')
