@@ -18,12 +18,17 @@ return new class extends Migration
             $table->unsignedBigInteger('citaId');
             $table->unsignedBigInteger('servicioId');
             $table->unsignedBigInteger('tecnicaId');
+            $table->unsignedBigInteger('ventaId');
+            $table->double('precioTecnica');
+
             $table->timestamps();
 
 
             $table->foreign('citaId')->references('id')->on('citas');
             $table->foreign('servicioId')->references('id')->on('servicios');
             $table->foreign('tecnicaId')->references('id')->on('tecnicas');
+            $table->foreign('ventaId')->references('id')->on('ventas');
+
 
         });
     }

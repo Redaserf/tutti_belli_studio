@@ -15,22 +15,29 @@ class CitaHasServicio extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['citaId', 'servicioId', 'tecnicaId'];
+    protected $fillable = [
+    'citaId', 'servicioId', 'tecnicaId', 'estadoServicio',
+    'ventaId', 'precioTecnica', 'estadoTecnica'];
 
 
     public function tecnica()
     {
-        return $this->belongsTo(Tecnica::class, 'tecnicaId', 'id');
+        return $this->belongsTo(Tecnica::class, 'tecnicaId');
     }
 
     public function servicio()
     {
-        return $this->belongsTo(Servicio::class, 'servicioId', 'id');
+        return $this->belongsTo(Servicio::class, 'servicioId');
     }
 
     public function cita()
     {
-        return $this->belongsTo(Cita::class, 'citaId', 'id');
+        return $this->belongsTo(Cita::class, 'citaId');
+    }
+
+    public function venta()
+    {
+        return $this->belongsTo(Venta::class, 'ventaId');
     }
 
     // public function productosTecnicas()

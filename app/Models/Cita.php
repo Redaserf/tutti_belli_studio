@@ -36,6 +36,12 @@ class Cita extends Model
                     ->withPivot('tecnicaId');
     }
 
+    public function tecnicas()
+    {
+        return $this->belongsToMany(Tecnica::class, 'citas_has_servicios', 'citaId', 'tecnicaId')
+                    ->withPivot('servicioId');
+    }
+
     public function venta(){
         return $this->belongsTo(Venta::class, 'ventaId');
     }
@@ -44,7 +50,7 @@ class Cita extends Model
       //  return $this->hasOne(Resenia::class);
     //}
 
-    public function detalleTecnica() {
-        return $this->hasMany(DetalleTecnicaProducto::class, 'citaId');
-    }
+    // public function detalleTecnica() {
+    //     return $this->hasMany(DetalleTecnica::class, 'citaId');
+    // }
 }

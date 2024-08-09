@@ -455,7 +455,7 @@ gmp-map {
                             <label for="fechaCita">Fecha de la cita</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select style='display: none' class='form-control' id="horaCita" name="horaCita" required>
+                            <select style='display: none' class='form-control' id="horaCita" name="horaCita">
                             </select>
                         </div>
                         <div>
@@ -744,6 +744,12 @@ $(document).ready(function(){
             }
         });
 
+
+        function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
+                return fecha1.getFullYear() === fecha2.getFullYear() &&
+                fecha1.getMonth() === fecha2.getMonth() &&
+                fecha1.getDate() === fecha2.getDate();
+            }
         
 
         function actualizarOpcionesSelect(date) {
@@ -754,7 +760,11 @@ $(document).ready(function(){
 
                 select.empty();
 
-                if(date.getDay() === new Date().getDay()) {// si el dia es hoy
+                let hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+
+
+                if(esMismaFecha(date, hoy)) {// si el dia es hoy
                     
                 let horaInicio;
                 let horaFin;
@@ -762,16 +772,15 @@ $(document).ready(function(){
                     horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
                     console.log('Hora Actual mas dos horas: ', horaInicio);
                     horaFin = 21;
-                    if(horaInicio > horaFin) {
-                        $('#horaCita').hide();
-                        mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
-                    }
                 }else if(dia === 0 || dia === 6){//sabados y domingos
                     horaInicio = new Date().getHours() + 2;
                     console.log(horaInicio);
                     horaFin = 16;
+                }
+
+                if(esMismaFecha(date, hoy)){
                     if(horaInicio > horaFin) {
-                        $('#horaCita').hide();
+                        select.hide();
                         mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
                     }
                 }
@@ -997,18 +1006,20 @@ $(document).ready(function(){
 
                         if (response && response.message) {
                             if (response.message === 'Debe seleccionar al menos un servicio') {
-                                alertMessage = 'Por favor, seleccione al menos un servicio.';
+                                alertMessage = 'Por favor, selecciona al menos un servicio.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
                             } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
                                 alertMessage = 'Ya existe una cita para esta fecha y hora.';
                                 alertClass = 'alert-warning'; // Cambia a advertencia
                                 alertIcon = 'exclamation-triangle-fill'; 
-                            } else {
-                                alertMessage = 'Por favor, complete todos los campos correctamente.';
                             }
-                        } else {
-                            alertMessage = 'Se ha producido un error en la solicitud';
+                            else if(response.message === 'The fecha cita field must be a valid date.'){
+                                mostrarAlerta(`Error: Ingrese correctamente la fecha`, 'alert-danger', 'exclamation-triangle-fill');
+                            }
+                            else{
+                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
+                            }
                         }
 
                         if (alertMessage) {

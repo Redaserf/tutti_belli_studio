@@ -273,6 +273,8 @@ Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecn
     //editar detalleTecnica
     Route::put('/detalleTecnica/actualizar', [RegistrosController::class, 'actualizarDetalleTecnica']);
 
+    //editar venta a true/ la venta se concreto
+    Route::put('/venta/actualizar', [RegistrosController::class, 'aceptarVentaEditarEstado']);
 
 
 

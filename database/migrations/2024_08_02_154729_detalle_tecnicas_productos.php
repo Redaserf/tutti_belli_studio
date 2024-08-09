@@ -17,7 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('citaId');
             $table->unsignedBigInteger('tecnicaId');
             $table->unsignedBigInteger('productoId');
+
             $table->integer('cantidadProducto');
+
+            $table->boolean('estadoProducto')->nullable();
             $table->timestamps();
 
             $table->foreign('citaId')->references('id')->on('citas');

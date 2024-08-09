@@ -15,7 +15,7 @@ class DetalleTecnicaProducto extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['citaId','tecnicaId', 'productoId', 'cantidadProducto'];
+    protected $fillable = ['citaId','tecnicaId', 'productoId', 'cantidadProducto', 'estadoProducto'];
 
 
 //    public function descuento(){
@@ -44,6 +44,10 @@ class DetalleTecnicaProducto extends Model
     }
 
     public function producto() {
+        return $this->belongsTo(Producto::class, 'productoId');
+    }
+
+    public function venta() {
         return $this->belongsTo(Producto::class, 'productoId');
     }
 }

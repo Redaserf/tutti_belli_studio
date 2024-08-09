@@ -22,6 +22,7 @@ use App\Models\CitaHasServicio;
 use Illuminate\Support\Facades\Mail;
 use App\Models\DetalleTecnica;
 use App\Models\DetalleTecnicaProducto;
+use App\Models\ProductoHasTecnica;
 
 
 
@@ -155,25 +156,22 @@ class RegistrosController extends Controller
             'serviciosSeleccionados' => 'required|json'
         ]);
     
-        // Decodificar el JSON
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
+
     
-        // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
     
-        // Validar formato de serviciosSeleccionados
         foreach ($serviciosSeleccionados as $servicio) {
             if (!isset($servicio['servicioId']) || !isset($servicio['tecnicaId'])) {
                 return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
             }
         }
     
-        // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-                             ->where('horaCita', $request->horaCita)
-                             ->first();
+        ->where('horaCita', $request->horaCita)
+        ->first();
     
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
@@ -181,50 +179,65 @@ class RegistrosController extends Controller
     
         DB::beginTransaction();
         try {
-            // Crear una venta
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
                 'estadoVenta' => false,
             ]);
     
-            // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
-                "ventaId" => $venta->id,
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
     
-            // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
-                    'tecnicaId' => $servicio['tecnicaId']
+                    'tecnicaId' => $servicio['tecnicaId'],
+                    'ventaId' => $venta->id,
+                    'precioTecnica' => 0,
                 ]);
     
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+
+                $citaHasServicios->update([
+                    'precioTecnica' => $tecnica->precio
+                ]);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnicaProducto::create([
-                        'citaId' => $cita->id,
-                        'tecnicaId' => $servicio['tecnicaId'],
-                        'productoId' => $productoHasTecnica->productoId,
-                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
-                    ]);
+
+                    $producto = $productoHasTecnica->producto;
+
+
+                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){       
+                        $detalleProductos = DetalleTecnicaProducto::create([
+                            'citaId' => $cita->id,
+                            'tecnicaId' => $servicio['tecnicaId'],
+                            'productoId' => $productoHasTecnica->productoId,
+                            'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                        ]);
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+                        //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
+                         // se suma y no lo igualo pq alteraria el registro
+                         $producto->save();//se guardan cambios
+                         
+                    }else{
+                        throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+                    }
                 }
             }
     
-            // Calcular el precio total de las técnicas para esta cita
             $totalVenta = CitaHasServicio::where('citaId', $cita->id)
                 ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
                 ->sum('tecnicas.precio');
     
-            // Actualiza el precio total en la tabla ventas
             $venta->update(['total' => $totalVenta]);
     
             DB::commit();
@@ -236,9 +249,7 @@ class RegistrosController extends Controller
     }
 
     
-
     public function editarCita(Request $request, $id) {
-        // Validación de los datos del request
         $validatedData = $request->validate([
             'fechaCita' => 'required|date',
             'horaCita' => 'required|date_format:H:i:s',
@@ -248,19 +259,16 @@ class RegistrosController extends Controller
             'serviciosSeleccionados' => 'required|json'
         ]);
     
-        // Decodificar los servicios seleccionados
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
     
-        // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
     
-        // Verificar si ya existe una cita con la misma fecha y hora (excluyendo la cita actual)
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-                            ->where('horaCita', $request->horaCita)
-                            ->where('id', '<>', $id)
-                            ->first();
+        ->where('horaCita', $request->horaCita)
+        ->where('id', '<>', $id)
+        ->first();
     
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
@@ -268,10 +276,8 @@ class RegistrosController extends Controller
     
         DB::beginTransaction();
         try {
-            // Obtener la cita
             $cita = Cita::findOrFail($id);
     
-            // Actualizar la cita
             $cita->update([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -281,43 +287,74 @@ class RegistrosController extends Controller
                 "estadoCita" => true
             ]);
     
-            // Eliminar las relaciones antiguas
-            CitaHasServicio::where('citaId', $id)->delete();
-            DetalleTecnicaProducto::where('citaId', $id)->delete();
+            $ventaId = CitaHasServicio::where('citaId', $id)->value('ventaId');
     
-            // Crear las nuevas relaciones
+            $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
+            ->with('producto')  
+            ->get();
+
+            foreach($productosDevolverStock as $productoDetalle){//devuelve el stock de los productos de las tecnicas anteriores
+                $producto = $productoDetalle->producto;
+                if($producto) {
+                    $producto->cantidadEnStock += $productoDetalle->cantidadProducto;
+                    $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
+                    $producto->save();
+                }
+            }
+
+
+            CitaHasServicio::where('citaId', $id)->delete();//eliminar relaciones
+            DetalleTecnicaProducto::where('citaId', $id)->delete();
+            
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
-                    'tecnicaId' => $servicio['tecnicaId']
+                    'tecnicaId' => $servicio['tecnicaId'],
+                    'ventaId' => $ventaId,
+                    'precioTecnica' => 0,
                 ]);
     
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+
+                $citaHasServicios->update([
+                    'precioTecnica' => $tecnica->precio
+                ]);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnicaProducto::create([
-                        'citaId' => $cita->id,
-                        'tecnicaId' => $servicio['tecnicaId'],
-                        'productoId' => $productoHasTecnica->productoId,
-                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
-                    ]);
+
+                    $producto = $productoHasTecnica->producto;
+
+
+                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){       
+                        $detalleProductos = DetalleTecnicaProducto::create([
+                            'citaId' => $cita->id,
+                            'tecnicaId' => $servicio['tecnicaId'],
+                            'productoId' => $productoHasTecnica->productoId,
+                            'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                        ]);
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+                        //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
+                         // se suma y no lo igualo pq alteraria el registro
+                         $producto->save();//se guardan cambios
+                         
+                    }else{
+                        throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+                    }
                 }
             }
     
-            // Recalcular el precio total de las técnicas para esta cita
             $totalVenta = CitaHasServicio::where('citaId', $cita->id)
-                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
-                ->sum('tecnicas.precio');
+                ->sum('precioTecnica');
     
-            // Actualizar la fecha y el precio total en la tabla ventas
-            Venta::where('id', $cita->ventaId)->update([
+            Venta::where('id', $ventaId)->update([
                 'fechaVenta' => $request->fechaCita,
                 'total' => $totalVenta,
                 'estadoVenta' => false
             ]);
     
-            // Enviar correo de confirmación
             Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
     
             DB::commit();
@@ -329,29 +366,40 @@ class RegistrosController extends Controller
     }
     
     
+    
+    
+    
+    
 
     public function eliminarCita($id) {
         DB::beginTransaction();
         try {
-            // Obtener la cita
             $cita = Cita::findOrFail($id);
             $usuario = $cita->usuario;
     
-            // Obtener el ID de la venta asociada
             $ventaId = $cita->ventaId;
+
+            $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
+            ->with('producto')  
+            ->get();
+
+            foreach($productosDevolverStock as $productoDetalle){
+                $producto = $productoDetalle->producto;
+                if($producto) {
+                    $producto->cantidadEnStock += $productoDetalle->cantidadProducto;
+                    $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
+                    $producto->save();
+                }
+            }
     
-            // Eliminar las relaciones entre la cita y los servicios
-            CitaHasServicio::where('citaId', $id)->delete();
+            CitaHasServicio::where('citaId', $id)->delete();//eliminar relaciones
             DetalleTecnicaProducto::where('citaId', $id)->delete();
 
     
-            // Eliminar la cita
             $cita->delete();
     
-            // Eliminar la venta asociada
             Venta::where('id', $ventaId)->delete();
     
-            // Enviar correo de cancelación
             Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
     
             DB::commit();
@@ -416,16 +464,15 @@ class RegistrosController extends Controller
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
-        ]);
+        ]);//valida que entren esos datos en los formatos deseados
     
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
     
-        // Verificar si los servicios seleccionados están vacíos
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
     
-        // Verificar si ya existe una cita con la misma fecha y hora
+        //verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->first();
@@ -436,53 +483,67 @@ class RegistrosController extends Controller
     
         DB::beginTransaction();
         try {
-            // Crear la venta
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
                 'estadoVenta' => false,
             ]);
     
-            // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
-                "ventaId" => $venta->id,
                 "notasCita" => $request->notasCita ?? null,
                 "estadoCita" => false
             ]);
     
-            // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
                     'servicioId' => $servicio['servicioId'],
-                    'tecnicaId' => $servicio['tecnicaId']
+                    'tecnicaId' => $servicio['tecnicaId'],
+                    'ventaId' => $venta->id,
+                    'precioTecnica' => 0,
                 ]);
     
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+
+                $citaHasServicios->update([
+                    'precioTecnica' => $tecnica->precio
+                ]);
     
                 foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-                    DetalleTecnicaProducto::create([
-                        'citaId' => $cita->id,
-                        'tecnicaId' => $servicio['tecnicaId'],
-                        'productoId' => $productoHasTecnica->productoId,
-                        'cantidadProducto' => $productoHasTecnica->cantidadDeUso
-                    ]);
+
+                    $producto = $productoHasTecnica->producto;
+
+
+                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){       
+                        $detalleProductos = DetalleTecnicaProducto::create([
+                            'citaId' => $cita->id,
+                            'tecnicaId' => $servicio['tecnicaId'],
+                            'productoId' => $productoHasTecnica->productoId,
+                            'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+                        ]);
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+                        //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
+                         // se suma y no lo igualo pq alteraria el registro
+                         $producto->save();//se guardan cambios
+                         
+                    }else{
+                        throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+                    }
                 }
             }
     
-            // Calcular el precio total de las técnicas para esta cita
             $totalVenta = CitaHasServicio::where('citaId', $cita->id)
                 ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
                 ->sum('tecnicas.precio');
             
-            // Actualizar el precio total en la tabla ventas
             $venta->update(['total' => $totalVenta]);
     
-            // Enviar correo de espera
             Mail::to($request->user()->email)->send(new CorreoEspera($cita));
     
             DB::commit();
@@ -495,51 +556,105 @@ class RegistrosController extends Controller
     
 
     public function actualizarDetalleTecnica(Request $request)
-    {
-        $request->validate([
-            'changes' => 'required|array', // Validar que 'changes' es un array
-            'changes.*' => 'required|integer|min:1', // Cada entrada debe ser un entero positivo
-        ]);
-    
-        $changes = $request->input('changes');
-    
-        DB::beginTransaction();
-        try {
-            foreach ($changes as $detalleTecnicaId => $cantidad) {
-                $detalleTecnica = DetalleTecnicaProducto::find($detalleTecnicaId);
-                
-                if (!$detalleTecnica) {
-                    throw new \Exception("Detalle técnica con ID $detalleTecnicaId no encontrado.");
-                }
-    
-                $producto = Producto::find($detalleTecnica->productoId);
-                
-                if (!$producto) {
-                    throw new \Exception("Producto asociado con el detalle técnica no encontrado.");
-                }
-    
-                // Verificar que la cantidad solicitada no excede el stock disponible
-                if ($cantidad > $producto->cantidadEnStock - 10) {
-                    throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' excede el stock disponible.");
-                }
-    
-                // Si todo está bien, actualizar la cantidad
-                $detalleTecnica->update(['cantidadProducto' => $cantidad]);
-            }
-            
-            DB::commit();
-            return response()->json(['success' => true, 'message' => 'Cantidades actualizadas correctamente.']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
-        }
+{
+    // $request->validate([
+    //     'changes.*' => 'required|integer|min:1',//verifica que todos los cambios sean positivos o que no sea cero
+    // ]);
+
+    $changes = $request->input('changes');
+
+    $cambiosArray = $request->changes;
+    if(empty($cambiosArray)){
+        return response()->json(['message' => 'Arreglo vacio'], 400);
     }
-    
-    
+
+    DB::beginTransaction();
+    try {
+        foreach ($changes as $detalleTecnicaId => $cantidad) {
+            $detalleTecnica = DetalleTecnicaProducto::find($detalleTecnicaId);
+            
+            if (!$detalleTecnica) {
+                throw new \Exception("Detalle técnica con ID $detalleTecnicaId no encontrado.");
+            }
+
+            $producto = Producto::find($detalleTecnica->productoId);
+            
+            if (!$producto) {
+                throw new \Exception("Producto asociado con el detalle técnica no encontrado.");
+            }
+
+
+            //obtener la cantidad actual en detalleTecnicaProducto
+            $cantidadActual = $detalleTecnica->cantidadProducto;
+            $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $detalleTecnica->tecnicaId)
+            ->where('productoId', $detalleTecnica->productoId)->value('cantidadDeUso');
+            //Esto es para validar que no se usa el doble de la cantidad promedio, eso nos dijo el cliente
+            $count = 0; 
+
+            if($cantidad < $cantidadPromedio){
+                throw new \Exception("La cantidad proporcionada por el producto '{$producto->nombre}' tiene que ser mayor a: {$cantidadPromedio}");
+
+            }
+
+           
+
+            if ($cantidad > $producto->cantidadEnStock) {
+                throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' excede el stock disponible.");
+            }
+
+            if ($cantidad > 2 * $cantidadPromedio) {
+                throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' no puede exceder el doble de la cantidad promedio");
+            }
+            $producto->cantidadReserva -= $cantidadActual;//a la reserva le quitas la cantidad que estaba anteriormente
+            //La cantidad antigua es la cantidad promedio si es que no se habia editado antes
+            $producto->cantidadEnStock += $cantidadActual;//devuelve la cantidad antigua al stock
+
+            $producto->cantidadReserva += $cantidad;//le metes la nueva
+            $producto->cantidadEnStock -= $cantidad;//resta del stock la cantidad nueva
+            $producto->save(); 
+            $detalleTecnica->update(['cantidadProducto' => $cantidad]);
+        }
+        
+        DB::commit();
+        return response()->json(['success' => true, 'message' => 'Cantidades actualizadas correctamente.']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+    }
+}
 
     
+        public function aceptarVentaEditarEstado(Request $request)
+        {
+            DB::beginTransaction();
+            try {
+                $venta = Venta::findOrFail($request->ventaId);
+            
+                $venta->update(['estadoVenta' => true]);
+            
+                $citaHasServicio = CitaHasServicio::where('ventaId', $venta->id)->firstOrFail();
+                $cita = $citaHasServicio->cita;
 
-
- 
-
+                $detalleTecnicas = DetalleTecnicaProducto::where('citaId', $cita->id)->get();
+            
+                foreach ($detalleTecnicas as $detalle) {
+                    $producto = Producto::findOrFail($detalle->productoId);
+            
+                    if ($producto->cantidadReserva < $detalle->cantidadProducto) {
+                        DB::rollBack();
+                        return response()->json(['message' => 'No hay suficiente stock para el producto ' . $producto->nombre], 400);
+                    }
+            
+                    $producto->cantidadReserva -= $detalle->cantidadProducto;//Se resta a la reserva 
+                    $producto->save();
+                }
+            
+                DB::commit();
+                return response()->json(['message' => 'Venta aceptada y stock actualizado con éxito'], 200);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['message' => 'Error al aceptar la venta y actualizar el stock', 'error' => $e->getMessage()], 500);
+            }
+        }
+    
 }
