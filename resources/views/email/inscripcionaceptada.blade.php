@@ -172,8 +172,8 @@
 <p style="margin: 0; margin-bottom: 1px;"><strong>Nos complace informarle que hemos recibido y verificado su comprobante de depósito. Su inscripción al curso deseado ha sido confirmada exitosamente.</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>Estamos muy emocionados de contar con su participación y esperamos que disfrute y aproveche al máximo esta experiencia de aprendizaje.</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>A continuación, le recordamos algunos detalles importantes del curso:</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Curso: [Nombre del Curso]</strong><br/><strong>Fecha de Inicio: [Fecha de Inicio]</strong><br/><strong>Horario: [Horario del Curso]</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Si tiene alguna pregunta o necesita más información, no dude en contactarnos a través de WhatsApp al número [Número de WhatsApp].</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Curso: {{ $cursoNombre }}</strong><br/><strong>Fecha de Inicio: {{ $fechaInicio }}</strong><br/><strong>Horario: {{ $horaInicio }}</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Si tiene alguna pregunta o necesita más información, no dude en contactarnos a través de WhatsApp al número +52 871 382 6767.</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>Estamos ansiosos por verle en el curso y deseamos que tenga una experiencia enriquecedora.</strong></p>
 <p style="margin: 0;"><strong>Atentamente,</strong><br/><strong>Tutti Belli Studio</strong></p>
 </div>

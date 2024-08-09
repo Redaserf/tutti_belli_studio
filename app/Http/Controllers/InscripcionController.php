@@ -8,6 +8,8 @@ use App\Models\Inscripcion;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InscripcionAceptada;
 use Illuminate\Support\Facades\DB;
 
 class InscripcionController extends Controller
@@ -30,10 +32,10 @@ class InscripcionController extends Controller
 
     public function getInscripciones($cursoId)
     {
-    $inscripciones = Inscripcion::where('cursoId', $cursoId)->with('usuarios')->get();
-    $curso = Curso::find($cursoId);
+        $inscripciones = Inscripcion::where('cursoId', $cursoId)->with('usuarios')->get();
+        $curso = Curso::find($cursoId);
 
-    return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
+        return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
     }
 
     public function index($inscripcionId)
@@ -41,6 +43,7 @@ class InscripcionController extends Controller
         $inscripcion = Inscripcion::where('id', $inscripcionId)->with('usuarios')->first();
         return response()->json($inscripcion);
     }
+
 
     public function actualizarInscripcion(Request $request, $id){
 
@@ -88,6 +91,9 @@ class InscripcionController extends Controller
                     $curso->save();
                     $inscripcion->estado = true;
                     $inscripcion->save();
+                    // Verificar que el usuario no sea null antes de intentar enviar el correo
+                    if ($inscripcion->estado == 1 && $inscripcion->usuarios) { // 1 representa 'Aceptado'
+                        Mail::to($inscripcion->usuarios->email)->send(new InscripcionAceptada($inscripcion->usuarios, $inscripcion));
 
                 }
 
@@ -147,5 +153,12 @@ class InscripcionController extends Controller
             DB::rollback();
             return response()->json(['error' => 'Error al eliminar la inscripción: ' . $e->getMessage()], 500);
         }
+
+        return response()->json(['success' => 'Inscripción actualizada con éxito y correo enviado']);
+    } else {
+        return response()->json(['error' => 'Inscripción no encontrada'], 404);
     }
+}
+
+
 }
