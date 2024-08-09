@@ -153,7 +153,7 @@
 														<tr>
 															<td class="pad" style="padding-left:45px;padding-right:45px;padding-top:10px;">
 																<div style="color:#393d47;font-family:'Cabin',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:18px;line-height:150%;text-align:center;mso-line-height-alt:27px;">
-																	<p style="margin: 0; word-break: break-word;">Queremos informarte que el usuario {{ $usuario }} ha reservado una cita. A continuación, te compartimos los detalles:</p>
+																	<p style="margin: 0; word-break: break-word;">Queremos informarte que el usuario {{ $usuario }} ha  reservado una cita. A continuación, te compartimos los detalles:</p>
 																</div>
 															</td>
 														</tr>
