@@ -7,6 +7,8 @@ use App\Models\Curso;
 use App\Models\Inscripcion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InscripcionAceptada;
 
 class InscripcionController extends Controller
 {
@@ -28,10 +30,10 @@ class InscripcionController extends Controller
 
     public function getInscripciones($cursoId)
     {
-    $inscripciones = Inscripcion::where('cursoId', $cursoId)->with('usuarios')->get();
-    $curso = Curso::find($cursoId);
+        $inscripciones = Inscripcion::where('cursoId', $cursoId)->with('usuarios')->get();
+        $curso = Curso::find($cursoId);
 
-    return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
+        return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
     }
 
     public function index($inscripcionId)
@@ -40,16 +42,25 @@ class InscripcionController extends Controller
         return response()->json($inscripcion);
     }
 
-    public function actualizarInscripcion(Request $request, $id){
-        $inscripcion = Inscripcion::find($id);
+    public function actualizarInscripcion(Request $request, $id)
+{
+    // Cargar la inscripción junto con el usuario utilizando la relación 'usuarios'
+    $inscripcion = Inscripcion::with('usuarios')->find($id);
 
-        if ($inscripcion) {
-            $inscripcion->estado = $request->input('estado');
-            $inscripcion->save();
-    
-            return response()->json(['success' => 'Inscripción actualizada con éxito']);
-        } else {
-            return response()->json(['error' => 'Inscripción no encontrada'], 404);
+    if ($inscripcion) {
+        $inscripcion->estado = $request->input('estado');
+        $inscripcion->save();
+
+        // Verificar que el usuario no sea null antes de intentar enviar el correo
+        if ($inscripcion->estado == 1 && $inscripcion->usuarios) { // 1 representa 'Aceptado'
+            Mail::to($inscripcion->usuarios->email)->send(new InscripcionAceptada($inscripcion->usuarios, $inscripcion));
         }
+
+        return response()->json(['success' => 'Inscripción actualizada con éxito y correo enviado']);
+    } else {
+        return response()->json(['error' => 'Inscripción no encontrada'], 404);
     }
+}
+
+
 }
