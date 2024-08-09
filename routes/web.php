@@ -218,7 +218,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
 
     // =====[ Cursos ]=====
-    
+
     Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
     Route::delete('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
@@ -226,9 +226,9 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
     Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
-    
-    
-    
+
+
+
     // =====[ Historial ]=====
 
     Route::get('/get/historial',[DibujarController::class, 'historial']);
@@ -334,7 +334,7 @@ Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'compra
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra
-Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCo mpra']);
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
 //Rechazar la compra
 Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
 

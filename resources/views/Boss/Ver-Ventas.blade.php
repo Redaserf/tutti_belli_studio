@@ -866,6 +866,7 @@
                                                 <th>nombre</th>
                                                 <th>descripcion</th>
                                                 <th>precio</th>
+                                                <th>cantidad de productos</th>
                                             </tr>
                                         </thead>
                                         <tbody id="detallesIndividualProducto">
@@ -1123,6 +1124,10 @@ sidebarBtn.addEventListener("click", () => {
         $('#modal-reject-btn').attr('onclick', `rechazarCompra(${ventaId})`);
     }
 
+    var detallesYaDibujados = [];
+    //Contador para el numero de veces que se repite el producto en la lista seleccionada
+    var cont2;
+
     let ticketsDibujado;
     function dibujarTicket(id){
         $.ajax({
@@ -1133,20 +1138,34 @@ sidebarBtn.addEventListener("click", () => {
                 if (ticketsDibujado !== id) {
                     const detallesIndividualProducto = $('#detallesIndividualProducto');
                     detallesIndividualProducto.empty();
+
+
                     data.forEach(detalle=> {
                         //Limpia el modal para que se puedan dibujar los elementos del ticket seleccionado
+                        cont2 = 1
+                        let idCantidad = 'cantidad' + detalle.productoId;
+                        console.log(detalle.productoId);
 
-                        const fila =`
+                        if(!detallesYaDibujados.includes(detalle.productoId)){
+                            detallesYaDibujados.push(detalle.productoId);
+                            const fila =`
                             <tr class="fila-dinamica">
                                <td>${detalle.nombre}</td>
                                <td>${detalle.descripcion}</td>
                                <td>${detalle.precio}</td>
+                               <td id="${idCantidad}"> 1 </td>
                             </tr>
                         `;
-                        detallesIndividualProducto.append(fila);
+                            detallesIndividualProducto.append(fila);
+                        }else{
+                            cont2 = parseInt($('#' + idCantidad).text()) + 1;
+                            $('#' + idCantidad).text(cont2);
+                        }
                     });
                     ticketsDibujado = id;
+                    detallesYaDibujados = [];
                 }
+                detallesYaDibujados = [];
             }
         })
     }
