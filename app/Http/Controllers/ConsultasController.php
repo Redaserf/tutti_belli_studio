@@ -34,26 +34,13 @@ class ConsultasController extends Controller
     //consulta para traer todos los usuarios con su respectivo nombre de rol 
     public function usuariosConSuRol()
     {
-        if (!Auth::check()) {
-            return redirect('/Home-guest');
-        }
 
-        $user = Auth::user();
-        if ($user->rolId == 4) {
+        $usuarios = User::with(['roles'])->get();
+        //roles es la funcion con el mismo nombre en el modelo User o sea la relacion
+        //de roles a usuarios   
+        // esto te trae todo lo de roles pudiendo maniipularlo con jquery                         
 
-            $usuarios = User::with(['roles'])->get();
-            //roles es la funcion con el mismo nombre en el modelo User o sea la relacion
-            //de roles a usuarios   
-            // esto te trae todo lo de roles pudiendo maniipularlo con jquery                         
-    
-            return response()->json($usuarios);
-            
-        } elseif ($user->rolId == 2) {
-            return redirect('/Home-usuario');
-        } elseif ($user->rolId == 3) {
-            return redirect('/Home-empleado');
-        }
-
+        return response()->json($usuarios);
     }
 
     public function usuariosConRolUsuario() // se trae los usuarios que tengan el rol de Usuario y Guest
@@ -122,7 +109,6 @@ class ConsultasController extends Controller
                 Log::warning("No se encontró cita para el grupo con ID $citaId");
             }
         }
-
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
@@ -464,7 +450,7 @@ class ConsultasController extends Controller
 public function ventasCitas()
 {
     $fechaHoraActual = now()->setTimezone('America/Mexico_City');
-    $fechaActual = $fechaHoraActual->toDateString();
+    $fechaActual = $fechaHoraActual->toDateString(); // Solo la fecha actual
     $horaActual = $fechaHoraActual->toTimeString();
 
     $ventas = CitaHasServicio::whereHas('venta', function ($query) {
