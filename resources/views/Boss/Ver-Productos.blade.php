@@ -484,7 +484,7 @@ header {
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
                                     <label for="edit_precio">Precio</label>
-                                    <input type="number" class="form-control" id="edit_precio" name="precio">
+                                    <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                     <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
                                 </div>
                                 <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">

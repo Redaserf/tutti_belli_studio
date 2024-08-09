@@ -499,7 +499,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --" required>
+                        <input type="number" class="form-control" id="cupoLimite" name="cupoLimite" placeholder="-- Cupo Limite --" required min="0">
                         <label for="cupoLimite">Cupo límite</label>
                     </div>
                 </div>
@@ -532,7 +532,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --" required>
+                        <input type="number" class="form-control" id="precio" name="precio" placeholder="-- Precio --" required min="0">
                         <label for="precio">Costo de inscripción</label>
                     </div>
                 </div>
@@ -749,6 +749,13 @@ sidebarBtn.addEventListener("click", () => {
             formData.append('productos', JSON.stringify(selectedProducts));
             formData.append('cantidadesProductos', JSON.stringify(cantidadesProducts));
 
+            const precio = parseFloat($('#precio').val());
+            const cupo = parseFloat($('#cupoLimite').val());
+
+            if (precio < 0 || cupo < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
+
             $.ajax({
                 url: '/RegistroCursoAdmin',
                 type: 'POST',
@@ -770,6 +777,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 }
             });
+        }
         });
 
         // function loadTecnicas(selectElement, selectedTecnicas){

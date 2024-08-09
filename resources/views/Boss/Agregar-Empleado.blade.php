@@ -450,7 +450,7 @@
                                 <label for="employeeGender">Género</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
+                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)" min="0">
                                 <label for="employeePhone">Número telefónico</label>
                             </div>
                             <div class="form-floating mb-3">
