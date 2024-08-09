@@ -500,7 +500,7 @@ header {
                             <label for="AddTecnicName">Nombre de la técnica</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica">
+                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica" min="0">
                             <label for="AddTecnicPrice">Precio de la técnica</label>
                         </div>
 

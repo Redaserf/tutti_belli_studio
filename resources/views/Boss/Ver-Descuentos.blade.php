@@ -306,8 +306,9 @@ header {
 
     /*    css para que las imagenes adapten su tamaño a la hora de dibujar en la tabla*/
     .producto-imagen {
-        width: 100px;
-        height: 100px;
+        border-radius: 6px;
+        width: 75px;
+        height: 75px;
         /* mantener relacion de aspecto*/
         object-fit: cover;
     }

@@ -101,4 +101,51 @@ class InscripcionController extends Controller
         }
 
     }
+
+    public function rembolsarInscripcion(Request $request, $id){
+        DB::beginTransaction();
+        try{
+
+            $inscripcion = Inscripcion::find($id);
+            $curso = $inscripcion->cursos;
+            $productosHasCurso = $curso->productoHasCurso;
+
+                foreach ($productosHasCurso as $productoCurso) {
+
+                    $producto = Producto::find($productoCurso->productoId);
+                    $producto->cantidadEnStock = $producto->cantidadEnStock + $productoCurso->cantidadPorUsar;
+                    $producto->save();
+
+                    $curso->cupoLimite = $curso->cupoLimite + 1;
+                    $curso->save();
+                    $inscripcion->estado = false;
+                    $inscripcion->save();
+
+                    DB::commit();
+                }
+
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['error' => $e ], 500);
+        }
+    }
+
+    public function eliminarInscripcion($inscripcionId){
+        DB::beginTransaction();
+        try{
+            $inscripcion = Inscripcion::find($inscripcionId);
+
+            if (!$inscripcion) {
+                return response()->json(['error' => 'Inscripción no encontrada.'], 404);
+            }
+    
+            $inscripcion->delete();
+
+            DB::commit();
+            return response()->json(['success' => 'Inscripción eliminada exitosamente'], 200);
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['error' => 'Error al eliminar la inscripción: ' . $e->getMessage()], 500);
+        }
+    }
 }
