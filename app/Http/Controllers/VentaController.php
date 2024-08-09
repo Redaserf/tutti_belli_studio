@@ -25,8 +25,6 @@ class VentaController extends Controller
             $venta = Venta::create([
                 'total' => $request->total,
                 'fechaVenta' => $request->fechaVenta,
-                "fechaCreacion" => now(),
-                'estadoVenta' => false,
                 'usuarioId' => $usuario->id
             ]);
 
@@ -66,14 +64,13 @@ class VentaController extends Controller
 
             // Encontrar la venta por su ID
             $venta = Venta::find($id);
-            $venta->estadoVenta = true;
 
-            if (!$venta) {
-                return response()->json(['error' => 'Venta no encontrada'], 404);
-            }
+            $venta->estadoVenta = true;
 
             // Obtener los detalles de productos relacionados con esa venta
             $detalles = $venta->detalleProductos;
+
+            $venta->save();
 
             foreach ($detalles as $detalle) {
                 // Obtener el producto relacionado con el detalle
@@ -85,6 +82,27 @@ class VentaController extends Controller
                 // Guardar los cambios en el producto
                 $producto->save();
             }
+
+            DB::commit();
+            return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    function rechazarCompra(Request $request, $id) {
+        try {
+            DB::beginTransaction();
+
+            // Encontrar la venta por su ID
+            $venta = Venta::find($id);
+
+            $venta->estadoVenta = false;
+
+            $venta->save();
 
             DB::commit();
             return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);
