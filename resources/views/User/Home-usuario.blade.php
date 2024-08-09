@@ -480,7 +480,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   <section>
     <div data-aos="fade-up" data-aos-duration="1000" class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.4);">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.2);">
         <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
     </div>
@@ -557,21 +557,21 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <section id="servicios"class="fonts3" >
         <p class="text-uppercase text-center" style="font-size: 50px;">Servicios</p>
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card1">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/LABIOS_TARJETA.png" alt="labios">
                 <br>
                 <h3 class="fonts3">Labios</h3>
                 <p class="fonts3">En labios hacemos una pequeña limpieza para después anestesiarlos y aplicarles el color que gustes. Nuestro objetivo es dejarlos bellos y sensuales, realzando tu belleza natural con técnicas personalizadas y productos de alta calidad.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card2">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/OJOS_TARJETA.png" alt="Ojos">
                 <br>
                 <h3>Ojos</h3>
                 <p>En ojos manejamos diferentes tipos de delineado, haciendo que tu mirada resalte aún más. Ofrecemos opciones permanentes y semipermanentes, adaptándonos a tus preferencias para lograr el look que deseas de manera segura y precisa.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card3">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/CEJA_TARJETA.png" alt="Ceja">
                 <br>
@@ -579,7 +579,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 <h3>Cejas</h3>
                 <p>La ceja es el marco de tu rostro. Realzamos tus facciones con un diseño acorde a la forma de tu cara y la técnica que más te favorezca. Nuestro equipo se asegura de que tus cejas luzcan perfectas y armoniosas, complementando tu belleza natural.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card4">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/PESTAÑA_TARJETA.png" alt="Pestañas">
                 <br>
@@ -795,6 +795,19 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               $('#navbar').css('visibility', 'visible');
               loader.style.display = "none";
           })
+          //PARA LAS CARTAS POR QUE CON A JODE EL DISEÑO
+          $('#card1').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card2').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card3').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card4').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
       </script>
 </body>
 </html>
