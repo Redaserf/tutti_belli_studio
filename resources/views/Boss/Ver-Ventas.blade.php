@@ -248,6 +248,9 @@
             align-items: center;
             margin-top: 20px;
         }
+        .tab-content{
+    padding: 36px;
+}
 
         .top a {
             margin-left: 0px;
@@ -378,7 +381,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">

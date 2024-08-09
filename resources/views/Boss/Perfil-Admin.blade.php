@@ -156,7 +156,9 @@
             white-space: nowrap;
             opacity: 1;
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar.close .text {
             opacity: 0;
         }
@@ -365,7 +367,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">

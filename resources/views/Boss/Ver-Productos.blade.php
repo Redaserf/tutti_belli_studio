@@ -268,6 +268,9 @@ header {
             cursor: pointer;
             color: white;
         }
+        .tab-content{
+    padding: 36px;
+}
 
     .sidebar.close .header-text {
     display: none;
@@ -385,7 +388,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">

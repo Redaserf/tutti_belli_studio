@@ -404,7 +404,9 @@
     margin-left: 0 auto;
   }
 
-
+  .tab-content{
+    padding: 36px;
+}
 
 footer {
     margin: 0;
@@ -651,7 +653,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               <i class="fa-solid fa-angle-right toggle"></i>
           </header>
   
-          <div class="menu-bar">
+          <div class="menu-bar table-responsive">
               <div class="menu">
                   <ul class="menu-links">
                       <li class="nav-link">

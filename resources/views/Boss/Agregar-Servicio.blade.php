@@ -249,7 +249,9 @@ header {
                 display: none;
             }
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar-btn {
             display: none;
             position: fixed;
@@ -312,16 +314,17 @@ header {
             border-color: #ff3366;
         }
 
-    h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+        h2 {
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
-    }
+}
 
 .product-container {
     display: flex;
@@ -402,7 +405,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">

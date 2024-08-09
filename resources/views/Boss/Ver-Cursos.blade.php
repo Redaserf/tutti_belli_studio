@@ -223,7 +223,9 @@ header {
 .sidebar.close ~ .home {
     margin-left: 90px; /* Cuando la sidebar está cerrada, deja menos espacio */
 }
-
+.tab-content{
+    padding: 36px;
+}
 .overlay {
     position: fixed;
     top: 0;
@@ -388,7 +390,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">

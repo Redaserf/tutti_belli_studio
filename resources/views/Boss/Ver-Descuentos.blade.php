@@ -184,7 +184,9 @@ header {
 .sidebar.close header .toggle {
     transform: translateY(-50%);
 }
-
+.tab-content{
+    padding: 36px;
+}
 .sidebar li a {
     height: 100%;
     width: 100%;
@@ -341,7 +343,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
