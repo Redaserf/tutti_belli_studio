@@ -17,6 +17,7 @@ use App\Models\Cita;
 use App\Mail\CorreoEspera;
 use App\Mail\CorreoCancelacion;
 use App\Mail\CorreoConfirmacion;
+use App\Mail\NotificarAdministrador;
 use Illuminate\Support\Facades\DB;
 use App\Models\CitaHasServicio;
 use Illuminate\Support\Facades\Mail;
@@ -485,6 +486,10 @@ class RegistrosController extends Controller
     
             // Enviar correo de espera
             Mail::to($request->user()->email)->send(new CorreoEspera($cita));
+
+            // Enviar correo al administrador
+            $administradorEmail = 'tuttibellistudiotrc@gmail.com';
+            Mail::to($administradorEmail)->send(new NotificarAdministrador($cita));
     
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
