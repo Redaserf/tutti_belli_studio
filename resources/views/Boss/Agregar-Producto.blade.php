@@ -453,7 +453,7 @@ header {
                             <label for="AddProductName">Nombre del producto</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddProductPrice" placeholder="precio del producto">
+                            <input type="number" class="form-control" id="AddProductPrice" placeholder="precio del producto" min="0">
                             <label for="AddProductPrice">Precio del producto</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -463,7 +463,7 @@ header {
                             <label for="selectInventario">Inventario al que corresponde</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock">
+                            <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock" min="0">
                             <label for="AddInStock">Cantidad en stock</label>
                         </div>
                         <div class="mb-3">
@@ -559,6 +559,13 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarProducto').on('click', function(e) {
         e.preventDefault();
 
+        const precio = parseFloat($('#AddProductPrice').val());
+        const cantidad = parseFloat($('#AddInStock').val());
+
+        if (precio < 0 || cantidad < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
+
         // Mostrar la pantalla de carga
         $('#contenedor_carga').css('display', 'block');
 
@@ -595,6 +602,7 @@ sidebarBtn.addEventListener("click", () => {
                 alert('Ocurrió un error al agregar el producto');
             }
         });
+    }
     });
     // Fin script para registrar productos
 

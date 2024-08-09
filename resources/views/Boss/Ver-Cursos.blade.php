@@ -497,7 +497,7 @@ header {
                                             </div>
                                             <div class="form-group" style="margin-top: 10px;">
                                                 <label for="edit_precio">Precio</label>
-                                                <input type="number" class="form-control" id="edit_precio" name="precio">
+                                                <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                                 <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
                                             </div>
                                             <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
@@ -574,7 +574,7 @@ header {
                         </div>
                         <div class="mb-3">
                             <label for="inscripcionEstado" class="form-label">Estado</label>
-                            <select class="form-control" id="inscripcionEstado">
+                            <select class="form-control" id="inscripcionEstado" disabled>
                                 <option value="0">Pendiente</option>
                                 <option value="1">Aceptado</option>
                             </select>
@@ -582,7 +582,9 @@ header {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="botonCerrar">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="eliminarInscripcion">Eliminar</button>
+                    <button type="button" class="btn btn-warning" id="rembolsarInscripcion" style="display: block">Rembolsar</button>
                     <button type="button" class="btn btn-success" id="saveChanges">Guardar cambios</button>
                 </div>
             </div>
@@ -678,12 +680,18 @@ function mostrarInscripciones(cursoId) {
             const inscripciones = response.inscripciones;
             const curso = response.curso;
             let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
+                let filtroId = `<input style="width:160px;" type="number" class="input" placeholder="Busqueda por ID"></input>`; //Aún por implementar la lógica, es un boceto
+                inscripcionesHtml += filtroId;
             inscripciones.forEach(inscripcion => {
                 if (inscripcion.estado == 0){
-                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Pendiente<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                        ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
+                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
                 else {
-                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Inscrito<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                        ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
+                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
             });
             inscripcionesHtml += '</ul>';
@@ -705,15 +713,25 @@ function editarInscripcion(inscripcionId){
                     $('#inscripcionFecha').val(data.fechaInscripcion);
                     $('#inscripcionEstado').val(data.estado);
 
+                    $('#botonCerrar').off('click').on('click', function() {
+                        $('#inscripcionModal').modal('hide');
+                        mostrarInscripciones(data.cursoId);
+                    })
+
                     if (data.estado === 1) {
                         $('#saveChanges').prop('disabled', true);
+                        $('#eliminarInscripcion').prop('disabled', true);
+                        $('#rembolsarInscripcion').prop('disabled', false);
                         $('#saveChanges').text('Usuario aceptado');
                     } else {
                         $('#saveChanges').prop('disabled', false);
-                        $('#saveChanges').text('Guardar cambios');
+                        $('#rembolsarInscripcion').prop('disabled', true);
+                        $('#eliminarInscripcion').prop('disabled', false);
+                        $('#saveChanges').text('Aceptar usuario');
                     }
 
                     $('#saveChanges').off('click').on('click', function() {
+                        if (confirm("¿Quieres aceptar al usuario en este curso?")) {
                         const updatedInscripcion = {
                             estado: $('#inscripcionEstado').val(),
                             _token: $('meta[name="csrf-token"]').attr('content')
@@ -723,7 +741,7 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
-                                alert(response);
+                                alert("Se ha aceptado al usuario en este curso.");
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
                             },
@@ -731,22 +749,73 @@ function editarInscripcion(inscripcionId){
                                 alert('Error al actualizar la inscripción.');
                             }
                         });
+                    }
                     });
-                },
-                error: function(error) {
-                    alert('Error al cargar los detalles de la inscripción.');
-                }
-            });
-        }
 
+                    $('#rembolsarInscripcion').off('click').on('click', function() {
+                        const updatedInscripcion = {
+                            estado: $('#inscripcionEstado').val(),
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        };
+                        if(confirm("¿Quieres devolver los productos de esta inscripción al inventario?")) {
+                            $.ajax({
+                                url: `/rembolso/inscripcion/${inscripcionId}`,
+                                method: 'POST',
+                                data: updatedInscripcion,
+                                success: function(response) {
+                                    alert("Los productos se han regresado con éxito al inventario.");
+                                    $('#inscripcionModal').modal('hide');
+                                    mostrarInscripciones(data.cursoId);
+                                    console.log(data.estado);
+                                },
+                                error: function(error) {
+                                    alert('Error al rembolsar la inscripción');
+                                }
+                            });
+                        }
+                        });
 
+                            $('#eliminarInscripcion').off('click').on('click', function() {
+                            const updatedInscripcion = {
+                                estado: $('#inscripcionEstado').val(),
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            };
+                        if (confirm('¿Estás seguro de que deseas eliminar esta inscripción?')) {
+                            $.ajax({
+                            url: `/inscripcion/eliminar/${inscripcionId}`,
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(){
+                                alert('Inscripción eliminada exitosamente.');
+                                $('#inscripcionModal').modal('hide');
+                                mostrarInscripciones(data.cursoId);
+                            },
+                            error: function(error){
+                                alert('Hubo un error al eliminar la inscripción');
+                                console.log(error);
+                                console.log(data);
+                            }
+                            });
+                        }
+                    });
+                    },
+                    error: function(error) {
+                        alert('Error al cargar los detalles de la inscripción.');
+                    }
+                });
+            }
+            
+        
+            
         // Eliminar un curso
 
         function cursoDelete(id){
   if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
     $.ajax({
       url: `/cursos/eliminar/${id}`,
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
@@ -801,6 +870,12 @@ $('#editCursoForm').on('submit', function(e) {
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
+    const precio = parseFloat($('#edit_precio').val());
+
+    if (precio < 0){
+            alert("Ingresa valores correctos.")
+        } else {
+
     $.ajax({
         url: `/cursos/actualizar/${$('#edit_id').val()}`,
         type: 'POST',
@@ -817,6 +892,7 @@ $('#editCursoForm').on('submit', function(e) {
             alert('Hubo un error al actualizar el curso');
         }
     });
+}
 });
 
 $('#edit_imagenProducto').on('change', function() {

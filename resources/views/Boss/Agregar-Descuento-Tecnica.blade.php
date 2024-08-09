@@ -452,7 +452,7 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%">
+                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%" min="0">
                         <label for="porcentaje">Porcentaje de Descuento</label>
                     </div>
                         <div>
@@ -588,8 +588,14 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarDescuento').on('click', function (e) {
         e.preventDefault();
 
-                // Mostrar la pantalla de carga
-                $('#contenedor_carga').css('display', 'block');
+        const descuento = parseFloat($('#porcentaje').val());
+
+        if (descuento < 0){
+            alert("Ingresa valores correctos.")
+        } else {
+
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
 
         discountPercentage = $('#porcentaje').val();  // Asignar el valor aquí
         console.log(discountPercentage);  // Para verificar el valor
@@ -615,6 +621,7 @@ sidebarBtn.addEventListener("click", () => {
                 console.error(error);  // Para más detalles sobre el error
             }
         });
+    }
     });
 
     function aplicarDescuento(descuentoId, tecnicas) {
@@ -629,7 +636,7 @@ sidebarBtn.addEventListener("click", () => {
             },
             success: function (response) {
                 alert("Descuento aplicado exitosamente");
-                location.reload();  // Refresca la página al aceptar el alert
+                window.location.href = '/Ver-Descuentos';
             },
             error: function (error) {
                 alert('Ocurrió un error al aplicar el descuento');

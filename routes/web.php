@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DibujarController;
 use App\Http\Controllers\InscripcionController;
+use App\Models\Inscripcion;
 
 // ==========[ Vistas ]==========
 
@@ -164,6 +165,8 @@ use App\Http\Controllers\InscripcionController;
     Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
     Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
     Route::get('/Logout',[UsuarioController::class, 'Logout']);
+    Route::post('/ActualizarPerfil',[UsuarioController::class, 'actualizarPerfil']);
+
 
 Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCitaUsuario']);
 
@@ -214,6 +217,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/get/empleados',[DibujarController::class,'employeeIndex']);
     Route::get('/empleado/eliminar/{id}',[DibujarController::class,'employeeDelete']);
+    Route::get('/empleado/{id}', [UsuarioController::class, 'obtenerEmpleado']);
+    Route::post('/ActualizarPerfilEmpleado/{empleadoId}',[UsuarioController::class, 'actualizarPerfilEmpleado']);
 
 
 
@@ -226,6 +231,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
     Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
+    Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
+    Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
     
     
     

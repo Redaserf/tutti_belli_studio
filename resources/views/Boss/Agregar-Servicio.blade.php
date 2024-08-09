@@ -521,7 +521,7 @@ header {
                         <label for="nombreTecnica">Nombre de la técnica</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precioTecnica" placeholder="precio de la técnica">
+                        <input type="number" class="form-control" id="precioTecnica" placeholder="precio de la técnica" min="0">
                         <label for="precioTecnica">Precio de la técnica</label>
                     </div>
 
@@ -726,7 +726,7 @@ sidebarBtn.addEventListener("click", () => {
                             <p class="product-price">$${producto.precio}</p>
                             <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
 <!--                            obtiene como data-stock el valor del stock del producto-->
-                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}">
+                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}" min="0">
                             <label for="${idDinamico}">Cantidad a utilizar</label>
                         </div>
                         <button type="button" style="margin-bottom: 10px;" id="seleccionar" name="seleccionarBoton"  class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>

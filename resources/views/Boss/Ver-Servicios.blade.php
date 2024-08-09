@@ -490,7 +490,6 @@ $.ajaxSetup({
     }
 });
 
-
         // Scripts para todas las vistas
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -539,7 +538,7 @@ $.ajaxSetup({
             if (data.length > 0) {
                 const list = $('<ul></ul>');
                 data.forEach(tecnica => {
-                    list.append(`<li>| ${tecnica.nombre} | $${tecnica.precio} | ${tecnica.descripcion} | <button class="btn" onclick="editarTecnica(${tecnica.id}, ${servicioId})" data-bs-toggle="modal" data-bs-target="#editarTecnicaModal"><i class="fa-solid fa-pen-to-square"></i></button></li>`);
+                    list.append(`<li><p style="font-weight:400;">Técnica: ${tecnica.nombre}<button class="btn" onclick="editarTecnica(${tecnica.id}, ${servicioId})" data-bs-toggle="modal" data-bs-target="#editarTecnicaModal"><i class="fa-solid fa-pen-to-square"></i></button><br>Costo: $${tecnica.precio}<br>Descripción: ${tecnica.descripcion}</p></li>`);
                 });
                 modalBody.append(list);
             } else {
@@ -571,7 +570,7 @@ function editarTecnica(tecnicaId, servicioId) {
                     </div>
                     <div class="mb-3">
                         <label for="tecnicaPrecio" class="form-label">Precio</label>
-                        <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}">
+                        <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}" min="0">
                     </div>
                     <div class="mb-3">
                         <label for="tecnicaDescripcion" class="form-label">Descripción</label>
@@ -590,6 +589,12 @@ function editarTecnica(tecnicaId, servicioId) {
 
     // Función para guardar cambios de la técnica
     $('#saveChanges').off('click').on('click', function() {
+
+        const precio = parseFloat($('#tecnicaPrecio').val());
+
+        if (precio < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
 
         // Mostrar la pantalla de carga
         $('#contenedor_carga').css('display', 'block');
@@ -617,6 +622,7 @@ function editarTecnica(tecnicaId, servicioId) {
                 alert('Error al actualizar la técnica.');
             }
         });
+    }
     });
 
     // Borrar técnica
@@ -789,6 +795,7 @@ function servicioDelete(servicioId) {
             }
             window.addEventListener('resize', botones);
             botones();
+
         });
     </script>
 </body>

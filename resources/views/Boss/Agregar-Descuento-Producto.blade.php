@@ -485,7 +485,7 @@
                         </button>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="porcentaje" placeholder="%">
+                        <input type="number" class="form-control" id="porcentaje" placeholder="%" min="0">
                         <label for="porcentaje">Porcentaje de Descuento</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -608,6 +608,12 @@ sidebarBtn.addEventListener("click", () => {
 
             $('#agregarDescuento').on('click', function (e) {
 
+                const descuento = parseFloat($('#porcentaje').val());
+
+                if (descuento < 0){
+            alert("Ingresa valores correctos.")
+        } else {
+
             // Mostrar la pantalla de carga
             $('#contenedor_carga').css('display', 'block');
 
@@ -642,6 +648,7 @@ sidebarBtn.addEventListener("click", () => {
                     $('#contenedor_carga').css('display', 'none');
                     alert('no ha seleccionado productos para añadir descuento')
                 }
+            }
             });
 
             function aplicarDescuento(descuentoId, productos) {
@@ -657,7 +664,7 @@ sidebarBtn.addEventListener("click", () => {
                     success: function (response) {
                         alert("Descuento aplicado exitosamente");
                         console.log(productos)
-                        location.reload();  // Refresca la página al aceptar el alert
+                        window.location.href = '/Ver-Descuentos';
                     },
                     error: function (error) {
                         alert('Ocurrió un error al aplicar el descuento');
