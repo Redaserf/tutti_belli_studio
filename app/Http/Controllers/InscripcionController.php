@@ -84,7 +84,8 @@ class InscripcionController extends Controller
                     $producto->cantidadEnStock -= $productoCurso->cantidadPorUsar;
                     $producto->save();
 
-                    $curso->cupoLimite -= 1;
+                    $curso->cupoLimite = $curso->cupoLimite - 1;
+                    $curso->save();
                     $inscripcion->estado = true;
                     $inscripcion->save();
 

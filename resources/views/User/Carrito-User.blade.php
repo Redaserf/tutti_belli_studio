@@ -19,7 +19,7 @@ body, html {
     background-repeat: no-repeat;
     background-position: center center;
     min-height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 
@@ -224,7 +224,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
 <br><br><br><br>
   @csrf
-  
+
   <div class="row">
     <div class="col-12 d-flex flex-column">
         <div class="table-responsive table-container">
@@ -480,7 +480,7 @@ $(document).ready(function(){
     $('#contenedor_carga').css('display', 'block');
         if(productosComprados.length > 0){
             $.ajax({
-                url:'crearCompra',
+                url:'/crearCompra',
                 method: 'POST',
                 data:
                     {
