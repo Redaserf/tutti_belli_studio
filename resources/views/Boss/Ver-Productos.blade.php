@@ -268,6 +268,9 @@ header {
             cursor: pointer;
             color: white;
         }
+        .tab-content{
+    padding: 36px;
+}
 
     .sidebar.close .header-text {
     display: none;
@@ -385,7 +388,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -481,7 +484,7 @@ header {
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
                                     <label for="edit_precio">Precio</label>
-                                    <input type="number" class="form-control" id="edit_precio" name="precio">
+                                    <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                     <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
                                 </div>
                                 <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
@@ -692,6 +695,15 @@ toggle.addEventListener("click", () => {
         overlay.style.display = "none";
     }
 });
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 
 overlay.addEventListener("click", () => {
     sidebar.classList.add("close");

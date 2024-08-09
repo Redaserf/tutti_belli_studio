@@ -19,7 +19,7 @@ body, html {
     background-repeat: no-repeat;
     background-position: center center;
     min-height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 
@@ -175,6 +175,12 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         .btn-light:hover{
       background-color:#fa3284;
     }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
         /* Alerta bonita */
 
     </style>
@@ -187,7 +193,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -201,7 +207,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
               <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+              <a class="nav-link active texto1" aria-current="page" href="/Cursos-User" style="color: #000000;">Cursos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
@@ -224,7 +230,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
 <br><br><br><br>
   @csrf
-  
+
   <div class="row">
     <div class="col-12 d-flex flex-column">
         <div class="table-responsive table-container">
@@ -235,6 +241,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <th scope="col">Producto</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Costo</th>
+                        <th scope="col"> Cantidad seleccionada</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
@@ -323,48 +330,128 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 <script>
     var total = 0;
     var productosComprados = [];
+    var productosYaDibujados = [];
+    //Contador para el numero de veces que se repite el producto en la lista seleccionada
+    var cont2;
+    //Contador para id dinamico
+    // var cont1;
 
+    function dibujarCarrito() {
+        $.ajax({
+            url: '/get/carrito',
+            method: 'GET',
+            success: function(data) {
+                const carrito = $('#carritoTabla');
+                const costoTotal = $('#costo-total');
+                carrito.empty();
+                // let total = 0;
+                let cont2 = 0;
+                // const productosComprados = [];
+                // const productosYaDibujados = [];
 
-function dibujarCarrito() {
-            $.ajax({
-                url: '/get/carrito',
-                method: 'GET',
-                success: function(data) {
-                    const carrito = $('#carritoTabla');
-                    const costoTotal = $('#costo-total');
-                    carrito.empty();
-                    total = 0;
-                    data.forEach(producto => {
-                        productosComprados.push({
-                            id: producto.id,
-                            nombre: producto.nombre,
-                            descripcion: producto.descripcion,
-                            precio: producto.precio
-                        });
-                        const item = `
-                            <tr>
-                                <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
-                                <td>${producto.nombre}</td>
-                                <td>${producto.descripcion}</td>
-                                <td>$${producto.precio}</td>
-                                <td>
-                                  <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        `;
-                        carrito.append(item);
-                        total += producto.precio;
+                data.forEach(producto => {
+                    cont2 = 1;
+                    let idCantidad = 'cantidad' + producto.id;
+
+                    productosComprados.push({
+                        id: producto.id,
+                        nombre: producto.nombre,
+                        descripcion: producto.descripcion,
+                        precio: producto.precio
                     });
-                    costoTotal.text('Costo Total: $' + total);
-                    console.log(productosComprados);
 
-                },
-                error: function(error) {
-                  console.log(error);
-                  alert('Hubo un error al obtener los productos del carrito');
-                }
-              });
+                    if (!productosYaDibujados.includes(producto.id)) {
+
+                        productosYaDibujados.push(producto.id);
+
+                        const item = `
+                    <tr>
+                        <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>$${producto.precio}</td>
+                        <td id="${idCantidad}">1</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+                        carrito.append(item);
+                    } else {
+                        //Toma el valor del texto de la cantidad actual y le suma 1
+                        cont2 = parseInt($('#' + idCantidad).text()) + 1;
+                        $('#' + idCantidad).text(cont2);
+                    }
+
+                    total += producto.precio;
+                });
+
+                costoTotal.text('Costo Total: $' + total);
+                console.log(productosComprados);
+            },
+            error: function(error) {
+                console.log(error);
+                alert('Hubo un error al obtener los productos del carrito');
             }
+        });
+    }
+
+// function dibujarCarrito() {
+//             $.ajax({
+//                 url: '/get/carrito',
+//                 method: 'GET',
+//                 success: function(data) {
+//                     const carrito = $('#carritoTabla');
+//                     const costoTotal = $('#costo-total');
+//                     carrito.empty();
+//                     total = 0;
+//
+//                     data.forEach(producto => {
+//                         // cont1 ++;
+//                         cont2 = 0
+//                         productosComprados.push({
+//                             id: producto.id,
+//                             nombre: producto.nombre,
+//                             descripcion: producto.descripcion,
+//                             precio: producto.precio
+//                         });
+//                         productosYaDibujados.push(producto.id);
+//                         idCantidad = 'cantidad'+producto.id;
+//
+//                         if(producto.id not in productosYaDibujados ){
+//                             const item = `
+//                             <tr>
+//                                 <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
+//                                 <td>${producto.nombre}</td>
+//                                 <td>${producto.descripcion}</td>
+//                                 <td>$${producto.precio}</td>
+//                                 <td id="${idCantidad}" > 1 </td>
+//                                 <td>
+//                                   <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></a>
+//                                 </td>
+//                             </tr>
+//                         `;
+//                             carrito.append(item);
+//                         }else{
+//                             for (var i=0; i<productosYaDibujados.length, i++){
+//                                 if(producto.id === productosYaDibujados[i]){
+//                                     cont2++
+//                                 }
+//                             }
+//                             $('#'+idCantidad).value(cont2);
+//                         }
+//
+//                         total += producto.precio;
+//                     });
+//                     costoTotal.text('Costo Total: $' + total);
+//                     console.log(productosComprados);
+//
+//                 },
+//                 error: function(error) {
+//                   console.log(error);
+//                   alert('Hubo un error al obtener los productos del carrito');
+//                 }
+//               });
+//             }
 
         // Eliminar producto del carrito
 
@@ -373,7 +460,8 @@ function dibujarCarrito() {
               url: `/carrito/eliminar/${id}`,
               method: 'GET',
               success: function(){
-                  dibujarCarrito();
+                  // dibujarCarrito();
+                  location.reload();
               },
               error: function(error){
                   console.log(error)
@@ -477,10 +565,11 @@ $(document).ready(function(){
 
     $('#comprar').on('click',function (){
     // Mostrar la pantalla de carga
+        console.log(productosComprados);
     $('#contenedor_carga').css('display', 'block');
         if(productosComprados.length > 0){
             $.ajax({
-                url:'crearCompra',
+                url:'/crearCompra',
                 method: 'POST',
                 data:
                     {
@@ -495,6 +584,7 @@ $(document).ready(function(){
                 $('#contenedor_carga').css('display', 'none');
                     alert('Se ha realizado la compra correctamente.')
                     productosComprados = [];
+                    total = 0;
                     dibujarCarrito();
                 },
                 error: function (error){

@@ -184,7 +184,9 @@ header {
 .sidebar.close header .toggle {
     transform: translateY(-50%);
 }
-
+.tab-content{
+    padding: 36px;
+}
 .sidebar li a {
     height: 100%;
     width: 100%;
@@ -304,8 +306,9 @@ header {
 
     /*    css para que las imagenes adapten su tamaño a la hora de dibujar en la tabla*/
     .producto-imagen {
-        width: 100px;
-        height: 100px;
+        border-radius: 6px;
+        width: 75px;
+        height: 75px;
         /* mantener relacion de aspecto*/
         object-fit: cover;
     }
@@ -341,7 +344,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -654,7 +657,15 @@ function eliminarDescuentoProducto(id){
     });
 }
 }
-
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 //FUncion para elimar descuento de tecnica
 //Modificar para prodcuto
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen

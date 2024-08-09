@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('total');
             $table->date('fechaVenta');
             $table->date('fechaCreacion')->nullable();
-            $table->boolean('estadoVenta');
+            $table->boolean('estadoVenta')->nullable();
             // checar atributo estatus faltante en el diagrama
 
             $table->unsignedBigInteger('usuarioId')->nullable();

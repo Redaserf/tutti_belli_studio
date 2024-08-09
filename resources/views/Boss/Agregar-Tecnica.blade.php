@@ -270,7 +270,9 @@ header {
 
 /* Fin Dashboard */
 
-
+.tab-content{
+    padding: 36px;
+}
 
 
         body {
@@ -315,10 +317,11 @@ header {
         }
 
         h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -398,7 +401,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -497,7 +500,7 @@ header {
                             <label for="AddTecnicName">Nombre de la técnica</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica">
+                            <input type="number" class="form-control" id="AddTecnicPrice" placeholder="precio de la técnica" min="0">
                             <label for="AddTecnicPrice">Precio de la técnica</label>
                         </div>
 
@@ -749,6 +752,15 @@ function loadServicios(){
             alert('Completa los datos correctamente');
         }
     });
+    function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 
     $('#AddTecnicaButon').on('click',function (){
 

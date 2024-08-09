@@ -312,14 +312,18 @@
         }
 
         h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
+}
+.tab-content{
+    padding: 36px;
 }
     </style>
 </head>
@@ -350,7 +354,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -452,7 +456,7 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%">
+                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%" min="0">
                         <label for="porcentaje">Porcentaje de Descuento</label>
                     </div>
                         <div>
@@ -588,8 +592,14 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarDescuento').on('click', function (e) {
         e.preventDefault();
 
-                // Mostrar la pantalla de carga
-                $('#contenedor_carga').css('display', 'block');
+        const descuento = parseFloat($('#porcentaje').val());
+
+        if (descuento < 0){
+            alert("Ingresa valores correctos.")
+        } else {
+
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
 
         discountPercentage = $('#porcentaje').val();  // Asignar el valor aquí
         console.log(discountPercentage);  // Para verificar el valor
@@ -615,6 +625,7 @@ sidebarBtn.addEventListener("click", () => {
                 console.error(error);  // Para más detalles sobre el error
             }
         });
+    }
     });
 
     function aplicarDescuento(descuentoId, tecnicas) {
@@ -629,7 +640,7 @@ sidebarBtn.addEventListener("click", () => {
             },
             success: function (response) {
                 alert("Descuento aplicado exitosamente");
-                location.reload();  // Refresca la página al aceptar el alert
+                window.location.href = '/Ver-Descuentos';
             },
             error: function (error) {
                 alert('Ocurrió un error al aplicar el descuento');
@@ -644,7 +655,15 @@ sidebarBtn.addEventListener("click", () => {
 
     // Fin document.ready
 });
-
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 function loadServicios(){
     $.get('/get/servicios',function (servicios){
         //se obtiene el select mediante su id para manipularlo

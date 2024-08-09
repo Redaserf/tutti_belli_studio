@@ -209,7 +209,9 @@ header {
     flex-direction: column;
     justify-content: space-between;
 }
-
+.tab-content{
+    padding: 36px;
+}
 .home {
     position: relative;
     margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
@@ -311,6 +313,9 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
                 }
+                .table-responsive{
+                    
+                }
 </style>
 
 </head>
@@ -340,7 +345,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div id="scrollDash" class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -529,11 +534,11 @@ header {
                             </div>
                             <div class="mb-3">
                                 <label for="productQuantity" class="form-label">Cantidad</label>
-                                <input type="number" class="form-control" id="productQuantity" name="cantidad">
+                                <input type="number" class="form-control" id="productQuantity" name="cantidad" min="0">
                             </div>
                             <div class="mb-3">
                                 <label for="productPrice" class="form-label">Precio Unitario</label>
-                                <input type="text" class="form-control" id="productPrice" name="precio">
+                                <input type="number" class="form-control" id="productPrice" name="precio" min="0">
                             </div>
                             <div class="mb-3">
                                 <label for="productImage" class="form-label">Imagen</label>
@@ -676,6 +681,14 @@ $('#editProductModal').on('show.bs.modal', function(event) {
 
     // Guardar cambios
     $('#saveProductChanges').off('click').on('click', function() {
+
+        const precio = parseFloat($('#productPrice').val());
+        const cantidad = parseFloat($('#productQuantity').val());
+
+        if (precio < 0 || cantidad < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
+
         // Mostrar la pantalla de carga
         $('#contenedor_carga').css('display', 'block');
         var formData = new FormData($('#editProductForm')[0]);
@@ -698,6 +711,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                 console.error('Error al actualizar el producto:', error);
             }
         });
+    }
     });
 });
 $(document).ready(function () {
@@ -716,6 +730,15 @@ $(document).ready(function () {
     searchTable('search-productos-curso', 'table-productos-curso');
     
 });
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 
        
 
@@ -738,6 +761,7 @@ $(document).ready(function () {
     
         // Fin document.ready
     });
+        
     
     </script>
 </body>

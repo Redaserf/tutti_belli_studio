@@ -156,7 +156,9 @@
             white-space: nowrap;
             opacity: 1;
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar.close .text {
             opacity: 0;
         }
@@ -365,7 +367,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -536,7 +538,7 @@ $('#editProfileForm').on('submit', function(e) {
     formData.append('_token', $('input[name="_token"]').val());
 
     $.ajax({
-        url: '/ActualizarPefil',
+        url: '/ActualizarPerfil',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -630,7 +632,15 @@ sidebarBtn.addEventListener("click", () => {
     });
 
     });
-
+    function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 
     // Pantalla de carga
     var loader = document.getElementById("contenedor_carga");
