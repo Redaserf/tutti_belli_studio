@@ -94,7 +94,7 @@ class InscripcionController extends Controller
                     // Verificar que el usuario no sea null antes de intentar enviar el correo
                     if ($inscripcion->estado == 1 && $inscripcion->usuarios) { // 1 representa 'Aceptado'
                         Mail::to($inscripcion->usuarios->email)->send(new InscripcionAceptada($inscripcion->usuarios, $inscripcion));
-
+                    }
                 }
 
                 DB::commit();
@@ -153,12 +153,5 @@ class InscripcionController extends Controller
             DB::rollback();
             return response()->json(['error' => 'Error al eliminar la inscripción: ' . $e->getMessage()], 500);
         }
-
-        return response()->json(['success' => 'Inscripción actualizada con éxito y correo enviado']);
-    } else {
-        return response()->json(['error' => 'Inscripción no encontrada'], 404);
     }
-}
-
-
 }
