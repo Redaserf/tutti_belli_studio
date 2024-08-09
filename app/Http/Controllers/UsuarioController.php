@@ -45,6 +45,14 @@ class UsuarioController extends Controller
 
 
     public function Registro(Request $request){
+        
+        $fechaNacimiento = new \DateTime($request->fechaNacimiento);
+        $hoy = new \DateTime();
+        $edad = $hoy->diff($fechaNacimiento)->y;
+
+        if ($edad < 18) {
+            return redirect()->back()->with('error', 'Debes ser mayor de 18 años para registrarte.')->withInput();
+        }
 
         $existingUser = User::where('email', $request->email)->first();
         if ($existingUser) {
@@ -82,11 +90,33 @@ class UsuarioController extends Controller
         }
     }
 
+    public function actualizarPerfilEmpleado(Request $request, $empleadoId) {
+        $user = User::find($empleadoId);
 
+        if ($user) {
+            $user->name = $request->input('name');
+            $user->apellido = $request->input('apellidos');
+            $user->gender = $request->input('gender');
+            $user->email = $request->input('email');
+            $user->numeroTelefono = $request->input('phone');
+    
+            $user->save();
+    
+            return response()->json(['success' => 'Perfil actualizado exitosamente']);
+        } else {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+    }
+    
     public function Logout(){
         Auth::logout();
         return redirect('/Home-guest');
     }
 
+    public function obtenerEmpleado($id) {
+        $empleado = User::find($id);
+
+        return response()->json($empleado);
+    }
 
 }

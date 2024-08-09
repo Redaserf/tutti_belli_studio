@@ -182,6 +182,12 @@ h1, h2, h3, h4, h5 ,a, li{
     .btn-light:hover{
       background-color:#fa3284;
     }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
 
 
     </style>
@@ -193,7 +199,7 @@ h1, h2, h3, h4, h5 ,a, li{
   <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div class="container-fluid">
       <a class="navbar-brand" href="/Home-guest">
-        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

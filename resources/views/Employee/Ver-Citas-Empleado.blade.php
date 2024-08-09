@@ -210,6 +210,9 @@ header {
     flex-direction: column;
     justify-content: space-between;
 }
+.tab-content{
+    padding: 36px;
+}
 
 .home {
     position: relative;
@@ -313,7 +316,7 @@ header {
         <i class="fa-solid fa-angle-right toggle"></i>
     </header>
 
-    <div class="menu-bar">
+    <div class="menu-bar table-responsive">
         <div class="menu">
           <ul class="menu-links-custom">
             <li class="nav-link">

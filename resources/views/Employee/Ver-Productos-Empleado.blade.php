@@ -233,6 +233,9 @@ header {
     z-index: 98;
     display: none;
 }
+.tab-content{
+    padding: 36px;
+}
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -379,7 +382,7 @@ header {
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
 
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
               <ul class="menu-links-custom">
                 <li class="nav-link">

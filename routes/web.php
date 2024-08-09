@@ -19,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DibujarController;
 use App\Http\Controllers\InscripcionController;
+use App\Models\Inscripcion;
 
 // ==========[ Vistas ]==========
 
     Route::get('/', function () {
-        return view('Guest.Home-Guest');
+        return view('Guest.Home-guest');
     });
 
 
@@ -93,13 +94,7 @@ use App\Http\Controllers\InscripcionController;
     //devulve inventario como Json
     Route::get('/get/inventarios',[InventarioController::class,'index']);
 
-    // =====[ Guest ]=====
 
-    Route::get('/Home-guest',[ViewsController::class,'guestHome']);
-    Route::get('/Login',[ViewsController::class,'LoginVista']);
-    Route::get('/Registro',[ViewsController::class,'RegistroVista']);
-    Route::post('/ActualizarPefil', [UsuarioController::class, 'actualizarPerfil']);
-    Route::get('/Productos-Guest',[ViewsController::class,'guestProductos']);
     Route::get('/admin', function () {
         return view('RegistrarAdministradores');
     });
@@ -170,6 +165,8 @@ use App\Http\Controllers\InscripcionController;
     Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
     Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
     Route::get('/Logout',[UsuarioController::class, 'Logout']);
+    Route::post('/ActualizarPerfil',[UsuarioController::class, 'actualizarPerfil']);
+
 
 Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCitaUsuario']);
 
@@ -178,7 +175,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
 
-    
+
     // =====[ Agregar (Administrador) ]=====
 
     Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
@@ -220,6 +217,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/get/empleados',[DibujarController::class,'employeeIndex']);
     Route::get('/empleado/eliminar/{id}',[DibujarController::class,'employeeDelete']);
+    Route::get('/empleado/{id}', [UsuarioController::class, 'obtenerEmpleado']);
+    Route::post('/ActualizarPerfilEmpleado/{empleadoId}',[UsuarioController::class, 'actualizarPerfilEmpleado']);
 
 
 
@@ -232,6 +231,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
     Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
+    Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
+    Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
     
     
     
@@ -334,10 +335,15 @@ Route::get('/productosCompras',[ProductoController::class,'productosCompras']);
 Route::post('/crearCompra', [VentaController::class, 'crearCompra']);
 //Obtiene todas las compras realizadas
 Route::get('/get/compras',[DetalleProductoController::class,'comprasIndex']);
+//Obtiene las compras confirmadas
+Route::get('/get/compras/confirmadas', [DetalleProductoController::class, 'comprasConfirmadas']);
+Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'comprasRechazadas']);
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra
-Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCo mpra']);
+//Rechazar la compra
+Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
 
 
 

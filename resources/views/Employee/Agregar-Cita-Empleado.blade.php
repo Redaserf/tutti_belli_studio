@@ -249,7 +249,9 @@ header {
                 display: none; 
             }
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar-btn {
             display: none;
             position: fixed;
@@ -335,7 +337,7 @@ header {
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
 
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
               <ul class="menu-links-custom">
                 <li class="nav-link">

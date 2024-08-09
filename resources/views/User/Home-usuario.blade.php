@@ -463,6 +463,13 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin: 3px 15px;
             vertical-align: middle;
     }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }
+}
 
     </style>
 </head>
@@ -484,7 +491,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="imgnavbar" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

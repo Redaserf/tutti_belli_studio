@@ -194,7 +194,9 @@ header {
 .sidebar li a:hover {
     background: var(--primary-color);
 }
-
+.tab-content{
+    padding: 36px;
+}
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text {
     color: var(--sidebar-color);
@@ -314,10 +316,11 @@ header {
         }
 
         h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -351,7 +354,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -453,7 +456,7 @@ header {
                             <label for="AddProductName">Nombre del producto</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddProductPrice" placeholder="precio del producto">
+                            <input type="number" class="form-control" id="AddProductPrice" placeholder="precio del producto" min="0">
                             <label for="AddProductPrice">Precio del producto</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -463,7 +466,7 @@ header {
                             <label for="selectInventario">Inventario al que corresponde</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock">
+                            <input type="number" class="form-control" id="AddInStock" placeholder="cantidad en stock" min="0">
                             <label for="AddInStock">Cantidad en stock</label>
                         </div>
                         <div class="mb-3">
@@ -559,6 +562,13 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarProducto').on('click', function(e) {
         e.preventDefault();
 
+        const precio = parseFloat($('#AddProductPrice').val());
+        const cantidad = parseFloat($('#AddInStock').val());
+
+        if (precio < 0 || cantidad < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
+
         // Mostrar la pantalla de carga
         $('#contenedor_carga').css('display', 'block');
 
@@ -595,6 +605,7 @@ sidebarBtn.addEventListener("click", () => {
                 alert('Ocurrió un error al agregar el producto');
             }
         });
+    }
     });
     // Fin script para registrar productos
 

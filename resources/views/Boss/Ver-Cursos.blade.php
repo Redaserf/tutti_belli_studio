@@ -11,9 +11,9 @@
     <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -44,7 +44,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 300000;
+    z-index: 100;
 }
 
 /* Dashboard CSS */
@@ -223,7 +223,9 @@ header {
 .sidebar.close ~ .home {
     margin-left: 90px; /* Cuando la sidebar está cerrada, deja menos espacio */
 }
-
+.tab-content{
+    padding: 36px;
+}
 .overlay {
     position: fixed;
     top: 0;
@@ -251,7 +253,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -313,7 +315,7 @@ header {
                 margin-top: 20px;
                 }
 
-                        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+                        /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/
         .card {
                     margin: 20px;
                     border-radius: 10px;
@@ -358,7 +360,7 @@ header {
             background-color: #f5c6cb;
             border-color: #f5c6cb;
         }
-        /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
+        /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/
     </style>
 
 </head>
@@ -371,7 +373,7 @@ header {
 
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -387,8 +389,8 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
-            <div class="menu-bar">
+
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -457,7 +459,7 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
 
@@ -497,7 +499,7 @@ header {
                                             </div>
                                             <div class="form-group" style="margin-top: 10px;">
                                                 <label for="edit_precio">Precio</label>
-                                                <input type="number" class="form-control" id="edit_precio" name="precio">
+                                                <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                                 <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
                                             </div>
                                             <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
@@ -514,24 +516,24 @@ header {
                             </div>
                         </div>
 
-        
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Cursos</h2>
                     <a class="left" href="/Agregar-Curso" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Crear curso<i style="margin-left: 6px;" class="fa-solid fa-pencil"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
-    
+
                 <div>
-    
+
                     <div class="container mt-1 pt-5">
                         <div id="cursos" class="row">
                           {{-- Cursos mediante backend --}}
                         </div>
                       </div>
-    
+
                 </div>
-    
+
             </section>
 
             <br>
@@ -574,7 +576,7 @@ header {
                         </div>
                         <div class="mb-3">
                             <label for="inscripcionEstado" class="form-label">Estado</label>
-                            <select class="form-control" id="inscripcionEstado">
+                            <select class="form-control" id="inscripcionEstado" disabled>
                                 <option value="0">Pendiente</option>
                                 <option value="1">Aceptado</option>
                             </select>
@@ -582,7 +584,9 @@ header {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="botonCerrar">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="eliminarInscripcion">Eliminar</button>
+                    <button type="button" class="btn btn-warning" id="rembolsarInscripcion" style="display: block">Rembolsar</button>
                     <button type="button" class="btn btn-success" id="saveChanges">Guardar cambios</button>
                 </div>
             </div>
@@ -592,11 +596,11 @@ header {
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
-    
+
     // Scripts para todas las vistas
-    
+
         // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -678,12 +682,18 @@ function mostrarInscripciones(cursoId) {
             const inscripciones = response.inscripciones;
             const curso = response.curso;
             let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
+                let filtroId = `<input style="width:160px;" type="number" class="input" placeholder="Busqueda por ID"></input>`; //Aún por implementar la lógica, es un boceto
+                inscripcionesHtml += filtroId;
             inscripciones.forEach(inscripcion => {
                 if (inscripcion.estado == 0){
-                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Pendiente<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                        ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
+                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
                 else {
-                    inscripcionesHtml += `<li>${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido} | Estado: Aceptado<button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:8px;" class="fa-solid fa-eye"></i></button></li>`;
+                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                        ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
+                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
             });
             inscripcionesHtml += '</ul>';
@@ -704,9 +714,26 @@ function editarInscripcion(inscripcionId){
                     $('#inscripcionNombre').val(`${data.usuarios.name} ${data.usuarios.apellido}`);
                     $('#inscripcionFecha').val(data.fechaInscripcion);
                     $('#inscripcionEstado').val(data.estado);
+
+                    $('#botonCerrar').off('click').on('click', function() {
+                        $('#inscripcionModal').modal('hide');
+                        mostrarInscripciones(data.cursoId);
+                    })
+
+                    if (data.estado === 1) {
+                        $('#saveChanges').prop('disabled', true);
+                        $('#eliminarInscripcion').prop('disabled', true);
+                        $('#rembolsarInscripcion').prop('disabled', false);
+                        $('#saveChanges').text('Usuario aceptado');
+                    } else {
+                        $('#saveChanges').prop('disabled', false);
+                        $('#rembolsarInscripcion').prop('disabled', true);
+                        $('#eliminarInscripcion').prop('disabled', false);
+                        $('#saveChanges').text('Aceptar usuario');
+                    }
+
                     $('#saveChanges').off('click').on('click', function() {
-                        // Mostrar la pantalla de carga
-                        $('#contenedor_carga').css('display', 'block');
+                        if (confirm("¿Quieres aceptar al usuario en este curso?")) {
                         const updatedInscripcion = {
                             estado: $('#inscripcionEstado').val(),
                             _token: $('meta[name="csrf-token"]').attr('content')
@@ -716,35 +743,78 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
-                                // Ocultar la pantalla de carga
-                        $('#contenedor_carga').css('display', 'none');
-                                alert("Inscripción actualizada con éxito");
+                                alert("Se ha aceptado al usuario en este curso.");
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
                             },
                             error: function(error) {
-                                // Ocultar la pantalla de carga
-                        $('#contenedor_carga').css('display', 'none');
                                 alert('Error al actualizar la inscripción.');
                             }
                         });
+                    }
                     });
-                },
-                error: function(error) {
-                    // Ocultar la pantalla de carga
-                    $('#contenedor_carga').css('display', 'none');
-                    alert('Error al cargar los detalles de la inscripción.');
-                }
-            });
-        }
 
+                    $('#rembolsarInscripcion').off('click').on('click', function() {
+                        const updatedInscripcion = {
+                            estado: $('#inscripcionEstado').val(),
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        };
+                        if(confirm("¿Quieres devolver los productos de esta inscripción al inventario?")) {
+                            $.ajax({
+                                url: `/rembolso/inscripcion/${inscripcionId}`,
+                                method: 'POST',
+                                data: updatedInscripcion,
+                                success: function(response) {
+                                    alert("Los productos se han regresado con éxito al inventario.");
+                                    $('#inscripcionModal').modal('hide');
+                                    mostrarInscripciones(data.cursoId);
+                                    console.log(data.estado);
+                                },
+                                error: function(error) {
+                                    alert('Error al rembolsar la inscripción');
+                                }
+                            });
+                        }
+                        });
 
+                            $('#eliminarInscripcion').off('click').on('click', function() {
+                            const updatedInscripcion = {
+                                estado: $('#inscripcionEstado').val(),
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            };
+                        if (confirm('¿Estás seguro de que deseas eliminar esta inscripción?')) {
+                            $.ajax({
+                            url: `/inscripcion/eliminar/${inscripcionId}`,
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(){
+                                alert('Inscripción eliminada exitosamente.');
+                                $('#inscripcionModal').modal('hide');
+                                mostrarInscripciones(data.cursoId);
+                            },
+                            error: function(error){
+                                alert('Hubo un error al eliminar la inscripción');
+                                console.log(error);
+                                console.log(data);
+                            }
+                            });
+                        }
+                    });
+                    },
+                    error: function(error) {
+                        alert('Error al cargar los detalles de la inscripción.');
+                    }
+                });
+            }
+            
+        
+            
         // Eliminar un curso
 
         function cursoDelete(id){
   if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
-    // Mostrar la pantalla de carga
-    $('#contenedor_carga').css('display', 'block');
     $.ajax({
       url: `/cursos/eliminar/${id}`,
       method: 'DELETE',
@@ -752,16 +822,12 @@ function editarInscripcion(inscripcionId){
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(){
-        // Ocultar la pantalla de carga
-        $('#contenedor_carga').css('display', 'none');
         alert('Curso eliminado exitosamente.');
         dibujarCursos();
       },
       error: function(error){
-        // Ocultar la pantalla de carga
-        $('#contenedor_carga').css('display', 'none');
         alert('Hubo un error al eliminar el curso');
-        console.error('Error al eliminar el curso:', error);
+        console.log(error);
       }
     });
   }
@@ -774,7 +840,7 @@ function modalEditar(id) {
         success: function(data) {
             const curso = data.curso;
             const empleados = data.empleados;
-            
+
             $('#edit_id').val(curso.id);
             $('#edit_nombre').val(curso.nombre);
             $('#edit_descripcion').val(curso.descripcion);
@@ -803,11 +869,14 @@ function modalEditar(id) {
 $('#editCursoForm').on('submit', function(e) {
     e.preventDefault();
 
-    // Mostrar la pantalla de carga
-    $('#contenedor_carga').css('display', 'block');
-
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
+
+    const precio = parseFloat($('#edit_precio').val());
+
+    if (precio < 0){
+            alert("Ingresa valores correctos.")
+        } else {
 
     $.ajax({
         url: `/cursos/actualizar/${$('#edit_id').val()}`,
@@ -817,18 +886,15 @@ $('#editCursoForm').on('submit', function(e) {
         processData: false,
         success: function(response) {
             $('#editCursoModal').modal('hide');
-            // Ocultar la pantalla de carga
-            $('#contenedor_carga').css('display', 'none');
             dibujarCursos();
-            alert('Curso actualizado con éxito.');
+            alert('Curso actualizado exitosamente');
         },
         error: function(error) {
             console.log(error);
-            // Ocultar la pantalla de carga
-            $('#contenedor_carga').css('display', 'none');
-            alert('Hubo un error al actualizar el curso.');
+            alert('Hubo un error al actualizar el curso');
         }
     });
+}
 });
 
 $('#edit_imagenProducto').on('change', function() {
@@ -838,11 +904,11 @@ $('#edit_imagenProducto').on('change', function() {
     }
 });
 
-    
+
     $(document).ready(function(){
 
         dibujarCursos();
-    
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -877,7 +943,7 @@ sidebarBtn.addEventListener("click", () => {
 });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -886,11 +952,11 @@ sidebarBtn.addEventListener("click", () => {
             }
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-        function botones(){ 
+
+
+        function botones(){
               if (window.innerWidth <= 960) {
                 $('.top').css('flex-direction', 'column');
                 $('.top').css('gap', '10px');
@@ -901,11 +967,11 @@ sidebarBtn.addEventListener("click", () => {
           }
           window.addEventListener('resize', botones);
           botones();
-    
-    
+
+
         // Fin document.ready
     });
-    
+
     </script>
 </body>
 </html>

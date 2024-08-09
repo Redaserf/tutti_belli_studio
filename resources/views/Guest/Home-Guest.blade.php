@@ -446,6 +446,12 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       font-family: "Merriweather", serif;
     }
     
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
     </style>
 </head>
 <body class="hiddenX">
@@ -466,7 +472,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
     <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
