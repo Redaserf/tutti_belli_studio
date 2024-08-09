@@ -253,6 +253,12 @@ class RegistrosController extends Controller
                 "estadoCita" => true
             ]);
 
+            $venta = Venta::create([
+                'total' => 0,
+                'fechaVenta' => $cita->fechaCita,
+                'estadoVenta' => false,
+            ]);
+
             // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([

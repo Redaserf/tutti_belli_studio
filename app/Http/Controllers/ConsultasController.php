@@ -122,6 +122,7 @@ class ConsultasController extends Controller
                 Log::warning("No se encontró cita para el grupo con ID $citaId");
             }
         }
+
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
