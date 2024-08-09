@@ -39,7 +39,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -249,7 +249,9 @@ header {
                 display: none;
             }
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar-btn {
             display: none;
             position: fixed;
@@ -312,16 +314,17 @@ header {
             border-color: #ff3366;
         }
 
-    h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+        h2 {
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
-    }
+}
 
 .product-container {
     display: flex;
@@ -402,7 +405,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -521,7 +524,7 @@ header {
                         <label for="nombreTecnica">Nombre de la técnica</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precioTecnica" placeholder="precio de la técnica">
+                        <input type="number" class="form-control" id="precioTecnica" placeholder="precio de la técnica" min="0">
                         <label for="precioTecnica">Precio de la técnica</label>
                     </div>
 
@@ -726,7 +729,7 @@ sidebarBtn.addEventListener("click", () => {
                             <p class="product-price">$${producto.precio}</p>
                             <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
 <!--                            obtiene como data-stock el valor del stock del producto-->
-                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}">
+                            <input style="margin-bottom:10px;" type="number" class="form-control" id="${idDinamico}" name="cantidadUtilizar" data-stock="${producto.cantidadEnStock}" min="0">
                             <label for="${idDinamico}">Cantidad a utilizar</label>
                         </div>
                         <button type="button" style="margin-bottom: 10px;" id="seleccionar" name="seleccionarBoton"  class="btn btn-outline-primary" data-id="${producto.id}">Seleccionar para añadir a la tecnica</button>
@@ -775,6 +778,10 @@ sidebarBtn.addEventListener("click", () => {
 
     $('#guardarProductos').on('click', function() {
         if(selectedProducts.length > 0) {
+
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
             // $('#agregarTecnica').prop('disabled', true);
             // $('#agregarTecnica').text('Productos seleccionados');
             //
@@ -815,19 +822,25 @@ sidebarBtn.addEventListener("click", () => {
                         arregloCantidades: cantidadesProducts,
                     },
                     success: function(response) {
-                        alert("Se te redirigira a agregar tecnicas");
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                        alert("Servicio junto con su técnica agregado con éxtio.");
                         // location.reload();  // Refresca la página al aceptar el alert
-                        window.location.href = '/Agregar-Tecnica';
+                        window.location.href = '/Ver-Servicios';
                     },
                     error: function(error) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                         console.log(error)
-                        alert('ERROR EN DAR DE ALTA');
+                        alert('Parece que hubo un error, vuelve a intentarlo más tarde.');
                         // location.reload();  // Refresca la página al aceptar el alert
                     }
                 });
 
                 $('#guardarTecnica').modal('hide');
             } else {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Completa los campos faltantes');
             }
 
@@ -837,6 +850,8 @@ sidebarBtn.addEventListener("click", () => {
             $('[name="seleccionar"]').prop('disabled', false).text('Seleccionar para añadir a la técnica');
 
         } else {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Completa los datos correctamente');
         }
     });

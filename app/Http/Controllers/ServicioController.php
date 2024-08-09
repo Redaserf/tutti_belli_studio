@@ -38,7 +38,7 @@ class ServicioController extends Controller
             return response()->json(['success' => 'Servicio eliminado con éxito']);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['message' => 'Error al eliminar el servicio', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Error al eliminar el servicio, primero elimina sus técnicas.', 'error' => $e->getMessage()], 500);
         }
     }
 

@@ -11,33 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('inscripciones', function(Blueprint $table){
-
+        Schema::create('historials', function (Blueprint $table) {
             $table->id();
-            $table->date('fechaInscripcion');
-            $table->boolean('estado');
             $table->unsignedBigInteger('usuarioId');
-            $table->unsignedBigInteger('cursoId');
             $table->timestamps();
 
             $table->foreign('usuarioId')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('cursoId')->references('id')->on('cursos')->onDelete('cascade');
-
-
-
         });
     }
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('inscripciones');
-
+        Schema::dropIfExists('historials');
     }
 };

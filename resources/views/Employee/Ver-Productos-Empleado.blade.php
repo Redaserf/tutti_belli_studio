@@ -43,7 +43,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -233,6 +233,9 @@ header {
     z-index: 98;
     display: none;
 }
+.tab-content{
+    padding: 36px;
+}
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -379,7 +382,7 @@ header {
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
 
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
               <ul class="menu-links-custom">
                 <li class="nav-link">
@@ -469,7 +472,7 @@ header {
 
   function dibujarProductos() {
     $.ajax({
-        url: '/get/productos',
+        url: '/productosCompras',
         method: 'GET',
         success: function(data) {
             const productos = $('#productos');

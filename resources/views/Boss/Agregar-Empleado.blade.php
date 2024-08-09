@@ -39,7 +39,7 @@
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     /* Dashboard CSS */
@@ -180,7 +180,9 @@
     .sidebar.close header .toggle {
         transform: translateY(-50%);
     }
-
+    .tab-content{
+    padding: 36px;
+}
     .sidebar li a {
         height: 100%;
         width: 100%;
@@ -305,15 +307,16 @@
         }
 
         h2 {
-            color: #ffffff;
-            background-color: #e1b8b8;
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            margin-bottom: 20px;
-        }
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
     </style>
 </head>
 
@@ -342,7 +345,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -447,7 +450,7 @@
                                 <label for="employeeGender">Género</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
+                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)" min="0">
                                 <label for="employeePhone">Número telefónico</label>
                             </div>
                             <div class="form-floating mb-3">
@@ -543,6 +546,9 @@ sidebarBtn.addEventListener("click", () => {
     $('#agregarEmpleado').on('click', function(e) {
         e.preventDefault();
 
+                // Mostrar la pantalla de carga
+                $('#contenedor_carga').css('display', 'block');
+
         let employeeName = $('#employeeName').val();
         let employeeLastname = $('#employeeLastname').val();
         let employeeGender = $('#employeeGender').val();
@@ -566,10 +572,14 @@ sidebarBtn.addEventListener("click", () => {
                 rolId: 3
             },
             success: function(response) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert("Empleado agregado exitosamente");
                 window.location.href = '/Ver-Empleados';
             },
             error: function(error) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
                 alert('Ocurrió un error al agregar al empleado');
                 $('#employeeName').val('');
                 $('#employeeLastname').val('');

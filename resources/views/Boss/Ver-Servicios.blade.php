@@ -36,7 +36,7 @@
             height: 100vh;
             width: 100%;
             position: fixed;
-            z-index: 100;
+            z-index: 300000;
         }
 
         :root {
@@ -195,7 +195,9 @@
         .sidebar li a:hover .text {
             color: var(--sidebar-color);
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar .menu-bar {
             height: calc(100% - 110px);
             display: flex;
@@ -321,7 +323,7 @@
             </div>
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
@@ -404,7 +406,7 @@
         </div>
         <div class="section-divider"></div>
 
-        <div>
+        <div class="table-responsive tab-content">
             <table class="table">
                 <thead>
                   <tr>
@@ -490,7 +492,6 @@ $.ajaxSetup({
     }
 });
 
-
         // Scripts para todas las vistas
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -507,6 +508,10 @@ $.ajaxSetup({
                 success: function(data) {
                     const tableBody = $('#Servicios');
                     tableBody.empty();
+                    if (data.length === 0) {
+                        // Mostrar mensaje si no hay servicios
+                        tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
+                    }                     
                     data.forEach(servicio => {
                         const row = `<tr>
                             <td>${servicio.id}</td>
@@ -535,7 +540,7 @@ $.ajaxSetup({
             if (data.length > 0) {
                 const list = $('<ul></ul>');
                 data.forEach(tecnica => {
-                    list.append(`<li>| ${tecnica.nombre} | $${tecnica.precio} | ${tecnica.descripcion} | <button class="btn" onclick="editarTecnica(${tecnica.id}, ${servicioId})" data-bs-toggle="modal" data-bs-target="#editarTecnicaModal"><i class="fa-solid fa-pen-to-square"></i></button></li>`);
+                    list.append(`<li><p style="font-weight:400;">Técnica: ${tecnica.nombre}<button class="btn" onclick="editarTecnica(${tecnica.id}, ${servicioId})" data-bs-toggle="modal" data-bs-target="#editarTecnicaModal"><i class="fa-solid fa-pen-to-square"></i></button><br>Costo: $${tecnica.precio}<br>Descripción: ${tecnica.descripcion}</p></li>`);
                 });
                 modalBody.append(list);
             } else {
@@ -567,7 +572,7 @@ function editarTecnica(tecnicaId, servicioId) {
                     </div>
                     <div class="mb-3">
                         <label for="tecnicaPrecio" class="form-label">Precio</label>
-                        <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}">
+                        <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}" min="0">
                     </div>
                     <div class="mb-3">
                         <label for="tecnicaDescripcion" class="form-label">Descripción</label>
@@ -586,6 +591,16 @@ function editarTecnica(tecnicaId, servicioId) {
 
     // Función para guardar cambios de la técnica
     $('#saveChanges').off('click').on('click', function() {
+
+        const precio = parseFloat($('#tecnicaPrecio').val());
+
+        if (precio < 0 ){
+            alert("Ingresa valores correctos.")
+        } else {
+
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
         const updatedTecnica = {
             nombre: $('#tecnicaNombre').val(),
             precio: $('#tecnicaPrecio').val(),
@@ -597,29 +612,40 @@ function editarTecnica(tecnicaId, servicioId) {
             method: 'POST',
             data: updatedTecnica,
             success: function(response) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert("Técnica actualizada con éxito")
                 $('#editarTecnicaModal').modal('hide');
                 verTecnicas(servicioId);
             },
             error: function(error) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Error al actualizar la técnica.');
             }
         });
+    }
     });
 
     // Borrar técnica
     $('#deleteTecnica').off('click').on('click', function() {
         if (confirm('¿Estás seguro de que deseas eliminar esta técnica?')) {
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
             $.ajax({
                 url: `/borrar/tecnica/${tecnicaId}`,
                 method: 'DELETE',
                 success: function(response) {
+                    // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     alert('Técnica eliminada con éxito');
                     $('#editarTecnicaModal').modal('hide');
                     verTecnicas(servicioId);
                 },
                 error: function(error) {
                     console.log(error);
+                    // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                     alert('Actualmente esta técnica se encuentra en uso, eliminala de los sitios en donde se use para poder eliminarla.');
                 }
             });
@@ -627,7 +653,7 @@ function editarTecnica(tecnicaId, servicioId) {
     });
 }
 
-
+// Actualizar servicio
 function servicioUpdate(servicioId) {
     $.ajax({
         url: `/get/servicio/${servicioId}`,
@@ -650,6 +676,10 @@ function servicioUpdate(servicioId) {
 
             // Función para guardar cambios del servicio
             $('#saveChanges2').off('click').on('click', function() {
+
+                // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
+
                 const updatedServicio = {
                     nombre: $('#servicioNombre').val()
                 };
@@ -660,10 +690,14 @@ function servicioUpdate(servicioId) {
                     data: updatedServicio,
                     success: function(response) {
                         $('#editarServicioModal').modal('hide');
+                        // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                         alert("Servicio actualizado con éxito.");
                         tablaServicios();
                     },
                     error: function(error) {
+                        // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                         alert('Error al actualizar el servicio.');
                     }
                 });
@@ -675,17 +709,24 @@ function servicioUpdate(servicioId) {
     });
 }
 
+// Borrar servicio
 function servicioDelete(servicioId) {
     if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
         $.ajax({
             url: `/borrar/servicio/${servicioId}`,
             method: 'DELETE',
             success: function(response) {
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
                 alert('Servicio eliminado con éxito');
                 tablaServicios();
             },
             error: function(error) {
-                alert('Error al eliminar el servicio.');
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert('Error al eliminar el servicio, primero elimina sus técnicas.');
             }
         });
     }
@@ -756,6 +797,7 @@ function servicioDelete(servicioId) {
             }
             window.addEventListener('resize', botones);
             botones();
+
         });
     </script>
 </body>

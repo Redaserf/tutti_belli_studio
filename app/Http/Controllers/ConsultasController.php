@@ -34,13 +34,26 @@ class ConsultasController extends Controller
     //consulta para traer todos los usuarios con su respectivo nombre de rol 
     public function usuariosConSuRol()
     {
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
 
-        $usuarios = User::with(['roles'])->get();
-        //roles es la funcion con el mismo nombre en el modelo User o sea la relacion
-        //de roles a usuarios   
-        // esto te trae todo lo de roles pudiendo maniipularlo con jquery                         
+        $user = Auth::user();
+        if ($user->rolId == 4) {
 
-        return response()->json($usuarios);
+            $usuarios = User::with(['roles'])->get();
+            //roles es la funcion con el mismo nombre en el modelo User o sea la relacion
+            //de roles a usuarios   
+            // esto te trae todo lo de roles pudiendo maniipularlo con jquery                         
+    
+            return response()->json($usuarios);
+            
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
+
     }
 
     public function usuariosConRolUsuario() // se trae los usuarios que tengan el rol de Usuario y Guest

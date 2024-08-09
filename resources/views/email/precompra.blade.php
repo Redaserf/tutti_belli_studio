@@ -158,7 +158,7 @@
 <tr>
 <td class="pad" style="padding-left:10px;padding-right:10px;padding-top:10px;">
 <div style="color:#333333;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:26px;line-height:120%;text-align:center;mso-line-height-alt:31.2px;">
-<p style="margin: 0;"><strong>Haz sido aceptado</strong></p>
+<p style="margin: 0;"><strong>PRECOMPRA PRODUCTOS</strong></p>
 </div>
 </td>
 </tr>
@@ -168,14 +168,11 @@
 <td class="pad">
 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
 <p style="margin: 0; margin-bottom: 1px;"> </p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Estimado usuario,</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Nos complace informarle que hemos recibido y verificado su comprobante de depósito. Su inscripción al curso deseado ha sido confirmada exitosamente.</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Estamos muy emocionados de contar con su participación y esperamos que disfrute y aproveche al máximo esta experiencia de aprendizaje.</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>A continuación, le recordamos algunos detalles importantes del curso:</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Curso: {{ $cursoNombre }}</strong><br/><strong>Fecha de Inicio: {{ $fechaInicio }}</strong><br/><strong>Horario: {{ $horaInicio }}</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Si tiene alguna pregunta o necesita más información, no dude en contactarnos a través de WhatsApp al número +52 871 382 6767.</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Estamos ansiosos por verle en el curso y deseamos que tenga una experiencia enriquecedora.</strong></p>
-<p style="margin: 0;"><strong>Atentamente,</strong><br/><strong>Tutti Belli Studio</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>ID de venta {{IdVenta}}</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Estimado usuario,{{user}}</strong><br/><strong>Para proceder con su compra, por favor de ir al establecimiento para recoger los productos seleccionados .</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Para asegurar la existencia, de los productos favor de asistir a pagar al establecimiento</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>lo mas pronto posible</strong></p>
+<p style="margin: 0;"><br/><strong>Tutti Belli Studio</strong></p>
 </div>
 </td>
 </tr>
@@ -200,7 +197,7 @@
 <tr>
 <td class="pad" style="padding-left:10px;padding-right:10px;padding-top:10px;">
 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:26px;line-height:120%;text-align:center;mso-line-height-alt:31.2px;">
-<p style="margin: 0;">Gracias por su Preferencia</p>
+<p style="margin: 0;">Gracias por su compra</p>
 </div>
 </td>
 </tr>

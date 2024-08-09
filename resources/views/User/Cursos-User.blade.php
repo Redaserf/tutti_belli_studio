@@ -19,6 +19,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             min-height: 100vh;
+            overflow-x: hidden; 
         }
         /*ESTILOS DE LAS CARTAS DE INSCRIPCION*/ 
         .card {
@@ -135,7 +136,7 @@
                 height: 100vh;
                 width: 100%;
                 position: fixed;
-                z-index: 100;
+                z-index: 300000;
             }
 
 
@@ -143,7 +144,7 @@
 /* Aquí tus estilos */
 
 
-.custom-alert {
+.custom-alerts {
         background-color: #e0e0e0; /* Color rosado */
         border: 1px solid #e0e0e0;
         color: #000000;
@@ -151,17 +152,55 @@
         padding: 20px;
         font-family: "Josefin Sans", sans-serif;
     }
-    .custom-alert .alert-heading {
+    .custom-alerts .alert-heading {
         font-size: 1.5rem;
         font-weight: bold;
     }
-    .custom-alert p {
+    .custom-alerts p {
         font-size: 1.1rem;
         margin-bottom: 0;
     }
-    .custom-alert hr {
+    .custom-alerts hr {
         border-top: 2px solid #000000;
     }
+    /* Alerta bonita */
+
+    @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
 
     .btn-cancelar {
         background-color: red;
@@ -173,6 +212,19 @@
         background-color: darkred;
         border-color: darkred;
     }
+    .btn-light:hover{
+      background-color:#fa3284;
+    }
+    .footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
     </style>
 </head>
 <body class="hiddenX">
@@ -183,7 +235,7 @@
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" class="imgnavbar"alt="Tutti Belli Studio" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -218,7 +270,7 @@
   </div>
 </nav>
 
-<br>
+<br><br>
 
 <div class="container mt-5 pt-5">
   <div id="cursos" class="row">
@@ -253,16 +305,16 @@
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>
@@ -318,7 +370,7 @@
           if (data.length === 0) {
             cursos.append(`
               <div class="col-12 text-center my-5">
-                <div class="custom-alert" role="alert">
+                <div class="custom-alerts" role="alert">
                   <h4 class="alert-heading">¡No hay cursos disponibles en este momento!</h4>
                   <p>Actualmente no hay cursos programados. Vuelve más tarde para ver si hay cursos disponibles.</p>
                   <hr>
@@ -335,7 +387,7 @@
               const buttonText = curso.inscrito ? 'Inscrito' : 'Inscribirme';
               const buttonDisabled = curso.inscrito ? 'disabled' : '';
               const card = `
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4 col-xl-4 col-sm-12">
                   <div class="card">
                     <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
                     <div class="card-body">
@@ -403,11 +455,15 @@
 
     function mostrarMensajeInscripcion() {
       const modalBody = document.querySelector('#inscripcionModal .modal-body');
-      modalBody.innerHTML = '<p>Te enviaremos un correo con la información necesaria para proceder con la inscripción del curso.</p>';
+      modalBody.innerHTML = '<p>Estás inscrito a este curso, para más información acerca del pago dirigete a tu historial de tu perfil.</p>';
       const modalFooter = document.querySelector('#inscripcionModal .modal-footer');
-      modalFooter.innerHTML = '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
+      modalFooter.innerHTML = '<button type="button" id="cerrarModalxd" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>';
       $('#inscripcionModal').modal('show');
-    }
+      
+      document.getElementById('cerrarModalxd').addEventListener('click', function() {
+      window.location.href = '/Historial-User';
+  });
+  }
 
 
 

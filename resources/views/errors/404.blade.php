@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <title>Tutti Belli</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
@@ -90,7 +91,7 @@ body, html {
 <!-- NAVBAR / ENCABEZADO -->
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/Home-usuario">
+    <a class="navbar-brand" href="/Home-guest">
       <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,16 +100,16 @@ body, html {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
         <li class="nav-item">
-          <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
+          <a class="nav-link active texto1" aria-current="page" href="/Home-guest#servicios" style="color: #000000;">Servicios</a>
         </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
+              <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+              <a class="nav-link active texto1" aria-current="page" href="/Home-guest#cursos" style="color: #000000;">Cursos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
+              <a class="nav-link active texto1" aria-current="page" href="/Home-guest#contacto" style="color: #000000;">Contacto</i></a>
             </li>
           </ul>
           <a href="/Reservacion-User">

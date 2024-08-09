@@ -42,7 +42,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 
@@ -143,6 +143,10 @@ h1, h2, h3, h4, h5 ,a, li{
     
     width: 100%;
 }
+.footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
 .footer a {
     color: white;
 }
@@ -184,6 +188,48 @@ h1, h2, h3, h4, h5 ,a, li{
             }
         }
 
+        .custom-alerts {
+        background-color: #e0e0e0; /* Color rosado */
+        border: 1px solid #e0e0e0;
+        color: #000000;
+        border-radius: 5px;
+        padding: 20px;
+        font-family: "Josefin Sans", sans-serif;
+    }
+    .custom-alerts .alert-heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .custom-alerts p {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    .custom-alerts hr {
+        border-top: 2px solid #000000;
+    }
+    .btn-light:hover{
+      background-color:#fa3284;
+    }
+    /* Alerta bonita */
+
+    @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
         .custom-alert {
             position: fixed;
             top: 20px;
@@ -201,6 +247,15 @@ h1, h2, h3, h4, h5 ,a, li{
         .custom-alert.hide {
             animation-name: slideOut;
         }
+        @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
+        /* Alerta bonita */
+
+        
 
         /* Fin alerta bonita */
 
@@ -214,7 +269,7 @@ h1, h2, h3, h4, h5 ,a, li{
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" class="imgnavbar"alt="Tutti Belli Studio" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -258,22 +313,44 @@ h1, h2, h3, h4, h5 ,a, li{
   </div>
 
 <br><br><br><br><br><br><br>
+<!-- alerta -->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+          <symbol id="check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </symbol>
+          <symbol id="info-fill" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+          </symbol>
+          <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+          </symbol>
+      </svg>
+  
+        <div class="custom-alert alert alert-dismissible fade" role="alert">
+            <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+            <div id="alertaTexto">Texto de la alerta</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- fin alerta -->
+
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="/Home-usuario">Inicio</a></li>
@@ -303,28 +380,7 @@ h1, h2, h3, h4, h5 ,a, li{
       </div>
     </footer>
 
-         <!-- alerta -->
-
-         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-          <symbol id="check-circle-fill" viewBox="0 0 16 16">
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-          </symbol>
-          <symbol id="info-fill" viewBox="0 0 16 16">
-              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-          </symbol>
-          <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
-              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-          </symbol>
-      </svg>
-  
-      <div class="custom-alert alert alert-dismissible fade" role="alert">
-          <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
-          <div id="alertaTexto">Texto de la alerta</div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-
-        <!-- fin alerta -->
-
+         
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -353,11 +409,28 @@ h1, h2, h3, h4, h5 ,a, li{
 
   function dibujarProductos() {
     $.ajax({
-        url: '/get/productos',
+        url: '/productosCompras',
         method: 'GET',
         success: function(data) {
             const productos = $('#productos');
             productos.empty();
+            if (data.length === 0) {
+            productos.append(`
+              <div class="col-12 text-center my-5">
+                <div class="custom-alerts">
+                  <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
+                  <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
+                  <hr>
+                  <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+              </div>
+            `);
+          }
             data.forEach(producto => {
                 const card = `
                     <div class="product-card">

@@ -9,9 +9,37 @@ use Illuminate\Http\Request;
 
 class DetalleProductoController extends Controller
 {
+    //Compras en espera
     function comprasIndex(){
-        $compras = Venta::all();
-        return response()->json($compras);
+        $ventas = Venta::has('detalleProductos')
+            ->with('detalleProductos')
+            ->where(function ($query) {
+                $query->where('estadoVenta', null);
+            })
+            ->get();
+
+        return response()->json($ventas);
+    }
+
+    //Compras confirmadas
+    function comprasConfirmadas(){
+        $ventas = Venta::has('detalleProductos')
+            ->with('detalleProductos')
+            ->where('estadoVenta', true)
+            ->get();
+
+        return response()->json($ventas);
+    }
+
+    //Compras rechazadas
+    function comprasRechazadas()
+    {
+        $ventas = Venta::has('detalleProductos')
+            ->with('detalleProductos')
+            ->where('estadoVenta', false)
+            ->get();
+
+        return response()->json($ventas);
     }
 
     function ticket($id){

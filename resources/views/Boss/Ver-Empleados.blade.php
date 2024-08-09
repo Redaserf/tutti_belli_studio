@@ -43,7 +43,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -209,6 +209,9 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+} 
+.tab-content{
+    padding: 36px;
 }
 
 .home {
@@ -335,7 +338,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -415,7 +418,7 @@ header {
                 </div>
                 <div class="section-divider"></div>
                 
-                <div>
+                <div class="table-responsive tab-content">
                     
                     <table class="table">
                         <thead>
@@ -427,7 +430,7 @@ header {
                               <th scope="col">Género</th>
                               <th scope="col">Correo</th>
                               <th scope="col">Teléfono</th>
-                            <th scope="col">Borrar</th>
+                            <th scope="col">Editar</th>
                         </tr>
                     </thead>
                     <tbody id="Empleados">
@@ -440,6 +443,52 @@ header {
                     </div>
                     
                 </section>
+
+{{-- Modal para editar perfil --}}
+
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editProfileForm" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Editar perfil del empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit_user_id" name="id" value="{{ Auth::user()->id }}">
+                    <div class="form-group">
+                        <label for="edit_name">Nombre</label>
+                        <input type="text" class="form-control" id="edit_name" name="name" value="{{ Auth::user()->name }}">
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="edit_apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="edit_apellidos" name="apellidos" value="{{ Auth::user()->apellido }}">
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                      <label for="edit_gender">Género</label>
+                      <select class="form-control" id="edit_gender" name="gender" >
+                          <option value="Hombre" {{ Auth::user()->gender == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                          <option value="Mujer" {{ Auth::user()->gender == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+                      </select>
+                  </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="edit_email">Correo electrónico</label>
+                        <input type="email" class="form-control" id="edit_email" name="email" value="{{ Auth::user()->email }}">
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="edit_phone">Número de teléfono</label>
+                        <input type="number" class="form-control" id="edit_phone" name="phone" value="{{ Auth::user()->numeroTelefono }}" oninput="this.value = this.value.slice(0, 10)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
                 
                 
                 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
@@ -463,45 +512,55 @@ header {
         // Dibujar empleados
 
         function tablaEmpleados(){
-          $.ajax({
-              url: '/get/empleados',
-              method: 'GET',
-              success: function(data) {
-                  const tableBody = $('#Empleados');
-                  tableBody.empty();
-                  data.forEach(empleado => {
-                      const row = `<tr>
-                          <td>${empleado.id}</td>
-                          <td>${empleado.name}</td>
-                          <td>${empleado.apellido}</td>
-                          <td>${empleado.fechaNacimiento}</td>
-                          <td>${empleado.gender}</td>
-                          <td>${empleado.email}</td>
-                          <td>${empleado.numeroTelefono}</td>
-                          <td>
-                              <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></a>
-                          </td>
-                      </tr>`;
-                      tableBody.append(row);
-                  });
-              }
-          });
+    $.ajax({
+        url: '/get/empleados',
+        method: 'GET',
+        success: function(data) {
+            const tableBody = $('#Empleados');
+            tableBody.empty();
+            data.forEach(empleado => {
+                const row = `<tr>
+                    <td>${empleado.id}</td>
+                    <td>${empleado.name}</td>
+                    <td>${empleado.apellido}</td>
+                    <td>${empleado.fechaNacimiento}</td>
+                    <td>${empleado.gender}</td>
+                    <td>${empleado.email}</td>
+                    <td>${empleado.numeroTelefono}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="cargarEmpleado(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="fa-solid fa-user-pen"></i></button>
+                        <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></button>
+                    </td>
+                </tr>`;
+                tableBody.append(row);
+            });
         }
+    });
+}
         
         // Eliminar empleados
 
         function employeeDelete(id){
             if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+                // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
           $.ajax({
               url: `/empleado/eliminar/${id}`,
               method: 'GET',
               success: function(){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert("Empleado eliminado con éxito.")
                   tablaEmpleados();
               },
               error: function(error){
                 if (error.status === 500) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     alert('Este empleado está en un curso asignado.');
                 } else {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     alert('Ocurrió un error al eliminar el empleado.');
                 }
                 console.log(error);
@@ -510,8 +569,57 @@ header {
         }
         }
 
+        function cargarEmpleado(id) {
+    $.ajax({
+        url: `/empleado/${id}`,
+        method: 'GET',
+        success: function(data) {
+            $('#edit_user_id').val(data.id);
+            $('#edit_name').val(data.name);
+            $('#edit_apellidos').val(data.apellido);
+            $('#edit_gender').val(data.gender);
+            $('#edit_email').val(data.email);
+            $('#edit_phone').val(data.numeroTelefono);
+        },
+        error: function(error) {
+            console.error('Error al cargar los datos del empleado:', error);
+            alert('Hubo un error al cargar los datos del empleado.');
+        }
+    });
+}
 
+$('#editProfileForm').on('submit', function(e) {
+    e.preventDefault();
 
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
+
+    let formData = new FormData(this);
+    formData.append('_token', $('input[name="_token"]').val());
+
+    const empleadoId = $('#edit_user_id').val();
+
+    $.ajax({
+        url: `/ActualizarPerfilEmpleado/${empleadoId}`,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            $('#editProfileModal').modal('hide');
+            alert('Perfil actualizado con éxito.');
+            tablaEmpleados();
+        },
+        error: function(error) {
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            console.error('Error al actualizar el perfil:', error);
+            alert('Hubo un error al actualizar el perfil');
+        }
+    });
+});
 
         
         $(document).ready(function(){

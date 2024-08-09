@@ -29,6 +29,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    overflow-x: hidden; 
 }
 .fonts3{
   font-family: "Josefin Sans", sans-serif !important; 
@@ -45,7 +46,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
   font-family: "Josefin Sans", sans-serif !important;
 }
 
-.hiddenX{
+.hiddenX, .home{
     overflow-x: hidden;
 }
 /* BOTON PARA RESERVAR CITA MEJORADO ESTE ES EL BOTON PRINCIPAL */
@@ -81,10 +82,20 @@ h1, h2, h3, h4, h5 ,a, li, p{
   }
 
   .reserve-button:hover {
-    color: #212121; /* Cambia el color del texto a negro mate */
+    color: #fa3284; /* Cambia el color del texto a negro mate */
     background-color: #e0e0e0; /* Cambia el fondo a gris claro */
   }
-
+  .btn-light:hover{
+      background-color:#fa3284;
+    }
+    .btn-personalizado:hover{
+      background-color:#fa3284;
+      border:0;
+    }
+    .footer-pers{
+      padding: 40px;
+      margin-top:70px;
+    }
   @media (max-width: 768px) {
     .reserve-button {
       font-size: 16px;
@@ -206,9 +217,9 @@ h1, h2, h3, h4, h5 ,a, li, p{
   }
 }
   .img-horario{
-    width: 350px;
-    height: 500px;
-    margin-left: 0 auto;
+    width: 450px;
+    height: 600px;
+    margin-top: 0 auto;
   }
 
   
@@ -222,7 +233,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
 /* FIN ANIMACION DE CARGA */
@@ -244,6 +255,9 @@ section{
 .Color_del_footer_xd{
     background-color: #1E1B1B;
 }
+.btn-light:hover{
+      background-color:#fa3284;
+    }
 
 /* SERVICIOS PARTE DE AARON */
 .container {
@@ -449,6 +463,13 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin: 3px 15px;
             vertical-align: middle;
     }
+    @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }
+}
 
     </style>
 </head>
@@ -459,7 +480,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   <section>
     <div data-aos="fade-up" data-aos-duration="1000" class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.4);">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.2);">
         <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
     </div>
@@ -470,7 +491,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="imgnavbar" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -536,21 +557,21 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <section id="servicios"class="fonts3" >
         <p class="text-uppercase text-center" style="font-size: 50px;">Servicios</p>
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card1">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/LABIOS_TARJETA.png" alt="labios">
                 <br>
                 <h3 class="fonts3">Labios</h3>
                 <p class="fonts3">En labios hacemos una pequeña limpieza para después anestesiarlos y aplicarles el color que gustes. Nuestro objetivo es dejarlos bellos y sensuales, realzando tu belleza natural con técnicas personalizadas y productos de alta calidad.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card2">
               <br>
                 <img style="width: 80px;height: 80px;" src="/resources/img/home/servicios/OJOS_TARJETA.png" alt="Ojos">
                 <br>
                 <h3>Ojos</h3>
                 <p>En ojos manejamos diferentes tipos de delineado, haciendo que tu mirada resalte aún más. Ofrecemos opciones permanentes y semipermanentes, adaptándonos a tus preferencias para lograr el look que deseas de manera segura y precisa.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card3">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/CEJA_TARJETA.png" alt="Ceja">
                 <br>
@@ -558,7 +579,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                 <h3>Cejas</h3>
                 <p>La ceja es el marco de tu rostro. Realzamos tus facciones con un diseño acorde a la forma de tu cara y la técnica que más te favorezca. Nuestro equipo se asegura de que tus cejas luzcan perfectas y armoniosas, complementando tu belleza natural.</p>
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="card">
+            <div data-aos="fade-up" data-aos-duration="1000" class="card" id="card4">
               <br>
                 <img style="width: 70px;height: 50px;" src="/resources/img/home/servicios/PESTAÑA_TARJETA.png" alt="Pestañas">
                 <br>
@@ -579,7 +600,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
             <a href="/Reservacion-User">
-              <button onclick="" class="btn btn-dark">Reservar cita</button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
             </a>
           </div>
         </div> 
@@ -592,28 +613,24 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img1g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img4g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>    
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img3g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>              
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img2g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              <h5 class="card-title">Tutti Belli Studio</h5>
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
             </div>
           </div>
@@ -694,16 +711,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div style="background-color: #1e1b1b;"class="container-fluid">
             <div class="row text-center text-md-left">
               <br><br><br>
-                <div class="col-md-4 text-center">
+                <div class="col-md-4 text-center footer-pers">
                     <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Dirección</h5>
                     <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
                     <p>Teléfono: +52 871 382 6767</p>
                     <p>Email: tuttibellistudiotrc@gmail.com</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 footer-pers">
                     <h5>Enlaces</h5>
                     <ul class="links">
                         <li><a href="#">Inicio</a></li>
@@ -778,6 +795,19 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               $('#navbar').css('visibility', 'visible');
               loader.style.display = "none";
           })
+          //PARA LAS CARTAS POR QUE CON A JODE EL DISEÑO
+          $('#card1').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card2').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card3').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
+    $('#card4').click(function() {
+        window.location.href = "/Reservacion-User";
+    });
       </script>
 </body>
 </html>

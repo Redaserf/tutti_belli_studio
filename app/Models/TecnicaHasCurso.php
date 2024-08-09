@@ -18,10 +18,10 @@ class TecnicaHasCurso extends Model
     protected $fillable = ['tecnicaId', 'cursoId'];
 
     public function cursos(){
-        return $this->belongsTo(Curso::class, 'cursoId');
+        return $this->belongsTo(Curso::class, 'cursoId', 'id');
     }
 
     public function tecnicas(){
-        return $this->belongsTo(Tecnica::class, 'tecnicaId');
+        return $this->belongsTo(Tecnica::class, 'tecnicaId', 'id');
     }
 }

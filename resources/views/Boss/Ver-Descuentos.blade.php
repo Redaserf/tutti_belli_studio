@@ -43,7 +43,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -184,7 +184,9 @@ header {
 .sidebar.close header .toggle {
     transform: translateY(-50%);
 }
-
+.tab-content{
+    padding: 36px;
+}
 .sidebar li a {
     height: 100%;
     width: 100%;
@@ -304,8 +306,9 @@ header {
 
     /*    css para que las imagenes adapten su tamaño a la hora de dibujar en la tabla*/
     .producto-imagen {
-        width: 100px;
-        height: 100px;
+        border-radius: 6px;
+        width: 75px;
+        height: 75px;
         /* mantener relacion de aspecto*/
         object-fit: cover;
     }
@@ -341,7 +344,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -414,76 +417,77 @@ header {
             {{-- Fin Sidebar --}}
 
 
+    {{-- Aquí las cosas con descuento --}}
+    @csrf
+    <section class="home">
+        <div class="top text-center">
+            <h2>Descuentos</h2>
+            <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 217px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
+            <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en técnica<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
+        </div>
+        <div class="section-divider"></div>
 
 
+                    <!-- Pestañas de navegación -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="productos-descuento-tab" data-bs-toggle="tab" href="#productos-descuento" role="tab" aria-controls="productos-descuento" aria-selected="true">Productos</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="tecnicas-descuento-tab" data-bs-toggle="tab" href="#tecnicas-descuento" role="tab" aria-controls="tecnicas-descuento" aria-selected="false">Técnicas</a>
+                        </li>
+                    </ul>
+                    
 
-
-            <div>
-
-                {{-- Aquí las cosas con descuento --}}
-                @csrf
-                <section class="home">
-                    <div class="top text-center">
-                        <h2>Descuentos</h2>
-                        <a class="right" href="/Agregar-Descuento-Producto" style="text-decoration: none; color:black; margin-right:10px"><button class="btn btn-outline-success" style="width: 217px">Descuento en producto<i style="margin-left:6px;" class="fa-solid fa-basket-shopping"></i></button></a>
-                        <a class="left" href="/Agregar-Descuento-Tecnica" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: 215.84px">Descuento en técnica<i style="margin-left:6px;" class="fa-solid fa-eye-dropper"></i></button></a>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="productos-descuento" role="tabpanel" aria-labelledby="productos-descuento-tab">
+                        <div class="table-container mt-5">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Imagen</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Stock</th>
+                                            <th scope="col">Descripcion</th>
+                                            <th scope="col">Inventario</th>
+                                            <th scope="col">Descuento</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Productos">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="section-divider"></div>
-
-                    <div>
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Imagen</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Stock</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Inventario</th>
-                                <th scope="col">Descuento</th>
-                                <th scope="col">Elminar</th>
-                            </tr>
-                            </thead>
-                            <tbody id="Productos">
-
-                            </tbody>
-                        </table>
-
+                    <div class="tab-pane fade" id="tecnicas-descuento" role="tabpanel" aria-labelledby="tecnicas-descuento-tab">
+                        <div class="table-container mt-5">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Descripcion</th>
+                                            <th scope="col">Servicio</th>
+                                            <th scope="col">Descuento</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Tecnicas">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <div class="section-divider"></div>
-
-                    <div>
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Servicio</th>
-                                <th scope="col">Descuento</th>
-                                <th scope="col">Elminar</th>
-                            </tr>
-                            </thead>
-                            <tbody id="Tecnicas">
-
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </section>
-
-
-            </div>
-
-
-
-</div>
+                </div>
+                
+        </section>
+    
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -629,6 +633,8 @@ function tablaDescuentosTecnicas(){
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen
 function eliminarDescuentoProducto(id){
     if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
+        // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
     $.ajax({
         url: `/eliminarDescuentoProducto/${id}`,
         method: 'POST',
@@ -637,10 +643,15 @@ function eliminarDescuentoProducto(id){
             _token: $('input[name="_token"]').val(),
         },
         success: function(){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Descuento eliminado con éxito.");
             tablaDescuentosProducto();
         },
         error: function(error){
-
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Error al borrar el descuento.");
             console.log(id)
         }
     });
@@ -651,6 +662,9 @@ function eliminarDescuentoProducto(id){
 //Modificar para prodcuto
 //Investigar como hacer que los descuentos sin productos relacionados se eliminen
 function eliminarDescuentoTecnica(id){
+    if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
     $.ajax({
         url: `/eliminarDescuentoTecnica/${id}`,
         method: 'POST',
@@ -658,13 +672,20 @@ function eliminarDescuentoTecnica(id){
             _token: $('input[name="_token"]').val(),
         },
         success: function(){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Descuento eliminado con éxito.");
             tablaDescuentosTecnicas();
-
+            
         },
         error: function(error){
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
+            alert("Error al borrar el descuento.");
             console.log(error)
         }
     });
+}
 }
 
 </script>

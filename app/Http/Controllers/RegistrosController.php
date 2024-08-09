@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Curso;
 use App\Models\Descuento;
 use App\Models\Producto;
+use App\Models\ProductoHasCurso;
 use App\Models\Servicio;
 use App\Models\Tecnica;
+use App\Models\TecnicaHasCurso;
 use App\Models\User;
 use App\Models\Venta;
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -96,24 +99,84 @@ class RegistrosController extends Controller
     function RegistroCurso(Request $request)
     {
 
+        DB::beginTransaction();
+
+        try{
+
+            // Extraer datos del request
+            $nombre = $request->input('nombre');
+            $cupoLimite = $request->input('cupoLimite');
+            $fechaInicio = $request->input('fechaInicio');
+            $horaInicio = $request->input('horaInicio');
+            $precio = $request->input('precio');
+            $descripcion = $request->input('descripcion');
+            $empleadoId = $request->input('empleadoId');
+            $tecnicas = json_decode($request->input('tecnicas'), true);
+            $productos = json_decode($request->input('productos'), true);
+            $cantidadesProductos = json_decode($request->input('cantidadesProductos'), true);
+
+
+            // Guardar la imagen
+            if ($request->hasFile('imagenCurso')) {
+                $imagePath = $request->file('imagenCurso')->store('imagenes', 'public');
+            } else {
+                $imagePath = null; // O un valor predeterminado si es necesario
+            }
+
+            // REVISAR PORQUE ESTO NO FUNCIONO
+//            Curso::create([
+//                'nombre' => $nombre,
+//                'cupoLimite' => $cupoLimite,
+//                'fechaInicio' => $fechaInicio,
+//                'horaInicio' => $horaInicio,
+//                'precio' => $precio,
+//                'imagenCurso' => $imagePath,
+//                'descripcion' => $descripcion,
+//                'empleadoId' => $empleadoId
+//            ]);
+
         $curso = new Curso();
-        $curso->nombre = $request->nombre;
-        $curso->cupoLimite = $request->cupoLimite;
-        $curso->fechaInicio = $request->fechaInicio;
-        $curso->horaInicio = $request->horaInicio;
-        $curso->imagen = $request->imagen;
-        $curso->descripcion = $request->descripcion;
-        $curso->precio = $request->precio;
+        $curso->nombre = $nombre;
+        $curso->cupoLimite = $cupoLimite;
+        $curso->fechaInicio = $fechaInicio;
+        $curso->horaInicio = $horaInicio;
+        $curso->descripcion = $descripcion;
+        $curso->precio = $precio;
         if ($request->hasFile('imagenCurso')) {
             $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
         }
-        $curso->empleadoId = $request->empleadoId;
+        $curso->empleadoId = $empleadoId;
         $curso->save();
+
+        // Guardar las técnicas seleccionadas para el curso
+        foreach ($tecnicas as $tecnicaId) {
+            TecnicaHasCurso::create([
+                'cursoId' => $curso->id,
+                'tecnicaId' => $tecnicaId,
+            ]);
+        }
+
+        //Guardar productos en el curso
+            for ($i = 0; $i < count($productos); $i++) {
+                ProductoHasCurso::create([
+                    'cursoId' => $curso->id,
+                    'productoId' => $productos[$i],
+                    'cantidadPorUsar' => $cantidadesProductos[$i],
+                ]);
+            }
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['message' => 'Error: ',  $e->getMessage()], 500);
+        }
+
+
 
 
         //regresa el id del curso que se acaba de crear para mandarlo en el ajax
         // que se encuentra en Cursos
-        return response()->json(['cursoId' => $curso->id]);
+//        return response()->json(['cursoId' => $curso->id]);
 
     }
 
@@ -168,23 +231,19 @@ class RegistrosController extends Controller
                 return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
             }
         }
-    
+
+        // Verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-        ->where('horaCita', $request->horaCita)
-        ->first();
-    
+                             ->where('horaCita', $request->horaCita)
+                             ->first();
+
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
-        try {
-            $venta = Venta::create([
-                'fechaVenta' => $request->fechaCita,
-                'total' => 0,
-                'estadoVenta' => false,
-            ]);
-    
+        try{
+            // Crear la cita
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -193,7 +252,8 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
             ]);
-    
+
+            // Crear las relaciones entre la cita y los servicios
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
@@ -202,7 +262,7 @@ class RegistrosController extends Controller
                     'ventaId' => $venta->id,
                     'precioTecnica' => 0,
                 ]);
-    
+
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
 
                 $citaHasServicios->update([
@@ -237,10 +297,10 @@ class RegistrosController extends Controller
             $totalVenta = CitaHasServicio::where('citaId', $cita->id)
                 ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
                 ->sum('tecnicas.precio');
-    
+
+            // Actualiza el precio total en la tabla ventas
             $venta->update(['total' => $totalVenta]);
-    
-            DB::commit();
+
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -248,7 +308,8 @@ class RegistrosController extends Controller
         }
     }
 
-    
+
+
     public function editarCita(Request $request, $id) {
         $validatedData = $request->validate([
             'fechaCita' => 'required|date',
@@ -273,11 +334,12 @@ class RegistrosController extends Controller
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
         try {
             $cita = Cita::findOrFail($id);
-    
+
+            // Actualizar la cita
             $cita->update([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -314,7 +376,7 @@ class RegistrosController extends Controller
                     'ventaId' => $ventaId,
                     'precioTecnica' => 0,
                 ]);
-    
+
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
 
                 $citaHasServicios->update([
@@ -345,18 +407,21 @@ class RegistrosController extends Controller
                     }
                 }
             }
-    
+
+            // Recalcular el precio total de las técnicas para esta cita
             $totalVenta = CitaHasServicio::where('citaId', $cita->id)
-                ->sum('precioTecnica');
-    
-            Venta::where('id', $ventaId)->update([
+                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
+                ->sum('tecnicas.precio');
+
+            // Actualizar la fecha y el precio total en la tabla ventas
+            Venta::where('id', $cita->ventaId)->update([
                 'fechaVenta' => $request->fechaCita,
                 'total' => $totalVenta,
                 'estadoVenta' => false
             ]);
     
             Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita actualizada con éxito'], 200);
         } catch (\Exception $e) {
@@ -401,7 +466,7 @@ class RegistrosController extends Controller
             Venta::where('id', $ventaId)->delete();
     
             Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita y venta eliminadas con éxito'], 200);
         } catch (\Exception $e) {
@@ -409,9 +474,9 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al eliminar la cita', 'error' => $e->getMessage()], 500);
         }
     }
-    
-    
-    
+
+
+
     function RegistroDescuentoProducto(Request $request){
 
         $descuento = new Descuento();
@@ -476,21 +541,23 @@ class RegistrosController extends Controller
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
                             ->where('horaCita', $request->horaCita)
                             ->first();
-    
+
         if ($citaExistente) {
             return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
         }
-    
+
         DB::beginTransaction();
         try {
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
+                "fechaCreacion" => now(),
                 'total' => 0,
                 'estadoVenta' => false,
             ]);
     
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
+                "fechaCreacion" => now(),
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
@@ -506,7 +573,7 @@ class RegistrosController extends Controller
                     'ventaId' => $venta->id,
                     'precioTecnica' => 0,
                 ]);
-    
+
                 $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
 
                 $citaHasServicios->update([
@@ -545,7 +612,7 @@ class RegistrosController extends Controller
             $venta->update(['total' => $totalVenta]);
     
             Mail::to($request->user()->email)->send(new CorreoEspera($cita));
-    
+
             DB::commit();
             return response()->json(['message' => 'Cita creada con éxito'], 200);
         } catch (\Exception $e) {
@@ -553,7 +620,6 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
         }
     }
-    
 
     public function actualizarDetalleTecnica(Request $request)
 {

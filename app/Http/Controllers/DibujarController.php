@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
+use App\Models\Cita;
+use App\Models\CitaHasServicio;
 use App\Models\Curso;
+use App\Models\DetalleProducto;
 use App\Models\Inscripcion;
 use App\Models\Producto;
 use App\Models\Inventario;
+use App\Models\TecnicaHasCurso;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+
 
 class DibujarController extends Controller
 {
@@ -39,7 +46,6 @@ class DibujarController extends Controller
         }
     }
     
-
     // ==========[ Actualizar un producto ]==========
     public function actualizarProducto(Request $request, $id){
         $producto = Producto::find($id);
@@ -232,8 +238,7 @@ class DibujarController extends Controller
         }
     }
 
-    
-    // ==========[ Obtener un producto por id ]==========
+    // ==========[ Obtener un curso por id ]==========
     public function obtenerCurso($id){
         $curso = Curso::with('empleado')->find($id);
         $empleados = User::where('rolId', 3)->get();
@@ -247,18 +252,81 @@ class DibujarController extends Controller
     
     // ==========[ Eliminar un curso ]==========
     public function cursosDelete($id) {
-        $curso = Curso::find($id);
-
-        if ($curso) {
+        DB::beginTransaction();
+        try {
+            $curso = Curso::findOrFail($id);
             $curso->inscripciones()->delete();
+            $curso->empleado()->dissociate();
+            $curso->tecnicas()->detach();
+    
             $curso->delete();
     
-            return response()->json(['success' => 'Curso eliminado junto con sus inscripciones.']);
-        } else {
-            return response()->json(['error' => 'Curso no encontrado'], 404);
+            DB::commit();
+            return response()->json(['success' => 'Curso eliminado con éxito.']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'Error al eliminar el curso: ' . $e->getMessage()], 500);
         }
     }
 
     // =============================================================================================
     
+        // ==========[ Obtener las cosas que haya hecho el usuario ]==========
+        public function historial(){
+            $user = Auth::user();
+            
+            $citas = $user->citasUsuarios()->with('venta')->get();
+            $inscripciones = $user->inscripciones()->with('cursos')->get();
+            $ventas = $user->ventas;
+
+            $historial = [
+                'citas' => $citas,
+                'inscripciones' => $inscripciones,
+                'ventas' => $ventas
+            ];
+
+            return response()->json($historial);
+        }
+
+    // =============================================================================================
+
+        // ==========[ Obtener servicio y técnica de una cita ]==========
+        public function obtenerServicioTecnica($citaId){
+            $cita = Cita::find($citaId);
+            if ($cita) {
+                $empleado = User::find($cita->empleadoId);
+                $citaHasServicios = CitaHasServicio::where('citaId', $citaId)->with(['servicio', 'tecnica'])->get();
+
+                return response()->json(['citaHasServicios' => $citaHasServicios, 'cita' => $cita, 'empleado' => $empleado]);
+            } else {
+                return response()->json(['error' => 'Cita no encontrada.'], 404);
+            }
+        }
+
+        // ==========[ Obtener una inscripción y todo lo relacionado a esta ]==========
+        public function index($inscripcionId){
+            $inscripcion = Inscripcion::find($inscripcionId);
+            if ($inscripcion){
+                $curso = Curso::find($inscripcion->cursoId);
+                $tecnicas = TecnicaHasCurso::where('cursoId', $curso->id)->with(['tecnicas'])->get();
+                $empleado = User::find($curso->empleadoId);
+
+                return response()->json(['curso' => $curso, 'empleado' => $empleado, 'tecnicas' => $tecnicas, 'inscripcion' => $inscripcion]);
+            } else {
+                return response()->json(['error' => 'Inscripción no encontrada.'], 404);
+            }
+        }
+
+        // ==========[ Obtener los productos que estén en la venta de un usuario ]==========
+        public function indexProductos($ventaId){
+            $venta = Venta::find($ventaId);
+            if ($venta){
+                $detalleProductos = DetalleProducto::where('ventaId', $venta->id)->with(['producto'])->get();
+
+                return response()->json(['venta' => $venta, 'producto' => $detalleProductos]);
+            } else {
+                return response()->json(['error' => 'Venta de productos no encontrada.'], 404);
+            }
+        }
+
 }

@@ -39,7 +39,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -249,7 +249,9 @@ header {
                 display: none; 
             }
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar-btn {
             display: none;
             position: fixed;
@@ -335,7 +337,7 @@ header {
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
 
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
               <ul class="menu-links-custom">
                 <li class="nav-link">
@@ -537,6 +539,9 @@ $(document).ready(function(){
 });
 
 </script>
+
+
+{{-- Añadir la pantalla de carga a las funciones de agendar cita cuando hugo las ponga, hugo recuerdame perro --}}
 
 </body>
 </html>

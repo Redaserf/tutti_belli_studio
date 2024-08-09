@@ -54,7 +54,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -282,7 +282,9 @@ header {
     .sidebar.close .header-text {
     display: none;
     }
-
+    .tab-content{
+    padding: 36px;
+}
 /* Fin Dashboard */
 
 
@@ -591,7 +593,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -1133,6 +1135,8 @@ header {
 
 
         function eliminarCita(id){
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
             $.ajax({
                 url: `/eliminar/cita/${id}`,
                 headers: {
@@ -1140,6 +1144,8 @@ header {
                 },
                 method: 'DELETE',
                 success: function(response){
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     console.log(response);
                     // $('#citaForm').hide();
                     localStorage.setItem('alertMessage', 'Se eliminó con éxito la cita.');
@@ -1160,6 +1166,9 @@ header {
                     // }, 100); 
                 },
                 error: function(error) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                    alert("Hubo un error al tratar de eliminar la cita.")
                     console.log(error);
                 }
             })
@@ -1170,6 +1179,7 @@ header {
         })
 
         function editarCita(id){
+            
             limpiarFormulario();
             
             $.get(`/cita/servicios/tecnica/${id}`, function(citasServicios) {
@@ -1351,6 +1361,8 @@ header {
             e.preventDefault();
             console.log($(this));
 
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
 
             let id = $('#id').val();
             let url = id ? `/editar/cita/${id}` : '/RegistroCitaAdmin';
@@ -1387,6 +1399,8 @@ header {
                 method: method,
                 data: formData,            
                 success: function(response) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                     console.log(response);
                     limpiarFormulario();                    
                     let alertMessage = '';
@@ -1410,6 +1424,8 @@ header {
                     window.location.href = '/Ver-Citas';
                 },
                 error: function(xhr) {
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
                         console.log(xhr);
                         var response = xhr.responseJSON;
                         let alertMessage = '';
@@ -1467,8 +1483,11 @@ header {
 
             $.get('/cita/usuario/empleado', function(citas) {
                 let tabla = $('#tablaCitas');
-                tabla.empty();
-                
+                tabla.empty(); 
+                if (citas.length === 0) {
+                    // Mostrar mensaje si no hay citas
+                    tabla.append('<tr><td colspan="7" class="text-center">No hay citas para mostrar</td></tr>');
+                }             
                 citas.forEach(cita => {
                     console.log(cita.id);
                     tabla.append(`

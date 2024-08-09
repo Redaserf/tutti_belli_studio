@@ -44,7 +44,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 300000;
 }
 
 /* Dashboard CSS */
@@ -268,6 +268,9 @@ header {
             cursor: pointer;
             color: white;
         }
+        .tab-content{
+    padding: 36px;
+}
 
     .sidebar.close .header-text {
     display: none;
@@ -385,7 +388,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -481,7 +484,7 @@ header {
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
                                     <label for="edit_precio">Precio</label>
-                                    <input type="number" class="form-control" id="edit_precio" name="precio">
+                                    <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                     <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
                                 </div>
                                 <div class="form-group" style="display:flex; justify-content: center; align-items:center; flex-direction:column">
@@ -545,6 +548,16 @@ header {
         success: function(data) {
             const productos = $('#productos');
             productos.empty();
+            if (data.length === 0) {
+                // Mostrar mensaje si no hay productos
+                productos.append(`
+                    <div class="col-12 text-center my-5">
+                        <div class="alert" role="alert">
+                            <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
+                        </div>
+                    </div>
+                `);
+            } 
             data.forEach(producto => {
                 const card = `
                     <div class="product-card">
@@ -579,13 +592,21 @@ header {
 
         function productoDelete(id){
         if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+            // Mostrar la pantalla de carga
+        $('#contenedor_carga').css('display', 'block');
           $.ajax({
               url: `/producto/eliminar/${id}`,
               method: 'GET',
               success: function(){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert("Producto eliminado con éxito.");
                   dibujarProductos();
               },
               error: function(error){
+                // Ocultar la pantalla de carga
+                $('#contenedor_carga').css('display', 'none');
+                alert("Error al eliminar el producto, actualmente se encuentra en uso.");
                   console.log(error)
               }
           });
@@ -626,6 +647,9 @@ $('#edit_imagenProducto').on('change', function() {
 $('#editProductForm').on('submit', function(e) {
     e.preventDefault();
 
+    // Mostrar la pantalla de carga
+    $('#contenedor_carga').css('display', 'block');
+
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
@@ -637,11 +661,15 @@ $('#editProductForm').on('submit', function(e) {
         processData: false,
         success: function(response) {
             $('#editProductModal').modal('hide');
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             dibujarProductos();
             alert('Producto actualizado exitosamente');
         },
         error: function(error) {
             console.log(error);
+            // Ocultar la pantalla de carga
+            $('#contenedor_carga').css('display', 'none');
             alert('Hubo un error al actualizar el producto');
         }
     });

@@ -41,7 +41,7 @@
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
     /* Dashboard CSS */
@@ -192,7 +192,9 @@
         border-radius: 8px;
         transition: var(--tran-04);
     }
-
+    .tab-content{
+    padding: 36px;
+}
     .sidebar li a:hover {
         background: var(--primary-color);
     }
@@ -313,10 +315,11 @@
         }
 
         h2 {
-    color: #ffffff;
-    background-color: #e1b8b8;
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
     padding: 10px 20px;
     border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: 'Arial', sans-serif;
@@ -350,7 +353,7 @@
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
 
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">

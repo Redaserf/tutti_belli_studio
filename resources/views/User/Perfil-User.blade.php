@@ -23,6 +23,9 @@ body, html {
     background-position: center center;
     min-height: 100vh;
 }
+.btn-light:hover{
+      background-color:#fa3284;
+    }
 
 .hiddenX{
     overflow-x: hidden;
@@ -66,7 +69,7 @@ h1, h2, h3, option, select, a{
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 100;
+        z-index: 300000;
     }
 
         .profile-container {
@@ -107,6 +110,12 @@ h1, h2, h3, option, select, a{
             justify-content: space-between;
             align-items: center;
         }
+        @media (max-width: 480px) {
+    .imgnavbar{
+        width:200px;
+        height: 30px;
+    
+    }}
     </style>
 </head>
 <body class="hiddenX">
@@ -117,7 +126,7 @@ h1, h2, h3, option, select, a{
 <nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" width="300" height="60">
+      <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar alt="Tutti Belli Studio" width="250" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -247,7 +256,7 @@ $('#editProfileForm').on('submit', function(e) {
     formData.append('_token', $('input[name="_token"]').val());
 
     $.ajax({
-        url: '/ActualizarPefil',
+        url: '/ActualizarPerfil',
         type: 'POST',
         data: formData,
         contentType: false,
