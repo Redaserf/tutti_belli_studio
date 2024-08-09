@@ -318,6 +318,9 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
                 }
+                .table-responsive{
+                    
+                }
 </style>
 
 </head>
@@ -347,7 +350,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar table-responsive">
+            <div id="scrollDash" class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -807,6 +810,19 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     searchTable('search-productos-ventas', 'table-productos-ventas');
     searchTable('search-productos-curso', 'table-productos-curso');
 
+    
+});
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
+
+
        
 
                         // Botón sidebar
@@ -828,6 +844,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     
         // Fin document.ready
     });
+        
     
     </script>
 </body>
