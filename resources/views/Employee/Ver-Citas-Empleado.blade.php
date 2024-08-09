@@ -316,7 +316,7 @@ header {
         <i class="fa-solid fa-angle-right toggle"></i>
     </header>
 
-    <div class="menu-bar table-responsive">
+    <div class="menu-bar "id="scrollDash">
         <div class="menu">
           <ul class="menu-links-custom">
             <li class="nav-link">
@@ -419,6 +419,15 @@ header {
                 overlay.style.display = "none";
                 sidebar.classList.remove("open");
             });
+            function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
 
             sidebarBtn.addEventListener("click", () => {
                 sidebar.classList.toggle("open");

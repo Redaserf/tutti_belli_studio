@@ -505,7 +505,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+              <a class="nav-link active texto1" aria-current="page" href="/Cursos-User" style="color: #000000;">Cursos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
