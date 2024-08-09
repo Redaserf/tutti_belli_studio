@@ -195,7 +195,9 @@
         .sidebar li a:hover .text {
             color: var(--sidebar-color);
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .sidebar .menu-bar {
             height: calc(100% - 110px);
             display: flex;
@@ -321,7 +323,7 @@
             </div>
             <i class="fa-solid fa-angle-right toggle"></i>
         </header>
-        <div class="menu-bar">
+        <div class="menu-bar table-responsive">
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
@@ -404,7 +406,7 @@
         </div>
         <div class="section-divider"></div>
 
-        <div class="table-responsive">
+        <div class="table-responsive tab-content">
             <table class="table">
                 <thead>
                   <tr>

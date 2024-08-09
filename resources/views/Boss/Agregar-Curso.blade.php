@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Agregar Curso</title>
         <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
         <!-- Bootstrap CSS -->
@@ -92,7 +93,7 @@
             height: 100vh;
             width: 100%;
             position: fixed;
-            z-index: 300000;
+            z-index: 100;
         }
 
         /* Dashboard CSS */
@@ -271,7 +272,9 @@
         .sidebar.close ~ .home {
             margin-left: 90px; /* Cuando la sidebar está cerrada, deja menos espacio */
         }
-
+        .tab-content{
+    padding: 36px;
+}
         .overlay {
             position: fixed;
             top: 0;
@@ -395,7 +398,7 @@
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -475,7 +478,7 @@
 <div class="home">
 
     <form action="/RegistroCursoAdmin" method="POST">
-        @csrf
+{{--        @csrf--}}
         <div class="container container-div">
             <div class="header-section">
                 <h1>Cursos</h1>
@@ -605,7 +608,7 @@
         let selectCounter = 0; // Variable contador
         let selectedTecnicas = []; // Lista para mantener las técnicas ya seleccionadas
 
-        
+
         $(document).on('click', '.btn-danger', function() {
             console.log('holaa');
             let selectId = $(this).data('select-tecnica');
@@ -687,11 +690,11 @@ sidebarBtn.addEventListener("click", () => {
 
 
                 //lo adhiere al div donde apareceran los select dinamicos
-                
+
                 newDiv.append(newSelect);
                 newDiv.append(newButton);
                 $('#contenedoTecnicas').append(newDiv);
-                
+
 
                 //Dibuja en el select las opciones que todavia no han sido seleccionadas
                 filteredTecnicas.forEach(tecnica => {
@@ -727,29 +730,24 @@ sidebarBtn.addEventListener("click", () => {
         // });
 
 
+
         $('#agregarCurso').on('click', function(e) {
             e.preventDefault();
 
-        // Mostrar la pantalla de carga
-        $('#contenedor_carga').css('display', 'block');
-
-            // let courseName = $('#nombre').val();
-            // let courseLimit = $('#cupoLimite').val();
-            // let courseDateBegining = $('#fechaInicio').val();
-            // let courseHourBegining = $('#horaInicio').val();
-            // let coursePrice = $('#precio').val();
-            // let courseEmployee = $('#empleadoId').val();
 
             let formData = new FormData();
-            formData.append('_token', $('input[name="_token"]').val());
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
             formData.append('nombre', $('#nombre').val());
             formData.append('cupoLimite', $('#cupoLimite').val());
             formData.append('fechaInicio', $('#fechaInicio').val());
             formData.append('horaInicio', $('#horaInicio').val());
-            formData.append('precio',$('#precio').val())
+            formData.append('precio', $('#precio').val());
             formData.append('imagenCurso', $('#imagenCurso')[0].files[0]);
             formData.append('descripcion', $('#descripcion').val());
             formData.append('empleadoId', $('#empleadoId').val());
+            formData.append('tecnicas', JSON.stringify(selectedTecnicas));
+            formData.append('productos', JSON.stringify(selectedProducts));
+            formData.append('cantidadesProductos', JSON.stringify(cantidadesProducts));
 
             $.ajax({
                 url: '/RegistroCursoAdmin',
@@ -757,35 +755,19 @@ sidebarBtn.addEventListener("click", () => {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function(response) {
-                // Ocultar la pantalla de carga
-                $('#contenedor_carga').css('display', 'none');
-                    console.log(response);
-                    alert("Curso agregado exitosamente");
-                    let cursoId = response.cursoId;
+                success: function() {
 
-                    saveTecnicas(cursoId, selectedTecnicas);
+                    alert("Curso agregado exitosamente");
+                    // let cursoId = response.cursoId;
+                    console.log(selectedTecnicas)
                     window.location.href = '/Ver-Cursos';
 
-
-                    // $('#nombre').val('');
-                    // $('#cupoLimite').val('');
-                    // $('#fechaInicio').val('');
-                    // $('#horaInicio').val('');
-                    // $('#precio').val('');
-                    // $('#empleadoId').val('');
                 },
                 error: function(error) {
-                // Ocultar la pantalla de carga
-                $('#contenedor_carga').css('display', 'none');
-                    console.log(error);
+
                     alert('Ocurrió un error al agregar el Curso');
-                    // $('#nombre').val('');
-                    // $('#cupoLimite').val('');
-                    // $('#fechaInicio').val('');
-                    // $('#horaInicio').val('');
-                    // $('#precio').val('');
-                    // $('#empleadoId').val('');
+                    console.log(selectedTecnicas)
+
                 }
             });
         });
@@ -807,7 +789,7 @@ sidebarBtn.addEventListener("click", () => {
                 url: '/GuardarTecnicasCurso',
                 type: 'POST',
                 data: {
-                    _token: $('input[name="_token"]').val(),
+
                     cursoId: cursoId,
                     tecnicas: tecnicas
                 },
@@ -827,7 +809,7 @@ sidebarBtn.addEventListener("click", () => {
                     url: '/productosCursos',
                     type: 'POST',
                     data: {
-                        _token: $('input[name="_token"]').val(),
+
                         cursoId: cursoId,
                         productos: productos,
                         cantidades: cantidades

@@ -172,7 +172,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::post('/RegistroEmpleado',[RegistrosController::class, 'RegistroEmpleado']);
 
-    
+
     // =====[ Agregar (Administrador) ]=====
 
     Route::post('/RegistroCitaAdmin',[RegistrosController::class, 'RegistroCita']);
@@ -328,10 +328,15 @@ Route::get('/productosCompras',[ProductoController::class,'productosCompras']);
 Route::post('/crearCompra', [VentaController::class, 'crearCompra']);
 //Obtiene todas las compras realizadas
 Route::get('/get/compras',[DetalleProductoController::class,'comprasIndex']);
+//Obtiene las compras confirmadas
+Route::get('/get/compras/confirmadas', [DetalleProductoController::class, 'comprasConfirmadas']);
+Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'comprasRechazadas']);
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra
-Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCo mpra']);
+//Rechazar la compra
+Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
 
 
 
