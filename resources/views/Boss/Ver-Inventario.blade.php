@@ -321,6 +321,7 @@ header {
                 .table-responsive{
                     
                 }
+
 </style>
 
 </head>
@@ -449,10 +450,10 @@ header {
                                 <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -481,10 +482,10 @@ header {
                             <h2 class="text-center">Productos en Ventas</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -512,10 +513,10 @@ header {
                             <h2 class="text-center">Productos en Curso</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -665,11 +666,18 @@ $.ajax({
                 targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
             }
             productos.forEach(function(producto) {
+            var color = '';
+                if (producto.cantidadEnStock === 0) {
+                    color = 'red';
+            } else if (producto.cantidadEnStock <= 20) {
+                    color = 'rgb(248, 208, 76)';
+                }
+
                 var row = '<tr>' +
                     '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
                     '<td>' + producto.nombre + '</td>' +
                     '<td>' + producto.descripcion + '</td>' +
-                    '<td>' + producto.cantidadEnStock + '</td>' +
+                    '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
                     '<td>' + producto.precio + '</td>' +
                     '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
                     '</tr>';
@@ -678,9 +686,9 @@ $.ajax({
         }
 
         // Agregar productos a las tablas correspondientes
-        agregarProductosATabla('#productos-ventas tbody', productosPorInventario[1]);
-        agregarProductosATabla('#productos-servicios tbody', productosPorInventario[2]);
-        agregarProductosATabla('#productos-curso tbody', productosPorInventario[3]);
+        agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
+        agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
+        agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
     },
     error: function(error) {
         console.error("Error al obtener los productos:", error);
@@ -762,11 +770,17 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                         $(tablaSelector).append('<tr><td colspan="6" class="text-center">No hay productos disponibles</td></tr>');
                     } else {
                         productos.forEach(function(producto) {
+                        var color = '';
+                        if (producto.cantidadEnStock === 0) {
+                        color = 'red';
+                        } else if (producto.cantidadEnStock <= 20) {
+                        color = 'rgb(214, 185, 52)';
+                        }
                             var row = '<tr>' +
                                 '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
                                 '<td>' + producto.nombre + '</td>' +
                                 '<td>' + producto.descripcion + '</td>' +
-                                '<td>' + producto.cantidadEnStock + '</td>' +
+                                '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
                                 '<td>' + producto.precio + '</td>' +
                                 '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
                                 '</tr>';
@@ -787,11 +801,11 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     }
 
     // Eventos de clic para ordenar productos
-    $('#mayor').click(function() {
+    $('.mayor').click(function() {
         cargarProductosOrdenados('/mayor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
     });
 
-    $('#menor').click(function() {
+    $('.menor').click(function() {
         cargarProductosOrdenados('/menor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
     });
 
@@ -810,8 +824,6 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     searchTable('search-productos-ventas', 'table-productos-ventas');
     searchTable('search-productos-curso', 'table-productos-curso');
 
-    
-});
 function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
