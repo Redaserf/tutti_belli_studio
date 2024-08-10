@@ -167,12 +167,12 @@
 <tr>
 <td class="pad">
 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
-<p style="margin: 0; margin-bottom: 1px;"> </p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>ID de venta {{IdVenta}}</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Estimado usuario,{{user}}</strong><br/><strong>Para proceder con su compra, por favor de ir al establecimiento para recoger los productos seleccionados .</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Para asegurar la existencia, de los productos favor de asistir a pagar al establecimiento</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>lo mas pronto posible</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>ID de venta: {{ $ventaId }}</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Estimado {{ $usuario }}</strong><br/><strong>Para proceder con su compra, por favor acuda al establecimiento para recoger los productos seleccionados.</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Para asegurar la existencia de los productos, favor de asistir a pagar al establecimiento lo más pronto posible. Si no acude dentro de las próximas 24 horas, su pedido se cancelará.</strong></p>
 <p style="margin: 0;"><br/><strong>Tutti Belli Studio</strong></p>
+
 </div>
 </td>
 </tr>
