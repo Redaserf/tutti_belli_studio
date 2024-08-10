@@ -38,6 +38,17 @@
         .header-section h1 {
             color: #ffffff;
         }
+        h1 {
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
 
         .form-floating input,
         .form-floating textarea {
