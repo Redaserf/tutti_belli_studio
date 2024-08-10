@@ -25,9 +25,14 @@ class Servicio extends Model
         return $this->hasMany(Tecnica::class, 'servicioId');
     }
 
-    public function tecnica()
+    public function tecnica($citaId)
     {
         return $this->belongsToMany(Tecnica::class, 'citas_has_servicios', 'servicioId', 'tecnicaId')
-                    ->withPivot('citaId');
+                    ->withPivot('citaId')
+                    ->wherePivot('citaId', $citaId);
+    }
+
+    public function citasHasServicios() {
+        return $this->hasMany(CitaHasServicio::class, 'servicioId');
     }
 }

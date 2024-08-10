@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetalleTecnica extends Model
+class DetalleTecnicaProducto extends Model
 {
     use HasFactory;
 
-    protected $table = 'detalle_tecnicas';
+    protected $table = 'detalle_tecnicas_productos';
     protected $primaryKey= 'id';
 
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['citaId','tecnicaId', 'productoId', 'cantidadProducto'];
+    protected $fillable = ['citaId','tecnicaId', 'productoId', 'cantidadProducto', 'estadoProducto'];
 
 
 //    public function descuento(){
@@ -47,4 +47,7 @@ class DetalleTecnica extends Model
         return $this->belongsTo(Producto::class, 'productoId');
     }
 
+    public function venta() {
+        return $this->belongsTo(Producto::class, 'productoId');
+    }
 }

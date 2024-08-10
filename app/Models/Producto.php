@@ -55,6 +55,6 @@ class Producto extends Model
     }
 
     public function detalleTecnica() {
-        return $this->hasMany(DetalleTecnica::class, 'productoId');
+        return $this->hasMany(DetalleTecnicaProducto::class, 'productoId');
     }
 }

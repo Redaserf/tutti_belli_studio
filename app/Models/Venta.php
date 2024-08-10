@@ -26,7 +26,7 @@ class Venta extends Model
 
      }
 
-    public function cita(){
-        return $this->hasOne(Cita::class, 'ventaId');
+     public function citaHasServicio() {
+        return $this->hasMany(CitaHasServicio::class, 'ventaId');
     }
 }

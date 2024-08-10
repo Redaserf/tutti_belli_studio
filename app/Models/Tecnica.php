@@ -51,7 +51,7 @@ class Tecnica extends Model
 
     public function citasHasServicios()
     {
-        return $this->hasMany(CitaHasServicio::class, 'tecnicaId', 'id');
+        return $this->hasMany(CitaHasServicio::class, 'tecnicaId');
     }
 
     // public function citas()
@@ -81,10 +81,14 @@ class Tecnica extends Model
             'id', // Foreign key on Producto table
             'id', // Local key on Tecnica table
             'productoId' // Local key on ProductoHasTecnica table
-        )->with('detalleTecnica');
+        );
     }
 
-    public function detalleTecnica() {
-        return $this->hasMany(DetalleTecnica::class, 'tecnicaId');
+    public function detalleTecnicaProducto() {
+        return $this->hasMany(DetalleTecnicaProducto::class, 'tecnicaId');
     }
+
+    // public function detalleTecnica() {
+    //     return $this->hasMany(DetalleTecnica::class, 'tecnicaId');
+    // }
 }

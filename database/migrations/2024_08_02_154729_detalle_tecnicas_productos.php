@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('detalle_tecnicas', function (Blueprint $table) {
+        Schema::create('detalle_tecnicas_productos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('citaId');
             $table->unsignedBigInteger('tecnicaId');
             $table->unsignedBigInteger('productoId');
+
             $table->integer('cantidadProducto');
+
+            $table->boolean('estadoProducto')->nullable();
             $table->timestamps();
 
             $table->foreign('citaId')->references('id')->on('citas');
