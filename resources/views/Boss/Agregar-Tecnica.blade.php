@@ -794,7 +794,7 @@ function loadServicios(){
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
                     alert("Se agregó la técnica correctamente");
-                    location.reload();  // Refresca la página al aceptar el alert
+                    window.location.href = '/Ver-Servicios';
                 },
                 error: function(error) {
                     // Ocultar la pantalla de carga

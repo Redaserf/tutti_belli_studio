@@ -517,11 +517,11 @@ $.ajaxSetup({
                             <td>${servicio.id}</td>
                             <td>${servicio.nombre}</td>
                             <td>
-                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal">Ver técnicas</button>
+                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal"><i class="fa-solid fa-eye"></i></button>
                             </td>
                             <td>
                                 <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
-                                <button style="margin-left:15px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
+                                <button style="margin-left:2px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
                             </td>
                         </tr>`;
                         tableBody.append(row);
