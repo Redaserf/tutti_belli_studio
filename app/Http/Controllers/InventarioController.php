@@ -16,6 +16,30 @@ class InventarioController extends Controller
         return response()->json($inventarios);
     }
 
+    public function menor(){
+        $ventas = Inventario::find(1);
+        $citas = Inventario::find(2);
+        $cursos = Inventario::find(3);
+
+        $productosVentas = $ventas->producto()->orderBy("cantidadEnStock", "asc")->get();
+        $productosCitas = $citas->producto()->orderBy("cantidadEnStock", "asc")->get();
+        $productosCursos = $cursos->producto()->orderBy("cantidadEnStock", "asc")->get();
+
+        return response()->json(['venta' => $productosVentas, 'cita' => $productosCitas, 'cursos' => $productosCursos]);
+    }
+
+    public function mayor(){
+        $ventas = Inventario::find(1);
+        $citas = Inventario::find(2);
+        $cursos = Inventario::find(3);
+
+        $productosVentas = $ventas->producto()->orderBy("cantidadEnStock", "desc")->get();
+        $productosCitas = $citas->producto()->orderBy("cantidadEnStock", "desc")->get();
+        $productosCursos = $cursos->producto()->orderBy("cantidadEnStock", "desc")->get();
+
+        return response()->json(['venta' => $productosVentas, 'cita' => $productosCitas, 'cursos' => $productosCursos]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

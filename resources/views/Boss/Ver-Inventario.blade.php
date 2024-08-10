@@ -276,6 +276,11 @@ header {
 /* Fin Dashboard */
 
 
+.flex-container {
+    display: flex;
+    align-items:center;
+    justify-content:left;
+}
 
                 .container-full{
                     min-height: calc(94vh - 6rem);
@@ -313,6 +318,9 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
                 }
+                .table-responsive{
+                    
+                }
 </style>
 
 </head>
@@ -342,7 +350,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
     
-            <div class="menu-bar table-responsive">
+            <div id="scrollDash" class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -438,8 +446,16 @@ header {
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="productos-servicios" role="tabpanel" aria-labelledby="productos-servicios-tab">
                         <div class="table-container mt-5">
-                            <h2 class="text-center">Productos en Servicios</h2>
-                            <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre...">
+                                <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
+                            <div class="flex-container">
+                                <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
+                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                                </a>
+                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                </a>
+                            </div>
                             <div class="table-responsive">
 
                                 <table class="table table-striped">
@@ -463,7 +479,15 @@ header {
                     <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Ventas</h2>
-                            <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre...">
+                            <div class="flex-container">
+                                <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
+                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                                </a>
+                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                </a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -486,7 +510,15 @@ header {
                     <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Curso</h2>
-                            <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre...">
+                            <div class="flex-container">
+                                <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
+                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+                                </a>
+                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
+                                </a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -711,7 +743,59 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     }
     });
 });
-$(document).ready(function () {
+
+
+        // Función para cargar y mostrar los productos ordenados
+        function cargarProductosOrdenados(url, tablaVentas, tablaCitas, tablaCursos) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(data) {
+                // Limpiar las tablas antes de agregar los nuevos datos
+                $(tablaVentas).empty();
+                $(tablaCitas).empty();
+                $(tablaCursos).empty();
+
+                // Función para agregar productos a una tabla
+                function agregarProductosATabla(tablaSelector, productos) {
+                    if (productos.length === 0) {
+                        $(tablaSelector).append('<tr><td colspan="6" class="text-center">No hay productos disponibles</td></tr>');
+                    } else {
+                        productos.forEach(function(producto) {
+                            var row = '<tr>' +
+                                '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                                '<td>' + producto.nombre + '</td>' +
+                                '<td>' + producto.descripcion + '</td>' +
+                                '<td>' + producto.cantidadEnStock + '</td>' +
+                                '<td>' + producto.precio + '</td>' +
+                                '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
+                                '</tr>';
+                            $(tablaSelector).append(row);
+                        });
+                    }
+                }
+
+                // Agregar productos a las tablas correspondientes
+                agregarProductosATabla(tablaVentas, data.venta);
+                agregarProductosATabla(tablaCitas, data.cita);
+                agregarProductosATabla(tablaCursos, data.cursos);
+            },
+            error: function(error) {
+                console.error("Error al cargar los productos ordenados:", error);
+            }
+        });
+    }
+
+    // Eventos de clic para ordenar productos
+    $('#mayor').click(function() {
+        cargarProductosOrdenados('/mayor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
+    });
+
+    $('#menor').click(function() {
+        cargarProductosOrdenados('/menor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
+    });
+
+
     function searchTable(inputId, tableId) {
         $('#' + inputId).on('keyup', function () {
             var value = $(this).val().toLowerCase();
@@ -725,8 +809,19 @@ $(document).ready(function () {
     searchTable('search-productos-servicios', 'table-productos-servicios');
     searchTable('search-productos-ventas', 'table-productos-ventas');
     searchTable('search-productos-curso', 'table-productos-curso');
+
     
 });
+function checkWidth() {
+        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+        } else {
+            $('#scrollDash').removeClass('table-responsive');  
+        }
+    }
+    checkWidth();
+    $(window).resize(checkWidth);
+
 
        
 
@@ -749,6 +844,7 @@ $(document).ready(function () {
     
         // Fin document.ready
     });
+        
     
     </script>
 </body>

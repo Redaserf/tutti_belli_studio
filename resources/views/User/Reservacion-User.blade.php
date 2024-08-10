@@ -416,6 +416,9 @@ gmp-map {
       padding: 40px;
       margin-top:70px;
     }
+.citasModal{
+    z-index: 2000000000000;
+}
 @media (max-width: 480px) {
     .imgnavbar{
         width:200px;
@@ -446,7 +449,7 @@ gmp-map {
                 <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#cursos" style="color: #000000;">Cursos</a>
+                <a class="nav-link active texto1" aria-current="page" href="/Cursos-User" style="color: #000000;">Cursos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
@@ -468,7 +471,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
+    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
@@ -750,12 +753,21 @@ $(document).ready(function(){
             }
         });
 
-        // Verificar el estado inicial del checkbox al cargar la página
-        if ($('#CheckBoxCondiciones').is(':checked')) {
-            $('#BotonConfirmar').prop('disabled', false);
-        } else {
-            $('#BotonConfirmar').prop('disabled', true);
-        }
+        function checkCheckbox() {
+    if ($('#CheckBoxCondiciones').is(':checked')) {
+        $('#BotonConfirmar').prop('disabled', false);
+    } else {
+        $('#BotonConfirmar').prop('disabled', true);
+    }
+}
+checkCheckbox();
+$('#CheckBoxCondiciones').change(function() {
+    checkCheckbox();
+});
+$('#citasModal').on('hidden.bs.modal', function () {
+    $('#CheckBoxCondiciones').prop('checked', false); 
+    $('#BotonConfirmar').prop('disabled', true);   
+});
 
     $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
             dateFormat: 'yy-mm-dd',

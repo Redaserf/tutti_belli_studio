@@ -247,6 +247,15 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/ventaProductos/{ventaId}', [DibujarController::class, 'indexProductos']);
 
 
+
+    // =====[ Inventario ]=====
+
+    Route::get('/menor',[InventarioController::class,'menor']);
+    Route::get('/mayor',[InventarioController::class,'mayor']);
+    
+
+
+
 // ==========[ Cosas de Hugo ]==========
 
 
