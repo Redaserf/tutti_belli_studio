@@ -1328,7 +1328,6 @@ header {
                     let value = $(this).val();
 
                     if(value === "1"){
-                        telefono.val('');
                         telefono.hide();
                     }else{
                         let telefonoUsuario = opcionSelected.data('telefono-usuario');
@@ -1421,6 +1420,7 @@ header {
                         localStorage.setItem('alertClass', alertClass);
                         localStorage.setItem('alertIcon', alertIcon);
                     }
+                    
                     window.location.href = '/Ver-Citas';
                 },
                 error: function(xhr) {
