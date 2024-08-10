@@ -8,6 +8,8 @@ use App\Models\DetalleProducto;
 use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use App\Mail\CompraRealizada;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -68,6 +70,9 @@ class VentaController extends Controller
 
             //Elimina los registros del carrito por vaciar
             $carritoPorVaciar->productos()->detach();
+             
+            // Enviar correo al usuario
+            Mail::to($usuario->email)->send(new CompraRealizada($venta));
 
             DB::commit();
 
