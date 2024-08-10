@@ -361,6 +361,53 @@ header {
             border-color: #f5c6cb;
         }
         /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px;
+        }
+        .product-card {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 200px; /* Reducido para que quepan más tarjetas */
+            text-align: center;
+            margin: 10px; /* Añadido margen para separar las tarjetas */
+        }
+
+        .product-image {
+            border-radius: 10px; /* Reducido el radio del borde */
+            width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+            height: 150px; /* Altura reducida */
+            object-fit: contain;
+        }
+
+        .product-info {
+            padding: 10px; /* Reducido el padding */
+        }
+
+        .product-title {
+            font-size: 1.2em; /* Reducido el tamaño de la fuente */
+            margin: 0 0 8px 0; /* Reducido el margen inferior */
+        }
+
+        .product-description {
+            font-size: 0.9em; /* Reducido el tamaño de la fuente */
+            color: #666;
+            margin: 0 0 8px 0; /* Reducido el margen inferior */
+        }
+
+        .product-price {
+            font-size: 1em; /* Reducido el tamaño de la fuente */
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -593,6 +640,24 @@ header {
         </div>
     </div>
 
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productosModalLabel">Productos</h5>
+                </div>
+                <div class="modal-body product-container" id="contenedorProductos">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+                    <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -645,12 +710,14 @@ header {
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-curso" data-id="${curso.id}">Editar curso<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones" data-id="${curso.id}">Ver inscripciones<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-dark" data-id="${curso.id}" onclick="dibujarProductosUsados(${curso.id})">Ver Productos utilizados<i style="margin-left: 6px" class="fa-solid fa-box"></i></button>
                 </div>
               </div>
             </div>
           `;
           cursos.append(card);
         });
+
         $('.editar-curso').click(function() {
                 const cursoId = $(this).data('id');
                 modalEditar(cursoId);
@@ -746,6 +813,8 @@ function editarInscripcion(inscripcionId){
                                 alert("Se ha aceptado al usuario en este curso.");
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
+
+                                console.log(response);
                             },
                             error: function(error) {
                                 alert('Error al actualizar la inscripción.');
@@ -808,9 +877,9 @@ function editarInscripcion(inscripcionId){
                     }
                 });
             }
-            
-        
-            
+
+
+
         // Eliminar un curso
 
         function cursoDelete(id){
@@ -896,6 +965,44 @@ $('#editCursoForm').on('submit', function(e) {
     });
 }
 });
+
+    function dibujarProductosUsados(id){
+        $('#productosModal').modal('show');
+        $.ajax({
+            url:'/curso/productos/'+ id,
+            method: 'GET',
+            success: function (data){
+
+                const productos = $('#contenedorProductos');
+                productos.empty();
+                data.forEach(producto => {
+
+
+                    // const cantidadPorUsar =  producto.productoHasCurso.cantidadPorUsar;
+                    let cont = producto.id;
+                    let idDinamico = 'cantidad' + cont;
+
+                    const cantidadPorUsar = producto.cantidadPorUsar;
+                    const card = `
+                        <div class="product-card">
+                            <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                            <div class="product-info">
+                                <h2 class="product-title">${producto.nombre}</h2>
+                                <p class="product-description">${producto.descripcion}</p>
+                                <p class="product-price">$${producto.precio}</p>
+                                <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
+                                <p class="product-usage">Cantidad por Usar: ${cantidadPorUsar}</p>
+                            </div>
+                        </div>
+                    `;
+                    productos.append(card);
+                });
+            },
+            error: function (){
+
+            }
+        });
+    }
 
 $('#edit_imagenProducto').on('change', function() {
     const [file] = this.files;

@@ -16,6 +16,7 @@ class DetalleProductoController extends Controller
             ->where(function ($query) {
                 $query->where('estadoVenta', null);
             })
+            ->orderBy('id','desc')
             ->get();
 
         return response()->json($ventas);
@@ -26,6 +27,7 @@ class DetalleProductoController extends Controller
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
             ->where('estadoVenta', true)
+            ->orderBy('id','desc')
             ->get();
 
         return response()->json($ventas);
@@ -37,6 +39,7 @@ class DetalleProductoController extends Controller
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
             ->where('estadoVenta', false)
+            ->orderBy('id','desc')
             ->get();
 
         return response()->json($ventas);

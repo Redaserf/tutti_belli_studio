@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\InventarioController;
@@ -233,6 +234,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
     Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
     Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
+    // Obtener productos con el curso seleccionado
+    Route::get('/curso/productos/{cursoId}',[CursoController::class,'dibujarProductos']);
 
 
 
@@ -341,7 +344,7 @@ Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'compra
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra
-Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCo mpra']);
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
 //Rechazar la compra
 Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
 

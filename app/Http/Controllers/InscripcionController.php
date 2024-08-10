@@ -95,6 +95,7 @@ class InscripcionController extends Controller
                     if ($inscripcion->estado == 1 && $inscripcion->usuarios) { // 1 representa 'Aceptado'
                         Mail::to($inscripcion->usuarios->email)->send(new InscripcionAceptada($inscripcion->usuarios, $inscripcion));
                     }
+                    return 'comprobado';
                 }
 
                 DB::commit();
@@ -144,7 +145,7 @@ class InscripcionController extends Controller
             if (!$inscripcion) {
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
-    
+
             $inscripcion->delete();
 
             DB::commit();
