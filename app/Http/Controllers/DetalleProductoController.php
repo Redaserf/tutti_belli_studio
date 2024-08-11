@@ -34,16 +34,7 @@ class DetalleProductoController extends Controller
     }
 
     //Compras rechazadas
-    function comprasRechazadas()
-    {
-        $ventas = Venta::has('detalleProductos')
-            ->with('detalleProductos')
-            ->where('estadoVenta', false)
-            ->orderBy('id','desc')
-            ->get();
 
-        return response()->json($ventas);
-    }
 
     function ticket($id){
         $compras = DetalleProducto::where('ventaId',$id)->get();

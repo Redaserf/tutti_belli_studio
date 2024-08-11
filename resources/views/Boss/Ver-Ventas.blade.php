@@ -610,9 +610,6 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadas" type="button" role="tab" aria-controls="comprasAceptadas" aria-selected="false">Compras Aceptadas</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="compras-rechazadas-tab" data-bs-toggle="tab" data-bs-target="#comprasRechazadas" type="button" role="tab" aria-controls="comprasRechazadas" aria-selected="false">Compras Rechazadas</button>
-                            </li>
                         </ul>
 
 {{--                        <BR>--}}
@@ -666,30 +663,8 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- Pestaña compras rechazadas -->
-                            <div class="tab-pane fade" id="comprasRechazadas" role="tabpanel" aria-labelledby="compras-rechazadas-tab">
-                                <!-- Contenido de la pestaña compras rechazadas -->
-                                <div class="table-container mt-5">
-                                    <h2>COMPRAS RECHAZADAS</h2>
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Id de compra</th>
-                                            <th>Total</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="ventasRechazadas">
-                                        <tr>
 
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            </div>
+{{--                            </div>--}}
                         </div>
                     </div>
                     <!-- Pestaña Cursos -->
@@ -1394,7 +1369,6 @@ sidebarBtn.addEventListener("click", () => {
         // Fin scripts para todas las vistas
         dibujarCompras();
         dibujarCompraConfirmada();
-        dibujarCompraRechazada();
 
 
 
@@ -1454,32 +1428,6 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
-
-    function dibujarCompraRechazada(){
-        $.ajax({
-            url: '/get/compras/rechazadas',
-            method: 'GET',
-            success: function (data) {
-                var cont = 0;
-                const detallesCompra = $('#ventasRechazadas');
-                detallesCompra.empty();
-                data.forEach(venta => {
-                    cont = venta.id;
-                    const fila = `
-                        <tr>
-                            <td>Compra</td>
-                            <th>${venta.id}</th>
-                            <td>${venta.total}</td>
-                            <td>${venta.fechaVenta}</td>
-                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
-                        </tr>
-                    `;
-                    detallesCompra.append(fila);
-                });
-            }
-        });
-    }
-
 
 
     function prepararConfirmacion(ventaId) {
@@ -1551,7 +1499,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
-                dibujarCompraRechazada();
+
 
                 // dibujarCompras();
                 $('#confirmModal').modal('hide');
@@ -1576,7 +1524,6 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
-                dibujarCompraRechazada();
                 $('#rejectModal').modal('hide');
             },
             error: function (error){

@@ -88,7 +88,7 @@ use App\Models\Inscripcion;
 
 
 
-    
+
 
     // ===== [Sevicios] =====
     //devuelve servicio como Json
@@ -255,7 +255,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/menor',[InventarioController::class,'menor']);
     Route::get('/mayor',[InventarioController::class,'mayor']);
-    
+
 
 
 
@@ -358,7 +358,6 @@ Route::post('/crearCompra', [VentaController::class, 'crearCompra']);
 Route::get('/get/compras',[DetalleProductoController::class,'comprasIndex']);
 //Obtiene las compras confirmadas
 Route::get('/get/compras/confirmadas', [DetalleProductoController::class, 'comprasConfirmadas']);
-Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'comprasRechazadas']);
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra

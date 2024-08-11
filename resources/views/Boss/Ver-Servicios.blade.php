@@ -511,7 +511,7 @@ $.ajaxSetup({
                     if (data.length === 0) {
                         // Mostrar mensaje si no hay servicios
                         tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
-                    }                     
+                    }
                     data.forEach(servicio => {
                         const row = `<tr>
                             <td>${servicio.id}</td>
@@ -575,12 +575,29 @@ function editarTecnica(tecnicaId, servicioId) {
                         <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}" min="0">
                     </div>
                     <div class="mb-3">
+                        <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+                    </div>
+                    <div class="mb-3">
                         <label for="tecnicaDescripcion" class="form-label">Descripción</label>
                         <textarea class="form-control" id="tecnicaDescripcion">${data.descripcion}</textarea>
                     </div>
                 </form>
             `;
+
+
             editarModalBody.append(form);
+
+            if(data.descuentoId == null){
+                $('#advertencia').hide();
+                $('#tecnicaPrecio').val(data.precio);
+                $('#tecnicaPrecio').prop('disabled',false);
+            }else{
+                //Muestra la etiqueta con el css con el que se oculto
+                $('#advertencia').show();
+                $('#advertencia').text('No es posible editar el precio del producto si este cuenta con un descuento asociado');
+                $('#tecnicaPrecio').val(data.precio);
+                $('#tecnicaPrecio').prop('disabled',true);
+            }
         },
         error: function(error) {
             const editarModalBody = $('#editarModalBody');
@@ -670,7 +687,7 @@ function servicioUpdate(servicioId) {
                 </form>
             `;
             modalBody.append(form);
-            
+
             // Mostrar el modal para actualizar el servicio
             $('#editarServicioModal').modal('show');
 
@@ -774,13 +791,13 @@ function servicioDelete(servicioId) {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
             // Botón sidebar
-            function botonSidebar() { 
+            function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -791,7 +808,7 @@ function servicioDelete(servicioId) {
             botonSidebar();
 
             // Ajustes de botones en top
-            function botones() { 
+            function botones() {
                 if (window.innerWidth <= 960) {
                     $('.top').css('flex-direction', 'column');
                     $('.top').css('gap', '10px');

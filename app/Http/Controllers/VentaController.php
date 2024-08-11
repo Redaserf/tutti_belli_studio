@@ -90,7 +90,7 @@ class VentaController extends Controller
 
             //Elimina los registros del carrito por vaciar
             $carritoPorVaciar->productos()->detach();
-             
+
             // Enviar correo al usuario
             Mail::to($usuario->email)->send(new CompraRealizada($venta));
 
@@ -162,9 +162,11 @@ class VentaController extends Controller
 
                 // Guardar los cambios en el producto
                 $producto->save();
+
+               $detalle->delete();
             }
 
-
+            $venta->delete();
 
             DB::commit();
             return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);

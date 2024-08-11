@@ -483,6 +483,9 @@ header {
                                     <input type="text" class="form-control" id="edit_descripcion" name="descripcion">
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
+                                    <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+                                </div>
+                                <div class="form-group" style="margin-top: 10px;">
                                     <label for="edit_precio">Precio</label>
                                     <input type="number" class="form-control" id="edit_precio" name="precio" min="0">
                                     <label style="margin-top:10px;" for="edit_imagenProducto">Imagen</label>
@@ -624,7 +627,19 @@ header {
             $('#edit_id').val(data.id);
             $('#edit_nombre').val(data.nombre);
             $('#edit_descripcion').val(data.descripcion);
-            $('#edit_precio').val(data.precio);
+
+            if(data.descuentoId == null){
+                $('#advertencia').hide();
+                $('#edit_precio').val(data.precio);
+                $('#edit_precio').prop('disabled',false);
+            }else{
+                //Muestra la etiqueta con el css con el que se oculto
+                $('#advertencia').show();
+                $('#advertencia').text('No es posible editar el precio del producto si este cuenta con un descuento asociado');
+                $('#edit_precio').val(data.precio);
+                $('#edit_precio').prop('disabled',true);
+            }
+
             $('#edit_imagenProducto_preview').attr('src', `/storage/${data.imagen}`);
             $('#editProductModal').modal('show');
         },
