@@ -9,9 +9,9 @@
 <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -251,7 +251,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -319,7 +319,7 @@ header {
                 margin-top: 20px;
                 }
                 .table-responsive{
-                    
+
                 }
 
 </style>
@@ -334,7 +334,7 @@ header {
 
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -350,7 +350,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div id="scrollDash" class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -420,10 +420,10 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
-        
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Inventario</h2>
@@ -567,6 +567,10 @@ header {
                                 <input type="number" class="form-control" id="productQuantity" name="cantidad" min="0">
                             </div>
                             <div class="mb-3">
+                                <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+
+                            </div>
+                            <div class="mb-3">
                                 <label for="productPrice" class="form-label">Precio Unitario</label>
                                 <input type="number" class="form-control" id="productPrice" name="precio" min="0">
                             </div>
@@ -588,11 +592,11 @@ header {
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
-    
+
     // Scripts para todas las vistas
-    
+
         // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -600,9 +604,9 @@ header {
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
-    
+
     $(document).ready(function(){
-    
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -707,7 +711,18 @@ $('#editProductModal').on('show.bs.modal', function(event) {
             modal.find('#productName').val(data.nombre);
             modal.find('#productDescription').val(data.descripcion);
             modal.find('#productQuantity').val(data.cantidadEnStock); // Asegúrate de usar el campo correcto
-            modal.find('#productPrice').val(data.precio);
+            if(data.descuentoId == null){
+                $('#advertencia').hide();
+                modal.find('#productPrice').val(data.precio);
+                $('#productPrice').prop('disabled',false);
+            }else{
+                //Muestra la etiqueta con el css con el que se oculto
+                $('#advertencia').show();
+                $('#advertencia').text('No es posible editar el precio del producto si este cuenta con un descuento asociado');
+                modal.find('#productPrice').val(data.precio)
+                $('#productPrice').prop('disabled',true);
+            }
+
             // Muestra la imagen actual si existe
             modal.find('#productImagePreview').attr('src', '/storage/' + data.imagen); // Asume que hay un <img id="productImagePreview"> en el modal
         },
@@ -828,17 +843,17 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
 
 
-       
+
 
                         // Botón sidebar
-    function botonSidebar() { 
+    function botonSidebar() {
     if (window.innerWidth <= 768) {
         $('.sidebar-btn').css('display', 'block');
     } else {
@@ -847,17 +862,17 @@ function checkWidth() {
     }
     window.addEventListener('resize', botonSidebar);
     botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-    
-    
-    
+
+
+
+
+
         // Fin document.ready
     });
-        
-    
+
+
     </script>
 </body>
 </html>
