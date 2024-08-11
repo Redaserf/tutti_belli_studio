@@ -614,6 +614,11 @@
                                 <button class="nav-link" id="compras-rechazadas-tab" data-bs-toggle="tab" data-bs-target="#comprasRechazadas" type="button" role="tab" aria-controls="comprasRechazadas" aria-selected="false">Compras Rechazadas</button>
                             </li>
                         </ul>
+
+{{--                        <BR>--}}
+                        <input type="text" class="form-control mb-3" id="buscadorId" placeholder="Buscar por por id de venta">
+
+
                         <div class="tab-content" id="comprasTabContent">
                             <!-- Pestaña compras totales -->
                             <div class="tab-pane fade show active" id="comprasTotales" role="tabpanel" aria-labelledby="compras-totales-tab">
@@ -1382,6 +1387,25 @@ sidebarBtn.addEventListener("click", () => {
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
 
+        $('#buscadorId').on('keyup', function() {
+            var value = $(this).val();
+
+            // Filtra en la tabla de Todas las Compras
+            $('#ventasProductos tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+
+            // Filtra en la tabla de Compras Aceptadas
+            $('#ventasConfirmadas tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+
+            // Filtra en la tabla de Compras Rechazadas
+            $('#ventasRechazadas tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+        });
+
         // Fin scripts para todas las vistas
         dibujarCompras();
         dibujarCompraConfirmada();
@@ -1568,6 +1592,7 @@ sidebarBtn.addEventListener("click", () => {
                 dibujarCompras();
                 dibujarCompraConfirmada();
                 dibujarCompraRechazada();
+                $('#rejectModal').modal('hide');
             },
             error: function (error){
                 console.log(error)
