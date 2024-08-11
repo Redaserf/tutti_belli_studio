@@ -667,7 +667,7 @@ $.ajax({
             }
             productos.forEach(function(producto) {
             var color = '';
-                if (producto.cantidadEnStock === 0) {
+                if (producto.cantidadEnStock <= 0) {
                     color = 'red';
             } else if (producto.cantidadEnStock <= 20) {
                     color = 'rgb(248, 208, 76)';
@@ -771,7 +771,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                     } else {
                         productos.forEach(function(producto) {
                         var color = '';
-                        if (producto.cantidadEnStock === 0) {
+                        if (producto.cantidadEnStock <= 0) {
                         color = 'red';
                         } else if (producto.cantidadEnStock <= 20) {
                         color = 'rgb(214, 185, 52)';

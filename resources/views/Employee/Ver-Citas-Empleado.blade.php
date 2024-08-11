@@ -350,8 +350,8 @@ header {
             </li>
             <li class="nav-link">
                 <a href="/Ver-Productos-Empleado">
-                    <i class="fa-solid fa-bag-shopping icon"></i>
-                    <span class="text nav-text">Productos</span>
+                    <i class="fa-solid fa-box icon"></i>
+                    <span class="text nav-text">Inventario</span>
                 </a>
             </li>
             <li class="nav-link">

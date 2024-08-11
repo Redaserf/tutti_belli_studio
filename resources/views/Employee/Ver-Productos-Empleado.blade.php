@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Productos</title>
+    <title>Inventario</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <style>
            
-    @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-
-/* Dashboard */
-
-/* Google Font Import - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+           @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
+        
+        
+        
+        /* Dashboard */
+        /* Google Font Import - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 
 * {
@@ -210,7 +211,9 @@ header {
     flex-direction: column;
     justify-content: space-between;
 }
-
+.tab-content{
+    padding: 36px;
+}
 .home {
     position: relative;
     margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
@@ -232,9 +235,6 @@ header {
     background: rgba(0, 0, 0, 0.5);
     z-index: 98;
     display: none;
-}
-.tab-content{
-    padding: 36px;
 }
 
         /* Responsive adjustments */
@@ -271,12 +271,18 @@ header {
             color: white;
         }
 
+    .sidebar.close .header-text {
+    display: none;
+    }
+
 /* Fin Dashboard */
 
 
-/* Aquí abajo poner tus estilos */
-
-
+.flex-container {
+    display: flex;
+    align-items:center;
+    justify-content:left;
+}
 
                 .container-full{
                     min-height: calc(94vh - 6rem);
@@ -285,6 +291,12 @@ header {
                     box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.5);
                     border-radius: 20px;
                 }
+
+
+                .citas{
+                    font-family: "Playwrite FR Moderne"
+                }
+
 
                 .top{
                 display: flex;
@@ -319,54 +331,9 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
                 }
-
-
-.product-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    padding: 16px;
-}
-
-.product-card {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 300px;
-    text-align: center;
-}
-
-.product-image {
-  border-radius: 20px;
-    width: 50%;
-    height: 200px; /* Ajusta esta altura según tus necesidades */
-    object-fit:contain; /* Mantiene la proporción de la imagen y recorta si es necesario */
-}
-
-.product-info {
-    padding: 16px;
-}
-
-.product-title {
-    font-size: 1.5em;
-    margin: 0 0 10px 0;
-}
-
-.product-description {
-    font-size: 1em;
-    color: #666;
-    margin: 0 0 10px 0;
-}
-
-.product-price {
-    font-size: 1.2em;
-    color: #333;
-    font-weight: bold;
-}
+                .table-responsive{
+                    
+                }
 
 </style>
 </head>
@@ -416,8 +383,8 @@ header {
                 </li>
                 <li class="nav-link">
                     <a href="/Ver-Productos-Empleado">
-                        <i class="fa-solid fa-bag-shopping icon"></i>
-                        <span class="text nav-text">Productos</span>
+                        <i class="fa-solid fa-box icon"></i>
+                        <span class="text nav-text">Inventario</span>
                     </a>
                 </li>
                 <li class="nav-link">
@@ -445,22 +412,117 @@ header {
 
   <section class="home">
     <div class="top text-center">
-        <h2>Productos</h2>
+        <h2>Inventario</h2>
     </div>
     <div class="section-divider"></div>
 
-        <br>
+    <!-- Pestañas de navegación -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="productos-servicios-tab" data-bs-toggle="tab" href="#productos-servicios" role="tab" aria-controls="productos-servicios" aria-selected="true">Productos en Servicios</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="productos-ventas-tab" data-bs-toggle="tab" href="#productos-ventas" role="tab" aria-controls="productos-ventas" aria-selected="false">Productos en Ventas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="productos-curso-tab" data-bs-toggle="tab" href="#productos-curso" role="tab" aria-controls="productos-curso" aria-selected="false">Productos en Curso</a>
+        </li>
+    </ul>
 
-        <div>
+    <!-- Contenido de las pestañas -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="productos-servicios" role="tabpanel" aria-labelledby="productos-servicios-tab">
+            <div class="table-container mt-5">
+                    <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
+                <div class="flex-container">
+                    <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
+                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    </a>
+                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                    </a>
+                </div>
+                <div class="table-responsive">
 
-            <div id="productos" class="product-container">
-
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-productos-servicios">
+                            <!-- Los productos serán insertados aquí por jQuery -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
-
+        <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
+            <div class="table-container mt-5">
+                <h2 class="text-center">Productos en Ventas</h2>
+                <div class="flex-container">
+                    <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
+                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    </a>
+                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-productos-ventas">
+                            <!-- Los productos serán insertados aquí por jQuery -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
+            <div class="table-container mt-5">
+                <h2 class="text-center">Productos en Curso</h2>
+                <div class="flex-container">
+                    <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
+                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-up-wide-short"></i>
+                    </a>
+                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-productos-curso">
+                            <!-- Los productos serán insertados aquí por jQuery -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
 </section>
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
@@ -481,33 +543,136 @@ header {
 
               // Dibujar productos
 
-  function dibujarProductos() {
-    $.ajax({
-        url: '/productosCompras',
-        method: 'GET',
-        success: function(data) {
-            const productos = $('#productos');
-            productos.empty();
-            data.forEach(producto => {
-                const card = `
-                    <div class="product-card">
-                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
-                        <div class="product-info">
-                            <h2 class="product-title">${producto.nombre}</h2>
-                            <p class="product-description">${producto.descripcion}</p>
-                            <p class="product-price">$${producto.precio}</p>
-                        </div>
-                    </div>
-                `;
-                productos.append(card);
+              $.ajax({
+    url: '/get/productos',
+    method: 'GET',
+    success: function(data) {
+        // Limpiar las tablas
+        $('#productos-servicios tbody').empty();
+        $('#productos-ventas tbody').empty();
+        $('#productos-curso tbody').empty();
+
+        // Agrupar los productos por inventario_id
+        var productosPorInventario = {
+            1: [], // Productos en ventas
+            2: [], // Productos en servicios
+            3: []  // Productos en curso
+        };
+
+        data.forEach(function(producto) {
+            if (productosPorInventario.hasOwnProperty(producto.inventarioId)) {
+                productosPorInventario[producto.inventarioId].push(producto);
+            } else {
+                console.error('ID de inventario no reconocido:', producto.inventarioId);
+            }
+        });
+
+        // Función para agregar productos a una tabla
+        function agregarProductosATabla(tablaSelector, productos) {
+            var targetTable = $(tablaSelector);
+            if(productos.length === 0){
+                targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
+            }
+            productos.forEach(function(producto) {
+            var color = '';
+                if (producto.cantidadEnStock <= 0) {
+                    color = 'red';
+            } else if (producto.cantidadEnStock <= 20) {
+                    color = 'rgb(248, 208, 76)';
+                }
+
+                var row = '<tr>' +
+                    '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                    '<td>' + producto.nombre + '</td>' +
+                    '<td>' + producto.descripcion + '</td>' +
+                    '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
+                    '<td>' + producto.precio + '</td>' +
+                    '</tr>';
+                targetTable.append(row);
             });
         }
+
+        // Agregar productos a las tablas correspondientes
+        agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
+        agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
+        agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
+    },
+    error: function(error) {
+        console.error("Error al obtener los productos:", error);
+    }
+});
+
+        // Función para cargar y mostrar los productos ordenados
+        function cargarProductosOrdenados(url, tablaVentas, tablaCitas, tablaCursos) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(data) {
+                // Limpiar las tablas antes de agregar los nuevos datos
+                $(tablaVentas).empty();
+                $(tablaCitas).empty();
+                $(tablaCursos).empty();
+
+                // Función para agregar productos a una tabla
+                function agregarProductosATabla(tablaSelector, productos) {
+                    if (productos.length === 0) {
+                        $(tablaSelector).append('<tr><td colspan="6" class="text-center">No hay productos disponibles</td></tr>');
+                    } else {
+                        productos.forEach(function(producto) {
+                        var color = '';
+                        if (producto.cantidadEnStock <= 0) {
+                        color = 'red';
+                        } else if (producto.cantidadEnStock <= 20) {
+                        color = 'rgb(214, 185, 52)';
+                        }
+                            var row = '<tr>' +
+                                '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                                '<td>' + producto.nombre + '</td>' +
+                                '<td>' + producto.descripcion + '</td>' +
+                                '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
+                                '<td>' + producto.precio + '</td>' +
+                                '</tr>';
+                            $(tablaSelector).append(row);
+                        });
+                    }
+                }
+
+                // Agregar productos a las tablas correspondientes
+                agregarProductosATabla(tablaVentas, data.venta);
+                agregarProductosATabla(tablaCitas, data.cita);
+                agregarProductosATabla(tablaCursos, data.cursos);
+            },
+            error: function(error) {
+                console.error("Error al cargar los productos ordenados:", error);
+            }
+        });
+    }
+
+    // Eventos de clic para ordenar productos
+    $('.mayor').click(function() {
+        cargarProductosOrdenados('/mayor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
     });
-}
+
+    $('.menor').click(function() {
+        cargarProductosOrdenados('/menor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
+    });
+
+
+    function searchTable(inputId, tableId) {
+        $('#' + inputId).on('keyup', function () {
+            var value = $(this).val().toLowerCase();
+            $('#' + tableId + ' tr').filter(function () {
+                $(this).toggle($(this).children('td').eq(1).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    }
+
+    // Inicializar búsqueda para cada tabla
+    searchTable('search-productos-servicios', 'table-productos-servicios');
+    searchTable('search-productos-ventas', 'table-productos-ventas');
+    searchTable('search-productos-curso', 'table-productos-curso');
 
 $(document).ready(function(){
-
-    dibujarProductos();
 
             // Dashboard toggle
             const body = document.querySelector("body"),
