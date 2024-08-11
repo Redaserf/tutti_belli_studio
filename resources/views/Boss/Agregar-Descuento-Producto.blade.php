@@ -630,14 +630,19 @@ sidebarBtn.addEventListener("click", () => {
                         data: {
                             _token: $('input[name="_token"]').val(),
                             cantidadDescuento: discountPercentage,
+                            productos: selectedProducts
                         },
                         success: function (response) {
                         // Ocultar la pantalla de carga
                         $('#contenedor_carga').css('display', 'none');
-                            let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
-                            console.log(descuentoId);  // Para verificar el valor
+                            alert('Descuento agregado exitosamente');
+                            window.location.href = '/Ver-Descuentos';
+                            console.log(selectedProducts);
 
-                            aplicarDescuento(descuentoId, selectedProducts);
+                            // let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
+                            // console.log(descuentoId);  // Para verificar el valor
+
+                            // aplicarDescuento(descuentoId, selectedProducts);
                         },
                         error: function (error) {
                             // Ocultar la pantalla de carga
@@ -658,33 +663,11 @@ sidebarBtn.addEventListener("click", () => {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
-            function aplicarDescuento(descuentoId, productos) {
-                $.ajax({
-                    url: '/GuardarDescuentoProducto',
-                    type: 'POST',
-                    data: {
-                        _token: $('input[name="_token"]').val(),
-                        cantidadDescuento: discountPercentage,
-                        descuentoId: descuentoId,
-                        productos: productos
-                    },
-                    success: function (response) {
-                        alert("Descuento aplicado exitosamente");
-                        console.log(productos)
-                        window.location.href = '/Ver-Descuentos';
-                    },
-                    error: function (error) {
-                        alert('Ocurrió un error al aplicar el descuento');
-                        console.error(error);  // Para más detalles sobre el error
-                        location.reload();  // Refresca la página al aceptar el alert
-                    }
-                });
-            }
 
             // Fin document.ready
         });

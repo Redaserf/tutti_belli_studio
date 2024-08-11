@@ -357,7 +357,7 @@
 
 
 
-    
+
         /* Alerta bonita */
 
         @keyframes slideIn {
@@ -527,7 +527,7 @@
                 </ul>
 
                 <!-- Contenido de las pestañas -->
-                <div class="tab-content" id="myTabContent">
+                <div class="tab-content " id="myTabContent">
                     <!-- Pestaña General -->
                     <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
                         <div class="table-container mt-5">
@@ -601,7 +601,7 @@
                         </div>
                     </div>
                     <!-- Pestaña Compras -->
-                    <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
+                    <div class="tab-pane fade  " id="compras" role="tabpanel" aria-labelledby="compras-tab">
                         <!-- Navegación de pestaña de compras -->
                         <ul class="nav nav-tabs" id="comprasTab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -610,10 +610,12 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadas" type="button" role="tab" aria-controls="comprasAceptadas" aria-selected="false">Compras Aceptadas</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="compras-rechazadas-tab" data-bs-toggle="tab" data-bs-target="#comprasRechazadas" type="button" role="tab" aria-controls="comprasRechazadas" aria-selected="false">Compras Rechazadas</button>
-                            </li>
                         </ul>
+
+{{--                        <BR>--}}
+                        <input type="text" class="form-control mb-3" id="buscadorId" placeholder="Buscar por por id de venta">
+
+
                         <div class="tab-content" id="comprasTabContent">
                             <!-- Pestaña compras totales -->
                             <div class="tab-pane fade show active" id="comprasTotales" role="tabpanel" aria-labelledby="compras-totales-tab">
@@ -640,31 +642,17 @@
                                 </div>
                             </div>
                             <!-- Pestaña compras aceptadas -->
-                            <div class="tab-pane fade" id="comprasAceptadas" role="tabpanel" aria-labelledby="compras-aceptadas-tab">
+                            <div  class="tab-pane fade" id="comprasAceptadas" role="tabpanel" aria-labelledby="compras-aceptadas-tab">
                                 <div class="table-container mt-5">
                                     <h2>COMPRAS CONFIRMADAS</h2>
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th>Tipo</th>
-<<<<<<< HEAD
-=======
                                             <th>Id de compra</th>
->>>>>>> main
                                             <th>Total</th>
                                             <th>Día</th>
-                                            <th>Hora</th>
                                             <th>Detalles</th>
-<<<<<<< HEAD
-                                            <th>No llevada a cabo</th>
-                                            <th>Aceptar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="dibujarVenta">
-                                        
-                                    </tbody>
-                                </table>
-=======
                                         </tr>
                                         </thead>
                                         <tbody id="ventasConfirmadas">
@@ -674,32 +662,9 @@
                                         </tbody>
                                     </table>
                                 </div>
->>>>>>> main
                             </div>
-                            <!-- Pestaña compras rechazadas -->
-                            <div class="tab-pane fade" id="comprasRechazadas" role="tabpanel" aria-labelledby="compras-rechazadas-tab">
-                                <!-- Contenido de la pestaña compras rechazadas -->
-                                <div class="table-container mt-5">
-                                    <h2>COMPRAS RECHAZADAS</h2>
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Id de compra</th>
-                                            <th>Total</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="ventasRechazadas">
-                                        <tr>
 
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            </div>
+{{--                            </div>--}}
                         </div>
                     </div>
                     <!-- Pestaña Cursos -->
@@ -908,7 +873,7 @@
                                     </table>
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal">Cerrar</button>
                                     <button type="sumbit" class="btn btn-primary editarDetalleTecnica" id="guardarCambios">Guardar Cambios</button>
-                                    <button type="button" id="abrirTecnicas" class="btn btn-secondary" data-bs-toggle="modal">Regresar</button>                                 
+                                    <button type="button" id="abrirTecnicas" class="btn btn-secondary" data-bs-toggle="modal">Regresar</button>
                                 </div>
                             </div>
                         </div>
@@ -1024,9 +989,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>     
-                    
-                    
+                    </div>
+
+
                         <!-- modal para eliminarCita -->
                     <div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"> <!-- modal-lg para un modal más grande -->
@@ -1127,7 +1092,7 @@ function dibujarCitasVentasTecnicasProductos() {
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
-            console.log('servicios: ', citaData.servicios);    
+            console.log('servicios: ', citaData.servicios);
 
             citaData.servicios.forEach(servicio => {
                 servicio.tecnicas.forEach(tecnica => {
@@ -1252,7 +1217,7 @@ function dibujarCitasVentasTecnicasProductos() {
 function aceptarVenta() {
     $(document).on('click', '#aceptarCita', function() {
         let ventaId = $(this).data('venta-id');
-        console.log('Venta ID en Aceptar:', ventaId); 
+        console.log('Venta ID en Aceptar:', ventaId);
 
         $.ajax({
             url: '/venta/actualizar',
@@ -1263,8 +1228,8 @@ function aceptarVenta() {
             },
             success: function(response) {
                 console.log(response);
-                dibujarCitasVentasTecnicasProductos(); 
-                $('#editAppointmentModalCit').modal('hide'); 
+                dibujarCitasVentasTecnicasProductos();
+                $('#editAppointmentModalCit').modal('hide');
 
                 alert('Se aceptó con éxito');
             },
@@ -1382,10 +1347,28 @@ sidebarBtn.addEventListener("click", () => {
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
 
+        $('#buscadorId').on('keyup', function() {
+            var value = $(this).val();
+
+            // Filtra en la tabla de Todas las Compras
+            $('#ventasProductos tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+
+            // Filtra en la tabla de Compras Aceptadas
+            $('#ventasConfirmadas tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+
+            // Filtra en la tabla de Compras Rechazadas
+            $('#ventasRechazadas tr').filter(function() {
+                $(this).toggle($(this).find('th').text().indexOf(value) > -1);
+            });
+        });
+
         // Fin scripts para todas las vistas
         dibujarCompras();
         dibujarCompraConfirmada();
-        dibujarCompraRechazada();
 
 
 
@@ -1445,32 +1428,6 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
-
-    function dibujarCompraRechazada(){
-        $.ajax({
-            url: '/get/compras/rechazadas',
-            method: 'GET',
-            success: function (data) {
-                var cont = 0;
-                const detallesCompra = $('#ventasRechazadas');
-                detallesCompra.empty();
-                data.forEach(venta => {
-                    cont = venta.id;
-                    const fila = `
-                        <tr>
-                            <td>Compra</td>
-                            <th>${venta.id}</th>
-                            <td>${venta.total}</td>
-                            <td>${venta.fechaVenta}</td>
-                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
-                        </tr>
-                    `;
-                    detallesCompra.append(fila);
-                });
-            }
-        });
-    }
-
 
 
     function prepararConfirmacion(ventaId) {
@@ -1542,7 +1499,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
-                dibujarCompraRechazada();
+
 
                 // dibujarCompras();
                 $('#confirmModal').modal('hide');
@@ -1567,7 +1524,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
-                dibujarCompraRechazada();
+                $('#rejectModal').modal('hide');
             },
             error: function (error){
                 console.log(error)
@@ -1578,7 +1535,7 @@ sidebarBtn.addEventListener("click", () => {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
