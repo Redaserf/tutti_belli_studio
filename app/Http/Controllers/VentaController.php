@@ -7,6 +7,7 @@ use App\Models\Carrito;
 use App\Models\DetalleProducto;
 use App\Models\Producto;
 use App\Models\Venta;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class VentaController extends Controller
         // Inicia la transacción
         DB::beginTransaction();
         try {
+            //Obtiene el usuario logeado
             $usuario = Auth::user();
 
 
@@ -47,21 +49,39 @@ class VentaController extends Controller
 
             //SCRIPT PARA DESCONTAR DEL INVENTARIO.
 
+            //Aregglo donde se guardaran los productos de los cuales no se tiene existencia suficiente
+            $productosSinExistencia = [];
+            //boleano para comprobar si un producto es insuficiente
+            $noHay = false;
+
             $detalles = $venta->detalleProductos;
 
             foreach ($detalles as $detalle) {
-                // Obtener el producto relacionado con el detalle
+                //Se obtiene el producto relacionado con el detalle
                 $producto = $detalle->producto;
 
-                // Reducir el stock del producto en 1 unidad
+                // Se reduce el stock del producto en 1 unidad
                 $producto->cantidadEnStock = $producto->cantidadEnStock - 1;
 
-                // Guardar los cambios en el producto
-                $producto->save();
+                //En caso de que la cantidad en stock de dicho producto sea igual a -1 o menor
+                if($producto->cantidadEnStock < 0){
+                    $noHay = true;
+                    $productosSinExistencia[] = $producto;
+//                    DB::rollBack();
+                }else{
+                    // Guardar los cambios en el producto
+                    $producto->save();
+                }
+
+            }
+            //de haber detectado que no hay exsitencia de uno o varios productos, el estado 500 lo maneja como un error
+            if($noHay){
+                DB::rollBack();
+                return response()->json(['message' => 'Ha seleccionado una cantidad mayor a la de los productos en existencia en almacen, favor de verificar sus productos seleccionados'],500);
             }
 
             //Script para vacial el carrito del usuario
-            //Obtiene el carrito del usuario
+            //Se obtiene el carrito del usuario
             $carritoUsuario = $usuario->carrito;
             //Crea un carrito por vaciar y lo busca con el id del carrito del usuario
             $carritoPorVaciar = Carrito::find($carritoUsuario->id);

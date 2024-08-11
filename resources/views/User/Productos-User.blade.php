@@ -54,7 +54,7 @@ body, html {
 }
 
 #navbar{
-  font-family: "Josefin Sans", sans-serif !important;  
+  font-family: "Josefin Sans", sans-serif !important;
 }
 
 label{
@@ -140,7 +140,7 @@ h1, h2, h3, h4, h5 ,a, li{
 .footer {
     background-color: #000000;
     color: white;
-    
+
     width: 100%;
 }
 .footer-pers{
@@ -251,11 +251,11 @@ h1, h2, h3, h4, h5 ,a, li{
     .imgnavbar{
         width:200px;
         height: 30px;
-    
+
     }}
         /* Alerta bonita */
 
-        
+
 
         /* Fin alerta bonita */
 
@@ -306,7 +306,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
   <br><br><br><br><br><br>
 
-
+  <input type="text" class="form-control mb-3" id="buscadorId" placeholder="Buscar por nombre de producto">
 
   <div id="productos" class="product-container">
 
@@ -326,7 +326,7 @@ h1, h2, h3, h4, h5 ,a, li{
               <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
           </symbol>
       </svg>
-  
+
         <div class="custom-alert alert alert-dismissible fade" role="alert">
             <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
             <div id="alertaTexto">Texto de la alerta</div>
@@ -380,7 +380,7 @@ h1, h2, h3, h4, h5 ,a, li{
       </div>
     </footer>
 
-         
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -388,7 +388,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
 <script>
 
-  // Crear función alertas (esto va por encima de todo para que funcione)   
+  // Crear función alertas (esto va por encima de todo para que funcione)
 
   function mostrarAlerta(text, alertClass, iconId) {
     $("#alertaTexto").text(text);
@@ -404,7 +404,7 @@ h1, h2, h3, h4, h5 ,a, li{
       .fadeOut();
     }, 6000);
   }
-  
+
   // Dibujar productos
 
   function dibujarProductos() {
@@ -438,12 +438,19 @@ h1, h2, h3, h4, h5 ,a, li{
                         <div class="product-info">
                             <h2 class="product-title">${producto.nombre}</h2>
                             <p class="product-description">${producto.descripcion}</p>
-                            <p class="product-price">$${producto.precio}</p>
+                            <p class="product-price" >$${producto.precio}</p>
                         </div>
-                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-success agregar-carrito" data-id="${producto.id}">Agregar al carrito</button>
+                        <button id="cantidad_${producto.id}" style="margin-bottom: 10px;" type="button" class="btn btn-outline-success agregar-carrito" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">Agregar al carrito</button>
                     </div>
                 `;
                 productos.append(card);
+
+
+                if ($('#cantidad_' + producto.id).data('stock') <= 0) {
+                    $('#cantidad_' + producto.id).prop('disabled', true);
+                    $('#cantidad_' + producto.id).attr('class', 'btn btn-secondary agregar-carrito');
+                    $('#cantidad_' + producto.id).text('Producto fuera de existencia');
+                }
             });
 
             $('.agregar-carrito').click(function() {
@@ -453,6 +460,22 @@ h1, h2, h3, h4, h5 ,a, li{
         }
     });
 }
+
+  //Ejecuta el codigo cada vez que una tecla se pulsa
+  $('#buscadorId').on('keyup', function() {
+      var value = $(this).val().toLowerCase();
+      // obtiene todos los productos con clase .-card y los filtra
+      $('#productos .product-card').filter(function() {
+          // Encuentra el nombre del producto con .product-title
+          var text = $(this).find('.product-title').text().toLowerCase();
+
+          // Verifica si value se encuentra dentro de text, de ser asi lo muetra con toggle, de lo contrario lo oculta
+          $(this).toggle(text.indexOf(value) > -1);
+      });
+  });
+
+  // // Llama a la función para dibujar los productos al cargar la página
+  // dibujarProductos();
 
 function agregarAlCarrito(productId) {
     $.ajax({
@@ -471,7 +494,7 @@ function agregarAlCarrito(productId) {
         }
     });
 }
-                             
+
                   // Pantalla de carga
                   var loader = document.getElementById("contenedor_carga");
                   var navbar = document.getElementById("navbar");
@@ -479,11 +502,11 @@ function agregarAlCarrito(productId) {
                     $('#navbar').css('visibility', 'visible');
                     loader.style.display = "none";
                   })
-                  
+
                   $(document).ready(function(){
-                  
+
                     dibujarProductos();
-                  
+
                     function separadorHidden(){
                     var cuentaLi = document.getElementById("cuenta");
                     var carrito = document.getElementById("carrito");
@@ -498,7 +521,7 @@ function agregarAlCarrito(productId) {
                     }
                     window.addEventListener('resize', separadorHidden);
                     separadorHidden();
-                  
+
 
             // Alertas Document.ready
 
@@ -520,7 +543,7 @@ function agregarAlCarrito(productId) {
 
 
                       // Scripts aquí
-                  
+
                   });
 
 </script>

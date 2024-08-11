@@ -639,7 +639,7 @@ header {
             </div>
         </div>
     </div>
-
+    {{-- Modal para mostrar los productos--}}
     <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -749,29 +749,43 @@ function mostrarInscripciones(cursoId) {
             const inscripciones = response.inscripciones;
             const curso = response.curso;
             let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
-                let filtroId = `<input style="width:160px;" type="number" class="input" placeholder="Busqueda por ID"></input>`; //Aún por implementar la lógica, es un boceto
+                let filtroId = `<input style="width:160px;" type="number" id="buscadorId" class="form-control mb-3" placeholder="Busqueda por ID" ></input>`; //Aún por implementar la lógica, es un boceto
                 inscripcionesHtml += filtroId;
             inscripciones.forEach(inscripcion => {
                 if (inscripcion.estado == 0){
-                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                    inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}" >
+                        Inscripción ID #${inscripcion.id}<br>
                         ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
-                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
+                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button>
+                        </li>`;
                 }
                 else {
-                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                    inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}" >
+                        Inscripción ID #${inscripcion.id}<br>
                         ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
-                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
+                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button>
+                        </li>`;
                 }
             });
             inscripcionesHtml += '</ul>';
             $('#inscripcionesModal .modal-bodyInscripciones').html(inscripcionesHtml);
             $('#inscripcionesModal').modal('show');
+
+            $('#buscadorId').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('.buscar').filter(function() {
+                    var text = $(this).data('id').toString().toLowerCase();
+                    $(this).toggle(text.indexOf(value) > -1);
+                });
+            });
         },
         error: function(error) {
             console.error('Error al obtener las inscripciones:', error);
         }
     });
 }
+
+
 
 function editarInscripcion(inscripcionId){
             $.ajax({
