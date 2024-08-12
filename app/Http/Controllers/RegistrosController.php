@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Curso;
 use App\Models\Descuento;
 use App\Models\Producto;
+use App\Models\ProductoHasCurso;
 use App\Models\Servicio;
 use App\Models\Tecnica;
+use App\Models\TecnicaHasCurso;
 use App\Models\User;
 use App\Models\Venta;
 use Illuminate\Http\Request;
@@ -97,24 +99,84 @@ class RegistrosController extends Controller
     function RegistroCurso(Request $request)
     {
 
-        $curso = new Curso();
-        $curso->nombre = $request->nombre;
-        $curso->cupoLimite = $request->cupoLimite;
-        $curso->fechaInicio = $request->fechaInicio;
-        $curso->horaInicio = $request->horaInicio;
-        $curso->imagen = $request->imagen;
-        $curso->descripcion = $request->descripcion;
-        $curso->precio = $request->precio;
-        if ($request->hasFile('imagenCurso')) {
-            $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
+        DB::beginTransaction();
+
+        try{
+
+            // Extraer datos del request
+            $nombre = $request->input('nombre');
+            $cupoLimite = $request->input('cupoLimite');
+            $fechaInicio = $request->input('fechaInicio');
+            $horaInicio = $request->input('horaInicio');
+            $precio = $request->input('precio');
+            $descripcion = $request->input('descripcion');
+            $empleadoId = $request->input('empleadoId');
+            $tecnicas = json_decode($request->input('tecnicas'), true);
+            $productos = json_decode($request->input('productos'), true);
+            $cantidadesProductos = json_decode($request->input('cantidadesProductos'), true);
+
+
+            // Guardar la imagen
+            if ($request->hasFile('imagenCurso')) {
+                $imagePath = $request->file('imagenCurso')->store('imagenes', 'public');
+            } else {
+                $imagePath = null; // O un valor predeterminado si es necesario
+            }
+
+            // REVISAR PORQUE ESTO NO FUNCIONO
+//            Curso::create([
+//                'nombre' => $nombre,
+//                'cupoLimite' => $cupoLimite,
+//                'fechaInicio' => $fechaInicio,
+//                'horaInicio' => $horaInicio,
+//                'precio' => $precio,
+//                'imagenCurso' => $imagePath,
+//                'descripcion' => $descripcion,
+//                'empleadoId' => $empleadoId
+//            ]);
+
+            $curso = new Curso();
+            $curso->nombre = $nombre;
+            $curso->cupoLimite = $cupoLimite;
+            $curso->fechaInicio = $fechaInicio;
+            $curso->horaInicio = $horaInicio;
+            $curso->descripcion = $descripcion;
+            $curso->precio = $precio;
+            if ($request->hasFile('imagenCurso')) {
+                $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
+            }
+            $curso->empleadoId = $empleadoId;
+            $curso->save();
+
+            // Guardar las técnicas seleccionadas para el curso
+            foreach ($tecnicas as $tecnicaId) {
+                TecnicaHasCurso::create([
+                    'cursoId' => $curso->id,
+                    'tecnicaId' => $tecnicaId,
+                ]);
+            }
+
+            //Guardar productos en el curso
+            for ($i = 0; $i < count($productos); $i++) {
+                ProductoHasCurso::create([
+                    'cursoId' => $curso->id,
+                    'productoId' => $productos[$i],
+                    'cantidadPorUsar' => $cantidadesProductos[$i],
+                ]);
+            }
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['message' => 'Error: ',  $e->getMessage()], 500);
         }
-        $curso->empleadoId = $request->empleadoId;
-        $curso->save();
+
+
 
 
         //regresa el id del curso que se acaba de crear para mandarlo en el ajax
         // que se encuentra en Cursos
-        return response()->json(['cursoId' => $curso->id]);
+//        return response()->json(['cursoId' => $curso->id]);
 
     }
 

@@ -88,10 +88,7 @@ class InscripcionController extends Controller
                         $producto->save();
 
 
-
-
                     }
-
 
                     $curso->cupoLimite = $curso->cupoLimite - 1;
                     $curso->save();
@@ -104,10 +101,11 @@ class InscripcionController extends Controller
                     }
 
                     DB::commit();
+                    return 'Inscripcion contretada correctamente';
                 }
 
             }else{
-                return 'No hay suficiente stock disponible';
+                return 'Ya no hay cupos para este curso';
             }
 
 

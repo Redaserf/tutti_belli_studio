@@ -875,7 +875,7 @@ function mostrarInscripciones(cursoId) {
 
                 },
                 error: function (){
-                    alert('afjnafjnas');
+
                 }
             });
 
@@ -904,7 +904,7 @@ function mostrarInscripciones(cursoId) {
                hora: hora
            },
            success: function (response){
-               console.log(response);
+               alert(response)
                mostrarDias(cursoActual);
                $("#agregarNuevoDiaModal").modal('hide');
                $('#agregarDiasModal').modal('show');
@@ -956,7 +956,7 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
-                                alert("Se ha aceptado al usuario en este curso.");
+                                alert(response);
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
 
