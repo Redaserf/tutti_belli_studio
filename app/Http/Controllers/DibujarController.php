@@ -280,7 +280,7 @@ class DibujarController extends Controller
         public function historial(){
             $user = Auth::user();
 
-            $citas = $user->citasUsuarios()->with('venta')->get();
+            $citas = $user->citasUsuarios()->with('citasHasServicios.venta')->get();
             $inscripciones = $user->inscripciones()->with('cursos')->get();
             $ventas = $user->ventas;
 
