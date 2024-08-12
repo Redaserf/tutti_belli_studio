@@ -687,7 +687,7 @@ function mostrarInscripciones(cursoId) {
             inscripciones.forEach(inscripcion => {
                 if (inscripcion.estado == 0){
                     inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
-                        ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
+                        ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
                         Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
                 }
                 else {

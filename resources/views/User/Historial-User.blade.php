@@ -330,8 +330,8 @@ function mostrarCitaModal(citaId) {
                         inscripcion.estado = "<span style='color: #39BF3D;'>Aceptado</span>";
                     }
                     const detalleInscripcion = `<div class="modalInfo">
-                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}. Cupos disponibles: ${curso.cupoLimite} <br> Inicia el ${curso.fechaInicio}
-                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <br> Instructor oficial es ${empleado.name}.
+                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}<br> Cupos disponibles: ${curso.cupoLimite} <br><br> Inicia el ${curso.fechaInicio}
+                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <a href="/Home-usuario#contacto">Dirección</a> <br> Instructor oficial: ${empleado.name}
                         
                         <br><br>Técnicas a enseñar en el curso:
                     </div>`;
@@ -339,7 +339,7 @@ function mostrarCitaModal(citaId) {
                     if (tecnicas.length > 0){
                         tecnicas.forEach(item => {
                             const tecnicasInfo = `<div class="">
-                        <li style="padding:0px;margin-left:15px;">${item.tecnicas ? item.tecnicas.nombre : 'N/A'}</li>
+                        <li style="padding:0px;margin-left:20px;">${item.tecnicas ? item.tecnicas.nombre : 'N/A'}</li>
                     </div>`;
                     inscripcionModal.append(tecnicasInfo);
                         });
@@ -367,7 +367,7 @@ function mostrarCitaModal(citaId) {
                     if (producto.length > 0) {
                         producto.forEach (item => {
                             const detalleProducto = `<div class="modalInfo">
-                                <img src="/storage/${item.producto.imagen}" alt="Producto" width="80" height="80">  
+                                <img src="/storage/${item.producto.imagen}" alt="Producto" width="80" height="80" style="margin-right:10px">  
                                   ${item.producto.nombre} - $${item.producto.precio}
                                 </div>`;
                                 productoModalBody.append(detalleProducto);
