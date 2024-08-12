@@ -640,16 +640,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="text-center row justify-content-center">
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img5g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR3.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img6g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR0.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img8g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR2.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img7g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR1.jpg" class="rounded img-galeria" alt="...">
             </div>
           </div>
         </div>

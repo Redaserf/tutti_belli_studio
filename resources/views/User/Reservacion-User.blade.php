@@ -673,7 +673,6 @@ gmp-map {
 <script>
 
 $(document).ready(function(){
-    // ESTO ME LO DIO CHAT ME ESTRESE PQ SE CERRABA OTRO MODAL VA
     $('a[data-bs-target="#termsModal"]').click(function(e){
             e.preventDefault();
             $('#termsModal').modal('show');
