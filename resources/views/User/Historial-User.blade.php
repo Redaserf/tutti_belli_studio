@@ -284,7 +284,7 @@
 
 function mostrarCitaModal(citaId) {
             $.ajax({
-                url: /get/ServicioTecnica/${citaId},
+                url: '/get/ServicioTecnica/${citaId}',
                 method: 'GET',
                 success: function(data) {
                     const bodyCitas = $('#modal-bodyCitas');
@@ -318,7 +318,7 @@ function mostrarCitaModal(citaId) {
 
         function mostrarInscripcionModal(inscripcionId) {
             $.ajax({
-                url: /get/inscripcion2/${inscripcionId},
+                url: '/get/inscripcion2/${inscripcionId}',
                 method: 'GET',
                 success: function(data) {
                     const inscripcionModal = $('#modal-bodyInscripcion');
@@ -358,7 +358,7 @@ function mostrarCitaModal(citaId) {
 
         function mostrarProductoModal(ventaId) {
             $.ajax({
-                url: /get/ventaProductos/${ventaId},
+                url: '/get/ventaProductos/${ventaId}',
                 method: 'GET',
                 success: function(data) {
                     const productoModalBody = $('#productoModalBody');

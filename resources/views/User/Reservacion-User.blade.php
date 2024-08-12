@@ -49,7 +49,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 300000000000000;
+        z-index: 5000000;
     }
 
 .fonts3{
@@ -473,7 +473,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
+    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" style="z-index: 100">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
