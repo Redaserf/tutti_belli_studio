@@ -299,15 +299,6 @@
             cursor: pointer;
             color: white;
         }
-        #mensajeNoServicios{
-            font-size: 24px;
-            color: #000; /* Texto negro */
-            background-color: #fff; /* Fondo blanco */
-            border: none; /* Sin bordes */
-            border-radius: 0; /* Sin bordes redondeados */
-            padding: 20px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body class="hiddenX">
@@ -416,9 +407,6 @@
         <div class="section-divider"></div>
 
         <div class="table-responsive tab-content">
-        <div id="mensajeNoServicios" class="alert alert-warning text-center" style="display: none;">
-            No hay servicios para mostrar
-        </div>
             <table class="table">
                 <thead>
                   <tr>
@@ -513,40 +501,31 @@ $.ajaxSetup({
         });
 
         // Dibujar servicios
-        function tablaServicios() {
+        function tablaServicios(){
             $.ajax({
                 url: '/get/servicios',
                 method: 'GET',
                 success: function(data) {
                     const tableBody = $('#Servicios');
-                    const mensajeNoServicios = $('#mensajeNoServicios');
-                    
-                    tableBody.empty(); // Vaciar la tabla
-                    
+                    tableBody.empty();
                     if (data.length === 0) {
-                        // Ocultar la tabla y mostrar el mensaje
-                        tableBody.closest('table').hide();
-                        mensajeNoServicios.show();
-                    } else {
-                        // Mostrar la tabla y ocultar el mensaje
-                        tableBody.closest('table').show();
-                        mensajeNoServicios.hide();
-                        
-                        data.forEach(servicio => {
-                            const row = `<tr>
-                                <td>${servicio.id}</td>
-                                <td>${servicio.nombre}</td>
-                                <td>
-                                    <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal">Ver técnicas</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
-                                    <button style="margin-left:15px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
-                                </td>
-                            </tr>`;
-                            tableBody.append(row);
-                        });
+                        // Mostrar mensaje si no hay servicios
+                        tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
                     }
+                    data.forEach(servicio => {
+                        const row = `<tr>
+                            <td>${servicio.id}</td>
+                            <td>${servicio.nombre}</td>
+                            <td>
+                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal"><i class="fa-solid fa-eye"></i></button>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
+                                <button style="margin-left:2px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
+                            </td>
+                        </tr>`;
+                        tableBody.append(row);
+                    });
                 }
             });
         }
@@ -596,12 +575,29 @@ function editarTecnica(tecnicaId, servicioId) {
                         <input type="number" class="form-control" id="tecnicaPrecio" value="${data.precio}" min="0">
                     </div>
                     <div class="mb-3">
+                        <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+                    </div>
+                    <div class="mb-3">
                         <label for="tecnicaDescripcion" class="form-label">Descripción</label>
                         <textarea class="form-control" id="tecnicaDescripcion">${data.descripcion}</textarea>
                     </div>
                 </form>
             `;
+
+
             editarModalBody.append(form);
+
+            if(data.descuentoId == null){
+                $('#advertencia').hide();
+                $('#tecnicaPrecio').val(data.precio);
+                $('#tecnicaPrecio').prop('disabled',false);
+            }else{
+                //Muestra la etiqueta con el css con el que se oculto
+                $('#advertencia').show();
+                $('#advertencia').text('No es posible editar el precio del producto si este cuenta con un descuento asociado');
+                $('#tecnicaPrecio').val(data.precio);
+                $('#tecnicaPrecio').prop('disabled',true);
+            }
         },
         error: function(error) {
             const editarModalBody = $('#editarModalBody');
@@ -691,7 +687,7 @@ function servicioUpdate(servicioId) {
                 </form>
             `;
             modalBody.append(form);
-            
+
             // Mostrar el modal para actualizar el servicio
             $('#editarServicioModal').modal('show');
 
@@ -795,13 +791,13 @@ function servicioDelete(servicioId) {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
             // Botón sidebar
-            function botonSidebar() { 
+            function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -812,7 +808,7 @@ function servicioDelete(servicioId) {
             botonSidebar();
 
             // Ajustes de botones en top
-            function botones() { 
+            function botones() {
                 if (window.innerWidth <= 960) {
                     $('.top').css('flex-direction', 'column');
                     $('.top').css('gap', '10px');

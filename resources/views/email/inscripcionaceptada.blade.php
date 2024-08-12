@@ -169,7 +169,7 @@
 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
 <p style="margin: 0; margin-bottom: 1px;"> </p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>Estimado usuario,</strong></p>
-<p style="margin: 0; margin-bottom: 1px;"><strong>Nos complace informarle que hemos recibido y verificado su comprobante de depósito. Su inscripción al curso deseado ha sido confirmada exitosamente.</strong></p>
+<p style="margin: 0; margin-bottom: 1px;"><strong>Nos complace informarle que se ha aceptado su inscripción.</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>Estamos muy emocionados de contar con su participación y esperamos que disfrute y aproveche al máximo esta experiencia de aprendizaje.</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>A continuación, le recordamos algunos detalles importantes del curso:</strong></p>
 <p style="margin: 0; margin-bottom: 1px;"><strong>Curso: {{ $cursoNombre }}</strong><br/><strong>Fecha de Inicio: {{ $fechaInicio }}</strong><br/><strong>Horario: {{ $horaInicio }}</strong></p>

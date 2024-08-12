@@ -15,12 +15,6 @@ class DescuentoController extends Controller
         $descuentoId = $request->input('descuentoId');
         $tecnicas = $request->input('tecnicas');
 
-        $request->validate([
-            'descuentoId' => 'required|exists:descuentos,id',
-            'tecnicas' => 'required|array',
-            'tecnicas.*' => 'exists:tecnicas,id',
-            'cantidadDescuento' => 'required|numeric|min:0|max:100', // Validar que el descuento sea un porcentaje válido
-        ]);
 
         // Convertir el porcentaje de descuento a un valor decimal
         $porcentajeDescuento = $request->cantidadDescuento / 100;
