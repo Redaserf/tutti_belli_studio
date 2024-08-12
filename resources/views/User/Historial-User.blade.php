@@ -92,6 +92,15 @@
             background-color: #f5c6cb;
             border-color: #f5c6cb;
         }
+            #mensajeNoHistorial {
+        font-size: 24px;
+        color: #000; /* Texto negro */
+        background-color: #fff; /* Fondo blanco */
+        border: none; /* Sin bordes */
+        border-radius: 0; /* Sin bordes redondeados */
+        padding: 20px;
+        margin-top: 20px;
+    }
 
         .modalInfo{
             padding: 16px;
@@ -149,6 +158,18 @@
     <!-- ESTA TABLA ES PARA VER POR ENCIMA EL HISTORIAL ALGO BASICO NO TAN AMONTONADO -->
     <div class="table-container mt-5">
         <h2>Historial</h2>
+        <div class="mb-3">
+        <label for="tipoHistorial" class="form-label">Filtrar por Tipo</label>
+            <select id="tipoHistorial" class="form-select" onchange="dibujarHistorial()">
+                <option value="">Todos</option>
+                <option value="citas">Citas</option>
+                <option value="inscripciones">Inscripciones</option>
+                <option value="ventas">Compras</option>
+            </select>
+        </div>
+        <div id="mensajeNoHistorial" class="alert alert-warning text-center" style="display: none;">
+            No hay historial disponible para mostrar.
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -222,61 +243,65 @@
         // Dibujar historial
 
         function dibujarHistorial() {
-      $.ajax({
-        url: '/get/historial',
+    const tipoHistorial = $('#tipoHistorial').val(); // Obtener el valor seleccionado
+    $.ajax({
+        url: `/get/historial?tipo=${tipoHistorial}`, // Enviar el tipo al servidor
         method: 'GET',
         success: function(data) {
-          console.log(data);
-          const historiales = $('#bodyHistorial');
-          historiales.empty();
-          const { citas, inscripciones, ventas } = data;
+            console.log(data);
+            const historiales = $('#bodyHistorial');
+            const mensajeNoHistorial = $('#mensajeNoHistorial');
+            historiales.empty();
+            const { citas, inscripciones, ventas } = data;
 
-    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
-        historiales.append(`
-            <tr>
-                <td colspan="4">No hay historial disponible.</td>
-            </tr>
-        `);
-    } else {
-        citas.forEach(cita => {
-            const infoCitas = `<tr>
-                <td>Cita</td>
-                <td>${cita.venta ? cita.venta.total : 'N/A'}</td>
-                <td>${cita.fechaCreacion}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoCitas);
-        });
+            // Filtrar los datos según el tipo seleccionado
+            let datosFiltrados = [];
+            if (tipoHistorial === '' || tipoHistorial === 'citas') {
+                datosFiltrados = datosFiltrados.concat(citas.map(cita => ({
+                    tipo: 'Cita',
+                    precio: cita.venta ? cita.venta.total : 'N/A',
+                    fecha: cita.fechaCreacion,
+                    id: cita.id
+                })));
+            }
+            if (tipoHistorial === '' || tipoHistorial === 'inscripciones') {
+                datosFiltrados = datosFiltrados.concat(inscripciones.map(inscripcion => ({
+                    tipo: 'Inscripción',
+                    precio: inscripcion.cursos ? inscripcion.cursos.precio : 'N/A',
+                    fecha: inscripcion.fechaInscripcion,
+                    id: inscripcion.id
+                })));
+            }
+            if (tipoHistorial === '' || tipoHistorial === 'ventas') {
+                datosFiltrados = datosFiltrados.concat(ventas.map(venta => ({
+                    tipo: 'Compra',
+                    precio: venta.total,
+                    fecha: venta.fechaCreacion,
+                    id: venta.id
+                })));
+            }
 
-        inscripciones.forEach(inscripcion => {
-            const infoInscripciones = `<tr>
-                <td>Inscripción</td>
-                <td>${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>${inscripcion.fechaInscripcion}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoInscripciones);
-        });
-
-        ventas.forEach(venta => {
-            const infoVentas = `<tr>
-                <td>Compra</td>
-                <td>${venta.total}</td>
-                <td>${venta.fechaCreacion}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoVentas);
-        });
-    }
-    },
+            if (datosFiltrados.length === 0) {
+                historiales.closest('table').hide();
+                mensajeNoHistorial.show();
+            } else {
+                historiales.closest('table').show();
+                mensajeNoHistorial.hide();
+                datosFiltrados.forEach(item => {
+                    const fila = `<tr>
+                        <td>${item.tipo}</td>
+                        <td>${item.precio}</td>
+                        <td>${item.fecha}</td>
+                        <td>
+                            <button class="btn btn-success" onclick="mostrarDetallesModal(${item.id}, '${item.tipo}')"><i class="fa-solid fa-eye"></i></button>
+                        </td>
+                    </tr>`;
+                    historiales.append(fila);
+                });
+            }
+        },
         error: function(error) {
-        console.error('Error al obtener el historial', error);
+            console.error('Error al obtener el historial', error);
         }
     });
 }

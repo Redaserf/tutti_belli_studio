@@ -292,6 +292,9 @@ header {
     font-family: 'Arial', sans-serif;
     margin-bottom: 20px;
 }
+.tab-content{
+    padding: 36px;
+}
 
                 body{
                     overflow-y: hidden;
@@ -378,12 +381,45 @@ header {
 
 
     <section class="home">
-        <div class="container-full border">
+        <div class=" border">
             <h2 class="citas text-center mt-3">Citas pendientes</h2>
-            <a href="/Agregar-Cita-Empleado"><button class="btn btn-info">Agendar cita</button></a>
             <br>
             <div>
-                <!-- Aquí las citas mediante back-end :c -->
+            <div class="table-responsive tab-content">
+                    <div id="mensajenoCitas" class="alert alert-warning text-center" style="display: none;">
+                        No hay citas para mostrar.
+                    </div>
+                    
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Fecha de la cita</th>
+                            <th>Hora de la cita</th>
+                            <th>Nombre del cliente</th>
+                            <th>Número de telefono</th>
+                            <th>Correo electronico</th>
+                            <th>Nombre del empleado</th>
+                            <th>Aceptar cita</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="Citas">
+                                <td>24-12-20</td>
+                                <td>24-12-20</td>
+                                <td>Angel</td>
+                                <td>3000</td>
+                                <td>782738173823</td>
+                                <td>asdad@fasfasf</td>
+                                <td>asdasdasdasdasd</td>
+                                <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="">Aceptar</button></td>  
+                        
+                        {{-- Citas mediante JS --}}
+                        
+                    </tbody>
+                      </table>
+    
+            </div>
+                
             </div>
     
         </div>

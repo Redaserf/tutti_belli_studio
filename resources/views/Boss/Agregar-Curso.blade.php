@@ -27,16 +27,15 @@
         }
 
         .header-section {
-            background-color: #e1b8b8;
+           
             padding: 30px 0;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             margin-bottom: 20px;
         }
 
         .header-section h1 {
-            color: #ffffff;
+            
         }
         h1 {
     color: #000000; /* Letra negra */
