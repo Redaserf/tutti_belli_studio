@@ -632,7 +632,7 @@
 </section>
 <section class="text-center">
     <a href="/Cursos-User">
-        <button onclick="" class="btn btn-dark btn-personalizado">Mas Informacion -></button>
+        <button onclick="" class="btn btn-dark btn-personalizado ">Mas Informacion -></button>
     </a>
 </section>
 
@@ -680,7 +680,7 @@
 
 <!-- BOTÓN RESERVAR -->
 <a href="/Login">
-    <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
+    <button  id="reservarBtn" type="button" class=" btn-personalizado reserve-button ">Reservar ahora</button>
 </a>
 
 <!-- FOOTER -->

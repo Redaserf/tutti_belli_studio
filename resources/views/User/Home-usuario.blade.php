@@ -600,7 +600,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
             <a href="/Reservacion-User">
-              <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
+              <button onclick="" class="btn btn-dark btn-personalizado ">Reservar cita</button>
             </a>
           </div>
         </div> 
@@ -656,7 +656,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       </section>
       <section class="text-center">
             <a href="/Cursos-User">
-              <button onclick="" class="btn btn-dark">Mas Informacion -></button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Mas Informacion -></button>
             </a>
       </section>
 
@@ -703,7 +703,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
             <!-- BOTÓN RESERVAR -->
             <a href="/Reservacion-User">
-              <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
+              <button  id="reservarBtn" type="button" class=" reserve-button btn-personalizado ">Reservar ahora</button>
             </a>
 
       <!-- FOOTER -->
