@@ -29,7 +29,7 @@ class VentaController extends Controller
             // Da de alta la venta
             $venta = Venta::create([
                 'total' => $request->total,
-                'fechaCreacion' => now(),
+//                'fechaCreacion' => now(),
                 //Compra en espera
                 'estadoVenta' => null,
                 'fechaVenta' => $request->fechaVenta,
