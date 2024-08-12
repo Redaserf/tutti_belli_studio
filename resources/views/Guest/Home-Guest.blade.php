@@ -78,6 +78,7 @@
             background-color:#fa3284;
         }
         .btn-personalizado:hover{
+            color:white;
             background-color:#fa3284;
             border:0;
         }

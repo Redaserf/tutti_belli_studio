@@ -89,6 +89,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
       background-color:#fa3284;
     }
     .btn-personalizado:hover{
+      color:white;
       background-color:#fa3284;
       border:0;
     }
