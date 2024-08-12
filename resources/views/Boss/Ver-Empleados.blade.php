@@ -270,6 +270,15 @@ header {
             cursor: pointer;
             color: white;
         }
+        #mensajeNoEmpleados{
+            font-size: 24px;
+            color: #000; /* Texto negro */
+            background-color: #fff; /* Fondo blanco */
+            border: none; /* Sin bordes */
+            border-radius: 0; /* Sin bordes redondeados */
+            padding: 20px;
+            margin-top: 20px;
+        }
 
     .sidebar.close .header-text {
     display: none;
@@ -419,6 +428,9 @@ header {
                 <div class="section-divider"></div>
                 
                 <div class="table-responsive tab-content">
+                    <div id="mensajeNoEmpleados" class="alert alert-warning text-center" style="display: none;">
+                        No hay empleados para mostrar.
+                    </div>
                     
                     <table class="table">
                         <thead>
@@ -511,29 +523,42 @@ header {
 
         // Dibujar empleados
 
-        function tablaEmpleados(){
+        function tablaEmpleados() {
     $.ajax({
         url: '/get/empleados',
         method: 'GET',
         success: function(data) {
             const tableBody = $('#Empleados');
+            const mensajeNoEmpleados = $('#mensajeNoEmpleados');
+            
             tableBody.empty();
-            data.forEach(empleado => {
-                const row = `<tr>
-                    <td>${empleado.id}</td>
-                    <td>${empleado.name}</td>
-                    <td>${empleado.apellido}</td>
-                    <td>${empleado.fechaNacimiento}</td>
-                    <td>${empleado.gender}</td>
-                    <td>${empleado.email}</td>
-                    <td>${empleado.numeroTelefono}</td>
-                    <td>
-                        <button class="btn btn-warning" onclick="cargarEmpleado(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="fa-solid fa-user-pen"></i></button>
-                        <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></button>
-                    </td>
-                </tr>`;
-                tableBody.append(row);
-            });
+            
+            if (data.length === 0) {
+                // Ocultar la tabla y mostrar el mensaje
+                tableBody.closest('table').hide();
+                mensajeNoEmpleados.show();
+            } else {
+                // Mostrar la tabla y ocultar el mensaje
+                tableBody.closest('table').show();
+                mensajeNoEmpleados.hide();
+                
+                data.forEach(empleado => {
+                    const row = `<tr>
+                        <td>${empleado.id}</td>
+                        <td>${empleado.name}</td>
+                        <td>${empleado.apellido}</td>
+                        <td>${empleado.fechaNacimiento}</td>
+                        <td>${empleado.gender}</td>
+                        <td>${empleado.email}</td>
+                        <td>${empleado.numeroTelefono}</td>
+                        <td>
+                            <button class="btn btn-warning" onclick="cargarEmpleado(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="fa-solid fa-user-pen"></i></button>
+                            <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></button>
+                        </td>
+                    </tr>`;
+                    tableBody.append(row);
+                });
+            }
         }
     });
 }

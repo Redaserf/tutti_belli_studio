@@ -299,6 +299,15 @@
             cursor: pointer;
             color: white;
         }
+        #mensajeNoServicios{
+            font-size: 24px;
+            color: #000; /* Texto negro */
+            background-color: #fff; /* Fondo blanco */
+            border: none; /* Sin bordes */
+            border-radius: 0; /* Sin bordes redondeados */
+            padding: 20px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body class="hiddenX">
@@ -407,6 +416,9 @@
         <div class="section-divider"></div>
 
         <div class="table-responsive tab-content">
+        <div id="mensajeNoServicios" class="alert alert-warning text-center" style="display: none;">
+            No hay servicios para mostrar
+        </div>
             <table class="table">
                 <thead>
                   <tr>
@@ -501,31 +513,40 @@ $.ajaxSetup({
         });
 
         // Dibujar servicios
-        function tablaServicios(){
+        function tablaServicios() {
             $.ajax({
                 url: '/get/servicios',
                 method: 'GET',
                 success: function(data) {
                     const tableBody = $('#Servicios');
-                    tableBody.empty();
+                    const mensajeNoServicios = $('#mensajeNoServicios');
+                    
+                    tableBody.empty(); // Vaciar la tabla
+                    
                     if (data.length === 0) {
-                        // Mostrar mensaje si no hay servicios
-                        tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
-                    }                     
-                    data.forEach(servicio => {
-                        const row = `<tr>
-                            <td>${servicio.id}</td>
-                            <td>${servicio.nombre}</td>
-                            <td>
-                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal">Ver técnicas</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
-                                <button style="margin-left:15px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
-                            </td>
-                        </tr>`;
-                        tableBody.append(row);
-                    });
+                        // Ocultar la tabla y mostrar el mensaje
+                        tableBody.closest('table').hide();
+                        mensajeNoServicios.show();
+                    } else {
+                        // Mostrar la tabla y ocultar el mensaje
+                        tableBody.closest('table').show();
+                        mensajeNoServicios.hide();
+                        
+                        data.forEach(servicio => {
+                            const row = `<tr>
+                                <td>${servicio.id}</td>
+                                <td>${servicio.nombre}</td>
+                                <td>
+                                    <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal">Ver técnicas</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
+                                    <button style="margin-left:15px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
+                                </td>
+                            </tr>`;
+                            tableBody.append(row);
+                        });
+                    }
                 }
             });
         }
