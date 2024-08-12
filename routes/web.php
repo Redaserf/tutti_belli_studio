@@ -239,6 +239,10 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
     // Obtener productos con el curso seleccionado
     Route::get('/curso/productos/{cursoId}',[CursoController::class,'dibujarProductos']);
+    //Obtener dia incial del curso
+    Route::get('/diaCurso/{id}',[CursoController::class,'diaInicial']);
+    //Agregar nueva fecha
+    Route::post('/nuevaFecha/{id}',[CursoController::class,'nuevaFecha']);
 
 
 

@@ -556,9 +556,57 @@ header {
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+
+{{--                        MODAL PARA MOTSTRAR FECHAS A LOS DIAS--}}
+                        <div class="modal fade" id="agregarDiasModal" tabindex="-1" aria-labelledby="editCursoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" >Agregar Dias</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" id="agregarDiasCurso">
+
+{{--                                            <div class="form-group" id="fechasEstablecidas">--}}
+
+{{--                                            </div>--}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button id="AgregarFC" type="button" class="btn btn-primary">Agregar nueva fecha</button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+{{--                    MODAL PARA AGREGAR LA FECHA    --}}
+                        <div class="modal fade" id="agregarNuevoDiaModal" tabindex="-1" aria-labelledby="editCursoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" >Agregar Dias</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="agregarDiasCurso">
+                                        <label> Proxima fecha de sesion</label> <br>
+                                        <input id="nuevaFecha" type="date"> <br><br>
+                                        <label> Hora de inicio </label> <br>
+                                        <input id="nuevaHora" type="time">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button id="GuardarFC" type="button" class="btn btn-primary">Guardar Fecha</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -711,6 +759,7 @@ header {
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones" data-id="${curso.id}">Ver inscripciones<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-dark" data-id="${curso.id}" onclick="dibujarProductosUsados(${curso.id})">Ver Productos utilizados<i style="margin-left: 6px" class="fa-solid fa-box"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-primary" data-id="${curso.id}" onclick="mostrarDias(${curso.id})">Agregar proxima fecha de curso<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></button>
                 </div>
               </div>
             </div>
@@ -741,7 +790,9 @@ header {
 }
 
 
+
 function mostrarInscripciones(cursoId) {
+
     $.ajax({
         url: `/get/inscripciones/${cursoId}`,
         method: 'GET',
@@ -784,6 +835,87 @@ function mostrarInscripciones(cursoId) {
         }
     });
 }
+    //
+    //
+    var cursoActual;
+    function mostrarDias(id){
+        cursoActual = id
+            $('#agregarDiasModal').modal('show');
+            let divDias = $('#agregarDiasCurso');
+            divDias.empty();
+
+            $.ajax({
+                url: '/diaCurso/' + id,
+                method: 'GET',
+                success: function (response){
+
+                    let cursos = response.curso;
+                    let proximosDias = response.dias
+
+
+                    let inicial = `<label> fecha Inicial: ${cursos.fechaInicio}</label> <br>
+                               <label> hora de Inicio: ${cursos.horaInicio}</label>`;
+
+                    divDias.append(inicial);
+
+                    let des = `<h5> Dias proximos </h5>`;
+
+                    divDias.append(des);
+
+                    proximosDias.forEach(dia =>{
+                        let nuevoDia = `<li>
+                          <label> Fecha: ${dia.fechaContinuacion} </label>
+                          <label> Hora: ${dia.horaContinuacion} </label>
+                         </li>`
+
+                        divDias.append(nuevoDia);
+                    })
+
+
+
+                },
+                error: function (){
+                    alert('afjnafjnas');
+                }
+            });
+
+    }
+
+    $('#AgregarFC').on('click', function (){
+        $("#agregarNuevoDiaModal").modal('show');
+        $('#agregarDiasModal').modal('hide');
+    });
+
+    $('#GuardarFC').on('click',function (id){
+        let fecha = $('#nuevaFecha').val();
+        let hora = $('#nuevaHora').val();
+
+        console.log(fecha);
+        console.log(hora);
+
+        $.ajax({
+           url: '/nuevaFecha/' + cursoActual,
+           method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+           data:{
+               fecha: fecha,
+               hora: hora
+           },
+           success: function (response){
+               console.log(response);
+               mostrarDias(cursoActual);
+               $("#agregarNuevoDiaModal").modal('hide');
+               $('#agregarDiasModal').modal('show');
+           },
+           error: function (response){
+                console.log(response);
+           }
+        });
+    });
+
+
 
 
 
