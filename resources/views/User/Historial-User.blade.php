@@ -154,7 +154,6 @@
                 <tr>
                     <th>Tipo</th>
                     <th>Precio</th>
-                    <th>Realizado</th>
                     <th>Detalles</th>
                 </tr>
             </thead>
@@ -239,22 +238,22 @@
         `);
     } else {
         citas.forEach(cita => {
-            const infoCitas = `<tr>
-                <td>Cita</td>
-                <td>${cita.venta ? cita.venta.total : 'N/A'}</td>
-                <td>${cita.fechaCreacion}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoCitas);
-        });
+    cita.citas_has_servicios.forEach(servicio => {
+        const infoCitas = `<tr>
+            <td>Cita</td>
+            <td>${servicio.venta ? servicio.venta.total : 'N/A'}</td>
+            <td>
+                <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
+            </td>
+        </tr>`;
+        historiales.append(infoCitas);
+    });
+});
 
         inscripciones.forEach(inscripcion => {
             const infoInscripciones = `<tr>
                 <td>Inscripción</td>
                 <td>${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>${inscripcion.fechaInscripcion}</td>
                 <td>
                     <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
                 </td>
@@ -266,7 +265,6 @@
             const infoVentas = `<tr>
                 <td>Compra</td>
                 <td>${venta.total}</td>
-                <td>${venta.fechaCreacion}</td>
                 <td>
                     <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
                 </td>
@@ -284,7 +282,7 @@
 
 function mostrarCitaModal(citaId) {
             $.ajax({
-                url: /get/ServicioTecnica/${citaId},
+                url: `/get/ServicioTecnica/${citaId}`,
                 method: 'GET',
                 success: function(data) {
                     const bodyCitas = $('#modal-bodyCitas');
@@ -318,7 +316,7 @@ function mostrarCitaModal(citaId) {
 
         function mostrarInscripcionModal(inscripcionId) {
             $.ajax({
-                url: /get/inscripcion2/${inscripcionId},
+                url: `/get/inscripcion2/${inscripcionId}`,
                 method: 'GET',
                 success: function(data) {
                     const inscripcionModal = $('#modal-bodyInscripcion');
@@ -358,7 +356,7 @@ function mostrarCitaModal(citaId) {
 
         function mostrarProductoModal(ventaId) {
             $.ajax({
-                url: /get/ventaProductos/${ventaId},
+                url: `/get/ventaProductos/${ventaId}`,
                 method: 'GET',
                 success: function(data) {
                     const productoModalBody = $('#productoModalBody');

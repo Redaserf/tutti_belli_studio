@@ -15,7 +15,7 @@ class Cita extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     // public $timestamps = false;
 
-    protected $fillable = ['fechaCita', "fechaCreacion", 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId', 'ventaId'];
+    protected $fillable = ['fechaCita', 'horaCita', 'estadoCita', 'notasCita', 'usuarioId', 'empleadoId', 'ventaId'];
 
     public function usuario(){
         return $this->belongsTo(User::class, 'usuarioId');

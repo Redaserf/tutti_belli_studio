@@ -49,7 +49,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 300000000000000;
+        z-index: 5000000;
     }
 
 .fonts3{
@@ -419,7 +419,7 @@ gmp-map {
       margin-top:70px;
     }
 .citasModal{
-    z-index: 2000000000000;
+    z-index: 60000;
 }
 @media (max-width: 480px) {
     .imgnavbar{
@@ -473,7 +473,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
+    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
@@ -528,8 +528,9 @@ gmp-map {
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <label for="exampleDataList" class="form-label">Servicios y tecnicas</label>
-                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar...">
+                        <label for="exampleDataList" class="form-label mb-3" style="margin-right: 40%">Servicios y tecnicas</label>
+                        <input list="datalistOptions" id="exampleDataList" class="mb-3" placeholder="Buscar...">
+                        <i class="fa-solid fa-magnifying-glass" style="margin0-left: 7%"></i>
                         <datalist id="datalistOptions"></datalist>
                     </div>
                     <div class="accordion" id="acordionCitas">
@@ -786,6 +787,18 @@ $('#citasModal').on('hidden.bs.modal', function () {
             }
         });
 
+        
+        $("#fechaCita").on('input', function() {
+                var fechaTexto = $(this).val();
+                var partes = fechaTexto.split('-');
+                var anio = parseInt(partes[0], 10);
+                var mes = parseInt(partes[1], 10) - 1; 
+                var dia = parseInt(partes[2], 10);
+                
+                var fechaSeleccionada = new Date(anio, mes, dia);
+                actualizarOpcionesSelect(fechaSeleccionada);
+            });
+
 
         function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
                 return fecha1.getFullYear() === fecha2.getFullYear() &&
@@ -947,19 +960,15 @@ $('#citasModal').on('hidden.bs.modal', function () {
         if ($('.custom-checkbox-input:checked').length > 0) {
             $('#mostrarServiciosTecnicasSeleccionados').show();
             
-            // Iterar sobre los checkboxes seleccionados
             $('.custom-checkbox-input:checked').each(function() {
                 let tecnicaId = $(this).val();
                 let precio = parseFloat($(`#precio${tecnicaId}`).text().replace('Precio: $', ''));
                 
-                // Sumar el precio
                 totalPrecio += precio;
                 
-                // Contar el número de técnicas seleccionadas
-                cantidadTecnicasSeleccionadas++;
+                cantidadTecnicasSeleccionadas++;//contar tecnicas
             });
             
-            // Mostrar el precio total y la cantidad de técnicas seleccionadas
             $('#precioTotal').text(`Precio Total: $${totalPrecio.toFixed(2)}`);
             $('#cantidadTecnicas').text(`Técnicas Seleccionadas: ${cantidadTecnicasSeleccionadas}`);
         } else {
@@ -970,6 +979,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
        //Dibujar empleados
        $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
+                console.log('empleados y admins: ', usersRolEmpleado);
                 let selectUsuarios = $('#empleadoId');
                 selectUsuarios.empty();
 
@@ -983,7 +993,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
                 usersRolEmpleado.forEach(usuario => {
                     selectUsuarios.append(`
-                        <option class="text-center" value="${usuario.id}">Empleado: ${usuario.name + " " +usuario.apellido}</option>
+                        <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
                     `)
                     console.log(usersRolEmpleado);
                 })
@@ -1066,10 +1076,10 @@ $('#citasModal').on('hidden.bs.modal', function () {
                             else if(response.message === 'The fecha cita field must be a valid date.'){
                                 mostrarAlerta(`Error: Ingrese correctamente la fecha`, 'alert-danger', 'exclamation-triangle-fill');
                             }
-                            else{
-                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
-                            }
                         }
+
+                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+
 
                         if (alertMessage) {
                             mostrarAlerta(alertMessage, alertClass, alertIcon);

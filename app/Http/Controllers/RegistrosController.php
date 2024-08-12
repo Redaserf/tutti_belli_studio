@@ -220,13 +220,20 @@ class RegistrosController extends Controller
 
     public function RegistroCita(Request $request) {
         $request->validate([
-            'fechaCita' => 'required|date',
+            // 'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            // 'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
-
+        
+    
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
 
@@ -240,7 +247,17 @@ class RegistrosController extends Controller
             }
         }
 
-        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+    
+        $user = Auth::user();
+    
+        if ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        }
+    
+        $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
         ->first();
 
@@ -250,12 +267,6 @@ class RegistrosController extends Controller
 
         DB::beginTransaction();
         try {
-            $venta = Venta::create([
-                'fechaVenta' => $request->fechaCita,
-                'total' => 0,
-                'estadoVenta' => false,
-            ]);
-
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -265,6 +276,13 @@ class RegistrosController extends Controller
                 "estadoCita" => true
             ]);
 
+            $venta = Venta::create([
+                'fechaVenta' => $request->fechaCita,
+                'total' => 0,
+                'estadoVenta' => false,
+                'usuarioId' => $cita->usuarioId
+            ]);
+    
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
@@ -321,24 +339,40 @@ class RegistrosController extends Controller
 
 
     public function editarCita(Request $request, $id) {
-        $validatedData = $request->validate([
-            'fechaCita' => 'required|date',
+        $request->validate([
+            'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
-            'notasCita' => 'nullable|string',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
-
+        
+    
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
+    
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+    
+        $user = Auth::user();
+    
+        if ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        }
 
-        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
+        $citaExistente = Cita::where('id', '<>', $id)
+        ->where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
-        ->where('id', '<>', $id)
         ->first();
 
         if ($citaExistente) {
@@ -579,11 +613,17 @@ class RegistrosController extends Controller
     public function RegistroCitaUsuario(Request $request)
     {
         $request->validate([
-            'fechaCita' => 'required|date',
+            'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);//valida que entren esos datos en los formatos deseados
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);

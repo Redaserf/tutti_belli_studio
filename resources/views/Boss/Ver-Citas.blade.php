@@ -856,6 +856,8 @@ header {
         });
     
     $(document).ready(function(){
+        
+
 
         var valorActual = $('#usuarioId').val();
 
@@ -919,6 +921,17 @@ header {
 
                
                 }
+            });
+
+            $("#fechaCita").on('input', function() {
+                var fechaTexto = $(this).val();
+                    var partes = fechaTexto.split('-');
+                    var anio = parseInt(partes[0], 10);
+                    var mes = parseInt(partes[1], 10) - 1; 
+                    var dia = parseInt(partes[2], 10);
+                    
+                    var fechaSeleccionada = new Date(anio, mes, dia);
+                        actualizarOpcionesSelect(fechaSeleccionada);
             });
 
             function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
@@ -1458,10 +1471,11 @@ header {
                             else if(response.message === 'The fecha cita field must be a valid date.'){
                                 mostrarAlerta(`Error: Ingrese correctamente la fecha`, 'alert-danger', 'exclamation-triangle-fill');
                             }
-                            else{
-                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
-                            }
                         }
+
+
+                            mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+                            
 
                         if (alertMessage) {
                             mostrarAlerta(alertMessage, alertClass, alertIcon);

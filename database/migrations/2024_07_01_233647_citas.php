@@ -17,7 +17,6 @@ return new class extends Migration
 
             $table->id();
             $table->date('fechaCita');
-            $table->date('fechaCreacion')->nullable();
             $table->time('horaCita');
             $table->boolean('estadoCita');
             $table->string('notasCita', 150)->nullable();
@@ -27,8 +26,6 @@ return new class extends Migration
 
             $table->foreign('usuarioId')->references('id')->on('users');
             $table->foreign('empleadoId')->references('id')->on('users');
-
-
         });
         // $table->timestamps();
 

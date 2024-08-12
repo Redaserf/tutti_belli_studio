@@ -16,8 +16,8 @@ class CitaHasServicio extends Model
     public $timestamps = false;
 
     protected $fillable = [
-    'citaId', 'servicioId', 'tecnicaId', 'estadoServicio',
-    'ventaId', 'precioTecnica', 'estadoTecnica'];
+    'citaId', 'servicioId', 'tecnicaId',
+    'ventaId', 'precioTecnica'];
 
 
     public function tecnica()
