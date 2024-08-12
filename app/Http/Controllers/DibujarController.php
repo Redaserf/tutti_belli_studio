@@ -29,7 +29,7 @@ class DibujarController extends Controller
     function productosIndex(){
     $productos = Producto::all();
     return response()->json($productos);
-    }   
+    }
     // ==========[ Eliminar un producto ]==========
     function productoDelete($id){
     Producto::findOrFail($id)->delete();
@@ -45,10 +45,15 @@ class DibujarController extends Controller
             return response()->json(['error' => 'Producto no encontrado'], 404);
         }
     }
-    
+
     // ==========[ Actualizar un producto ]==========
     public function actualizarProducto(Request $request, $id){
+
         $producto = Producto::find($id);
+
+        if($producto->descuentoId){
+            return 'Para cambiar los datos de un producto es necesario que este no cuente con un descuento';
+        }
 
         if ($producto) {
         $producto->nombre = $request->input('nombre');
@@ -205,12 +210,12 @@ class DibujarController extends Controller
 
         // Ajusta la lógica para verificar si el usuario ya está inscrito en cada curso.
         $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->pluck('cursoId')->toArray();
-    
+
         $cursos = $cursos->map(function($curso) use ($inscripciones) {
             $curso->inscrito = in_array($curso->id, $inscripciones);
             return $curso;
         });
-    
+
         return response()->json($cursos);
     }
 
@@ -242,14 +247,14 @@ class DibujarController extends Controller
     public function obtenerCurso($id){
         $curso = Curso::with('empleado')->find($id);
         $empleados = User::where('rolId', 3)->get();
-    
+
         if ($curso) {
             return response()->json(['curso' => $curso, 'empleados' => $empleados]);
         } else {
             return response()->json(['error' => 'Curso no encontrado'], 404);
         }
     }
-    
+
     // ==========[ Eliminar un curso ]==========
     public function cursosDelete($id) {
         DB::beginTransaction();
@@ -258,9 +263,9 @@ class DibujarController extends Controller
             $curso->inscripciones()->delete();
             $curso->empleado()->dissociate();
             $curso->tecnicas()->detach();
-    
+
             $curso->delete();
-    
+
             DB::commit();
             return response()->json(['success' => 'Curso eliminado con éxito.']);
         } catch (\Exception $e) {
@@ -270,11 +275,11 @@ class DibujarController extends Controller
     }
 
     // =============================================================================================
-    
+
         // ==========[ Obtener las cosas que haya hecho el usuario ]==========
         public function historial(){
             $user = Auth::user();
-            
+
             $citas = $user->citasUsuarios()->with('venta')->get();
             $inscripciones = $user->inscripciones()->with('cursos')->get();
             $ventas = $user->ventas;

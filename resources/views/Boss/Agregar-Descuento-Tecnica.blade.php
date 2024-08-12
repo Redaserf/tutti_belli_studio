@@ -247,7 +247,7 @@
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -523,7 +523,7 @@ sidebarBtn.addEventListener("click", () => {
     }
 });
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -658,14 +658,16 @@ sidebarBtn.addEventListener("click", () => {
             data: {
                 _token: $('input[name="_token"]').val(),
                 cantidadDescuento: discountPercentage,
+                tecnicas: selectedTecnicas
             },
             success: function (response) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
-                console.log(descuentoId);  // Para verificar el valor
+                alert('Descuento agregado exitosamente');
+                window.location.href = '/Ver-Descuentos';
+                // console.log(descuentoId);  // Para verificar el valor
 
-                aplicarDescuento(descuentoId, selectedTecnicas);
+                // aplicarDescuento(descuentoId, selectedTecnicas);
             },
             error: function (error) {
                 // Ocultar la pantalla de carga
@@ -708,7 +710,7 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();

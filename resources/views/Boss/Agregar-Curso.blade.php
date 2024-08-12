@@ -666,7 +666,7 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
@@ -817,9 +817,9 @@ function checkWidth() {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function() {
+                success: function(response) {
 
-                    alert("Curso agregado exitosamente");
+                    alert(response);
                     // let cursoId = response.cursoId;
                     console.log(selectedTecnicas)
                     window.location.href = '/Ver-Cursos';
