@@ -462,7 +462,7 @@
 <section>
     <div data-aos="fade-up" data-aos-duration="1000" class="hero-image" style="position: relative; width: 100%; height: auto;">
         <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
-        <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.2);">
+        <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.1);">
             <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
         </div>
     </div>
