@@ -42,8 +42,14 @@ use App\Models\Inscripcion;
     //usuarios con el rol de "usuario"
     Route::get('/usuarios/rol/usuario', [ConsultasController::class, 'usuariosConRolUsuario']);
 
+     //usuarios con el rol de "usuario"
+     Route::get('/usuario/guest', [ConsultasController::class, 'usuarioGuest']);
+
     //usuarios con el rol empleado
     Route::get('/usuarios/rol/empleado', [ConsultasController::class, 'usuariosConRolEmpleado']);
+
+    //unicamente el empleado
+    Route::get('/usuario/empleado', [ConsultasController::class, 'usuarioEmpleado']);
 
     //citas acceptadas
 
@@ -68,6 +74,9 @@ use App\Models\Inscripcion;
     //citas no acpetadas hechas por usuarios con datos del usuario y empleado
     Route::get('/cita/usuario/empleado', [ConsultasController::class, 'citasUsuariosEmpleados']);
 
+    //citas no aceptadas para cada empleado
+    Route::get('/cita/por/empleado', [ConsultasController::class, 'citasUsuariosEmpleadosPorEmpleado']);
+
    //obtener eventos para el calendario
    Route::get('/cita/obtener/eventos', [ConsultasController::class, 'mostrarServiciosTecnicasCitas'])->name('cita.obtener.eventos');
 
@@ -83,6 +92,12 @@ use App\Models\Inscripcion;
     Route::get('/venta/citas', [ConsultasController::class, 'ventasCitas']);
 
 
+       //ventas ACEPTADAS de citas con servicios, tecnicas y productos de tecnica
+       Route::get('/venta/citas/aceptadas', [ConsultasController::class, 'ventasCitasAceptadas']);
+
+
+    //ventas de cada empleado
+    Route::get('/venta/citas/aceptadas/empleado', [ConsultasController::class, 'ventasCitasEmpleadoAdmin']);
 
 
 
@@ -128,10 +143,17 @@ use App\Models\Inscripcion;
 
     Route::get('/Home-empleado', [ViewsController::class, 'employeeHome']);
     Route::get('/Agregar-Cita-Empleado', [ViewsController::class, 'employeeAgregarCita']);
-    Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
+
+    Route::get('/Ver-Citas-Empleado', [ConsultasController::class, 'mostrarServiciosTecnicasCitasEmpleado']);
+
+
+    // Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
     Route::get('/Ver-Productos-Empleado', [ViewsController::class, 'employeeVerProductos']);
 
 
+    //registrar cita empleado
+    // Route::post('/registrar/cita/empleado', [RegistrosController::class, 'RegistroCitaEmpleado']);
+    // Route::put('/editar/cita/empleado/{id}', [RegistrosController::class, 'editarCitaEmpleado']);
 
     // =====[ Boss ]=====
 

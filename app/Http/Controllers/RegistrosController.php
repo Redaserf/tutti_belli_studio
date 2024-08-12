@@ -149,12 +149,19 @@ class RegistrosController extends Controller
 
     public function RegistroCita(Request $request) {
         $request->validate([
-            'fechaCita' => 'required|date',
+            // 'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            // 'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
+        
     
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
@@ -168,8 +175,18 @@ class RegistrosController extends Controller
                 return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
             }
         }
+
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
     
-        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
+        $user = Auth::user();
+    
+        if ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        }
+    
+        $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
         ->first();
     
@@ -179,12 +196,6 @@ class RegistrosController extends Controller
     
         DB::beginTransaction();
         try {
-            $venta = Venta::create([
-                'fechaVenta' => $request->fechaCita,
-                'total' => 0,
-                'estadoVenta' => false,
-            ]);
-    
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -192,6 +203,13 @@ class RegistrosController extends Controller
                 "empleadoId" => $request->empleadoId,
                 "notasCita" => $request->notasCita,
                 "estadoCita" => true
+            ]);
+
+            $venta = Venta::create([
+                'fechaVenta' => $request->fechaCita,
+                'total' => 0,
+                'estadoVenta' => false,
+                'usuarioId' => $cita->usuarioId
             ]);
     
             foreach ($serviciosSeleccionados as $servicio) {
@@ -248,16 +266,137 @@ class RegistrosController extends Controller
         }
     }
 
+
+    // public function RegistroCitaEmpleado(Request $request) {
+    //     $request->validate([
+    //         'fechaCita' => 'required|date',
+    //         'horaCita' => 'required|date_format:H:i:s',
+    //         'usuarioId' => 'required|exists:users,id',
+    //         'empleadoId' => 'required|exists:users,id',
+    //         'serviciosSeleccionados' => 'required|json'
+    //     ]);
+    
+    //     $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
+
+    
+    //     if (empty($serviciosSeleccionados)) {
+    //         return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
+    //     }
+    
+    //     foreach ($serviciosSeleccionados as $servicio) {
+    //         if (!isset($servicio['servicioId']) || !isset($servicio['tecnicaId'])) {
+    //             return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
+    //         }
+    //     }
+
+    //     if (!Auth::check()) {
+    //         return redirect('/Home-guest');
+    //     }
+    
+    //     $user = Auth::user();
+    
+    //     if ($user->rolId == 2) {
+    //         return redirect('/Home-usuario');
+    //     } elseif ($user->rolId == 4) {
+    //         return redirect('/Ver-Citas');
+    //     }
+    
+    //     $citaExistente = Cita::where('empleadoId', $user->id)->where('fechaCita', $request->fechaCita)
+    //     ->where('horaCita', $request->horaCita)
+    //     ->first();
+    
+    //     if ($citaExistente) {
+    //         return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+    //     }
+    
+    //     DB::beginTransaction();
+    //     try {
+    //         $venta = Venta::create([
+    //             'fechaVenta' => $request->fechaCita,
+    //             'total' => 0,
+    //             'estadoVenta' => false,
+    //         ]);
+    
+    //         $cita = Cita::create([
+    //             "fechaCita" => $request->fechaCita,
+    //             "horaCita" => $request->horaCita,
+    //             "usuarioId" => $request->usuarioId,
+    //             "empleadoId" => $request->empleadoId,
+    //             "notasCita" => $request->notasCita,
+    //             "estadoCita" => true
+    //         ]);
+    
+    //         foreach ($serviciosSeleccionados as $servicio) {
+    //             $citaHasServicios = CitaHasServicio::create([
+    //                 'citaId' => $cita->id,
+    //                 'servicioId' => $servicio['servicioId'],
+    //                 'tecnicaId' => $servicio['tecnicaId'],
+    //                 'ventaId' => $venta->id,
+    //                 'precioTecnica' => 0,
+    //             ]);
+    
+    //             $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+
+    //             $citaHasServicios->update([
+    //                 'precioTecnica' => $tecnica->precio
+    //             ]);
+    
+    //             foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
+
+    //                 $producto = $productoHasTecnica->producto;
+
+
+    //                 if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){       
+    //                     $detalleProductos = DetalleTecnicaProducto::create([
+    //                         'citaId' => $cita->id,
+    //                         'tecnicaId' => $servicio['tecnicaId'],
+    //                         'productoId' => $productoHasTecnica->productoId,
+    //                         'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+    //                     ]);
+    //                     $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+    //                     //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
+    //                      $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+    //                      //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
+    //                      // se suma y no lo igualo pq alteraria el registro
+    //                      $producto->save();//se guardan cambios
+                         
+    //                 }else{
+    //                     throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+    //                 }
+    //             }
+    //         }
+    
+    //         $totalVenta = CitaHasServicio::where('citaId', $cita->id)
+    //             ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
+    //             ->sum('tecnicas.precio');
+    
+    //         $venta->update(['total' => $totalVenta]);
+    
+    //         DB::commit();
+    //         return response()->json(['message' => 'Cita creada con éxito'], 200);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
+    //     }
+    // }
+
+    
     
     public function editarCita(Request $request, $id) {
-        $validatedData = $request->validate([
-            'fechaCita' => 'required|date',
+        $request->validate([
+            'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
-            'notasCita' => 'nullable|string',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
+        
     
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
     
@@ -265,9 +404,19 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
     
-        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+    
+        $user = Auth::user();
+    
+        if ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        }
+
+        $citaExistente = Cita::where('id', '<>', $id)
+        ->where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
-        ->where('id', '<>', $id)
         ->first();
     
         if ($citaExistente) {
@@ -365,7 +514,131 @@ class RegistrosController extends Controller
         }
     }
     
+    // public function editarCitaEmpleado(Request $request, $id) {
+    //     $validatedData = $request->validate([
+    //         'fechaCita' => 'required|date',
+    //         'horaCita' => 'required|date_format:H:i:s',
+    //         'usuarioId' => 'required|exists:users,id',
+    //         'empleadoId' => 'required|exists:users,id',
+    //         'notasCita' => 'nullable|string',
+    //         'serviciosSeleccionados' => 'required|json'
+    //     ]);
     
+    //     $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
+    
+    //     if (empty($serviciosSeleccionados)) {
+    //         return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
+    //     }
+    //     if (!Auth::check()) {
+    //         return redirect('/Home-guest');
+    //     }
+    
+    //     $user = Auth::user();
+    
+    //     if ($user->rolId == 2) {
+    //         return redirect('/Home-usuario');
+    //     } elseif ($user->rolId == 4) {
+    //         return redirect('/Ver-Citas');
+    //     }
+    
+    //     $citaExistente = Cita::where('empleadoId', $user->id)->where('fechaCita', $request->fechaCita)
+    //     ->where('horaCita', $request->horaCita)
+    //     ->first();
+    
+    //     if ($citaExistente) {
+    //         return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+    //     }
+    
+    //     DB::beginTransaction();
+    //     try {
+    //         $cita = Cita::findOrFail($id);
+    
+    //         $cita->update([
+    //             "fechaCita" => $request->fechaCita,
+    //             "horaCita" => $request->horaCita,
+    //             "usuarioId" => $request->usuarioId,
+    //             "empleadoId" => $request->empleadoId,
+    //             "notasCita" => $request->notasCita,
+    //             "estadoCita" => true
+    //         ]);
+    
+    //         $ventaId = CitaHasServicio::where('citaId', $id)->value('ventaId');
+    
+    //         $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
+    //         ->with('producto')  
+    //         ->get();
+
+    //         foreach($productosDevolverStock as $productoDetalle){//devuelve el stock de los productos de las tecnicas anteriores
+    //             $producto = $productoDetalle->producto;
+    //             if($producto) {
+    //                 $producto->cantidadEnStock += $productoDetalle->cantidadProducto;
+    //                 $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
+    //                 $producto->save();
+    //             }
+    //         }
+
+
+    //         CitaHasServicio::where('citaId', $id)->delete();//eliminar relaciones
+    //         DetalleTecnicaProducto::where('citaId', $id)->delete();
+            
+    //         foreach ($serviciosSeleccionados as $servicio) {
+    //             $citaHasServicios = CitaHasServicio::create([
+    //                 'citaId' => $cita->id,
+    //                 'servicioId' => $servicio['servicioId'],
+    //                 'tecnicaId' => $servicio['tecnicaId'],
+    //                 'ventaId' => $ventaId,
+    //                 'precioTecnica' => 0,
+    //             ]);
+    
+    //             $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
+
+    //             $citaHasServicios->update([
+    //                 'precioTecnica' => $tecnica->precio
+    //             ]);
+    
+    //             foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
+
+    //                 $producto = $productoHasTecnica->producto;
+
+
+    //                 if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){       
+    //                     $detalleProductos = DetalleTecnicaProducto::create([
+    //                         'citaId' => $cita->id,
+    //                         'tecnicaId' => $servicio['tecnicaId'],
+    //                         'productoId' => $productoHasTecnica->productoId,
+    //                         'cantidadProducto' => $productoHasTecnica->cantidadDeUso
+    //                     ]);
+    //                     $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+    //                     //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
+    //                      $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+    //                      //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
+    //                      // se suma y no lo igualo pq alteraria el registro
+    //                      $producto->save();//se guardan cambios
+                         
+    //                 }else{
+    //                     throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+    //                 }
+    //             }
+    //         }
+    
+    //         $totalVenta = CitaHasServicio::where('citaId', $cita->id)
+    //             ->sum('precioTecnica');
+    
+    //         Venta::where('id', $ventaId)->update([
+    //             'fechaVenta' => $request->fechaCita,
+    //             'total' => $totalVenta,
+    //             'estadoVenta' => false
+    //         ]);
+    
+    //         Mail::to($cita->usuario->email)->send(new CorreoConfirmacion($cita));
+    
+    //         DB::commit();
+    //         return response()->json(['message' => 'Cita actualizada con éxito'], 200);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(['message' => 'Error al actualizar la cita', 'error' => $e->getMessage()], 500);
+    //     }
+    // }
     
     
     
@@ -459,11 +732,17 @@ class RegistrosController extends Controller
     public function RegistroCitaUsuario(Request $request)
     {
         $request->validate([
-            'fechaCita' => 'required|date',
+            'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
+        ], [
+            'required' => 'Este campo es obligatorio.',
+            'date' => 'La fecha no es válida.',
+            'date_format' => 'El formato de la hora es inválido.',
+            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
+            'json' => 'Los datos deben estar en formato JSON válido.',
         ]);//valida que entren esos datos en los formatos deseados
     
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
