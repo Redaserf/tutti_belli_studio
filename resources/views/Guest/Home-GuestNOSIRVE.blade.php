@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutti Belli Studio</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet">
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8VQ4y5rYuOOG3LOJGlgU8KnJ9UXr83Eo&callback=console.debug&libraries=maps,marker&v=beta">
@@ -16,13 +16,7 @@
       @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
-      @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
-
-      #navbar{
-  font-family: "Josefin Sans", sans-serif !important;  
-}
-
-    body, html {
+      body, html {
     margin: 0;
     padding: 0;
     background-image: url('/resources/img/home/low-poly-grid-haikei.svg');
@@ -41,11 +35,6 @@ gmp-map {
         height: 500px; /* Puedes ajustar la altura según tus necesidades */
         border-radius: 10px;
       }
-
-h1, h2, h3, h4, h5 ,a, li, p{
-  font-family: "Josefin Sans", sans-serif !important;
-}
-
 .hiddenX, .home{
     overflow-x: hidden;
 }
@@ -82,8 +71,8 @@ h1, h2, h3, h4, h5 ,a, li, p{
   }
 
   .reserve-button:hover {
-    color: #fa3284; /* Cambia el color del texto a negro mate */
-    background-color: #e0e0e0; /* Cambia el fondo a gris claro */
+    color: #212121; /* Cambia el color del texto a negro mate */
+    background-color: #fa3284; /* Cambia el fondo a gris claro */
   }
   .btn-light:hover{
       background-color:#fa3284;
@@ -220,6 +209,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
     width: 450px;
     height: 600px;
     margin-top: 0 auto;
+    
   }
 
   
@@ -255,9 +245,6 @@ section{
 .Color_del_footer_xd{
     background-color: #1E1B1B;
 }
-.btn-light:hover{
-      background-color:#fa3284;
-    }
 
 /* SERVICIOS PARTE DE AARON */
 .container {
@@ -267,6 +254,10 @@ section{
     gap:30px;
     padding: 20px;
 }
+.btn-personalizado:hover{
+      background-color:#fa3284;
+      border:0;
+    }
 .card {
     background: white;
     border-radius: 8px;
@@ -454,23 +445,13 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     .fonts2{
       font-family: "Merriweather", serif;
     }
-
-    .vertical-separator {
-            display: inline-block;
-            width: 1.5px;
-            height: 30px;
-            background-color: #000;
-            margin: 3px 15px;
-            vertical-align: middle;
-    }
+    
     @media (max-width: 480px) {
     .imgnavbar{
         width:200px;
         height: 30px;
     
-    }
-}
-
+    }}
     </style>
 </head>
 <body class="hiddenX">
@@ -487,44 +468,39 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
   </section>
 
-<!-- NAVBAR / ENCABEZADO -->
-<nav style="background: #f8d7da !important;" id="navbar" class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-  <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
-    <a class="navbar-brand" href="/Home-usuario">
-      <img src="/resources/img/dashboard-navbar/Letras Tutti.png" alt="Tutti Belli Studio" class="imgnavbar" width="250" height="50">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <!-- NAVBAR / ENCABEZADO -->
+  <nav style="background: #f8d7da !important;" id="navbar" class="fonts3 navbar navbar-expand-lg fixed-top bg-body-tertiary" style="visibility: hidden;">
+    <div data-aos="fade-up" data-aos-duration="1000" class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="/resources/img/dashboard-navbar/Letras Tutti.png"class="imgnavbar" alt="Tutti Belli Studio" width="250" height="50">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div data-aos="fade-up" data-aos-duration="1000" class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#servicios" style="color: #000000;">Servicios</a>
-        </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Productos-User" style="color: #000000;">Productos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Cursos-User" style="color: #000000;">Cursos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active texto1" aria-current="page" href="/Home-usuario#contacto" style="color: #000000;">Contacto</i></a>
-            </li>
-            <span id="separador" class="vertical-separator"></span>
-            <li class="nav-item" style="margin-left: 0;">
-              <a class="nav-link active texto1" aria-current="page" href="/Perfil-User" style="color: #000000;">Cuenta <i class="fa-solid fa-user" style="margin-left: 10px;"></i></a>
-            </li>
-            <li class="nav-item" style="">
-              <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
-            </li>
-        </ul>
-        <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
-          <a href="/Reservacion-User" style="margin-right:20px;">
-            <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
-          </a>
-      </div>
-  </div>
-</nav>
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active texto1" aria-current="page" href="#servicios" style="color: #000000;">Servicios</a>
+          </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/Productos-Guest" style="color: #000000;">Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="#cursos" style="color: #000000;">Cursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="#contacto" style="color: #000000;">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active texto1" aria-current="page" href="/Login" style="color: #000000;">Iniciar sesión</a>
+              </li>
+            </ul>
+            <a href="/Login">
+              <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
+            </a>
+          </div>
+        </div>
+      </nav>
 
       <br><br><br>
 
@@ -536,10 +512,10 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <section id="--INFORMACION--">
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="row">
-            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-6 mb-4">
+            <div  data-aos="fade-up" data-aos-duration="1000"class="col-md-6 mb-4">
               <img src="/resources/img/home/horariotutti.jpg" alt="Horarios" class="img-fluid img-horario">
             </div>
-            <div data-aos="fade-up" data-aos-duration="1000" class="col-md-6">
+            <div class="col-md-6">
               <h2 class="fonts3">Conoce tu centro de micropigmentación</h2>
               <p class="fonts3">Micropigmentación Arte, surge de la necesidad en la región de un centro que fusione todo lo que una persona busca para el cuidado de su imagen, en un ambiente cómodo y profesional, todo en un solo lugar desde el 2020.</p>
               <br>
@@ -595,11 +571,11 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="overlay">
           <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Imagen separadora">
           <div class="dark-overlay"></div>
-          <div class="overlay-text">
+          <div  class="overlay-text">
             <h2 class="fonts3">Nos caracterizamos por ofrecer un servicio altamente profesional y confiable</h2>
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
-            <a href="/Reservacion-User">
+            <a href="/Login">
               <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
             </a>
           </div>
@@ -640,25 +616,26 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="text-center row justify-content-center">
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR3.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/img5g.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR0.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/img6g.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR2.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/img8g.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR1.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/img7g.jpg" class="rounded img-galeria" alt="...">
             </div>
           </div>
         </div>
       </section>
       <section class="text-center">
             <a href="/Cursos-User">
-              <button onclick="" class="btn btn-dark">Mas Informacion -></button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Mas Informacion -></button>
             </a>
       </section>
+      
 
       <!-- Galeria-->
       <section id="galeria" class="fonts3">
@@ -687,9 +664,9 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
       <section class="fonts3" class="Pink_background_for_services_section" style="padding: 0px;">
       <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
         <div data-aos="fade-up" data-aos-duration="1000" class="row">
-              <gmp-map center="25.55710792541504,-103.3420181274414" zoom="14" map-id="DEMO_MAP_ID">
-              <gmp-advanced-marker position="25.55710792541504,-103.3420181274414" title="My location"></gmp-advanced-marker>
-              </gmp-map>
+          <gmp-map center="25.55710792541504,-103.3420181274414" zoom="14" map-id="DEMO_MAP_ID">
+          <gmp-advanced-marker position="25.55710792541504,-103.3420181274414" title="My location"></gmp-advanced-marker>
+          </gmp-map>
         </div>
         <div data-aos="fade-up" data-aos-duration="1000" class="section-divider"></div>
         <div data-aos="fade-up" data-aos-duration="1000" class="row">
@@ -702,7 +679,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
             <!-- BOTÓN RESERVAR -->
-            <a href="/Reservacion-User">
+            <a href="/Login">
               <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
             </a>
 
@@ -735,22 +712,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
           $(document).ready(function(){
 
 
-            function separadorHidden(){
-            var cuentaLi = document.getElementById("cuenta");
-            var carrito = document.getElementById("carrito");
-            var separador = document.getElementById("separador");
-            if (window.innerWidth <= 992) {
-            $('.vertical-separator').css('visibility', 'hidden');
-            $('#carrito').css('marginBottom', '20px');
-            } else {
-            $('.vertical-separator').css('visibility', 'visible');
-            $('#carrito').css('marginBottom', '0');
-            }
-            }
-            window.addEventListener('resize', separadorHidden);
-            separadorHidden();
-
-
             // scripts aquí
 
 
@@ -764,19 +725,19 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
               $('#navbar').css('visibility', 'visible');
               loader.style.display = "none";
           })
-          //PARA LAS CARTAS POR QUE CON A JODE EL DISEÑO
-          $('#card1').click(function() {
-        window.location.href = "/Reservacion-User";
-    });
-    $('#card2').click(function() {
-        window.location.href = "/Reservacion-User";
+          $('#card4').click(function() {
+        window.location.href = "/Login";
     });
     $('#card3').click(function() {
-        window.location.href = "/Reservacion-User";
+        window.location.href = "/Login";
     });
-    $('#card4').click(function() {
-        window.location.href = "/Reservacion-User";
+    $('#card2').click(function() {
+        window.location.href = "/Login";
     });
+    $('#card1').click(function() {
+        window.location.href = "/Login";
+    });
+          
       </script>
 </body>
 </html>
