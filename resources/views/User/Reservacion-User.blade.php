@@ -419,7 +419,7 @@ gmp-map {
       margin-top:70px;
     }
 .citasModal{
-    z-index: 2000000000000;
+    z-index: 60000;
 }
 @media (max-width: 480px) {
     .imgnavbar{
@@ -473,7 +473,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" style="z-index: 100">
+    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
