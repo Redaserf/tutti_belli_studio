@@ -148,12 +148,20 @@ class RegistrosController extends Controller
             $curso->empleadoId = $empleadoId;
             $curso->save();
 
+            if(empty($tecnicas)){
+                return 'no hay tenicas asociadas al curso';
+            }
+
             // Guardar las técnicas seleccionadas para el curso
             foreach ($tecnicas as $tecnicaId) {
                 TecnicaHasCurso::create([
                     'cursoId' => $curso->id,
                     'tecnicaId' => $tecnicaId,
                 ]);
+            }
+
+            if(empty($productos)){
+                return 'no hay productos asociados al curso';
             }
 
             //Guardar productos en el curso
