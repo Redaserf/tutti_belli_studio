@@ -287,6 +287,26 @@ header {
     align-items: center;
     margin-top: 20px;
     }
+    #mensajeNoTecnicas{
+        font-size: 24px;
+        color: #000; /* Texto negro */
+        background-color: #fff; /* Fondo blanco */
+        border: none; /* Sin bordes */
+        border-radius: 0; /* Sin bordes redondeados */
+        padding: 20px;
+        margin-top: 20px;
+
+    }
+    #mensajeNoProductos{
+        font-size: 24px;
+        color: #000; /* Texto negro */
+        background-color: #fff; /* Fondo blanco */
+        border: none; /* Sin bordes */
+        border-radius: 0; /* Sin bordes redondeados */
+        padding: 20px;
+        margin-top: 20px;
+
+    }
 
     .top a{
     margin-left: 0px;
@@ -442,6 +462,9 @@ header {
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="productos-descuento" role="tabpanel" aria-labelledby="productos-descuento-tab">
                         <div class="table-container mt-5">
+                        <div id="mensajeNoProductos" class="alert alert-warning text-center" style="display: none;">
+                            No hay productos con descuento para mostrar.
+                        </div>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -465,6 +488,9 @@ header {
                     </div>
                     <div class="tab-pane fade" id="tecnicas-descuento" role="tabpanel" aria-labelledby="tecnicas-descuento-tab">
                         <div class="table-container mt-5">
+                        <div id="mensajeNoTecnicas" class="alert alert-warning text-center" style="display: none;">
+                            No hay técnicas con descuento para mostrar.
+                        </div>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -576,42 +602,67 @@ sidebarBtn.addEventListener("click", () => {
     // Fin document.ready
 });
 
-function tablaDescuentosProducto(){
+function tablaDescuentosProducto() {
     $.ajax({
         url: 'get/productos/cd',
         method: 'GET',
         success: function(data) {
             const tableBody = $('#Productos');
+            const mensajeNoProductos = $('#mensajeNoProductos');
+            
             tableBody.empty();
-            data.forEach(producto => {
-                const row = `<tr>
-                              <td>${producto.id}</td>
-                              <td>${producto.nombre}</td>
-                              <td> <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="producto-imagen"> </td>
-                              <td>${producto.precio}</td>
-                              <td>${producto.cantidadEnStock}</td>
-                              <td>${producto.descripcion}</td>
-                              <td>${producto.inventario.nombre}</td>
-                              <td>${producto.descuento.cantidadDescuento} %</td>
-                              <td>
-                                  <button class="btn btn-danger" onclick="eliminarDescuentoProducto(${producto.id})"><i class="fa-solid fa-percent icon"></i></a>
-                              </td>
-                          </tr>`;
-                tableBody.append(row);
-            });
+            
+            if (data.length === 0) {
+                // Ocultar la tabla y mostrar el mensaje
+                tableBody.closest('table').hide();
+                mensajeNoProductos.show();
+            } else {
+                // Mostrar la tabla y ocultar el mensaje
+                tableBody.closest('table').show();
+                mensajeNoProductos.hide();
+                
+                data.forEach(producto => {
+                    const row = `<tr>
+                                  <td>${producto.id}</td>
+                                  <td>${producto.nombre}</td>
+                                  <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="producto-imagen"></td>
+                                  <td>${producto.precio}</td>
+                                  <td>${producto.cantidadEnStock}</td>
+                                  <td>${producto.descripcion}</td>
+                                  <td>${producto.inventario.nombre}</td>
+                                  <td>${producto.descuento.cantidadDescuento} %</td>
+                                  <td>
+                                      <button class="btn btn-danger" onclick="eliminarDescuentoProducto(${producto.id})"><i class="fa-solid fa-percent icon"></i></button>
+                                  </td>
+                              </tr>`;
+                    tableBody.append(row);
+                });
+            }
         }
     });
 }
 
-function tablaDescuentosTecnicas(){
+function tablaDescuentosTecnicas() {
     $.ajax({
         url: 'conDescuentoTecnica',
         method: 'GET',
         success: function(data) {
             const tableBody = $('#Tecnicas');
+            const mensajeNoTecnicas = $('#mensajeNoTecnicas');
+            
             tableBody.empty();
-            data.forEach(tecnica => {
-                const row = `<tr>
+            
+            if (data.length === 0) {
+                // Ocultar la tabla y mostrar el mensaje
+                tableBody.closest('table').hide();
+                mensajeNoTecnicas.show();
+            } else {
+                // Mostrar la tabla y ocultar el mensaje
+                tableBody.closest('table').show();
+                mensajeNoTecnicas.hide();
+                
+                data.forEach(tecnica => {
+                    const row = `<tr>
                                   <td>${tecnica.id}</td>
                                   <td>${tecnica.nombre}</td>
                                   <td>${tecnica.precio}</td>
@@ -619,11 +670,12 @@ function tablaDescuentosTecnicas(){
                                   <td>${tecnica.servicios.nombre}</td>
                                   <td>${tecnica.descuento.cantidadDescuento} %</td>
                                   <td>
-                                      <button class="btn btn-danger" onclick="eliminarDescuentoTecnica(${tecnica.id})"><i class="fa-solid fa-percent icon"></i></a>
+                                      <button class="btn btn-danger" onclick="eliminarDescuentoTecnica(${tecnica.id})"><i class="fa-solid fa-percent icon"></i></button>
                                   </td>
                               </tr>`;
-                tableBody.append(row);
-            });
+                    tableBody.append(row);
+                });
+            }
         }
     });
 }

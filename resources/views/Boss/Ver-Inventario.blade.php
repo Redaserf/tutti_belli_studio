@@ -9,9 +9,9 @@
 <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -251,7 +251,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -319,8 +319,9 @@ header {
                 margin-top: 20px;
                 }
                 .table-responsive{
-                    
+
                 }
+
 </style>
 
 </head>
@@ -333,7 +334,7 @@ header {
 
 
         {{-- Sidebar --}}
-    
+
         <nav class="dashboard-container sidebar close">
             <header>
                 <div class="image-text">
@@ -349,7 +350,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div id="scrollDash" class="menu-bar">
                 <div class="menu">
                     <ul class="menu-links">
@@ -419,10 +420,10 @@ header {
                     </div>
                 </div>
             </nav>
-                
+
             {{-- Fin Sidebar --}}
 
-        
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Inventario</h2>
@@ -449,10 +450,10 @@ header {
                                 <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -481,10 +482,10 @@ header {
                             <h2 class="text-center">Productos en Ventas</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -512,10 +513,10 @@ header {
                             <h2 class="text-center">Productos en Curso</h2>
                             <div class="flex-container">
                                 <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" id="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
+                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-up-wide-short"></i>
                                 </a>
-                                <a href="#" id="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
+                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
                                     <i class="fa-solid fa-arrow-down-short-wide"></i>
                                 </a>
                             </div>
@@ -566,6 +567,10 @@ header {
                                 <input type="number" class="form-control" id="productQuantity" name="cantidad" min="0">
                             </div>
                             <div class="mb-3">
+                                <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+
+                            </div>
+                            <div class="mb-3">
                                 <label for="productPrice" class="form-label">Precio Unitario</label>
                                 <input type="number" class="form-control" id="productPrice" name="precio" min="0">
                             </div>
@@ -587,11 +592,11 @@ header {
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
-    
+
     // Scripts para todas las vistas
-    
+
         // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -599,9 +604,9 @@ header {
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
         });
-    
+
     $(document).ready(function(){
-    
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -665,11 +670,18 @@ $.ajax({
                 targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
             }
             productos.forEach(function(producto) {
+            var color = '';
+                if (producto.cantidadEnStock <= 0) {
+                    color = 'red';
+            } else if (producto.cantidadEnStock <= 20) {
+                    color = 'rgb(248, 208, 76)';
+                }
+
                 var row = '<tr>' +
                     '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
                     '<td>' + producto.nombre + '</td>' +
                     '<td>' + producto.descripcion + '</td>' +
-                    '<td>' + producto.cantidadEnStock + '</td>' +
+                    '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
                     '<td>' + producto.precio + '</td>' +
                     '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
                     '</tr>';
@@ -678,9 +690,9 @@ $.ajax({
         }
 
         // Agregar productos a las tablas correspondientes
-        agregarProductosATabla('#productos-ventas tbody', productosPorInventario[1]);
-        agregarProductosATabla('#productos-servicios tbody', productosPorInventario[2]);
-        agregarProductosATabla('#productos-curso tbody', productosPorInventario[3]);
+        agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
+        agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
+        agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
     },
     error: function(error) {
         console.error("Error al obtener los productos:", error);
@@ -699,7 +711,18 @@ $('#editProductModal').on('show.bs.modal', function(event) {
             modal.find('#productName').val(data.nombre);
             modal.find('#productDescription').val(data.descripcion);
             modal.find('#productQuantity').val(data.cantidadEnStock); // Asegúrate de usar el campo correcto
-            modal.find('#productPrice').val(data.precio);
+            if(data.descuentoId == null){
+                $('#advertencia').hide();
+                modal.find('#productPrice').val(data.precio);
+                $('#productPrice').prop('disabled',false);
+            }else{
+                //Muestra la etiqueta con el css con el que se oculto
+                $('#advertencia').show();
+                $('#advertencia').text('No es posible editar el precio del producto si este cuenta con un descuento asociado');
+                modal.find('#productPrice').val(data.precio)
+                $('#productPrice').prop('disabled',true);
+            }
+
             // Muestra la imagen actual si existe
             modal.find('#productImagePreview').attr('src', '/storage/' + data.imagen); // Asume que hay un <img id="productImagePreview"> en el modal
         },
@@ -762,11 +785,17 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                         $(tablaSelector).append('<tr><td colspan="6" class="text-center">No hay productos disponibles</td></tr>');
                     } else {
                         productos.forEach(function(producto) {
+                        var color = '';
+                        if (producto.cantidadEnStock <= 0) {
+                        color = 'red';
+                        } else if (producto.cantidadEnStock <= 20) {
+                        color = 'rgb(214, 185, 52)';
+                        }
                             var row = '<tr>' +
                                 '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
                                 '<td>' + producto.nombre + '</td>' +
                                 '<td>' + producto.descripcion + '</td>' +
-                                '<td>' + producto.cantidadEnStock + '</td>' +
+                                '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
                                 '<td>' + producto.precio + '</td>' +
                                 '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
                                 '</tr>';
@@ -787,11 +816,11 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     }
 
     // Eventos de clic para ordenar productos
-    $('#mayor').click(function() {
+    $('.mayor').click(function() {
         cargarProductosOrdenados('/mayor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
     });
 
-    $('#menor').click(function() {
+    $('.menor').click(function() {
         cargarProductosOrdenados('/menor', '#table-productos-ventas', '#table-productos-servicios', '#table-productos-curso');
     });
 
@@ -810,22 +839,21 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     searchTable('search-productos-ventas', 'table-productos-ventas');
     searchTable('search-productos-curso', 'table-productos-curso');
 
-
 function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
 
 
-       
+
 
                         // Botón sidebar
-    function botonSidebar() { 
+    function botonSidebar() {
     if (window.innerWidth <= 768) {
         $('.sidebar-btn').css('display', 'block');
     } else {
@@ -834,17 +862,17 @@ function checkWidth() {
     }
     window.addEventListener('resize', botonSidebar);
     botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-    
-    
-    
+
+
+
+
+
         // Fin document.ready
     });
-        
-    
+
+
     </script>
 </body>
 </html>

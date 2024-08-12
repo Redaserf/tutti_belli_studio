@@ -27,17 +27,27 @@
         }
 
         .header-section {
-            background-color: #e1b8b8;
+           
             padding: 30px 0;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             margin-bottom: 20px;
         }
 
         .header-section h1 {
-            color: #ffffff;
+            
         }
+        h1 {
+    color: #000000; /* Letra negra */
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #000000; /* Borde negro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
 
         .form-floating input,
         .form-floating textarea {
@@ -517,7 +527,7 @@
                 </div>
                 <div class="form-floating mb-3">
                     <button id="agregarProductos" type="button" class="btn btn-dark btn-block w-100" data-bs-toggle="modal" data-bs-target="#productosModal" onclick="dibujarProductos()">
-                        Agregar Productos
+                        Agregar productos
                     </button>
                 </div>
                 <div class="form-floating mb-3" id="contenedoTecnicas">
@@ -527,7 +537,7 @@
                 <div class="col-md-12">
                     <div class="form-floating mb-3">
                         <button type="button" id="anadirTecnica" class="btn btn-dark w-100" name="anadirTecnica">
-                        <label for="anadirTecnica">Añadir tecnica</label>
+                        <label for="anadirTecnica">Añadir técnica</label>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -616,6 +626,7 @@
             let selectTecnica = $(`#${selectId}`);
             selectTecnica.remove();
             $(this).parent().remove(); // Eliminar el contenedor del select y el botón
+            updateTecnicasSelects();
         });
 
 
@@ -655,7 +666,7 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
@@ -673,6 +684,38 @@ function checkWidth() {
             botonSidebar();
 
         loadEmpleados();
+
+
+        function updateTecnicasSelects() {
+        // se obtienen las técnicas que ya están seleccionadas
+        selectedTecnicas = [];
+        $('select[name="tecnicas[]"]').each(function() {
+            if ($(this).val()) {
+                selectedTecnicas.push($(this).val());
+            }
+        });
+
+        // se actualizan las opciones en cada select
+        $('select[name="tecnicas[]"]').each(function() {
+        const currentSelect = $(this);
+        const currentValue = currentSelect.val();
+
+        // guardamos la opción seleccionada actualmente y limpiamos las opciones
+        currentSelect.empty();
+
+        // obtenemos las tecnicas disponibles para este select
+        $.get('/get/tecnicas', function(tecnicas) {
+            tecnicas.forEach(tecnica => {
+                if (!selectedTecnicas.includes(tecnica.id.toString()) || tecnica.id.toString() === currentValue) {
+                    currentSelect.append(new Option(tecnica.nombre, tecnica.id));
+                }
+            });
+
+            // restauramos la opcion seleccionada si aun es valida
+            currentSelect.val(currentValue);
+        });
+    });
+}
 
 
         $('#anadirTecnica').on('click', function(e){
@@ -723,10 +766,13 @@ function checkWidth() {
                 });
 
                 // Fuerza la actualización de la lista de técnicas seleccionadas.
-                newSelect.trigger('change');
+                updateTecnicasSelects();
             });
         });
 
+        $(document).on('change', 'select[name="tecnicas[]"]', function() {
+            updateTecnicasSelects();
+        });
 
 
         // $('.btn-danger').on('click', function() {
@@ -771,9 +817,9 @@ function checkWidth() {
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function() {
+                success: function(response) {
 
-                    alert("Curso agregado exitosamente");
+                    alert(response);
                     // let cursoId = response.cursoId;
                     console.log(selectedTecnicas)
                     window.location.href = '/Ver-Cursos';
@@ -887,7 +933,7 @@ function checkWidth() {
     //Script para dibujar los productos
     function dibujarProductos() {
         $.ajax({
-            url: '/get/productos',
+            url: '/productosCursos',
             method: 'GET',
             success: function(data) {
                 const productos = $('#productos');

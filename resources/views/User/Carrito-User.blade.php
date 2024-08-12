@@ -179,7 +179,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     .imgnavbar{
         width:200px;
         height: 30px;
-    
+
     }}
         /* Alerta bonita */
 
@@ -242,6 +242,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <th scope="col">Descripción</th>
                         <th scope="col">Costo</th>
                         <th scope="col"> Cantidad seleccionada</th>
+                        <th scope="col"> Cantidad Disponible en almacen</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
@@ -256,47 +257,16 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         </div>
     </div>
 </div>
-<br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
-        <div style="background-color: #1e1b1b;"class="container-fluid">
-            <div class="row text-center text-md-left">
-              <br><br><br>
-                <div class="col-md-4 text-center footer-pers">
-                    <img style="width: 400px;height: 100px;"src="/resources/img/dashboard-navbar/tuttibelli.png" alt="Tutti Belli Studio" class="img-fluid">
-                </div>
-                <div class="col-md-4 footer-pers">
-                    <h5>Dirección</h5>
-                    <p>Torreon,Coahuila<br>Ex Hacienda la joya zafiro #67</p>
-                    <p>Teléfono: +52 871 382 6767</p>
-                    <p>Email: tuttibellistudiotrc@gmail.com</p>
-                </div>
-                <div class="col-md-4 footer-pers">
-                    <h5>Enlaces</h5>
-                    <ul class="links">
-                        <li><a href="/Home-usuario">Inicio</a></li>
-                        <li><a href="/Home-usuario#servicios">Servicios</a></li>
-                        <li><a href="/Home-usuario#cursos">Cursos</a></li>
-                        <li><a href="/Logout">Cerrar sesión</a></li>
-                    </ul>
-                    <h5>Horario</h5>
-                    <ul class="horario">
-                        <li>Lunes a Viernes: 9:00-9:00</li>
-                        <li>Sábado: 10:00-4:00</li>
-                        <li>Domingo: 10:00-4:00</li>
-                    </ul>
-                </div>
-                <div class="col-12">
-                    <div class="icons">
-                        <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://wa.me/5218713826767" class=""><i class="fa-brands fa-whatsapp"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div style="background-color: black !important; margin-bottom: -30px;" class="col-12 text-center mt-2">
+        <div class="icons">
+            <a href="https://www.facebook.com/profile.php?id=100066839301986" class=""><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/tutti_belli_trc_studio/" class=""><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/5218713826767" class=""><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
           <p style="margin-bottom: 30px;">&copy;Copyright Tutti Belli Studio. Todos los derechos reservados
           <br>Diseñada y desarrollada by Deiters</p>
       </div>
@@ -371,6 +341,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <td>${producto.descripcion}</td>
                         <td>$${producto.precio}</td>
                         <td id="${idCantidad}">1</td>
+                        <td id="${idCantidad}">${producto.cantidadEnStock}</td>
                         <td>
                             <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
                         </td>
@@ -395,63 +366,6 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         });
     }
 
-// function dibujarCarrito() {
-//             $.ajax({
-//                 url: '/get/carrito',
-//                 method: 'GET',
-//                 success: function(data) {
-//                     const carrito = $('#carritoTabla');
-//                     const costoTotal = $('#costo-total');
-//                     carrito.empty();
-//                     total = 0;
-//
-//                     data.forEach(producto => {
-//                         // cont1 ++;
-//                         cont2 = 0
-//                         productosComprados.push({
-//                             id: producto.id,
-//                             nombre: producto.nombre,
-//                             descripcion: producto.descripcion,
-//                             precio: producto.precio
-//                         });
-//                         productosYaDibujados.push(producto.id);
-//                         idCantidad = 'cantidad'+producto.id;
-//
-//                         if(producto.id not in productosYaDibujados ){
-//                             const item = `
-//                             <tr>
-//                                 <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
-//                                 <td>${producto.nombre}</td>
-//                                 <td>${producto.descripcion}</td>
-//                                 <td>$${producto.precio}</td>
-//                                 <td id="${idCantidad}" > 1 </td>
-//                                 <td>
-//                                   <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></a>
-//                                 </td>
-//                             </tr>
-//                         `;
-//                             carrito.append(item);
-//                         }else{
-//                             for (var i=0; i<productosYaDibujados.length, i++){
-//                                 if(producto.id === productosYaDibujados[i]){
-//                                     cont2++
-//                                 }
-//                             }
-//                             $('#'+idCantidad).value(cont2);
-//                         }
-//
-//                         total += producto.precio;
-//                     });
-//                     costoTotal.text('Costo Total: $' + total);
-//                     console.log(productosComprados);
-//
-//                 },
-//                 error: function(error) {
-//                   console.log(error);
-//                   alert('Hubo un error al obtener los productos del carrito');
-//                 }
-//               });
-//             }
 
         // Eliminar producto del carrito
 
@@ -579,16 +493,18 @@ $(document).ready(function(){
                         // fechaVenta: fechaHoraActualMexico
                         fechaVenta: fechaHoraActualMexico
                     },
-                success: function (){
+                success: function (response){
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                    alert('Se ha realizado la compra correctamente.')
+                    alert('compra realizada exitosamente')
                     productosComprados = [];
                     total = 0;
                     dibujarCarrito();
                 },
-                error: function (error){
-                    console.log(error);
+                error: function (response){
+                    var mensajeError = response.responseJSON.message;
+                    alert(mensajeError);
+
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
                 }

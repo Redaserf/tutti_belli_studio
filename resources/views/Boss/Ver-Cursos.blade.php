@@ -361,6 +361,53 @@ header {
             border-color: #f5c6cb;
         }
         /*FIN ESTILOS DE LAS CARTAS DE INSCRIPCION*/
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px;
+        }
+        .product-card {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 200px; /* Reducido para que quepan más tarjetas */
+            text-align: center;
+            margin: 10px; /* Añadido margen para separar las tarjetas */
+        }
+
+        .product-image {
+            border-radius: 10px; /* Reducido el radio del borde */
+            width: 100%; /* Ajustado al 100% del ancho de la tarjeta */
+            height: 150px; /* Altura reducida */
+            object-fit: contain;
+        }
+
+        .product-info {
+            padding: 10px; /* Reducido el padding */
+        }
+
+        .product-title {
+            font-size: 1.2em; /* Reducido el tamaño de la fuente */
+            margin: 0 0 8px 0; /* Reducido el margen inferior */
+        }
+
+        .product-description {
+            font-size: 0.9em; /* Reducido el tamaño de la fuente */
+            color: #666;
+            margin: 0 0 8px 0; /* Reducido el margen inferior */
+        }
+
+        .product-price {
+            font-size: 1em; /* Reducido el tamaño de la fuente */
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -390,7 +437,7 @@ header {
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
 
-            <div class="menu-bar "id="scrollDash">
+            <div class="menu-bar table-responsive">
                 <div class="menu">
                     <ul class="menu-links">
                         <li class="nav-link">
@@ -509,9 +556,57 @@ header {
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+
+{{--                        MODAL PARA MOTSTRAR FECHAS A LOS DIAS--}}
+                        <div class="modal fade" id="agregarDiasModal" tabindex="-1" aria-labelledby="editCursoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" >Agregar Dias</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" id="agregarDiasCurso">
+
+{{--                                            <div class="form-group" id="fechasEstablecidas">--}}
+
+{{--                                            </div>--}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button id="AgregarFC" type="button" class="btn btn-primary">Agregar nueva fecha</button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+{{--                    MODAL PARA AGREGAR LA FECHA    --}}
+                        <div class="modal fade" id="agregarNuevoDiaModal" tabindex="-1" aria-labelledby="editCursoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" >Agregar Dias</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="agregarDiasCurso">
+                                        <label> Proxima fecha de sesion</label> <br>
+                                        <input id="nuevaFecha" type="date"> <br><br>
+                                        <label> Hora de inicio </label> <br>
+                                        <input id="nuevaHora" type="time">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button id="GuardarFC" type="button" class="btn btn-primary">Guardar Fecha</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -592,6 +687,24 @@ header {
             </div>
         </div>
     </div>
+    {{-- Modal para mostrar los productos--}}
+    <div class="modal fade modal-xl" data-bs-backdrop="static" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productosModalLabel">Productos</h5>
+                </div>
+                <div class="modal-body product-container" id="contenedorProductos">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
+                    <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -645,12 +758,15 @@ header {
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-curso" data-id="${curso.id}">Editar curso<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones" data-id="${curso.id}">Ver inscripciones<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-dark" data-id="${curso.id}" onclick="dibujarProductosUsados(${curso.id})">Ver Productos utilizados<i style="margin-left: 6px" class="fa-solid fa-box"></i></button>
+                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-primary" data-id="${curso.id}" onclick="mostrarDias(${curso.id})">Agregar proxima fecha de curso<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></button>
                 </div>
               </div>
             </div>
           `;
           cursos.append(card);
         });
+
         $('.editar-curso').click(function() {
                 const cursoId = $(this).data('id');
                 modalEditar(cursoId);
@@ -674,7 +790,9 @@ header {
 }
 
 
+
 function mostrarInscripciones(cursoId) {
+
     $.ajax({
         url: `/get/inscripciones/${cursoId}`,
         method: 'GET',
@@ -682,29 +800,124 @@ function mostrarInscripciones(cursoId) {
             const inscripciones = response.inscripciones;
             const curso = response.curso;
             let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
-                let filtroId = `<input style="width:160px;" type="number" class="input" placeholder="Busqueda por ID"></input>`; //Aún por implementar la lógica, es un boceto
+                let filtroId = `<input style="width:160px;" type="number" id="buscadorId" class="form-control mb-3" placeholder="Busqueda por ID" ></input>`; //Aún por implementar la lógica, es un boceto
                 inscripcionesHtml += filtroId;
             inscripciones.forEach(inscripcion => {
                 if (inscripcion.estado == 0){
-                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                    inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}" >
+                        Inscripción ID #${inscripcion.id}<br>
                         ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
-                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
+                        Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button>
+                        </li>`;
                 }
                 else {
-                    inscripcionesHtml += `<li>Inscripción ID #${inscripcion.id}<br>
+                    inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}" >
+                        Inscripción ID #${inscripcion.id}<br>
                         ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
-                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button></li>`;
+                        Estado: <span style='color: #39BF3D; font-weight:600;'>Inscrito</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button>
+                        </li>`;
                 }
             });
             inscripcionesHtml += '</ul>';
             $('#inscripcionesModal .modal-bodyInscripciones').html(inscripcionesHtml);
             $('#inscripcionesModal').modal('show');
+
+            $('#buscadorId').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('.buscar').filter(function() {
+                    var text = $(this).data('id').toString().toLowerCase();
+                    $(this).toggle(text.indexOf(value) > -1);
+                });
+            });
         },
         error: function(error) {
             console.error('Error al obtener las inscripciones:', error);
         }
     });
 }
+    //
+    //
+    var cursoActual;
+    function mostrarDias(id){
+        cursoActual = id
+            $('#agregarDiasModal').modal('show');
+            let divDias = $('#agregarDiasCurso');
+            divDias.empty();
+
+            $.ajax({
+                url: '/diaCurso/' + id,
+                method: 'GET',
+                success: function (response){
+
+                    let cursos = response.curso;
+                    let proximosDias = response.dias
+
+
+                    let inicial = `<label> fecha Inicial: ${cursos.fechaInicio}</label> <br>
+                               <label> hora de Inicio: ${cursos.horaInicio}</label>`;
+
+                    divDias.append(inicial);
+
+                    let des = `<h5> Dias proximos </h5>`;
+
+                    divDias.append(des);
+
+                    proximosDias.forEach(dia =>{
+                        let nuevoDia = `<li>
+                          <label> Fecha: ${dia.fechaContinuacion} </label>
+                          <label> Hora: ${dia.horaContinuacion} </label>
+                         </li>`
+
+                        divDias.append(nuevoDia);
+                    })
+
+
+
+                },
+                error: function (){
+
+                }
+            });
+
+    }
+
+    $('#AgregarFC').on('click', function (){
+        $("#agregarNuevoDiaModal").modal('show');
+        $('#agregarDiasModal').modal('hide');
+    });
+
+    $('#GuardarFC').on('click',function (id){
+        let fecha = $('#nuevaFecha').val();
+        let hora = $('#nuevaHora').val();
+
+        console.log(fecha);
+        console.log(hora);
+
+        $.ajax({
+           url: '/nuevaFecha/' + cursoActual,
+           method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+           data:{
+               fecha: fecha,
+               hora: hora
+           },
+           success: function (response){
+               alert(response)
+               mostrarDias(cursoActual);
+               $("#agregarNuevoDiaModal").modal('hide');
+               $('#agregarDiasModal').modal('show');
+           },
+           error: function (response){
+                console.log(response);
+           }
+        });
+    });
+
+
+
+
 
 function editarInscripcion(inscripcionId){
             $.ajax({
@@ -743,9 +956,11 @@ function editarInscripcion(inscripcionId){
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
-                                alert("Se ha aceptado al usuario en este curso.");
+                                alert(response);
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
+
+                                console.log(response);
                             },
                             error: function(error) {
                                 alert('Error al actualizar la inscripción.');
@@ -808,9 +1023,9 @@ function editarInscripcion(inscripcionId){
                     }
                 });
             }
-            
-        
-            
+
+
+
         // Eliminar un curso
 
         function cursoDelete(id){
@@ -897,6 +1112,44 @@ $('#editCursoForm').on('submit', function(e) {
 }
 });
 
+    function dibujarProductosUsados(id){
+        $('#productosModal').modal('show');
+        $.ajax({
+            url:'/curso/productos/'+ id,
+            method: 'GET',
+            success: function (data){
+
+                const productos = $('#contenedorProductos');
+                productos.empty();
+                data.forEach(producto => {
+
+
+                    // const cantidadPorUsar =  producto.productoHasCurso.cantidadPorUsar;
+                    let cont = producto.id;
+                    let idDinamico = 'cantidad' + cont;
+
+                    const cantidadPorUsar = producto.cantidadPorUsar;
+                    const card = `
+                        <div class="product-card">
+                            <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                            <div class="product-info">
+                                <h2 class="product-title">${producto.nombre}</h2>
+                                <p class="product-description">${producto.descripcion}</p>
+                                <p class="product-price">$${producto.precio}</p>
+                                <p class="product-stock">Stock: ${producto.cantidadEnStock}</p>
+                                <p class="product-usage">Cantidad por Usar: ${cantidadPorUsar}</p>
+                            </div>
+                        </div>
+                    `;
+                    productos.append(card);
+                });
+            },
+            error: function (){
+
+            }
+        });
+    }
+
 $('#edit_imagenProducto').on('change', function() {
     const [file] = this.files;
     if (file) {
@@ -924,15 +1177,6 @@ toggle.addEventListener("click", () => {
         overlay.style.display = "none";
     }
 });
-function checkWidth() {
-        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
-            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
-        } else {
-            $('#scrollDash').removeClass('table-responsive');  
-        }
-    }
-    checkWidth();
-    $(window).resize(checkWidth);
 
 overlay.addEventListener("click", () => {
     sidebar.classList.add("close");

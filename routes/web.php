@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\DescuentoController;
 use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\InventarioController;
@@ -102,7 +103,7 @@ use App\Models\Inscripcion;
 
 
 
-    
+
 
     // ===== [Sevicios] =====
     //devuelve servicio como Json
@@ -258,6 +259,12 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
     Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
     Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
+    // Obtener productos con el curso seleccionado
+    Route::get('/curso/productos/{cursoId}',[CursoController::class,'dibujarProductos']);
+    //Obtener dia incial del curso
+    Route::get('/diaCurso/{id}',[CursoController::class,'diaInicial']);
+    //Agregar nueva fecha
+    Route::post('/nuevaFecha/{id}',[CursoController::class,'nuevaFecha']);
 
 
 
@@ -274,7 +281,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::get('/menor',[InventarioController::class,'menor']);
     Route::get('/mayor',[InventarioController::class,'mayor']);
-    
+
 
 
 
@@ -377,11 +384,10 @@ Route::post('/crearCompra', [VentaController::class, 'crearCompra']);
 Route::get('/get/compras',[DetalleProductoController::class,'comprasIndex']);
 //Obtiene las compras confirmadas
 Route::get('/get/compras/confirmadas', [DetalleProductoController::class, 'comprasConfirmadas']);
-Route::get('/get/compras/rechazadas', [DetalleProductoController::class, 'comprasRechazadas']);
 //Obtiene los detalles de toda la venta seleccionada
 Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 //Confirma la compra
-Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCo mpra']);
+Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
 //Rechazar la compra
 Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
 

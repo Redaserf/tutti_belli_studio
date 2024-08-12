@@ -884,18 +884,6 @@ margin-right: 20px;
                 }
             });
 
-            
-            $("#fechaCita").on('input', function() {
-                var fechaTexto = $(this).val();
-                    var partes = fechaTexto.split('-');
-                    var anio = parseInt(partes[0], 10);
-                    var mes = parseInt(partes[1], 10) - 1; 
-                    var dia = parseInt(partes[2], 10);
-                    
-                    var fechaSeleccionada = new Date(anio, mes, dia);
-                        actualizarOpcionesSelect(fechaSeleccionada);
-            });
-
             function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
                 return fecha1.getFullYear() === fecha2.getFullYear() &&
                 fecha1.getMonth() === fecha2.getMonth() &&

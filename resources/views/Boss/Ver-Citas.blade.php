@@ -470,6 +470,15 @@ header {
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15px;
     }
+    #mensajeNoCitas{
+        font-size: 24px;
+        color: #000; /* Texto negro */
+        background-color: #fff; /* Fondo blanco */
+        border: none; /* Sin bordes */
+        border-radius: 0; /* Sin bordes redondeados */
+        padding: 20px;
+        margin-top: 20px;
+    }
     .btn-danger{
         margin: 4px;
     }
@@ -765,39 +774,42 @@ header {
             <!-- modal ver citas que aun no son aceptadas -->
 
             <div class="modal fade" id="verCitasModal" tabindex="-1" aria-labelledby="labelVerCitasModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl"> <!-- modal-lg para un modal más grande -->
-        <div class="modal-content custom-modal-content">
-            <div class="modal-header custom-modal-header">
-                <h5 class="modal-title" id="labelVerCitasModal">Citas pendientes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body custom-modal-body">
-                <div class="table-responsive"> <!-- Agregar clase table-responsive -->
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Fecha de la cita</th>
-                                <th>Hora de la cita</th>
-                                <th>Nombre del cliente</th>
-                                <th>Número de telefono</th>
-                                <th>Correo electronico</th>
-                                <th>Nombre del empleado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaCitas">
-                            <!-- Aquí se llenarán las filas de la tabla -->
-                        </tbody>
-                    </table>
+                <div class="modal-dialog modal-dialog-scrollable modal-xl"> <!-- modal-lg para un modal más grande -->
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header custom-modal-header">
+                            <h5 class="modal-title" id="labelVerCitasModal">Citas pendientes</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                        <div id="mensajeNoCitas" class="alert alert-warning text-center mensajeNoCitas" style="display: none;">
+                            No hay citas para mostrar
+                        </div>
+                            <div class="table-responsive"> <!-- Agregar clase table-responsive -->
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha de la cita</th>
+                                            <th>Hora de la cita</th>
+                                            <th>Nombre del cliente</th>
+                                            <th>Número de telefono</th>
+                                            <th>Correo electronico</th>
+                                            <th>Nombre del empleado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaCitas">
+                                        <!-- Aquí se llenarán las filas de la tabla -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-pink">Confirmar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-pink">Confirmar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- modal para rechazar cita -->
 
@@ -1497,29 +1509,36 @@ header {
 
             $.get('/cita/usuario/empleado', function(citas) {
                 let tabla = $('#tablaCitas');
-                tabla.empty(); 
+                let mensajeNoCitas = $('#mensajeNoCitas');
+                
+                tabla.empty(); // Vaciar la tabla
+                
                 if (citas.length === 0) {
-                    // Mostrar mensaje si no hay citas
-                    tabla.append('<tr><td colspan="7" class="text-center">No hay citas para mostrar</td></tr>');
-                }             
-                citas.forEach(cita => {
-                    console.log(cita.id);
-                    tabla.append(`
-                        <tr>
-                            <td>${cita.fechaCita}</td>
-                            <td>${cita.horaCita}</td>
-                            <td>${cita.usuario.clienteNombreCompleto}</td>
-                            <td>${cita.usuario.numeroTelefono}</td>
-                            <td>${cita.usuario.email}</td>
-                            <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
-                            <td>
-                                <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
-                                <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
-
-                            </td>
-                        </tr>
-                    `);
-                });
+                    // Ocultar la tabla y mostrar el mensaje
+                    tabla.closest('table').hide();
+                    mensajeNoCitas.show();
+                } else {
+                    // Mostrar la tabla y ocultar el mensaje
+                    tabla.closest('table').show();
+                    mensajeNoCitas.hide();
+                    
+                    citas.forEach(cita => {
+                        tabla.append(`
+                            <tr>
+                                <td>${cita.fechaCita}</td>
+                                <td>${cita.horaCita}</td>
+                                <td>${cita.usuario.clienteNombreCompleto}</td>
+                                <td>${cita.usuario.numeroTelefono}</td>
+                                <td>${cita.usuario.email}</td>
+                                <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
+                                <td>
+                                    <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
+                                    <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
             });
 
         }

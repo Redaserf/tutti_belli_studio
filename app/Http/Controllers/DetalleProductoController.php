@@ -16,6 +16,7 @@ class DetalleProductoController extends Controller
             ->where(function ($query) {
                 $query->where('estadoVenta', null);
             })
+            ->orderBy('id','desc')
             ->get();
 
         return response()->json($ventas);
@@ -26,21 +27,14 @@ class DetalleProductoController extends Controller
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
             ->where('estadoVenta', true)
+            ->orderBy('id','desc')
             ->get();
 
         return response()->json($ventas);
     }
 
     //Compras rechazadas
-    function comprasRechazadas()
-    {
-        $ventas = Venta::has('detalleProductos')
-            ->with('detalleProductos')
-            ->where('estadoVenta', false)
-            ->get();
 
-        return response()->json($ventas);
-    }
 
     function ticket($id){
         $compras = DetalleProducto::where('ventaId',$id)->get();

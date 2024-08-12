@@ -247,7 +247,7 @@
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -452,7 +452,7 @@
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
                             <button type="button" id="anadirTecnica" class="btn btn-dark w-100" name="anadirTecnica">
-                            <label for="anadirTecnica">Añadir tecnica</label>
+                            <label for="anadirTecnica">Añadir técnica</label>
                         </div>
                     </div>
                     <div class="form-floating mb-3">
@@ -523,7 +523,7 @@ sidebarBtn.addEventListener("click", () => {
     }
 });
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -536,6 +536,15 @@ sidebarBtn.addEventListener("click", () => {
     loadServicios();
 
     // Fin scripts para todas las vistas
+
+
+    $('#servicioId').on('change', function() {
+        // se eliminan los select que se hayan creado cuando se cambie de servicio
+        $('#contenedoTecnicas').empty();
+        selectedTecnicas = []; // se reinicia la lista de técnicas seleccionadas
+        selectCounter = 0; // se reinicia el contador de selects
+    });
+
 
     $('#anadirTecnica').on('click', function(e){
         e.preventDefault();
@@ -558,15 +567,18 @@ sidebarBtn.addEventListener("click", () => {
             selectCounter++;
 
             //crae el nuevo select al pulsar el boton de añadir y le pone su id
-            var newSelect = $('<select class="form-control mb-3" name="tecnicas[]"></select>');
-            newSelect.attr('id', 'tecnicaSelect' + selectCounter);
+            let newDiv = $('<div style="display:flex; flex-direction:row" ></div>');
+            var newSelect = $(`<select id="tecnicaSelect${selectCounter}" class="form-control mb-3" name="tecnicas[]"></select>`);
+            var newButton = $(`<button id="botonEliminar" data-select-tecnica="tecnicaSelect${selectCounter}" style="width: 15%" class="btn btn-danger mb-3"><i style="font-size:25px" class="fa-solid fa-delete-left"></i></button>`);
 
             //lo adhiere al div donde apareceran los select dinamicos
-            $('#contenedoTecnicas').append(newSelect);
+            newDiv.append(newSelect);
+            newDiv.append(newButton);
+            $('#contenedoTecnicas').append(newDiv);
 
             //Dibuja en el select las opciones que todavia no han sido seleccionadas
             filteredTecnicas.forEach(tecnica => {
-                let texto = `${tecnica.nombre} - ${tecnica.precio}  $`
+                let texto = `${tecnica.nombre} - $${tecnica.precio}`
                 newSelect.append(new Option(texto, tecnica.id));
             });
 
@@ -583,9 +595,46 @@ sidebarBtn.addEventListener("click", () => {
             });
 
             // Fuerza la actualización de la lista de técnicas seleccionadas.
-            newSelect.trigger('change');
+            updateTecnicasSelects();
         });
     });
+
+        // Eliminar select y actualizar técnicas
+        $(document).on('click', '.btn-danger', function() {
+        let selectId = $(this).data('select-tecnica');
+        $(`#${selectId}`).parent().remove();
+        updateTecnicasSelects();
+    });
+
+
+                // Actualizar los selects de técnicas
+                function updateTecnicasSelects() {
+                selectedTecnicas = [];
+                $('select[name="tecnicas[]"]').each(function() {
+                    if ($(this).val()) {
+                        selectedTecnicas.push($(this).val());
+                    }
+                });
+
+                $('select[name="tecnicas[]"]').each(function() {
+                    const currentSelect = $(this);
+                    const currentValue = currentSelect.val();
+
+                    currentSelect.empty();
+
+                    let servicioId = $('#servicioId').val();
+                    $.get('/get/tecnicas/' + servicioId, function(tecnicas) {
+                        tecnicas.forEach(tecnica => {
+                            if (!selectedTecnicas.includes(tecnica.id.toString()) || tecnica.id.toString() === currentValue) {
+                                currentSelect.append(new Option(tecnica.nombre, tecnica.id));
+                            }
+                        });
+
+                        currentSelect.val(currentValue);
+                    });
+                });
+            }
+
 
     var discountPercentage;
 
@@ -609,14 +658,16 @@ sidebarBtn.addEventListener("click", () => {
             data: {
                 _token: $('input[name="_token"]').val(),
                 cantidadDescuento: discountPercentage,
+                tecnicas: selectedTecnicas
             },
             success: function (response) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                let descuentoId = response.descuentoId;  // Sin $ aquí, ya que es JavaScript
-                console.log(descuentoId);  // Para verificar el valor
+                alert('Descuento agregado exitosamente');
+                window.location.href = '/Ver-Descuentos';
+                // console.log(descuentoId);  // Para verificar el valor
 
-                aplicarDescuento(descuentoId, selectedTecnicas);
+                // aplicarDescuento(descuentoId, selectedTecnicas);
             },
             error: function (error) {
                 // Ocultar la pantalla de carga
@@ -659,7 +710,7 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
