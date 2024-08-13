@@ -68,24 +68,24 @@ class ConsultasController extends Controller
         return response()->json($usuarios);
     }
 
-    public function usuariosConRolEmpleado()//se trae los usuarios que tengan el rol de empleado
+    public function usuariosConRolEmpleado()
     {
-        // if (!Auth::check()) {
-        //     return redirect('/Home-guest');
-        // }
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
     
-        // $user = Auth::user();
+        $user = Auth::user();
     
-        // if ($user->rolId == 2) {
-        //     return redirect('/Home-usuario');
-        // }
-     
-            $usuarios = User::whereHas('roles', function ($query) {
+        // Trae el usuario logueado junto con los usuarios que tienen los roles de 'Empleado' o 'Administrador'
+        $usuarios = User::where('id', $user->id)
+            ->orWhereHas('roles', function ($query) {
                 $query->whereIn('nombre', ['Empleado', 'Administrador']);
-            })->get();
-
-            return response()->json($usuarios);
+            })
+            ->get();
+    
+        return response()->json($usuarios);
     }
+    
 
     public function usuarioEmpleado()//se trae los usuarios que tengan el rol de empleado y admin
     {

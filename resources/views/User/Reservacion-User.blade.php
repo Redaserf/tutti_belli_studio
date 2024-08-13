@@ -1039,7 +1039,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
                     let alertIcon = '';
 
                     if(response.message === 'Cita creada con éxito'){
-                        alertMessage = 'Cita creada con éxito';
+                        alertMessage = 'Cita creada con éxito, PENDIENTE a confirmacion';
                         alertClass = "alert-success";
                         alertIcon = "check-circle-fill";
                     } else if(response.message === 'Cita actualizada con éxito'){

@@ -720,7 +720,9 @@ header {
                                         <input type="hidden" id="serviciosSeleccionados"  class="custom-input" name="serviciosSeleccionados">
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <select class="form-control custom-select" name="usuarioId" id="usuarioId" readonly></select>
+                                    <select class="form-control custom-select" name="usuarioId" id="usuarioId" readonly>
+                                    </select>
+
                                         <label for="usuarioId">Cliente</label>
 
                                     </div>
@@ -1366,7 +1368,6 @@ header {
             //Dibujar empleados
             $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
                 let selectUsuarios = $('#empleadoId');
-                selectUsuarios.empty();
 
                 usersRolEmpleado.forEach(usuario => {
                     selectUsuarios.append(`

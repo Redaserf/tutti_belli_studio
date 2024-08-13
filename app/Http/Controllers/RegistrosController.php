@@ -371,9 +371,10 @@ class RegistrosController extends Controller
             return redirect('/Home-usuario');
         }
 
-        $citaExistente = Cita::where('id', '<>', $id)
-        ->where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
+        $citaExistente = Cita::where('empleadoId', $request->empleadoId)
+        ->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
+        ->where('id', '<>', $id)
         ->first();
 
         if ($citaExistente) {
@@ -399,10 +400,14 @@ class RegistrosController extends Controller
             ->with('producto')
             ->get();
 
-            foreach($productosDevolverStock as $productoDetalle){//devuelve el stock de los productos de las tecnicas anteriores
+            foreach($productosDevolverStock as $productoDetalle){
+                $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $productoDetalle->tecnicaId)
+                    ->where('productoId', $productoDetalle->productoId)
+                    ->value('cantidadDeUso');
+                
                 $producto = $productoDetalle->producto;
                 if($producto) {
-                    $producto->cantidadEnStock += $productoDetalle->cantidadProducto;
+                    $producto->cantidadEnStock += 2 * $cantidadPromedio;
                     $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
                     $producto->save();
                 }
