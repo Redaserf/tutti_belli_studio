@@ -488,7 +488,7 @@
                         </button>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="porcentaje" placeholder="%" min="0">
+                        <input type="number" class="form-control" id="porcentaje" placeholder="%" min="0" max="100">
                         <label for="porcentaje">Porcentaje de Descuento</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -509,7 +509,8 @@
                     <h5 class="modal-title" id="productosModalLabel">Selecciona los productos para aplicar el descuento</h5>
                 </div>
                 <div class="modal-body">
-
+                    <br>
+                    <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de producto">
                     <div id="productos" class="product-container">
 
                     </div>
@@ -592,6 +593,16 @@ sidebarBtn.addEventListener("click", () => {
             // Fin scripts para todas las vistas
             // Fin scripts para todas las vistas
 
+            $('#porcentaje').on('input', function() {
+                let value = parseInt($(this).val());
+
+                if (value < 1) {
+                    $(this).val(1);
+                } else if (value > 100) {
+                    $(this).val(99);
+                }
+            });
+
             //Script para agregar descuento
             var discountPercentage;
 
@@ -635,7 +646,7 @@ sidebarBtn.addEventListener("click", () => {
                         success: function (response) {
                         // Ocultar la pantalla de carga
                         $('#contenedor_carga').css('display', 'none');
-                            alert('Descuento agregado exitosamente');
+                            alert(response);
                             window.location.href = '/Ver-Descuentos';
                             console.log(selectedProducts);
 
@@ -671,6 +682,13 @@ sidebarBtn.addEventListener("click", () => {
 
             // Fin document.ready
         });
+
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#productos .product-card').filter(function() {
+            $(this).toggle($(this).find('.product-title').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
     //Script para dibujar los productos
     function dibujarProductos() {

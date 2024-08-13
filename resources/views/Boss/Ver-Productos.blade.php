@@ -510,10 +510,16 @@ header {
                 <div class="top text-center">
                     <h2>Productos</h2>
                     <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Agregar producto<i style="margin-left: 6px" class="fa-solid fa-basket-shopping"></i></button></a>
+
+
                 </div>
+                <br>
+
                 <div class="section-divider"></div>
 
                 <br>
+                <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de producto">
+
 
                 <div>
 
@@ -590,6 +596,15 @@ header {
         }
     });
 }
+
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+
+
+        $('#productos .product-card').filter(function() {
+            $(this).toggle($(this).find('.product-title').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
         // Eliminar un producto
 
