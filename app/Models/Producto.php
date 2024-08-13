@@ -15,7 +15,7 @@ class Producto extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'precio', 'cantidadEnStock','imagen','descripcion','inventarioId','descuentoId'];
+    protected $fillable = ['nombre', 'precio', 'cantidadEnStock', 'cantidadReserva','imagen','descripcion','inventarioId','descuentoId'];
 
     public function inventario(){
         return $this->belongsTo(Inventario::class,'inventarioId');

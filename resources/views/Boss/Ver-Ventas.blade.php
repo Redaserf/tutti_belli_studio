@@ -562,318 +562,284 @@
 
                 <br>
                     <!-- Navegación de pestañas -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="compra-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="true">Compras</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" role="tab" aria-controls="citas" aria-selected="false">Citas</button>
-                    </li>
-    
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab" aria-controls="cursos" aria-selected="false">Cursos</button>
-                    </li>
-                </ul>
+                    <ul class="nav nav-tabs" id="ventasTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="ventas-compras-tab" data-bs-toggle="tab" data-bs-target="#ventasComprasContent" type="button" role="tab" aria-controls="ventasComprasContent" aria-selected="true">Compras</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="ventas-citas-tab" data-bs-toggle="tab" data-bs-target="#ventasCitasContent" type="button" role="tab" aria-controls="ventasCitasContent" aria-selected="false">Citas</button>
+    </li>
 
-                <!-- Contenido de las pestañas -->
-                <div class="tab-content " id="myTabContent">
-                    <!-- Pestaña General -->
-                    <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
-                        <div class="table-container mt-5">
-                            <h2>VENTAS</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Precio</th>
-                                    <th>Día</th>
-                                    <th>Detalles</th>
-                                    <th>Rechazar</th>
-                                    <th>Editar</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Citas</td>
-                                    <td>$50</td>
-                                    <td>2024-07-01</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Compra</td>
-                                    <td>$100</td>
-                                    <td>2024-07-03</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Curso</td>
-                                    <td>$2000</td>
-                                    <td>2024-07-03</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
-                                </tr>
-                                </tbody>
-                            </table>
+</ul>
+
+<!-- Contenido de las pestañas -->
+<div class="tab-content" id="ventasTabContent">
+    <!-- Pestaña General -->
+    <div class="tab-pane fade" id="generalSalesContent" role="tabpanel" aria-labelledby="generalSales-tab">
+        <div class="table-container mt-5">
+            <h2>VENTAS</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Día</th>
+                        <th>Detalles</th>
+                        <th>Rechazar</th>
+                        <th>Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Citas</td>
+                        <td>$50</td>
+                        <td>2024-07-01</td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Compra</td>
+                        <td>$100</td>
+                        <td>2024-07-03</td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Curso</td>
+                        <td>$2000</td>
+                        <td>2024-07-03</td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pestaña Citas -->
+    <div class="tab-pane fade" id="ventasCitasContent" role="tabpanel" aria-labelledby="ventas-citas-tab">
+        <ul class="nav nav-tabs" id="citasNavTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="citas-totales-tab" data-bs-toggle="tab" data-bs-target="#citasTotalesContent" type="button" role="tab" aria-controls="citasTotalesContent" aria-selected="true">Citas de todos los empleados</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="citas-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#citasAceptadasContent" type="button" role="tab" aria-controls="citasAceptadasContent" aria-selected="false">Ventas de todos los empleados</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="mis-citas-tab" data-bs-toggle="tab" data-bs-target="#misCitasContent" type="button" role="tab" aria-controls="misCitasContent" aria-selected="false">Mis Citas</button>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3">
+            <!-- Contenido de Citas de todos los empleados -->
+            <div class="tab-pane fade show active" id="citasTotalesContent" role="tabpanel" aria-labelledby="citas-totales-tab">
+                <div class="table-container mt-5">
+                    <h2>CITAS</h2>
+                    <div class="filtros mt-3">
+                        <div class="form-floating mb-3">
+                            <input type="input" id="fechaFiltro" class="form-select">
+                            <label for="fechaFiltro">Fecha:</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select id="horaFiltro" class="form-select">
+                                <option value="">-- Seleccionar una hora --</option>
+                                <option value="09:00:00">09:00:00</option>
+                                <option value="10:00:00">10:00:00</option>
+                                <option value="11:00:00">11:00:00</option>
+                                <option value="12:00:00">12:00:00</option>
+                                <option value="13:00:00">13:00:00</option>
+                                <option value="14:00:00">14:00:00</option>
+                                <option value="15:00:00">15:00:00</option>
+                                <option value="16:00:00">16:00:00</option>
+                                <option value="17:00:00">17:00:00</option>
+                                <option value="18:00:00">18:00:00</option>
+                                <option value="19:00:00">19:00:00</option>
+                                <option value="20:00:00">20:00:00</option>   
+                            </select>
+                            <label for="horaFiltro">Hora:</label>
+                        </div>
+                        <div class="form-floating mb-3 row">
+                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                            <button id="mostrarTodasCitas" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
+                            <button id="ordenarAsc" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
+                            <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                         </div>
                     </div>
-                                    <!-- Pestaña Citas -->
-                    <div class="tab-pane fade" id="citas" role="tabpanel" aria-labelledby="citas-tab">
-                        <ul class="nav nav-tabs" id="citasTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="compras-totales-tab-citas" data-bs-toggle="tab" data-bs-target="#citasPendientes" type="button" role="tab" aria-controls="citasPendientes" aria-selected="true">Citas de todos los empleados</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadas" type="button" role="tab" aria-controls="comprasAceptadas" aria-selected="false">Ventas de todos los empleados</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="mis-citas-tab" data-bs-toggle="tab" data-bs-target="#misCitas" type="button" role="tab" aria-controls="misCitas" aria-selected="false">Mis Citas</button>
-                            </li>
-                        </ul>
+                    <table class="table table-striped" style="margin-top: 30px">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Total</th>
+                                <th>Día</th>
+                                <th>Hora</th>
+                                <th>Detalles</th>
+                                <th>No llevada a cabo</th>
+                                <th>Aceptar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dibujarVenta">
+                            <!-- Aquí se insertarán las filas de citas pendientes -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                        <div class="tab-content mt-3">
-                            <!-- Contenido de Citas de todos los empleados -->
-                            <div class="tab-pane fade show active" id="citasPendientes" role="tabpanel" aria-labelledby="compras-totales-tab">
-                                <div class="table-container mt-5">
-                                    <h2>CITAS</h2>
-                                    <div class="filtros mt-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="input" id="fechaFiltro" class="form-select">
-                                            <label for="fechaFiltro">Fecha:</label>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <select id="horaFiltro" class="form-select">
-                                                <option value="">-- Seleccionar una hora --</option>
-                                                <option value="09:00:00">09:00:00</option>
-                                                <option value="10:00:00">10:00:00</option>
-                                                <option value="11:00:00">11:00:00</option>
-                                                <option value="12:00:00">12:00:00</option>
-                                                <option value="13:00:00">13:00:00</option>
-                                                <option value="14:00:00">14:00:00</option>
-                                                <option value="15:00:00">15:00:00</option>
-                                                <option value="16:00:00">16:00:00</option>
-                                                <option value="17:00:00">17:00:00</option>
-                                                <option value="18:00:00">18:00:00</option>
-                                                <option value="19:00:00">19:00:00</option>
-                                                <option value="20:00:00">20:00:00</option>   
-                                            </select>
-                                            <label for="horaFiltro">Hora:</label>
-                                        </div>
-                                        <div class="form-floating mb-3 row">
-                                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
-                                            <button id="mostrarTodasCitas" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
-                                            <button id="ordenarAsc" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
-                                            <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
-                                        </div>
-                                    </div>
-                                    <table class="table table-striped" style="margin-top: 30px">
-                                        <thead>
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Total</th>
-                                                <th>Día</th>
-                                                <th>Hora</th>
-                                                <th>Detalles</th>
-                                                <th>No llevada a cabo</th>
-                                                <th>Aceptar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarVenta">
-                                            <!-- Aquí se insertarán las filas de citas pendientes -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+            <!-- Contenido de Ventas de todos los empleados -->
+            <div class="tab-pane fade" id="citasAceptadasContent" role="tabpanel" aria-labelledby="citas-aceptadas-tab">
+                <div class="table-container mt-5">
+                    <h2>VENTAS DE CITAS ACEPTADAS</h2>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="nombreEmpleadoFiltro" class="form-control" placeholder="Nombre del empleado">
+                        <label for="nombreEmpleadoFiltro">Buscar ventas del empleado:</label>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Total</th>
+                                <th>Día</th>
+                                <th>Hora</th>
+                                <th>Empleado</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dibujarVentasAceptadas">
+                            <!-- Aquí se insertarán las filas de las ventas aceptadas -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td id="totalVentasAceptadas"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
 
-                            <!-- Contenido de Ventas de todos los empleados -->
-                            <div class="tab-pane fade" id="comprasAceptadas" role="tabpanel" aria-labelledby="compras-aceptadas-tab">
-                                <div class="table-container mt-5">
-                                    <h2>VENTAS DE CITAS ACEPTADAS</h2>
-                                    <div class="form-floating mb-3">
-                                        <input type="text" id="nombreEmpleadoFiltro" class="form-control" placeholder="Nombre del empleado">
-                                        <label for="nombreEmpleadoFiltro">Buscar ventas del empleado:</label>
-                                    </div>
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Total</th>
-                                                <th>Día</th>
-                                                <th>Hora</th>
-                                                <th>Empleado</th>
-                                                <th>Detalles</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarVentasAceptadas">
-                                            <!-- Aquí se insertarán las filas de las ventas aceptadas -->
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td id="totalVentasAceptadas"></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <!-- Contenido de Mis Citas -->
-                            <div class="tab-pane fade" id="misCitas" role="tabpanel" aria-labelledby="mis-citas-tab">
-                                <div class="table-container mt-5">
-                                    <h2>MIS CITAS</h2>
-                                    <div class="filtros mt-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="input" id="fechaFiltroEmpleado" class="form-select">
-                                            <label for="fechaFiltroEmpleado">Fecha:</label>
-                                        </div>
-                                      
-
-                                        <div class="form-floating mb-3">
-                                        <select id="horaFiltroEmpleado" class="form-select">
-                                            <option value="">-- Seleccionar una hora</option>
-                                            <option value="09:00:00">09:00:00</option>
-                                            <option value="10:00:00">10:00:00</option>
-                                            <option value="11:00:00">11:00:00</option>
-                                            <option value="12:00:00">12:00:00</option>
-                                            <option value="13:00:00">13:00:00</option>
-                                            <option value="14:00:00">14:00:00</option>
-                                            <option value="15:00:00">15:00:00</option>
-                                            <option value="16:00:00">16:00:00</option>
-                                            <option value="17:00:00">17:00:00</option>
-                                            <option value="18:00:00">18:00:00</option>
-                                            <option value="19:00:00">19:00:00</option>
-                                            <option value="20:00:00">20:00:00</option>
-                                        </select>
-                                        <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
-                                    </div>
-                                        <div class="form-floating mb-3 row">
-                                        <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
-                                        <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
-                                        <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
-                                        <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
-                                        </div>
-                                    </div>
-                                    <table class="table table-striped" style="margin-top: 30px">
-                                        <thead>
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Total</th>
-                                                <th>Día</th>
-                                                <th>Hora</th>
-                                                <th>Detalles</th>
-                                                <th>No llevada a cabo</th>
-                                                <th>Aceptar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarVentaEmpleado">
-                                            <!-- Aquí se insertarán las filas de citas pendientes -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+            <!-- Contenido de Mis Citas -->
+            <div class="tab-pane fade" id="misCitasContent" role="tabpanel" aria-labelledby="mis-citas-tab">
+                <div class="table-container mt-5">
+                    <h2>MIS CITAS</h2>
+                    <div class="filtros mt-3">
+                        <div class="form-floating mb-3">
+                            <input type="input" id="fechaFiltroEmpleado" class="form-select">
+                            <label for="fechaFiltroEmpleado">Fecha:</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select id="horaFiltroEmpleado" class="form-select">
+                                <option value="">-- Seleccionar una hora</option>
+                                <option value="09:00:00">09:00:00</option>
+                                <option value="10:00:00">10:00:00</option>
+                                <option value="11:00:00">11:00:00</option>
+                                <option value="12:00:00">12:00:00</option>
+                                <option value="13:00:00">13:00:00</option>
+                                <option value="14:00:00">14:00:00</option>
+                                <option value="15:00:00">15:00:00</option>
+                                <option value="16:00:00">16:00:00</option>
+                                <option value="17:00:00">17:00:00</option>
+                                <option value="18:00:00">18:00:00</option>
+                                <option value="19:00:00">19:00:00</option>
+                                <option value="20:00:00">20:00:00</option>
+                            </select>
+                            <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
+                        </div>
+                        <div class="form-floating mb-3 row">
+                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                            <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
+                            <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
+                            <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                         </div>
                     </div>
-
-                          
-
+                    <table class="table table-striped" style="margin-top: 30px">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Total</th>
+                                <th>Día</th>
+                                <th>Hora</th>
+                                <th>Detalles</th>
+                                <th>No llevada a cabo</th>
+                                <th>Aceptar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dibujarVentaEmpleado">
+                            <!-- Aquí se insertarán las filas de citas pendientes -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="tab-content" id="comprasTabContent">
         <!-- Pestaña Compras -->
-<div class="tab-pane fade show active" id="compras-main-tab" role="tabpanel" aria-labelledby="compras-main-tab-label">
-    <!-- Navegación de pestaña de compras -->
-    <ul class="nav nav-tabs" id="comprasNavTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="compras-totales-custom-tab" data-bs-toggle="tab" data-bs-target="#comprasTotalesTab" type="button" role="tab" aria-controls="comprasTotalesTab" aria-selected="true">Compras Totales</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="compras-aceptadas-custom-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadasTab" type="button" role="tab" aria-controls="comprasAceptadasTab" aria-selected="false">Compras Aceptadas</button>
-        </li>
-    </ul>
+        <div class="tab-pane fade show active" id="ventasComprasContent" role="tabpanel" aria-labelledby="ventas-compras-tab">
+            <!-- Navegación de pestaña de compras -->
+            <ul class="nav nav-tabs" id="comprasNavTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="compras-totales-tab-btn" data-bs-toggle="tab" data-bs-target="#comprasTotalesContent" type="button" role="tab" aria-controls="comprasTotalesContent" aria-selected="true">Compras Totales</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="compras-aceptadas-tab-btn" data-bs-toggle="tab" data-bs-target="#comprasAceptadasContent" type="button" role="tab" aria-controls="comprasAceptadasContent" aria-selected="false">Compras Aceptadas</button>
+                </li>
+            </ul>
 
-    <br>
+            <br>
 
-    <input type="text" class="form-control mb-3" id="buscadorIdCompra" placeholder="Buscar por id de venta">
+            <input type="text" class="form-control mb-3" id="buscadorIdCompra" placeholder="Buscar por id de venta">
 
-    <div class="tab-content" id="comprasNavTabContent">
-        <!-- Pestaña compras totales -->
-        <div class="tab-pane fade show active" id="comprasTotalesTab" role="tabpanel" aria-labelledby="compras-totales-custom-tab">
-            <div class="table-container mt-5">
-                <h2>TODAS LAS COMPRAS</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Id de compra</th>
-                            <th>Total</th>
-                            <th>Día</th>
-                            <th>Detalles</th>
-                            <th>Aceptar</th>
-                            <th>Rechazar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ventasProductosTable">
-                        <!-- Contenido de la tabla -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- Pestaña compras aceptadas -->
-        <div class="tab-pane fade" id="comprasAceptadasTab" role="tabpanel" aria-labelledby="compras-aceptadas-custom-tab">
-            <div class="table-container mt-5">
-                <h2>COMPRAS CONFIRMADAS</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Id de compra</th>
-                            <th>Total</th>
-                            <th>Día</th>
-                            <th>Detalles</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ventasConfirmadasTable">
-                        <!-- Contenido de la tabla -->
-                    </tbody>
-                </table>
+            <div class="tab-content" id="comprasTabContent">
+                <!-- Pestaña compras totales -->
+                <div class="tab-pane fade show active" id="comprasTotalesContent" role="tabpanel" aria-labelledby="compras-totales-tab-btn">
+                    <div class="table-container mt-5">
+                        <h2>TODAS LAS COMPRAS</h2>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Id de compra</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Detalles</th>
+                                    <th>Aceptar</th>
+                                    <th>Rechazar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ventasProductosTable">
+                                <!-- Contenido de la tabla -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Pestaña compras aceptadas -->
+                <div class="tab-pane fade" id="comprasAceptadasContent" role="tabpanel" aria-labelledby="compras-aceptadas-tab-btn">
+                    <div class="table-container mt-5">
+                        <h2>COMPRAS CONFIRMADAS</h2>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Id de compra</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ventasConfirmadasTable">
+                                <!-- Contenido de la tabla -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-                    <!-- Pestaña Cursos -->
-                    <div class="tab-pane fade" id="cursos" role="tabpanel" aria-labelledby="cursos-tab">
-                        <div class="table-container mt-5">
-                            <h2>CURSOS</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Precio</th>
-                                    <th>Día</th>
-                                    <th>Detalles</th>
-                                    <th>Rechazar</th>
-                                    <th>Editar</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Curso</td>
-                                    <td>$2000</td>
-                                    <td>2024-07-03</td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                                    <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
                     <!-- Modales -->
                     <!-- ESTE MODAL SERA PARA LAS CITAS DETALLES -->
                     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
@@ -1182,8 +1148,8 @@
                                     ¿Estás seguro de eliminar la cita?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-secondary">Confirmar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-pink">Confirmar</button>
                                 </div>
                             </div>
                         </div>
@@ -1256,41 +1222,52 @@ $(document).ready(function() {
         changeYear: true
     });
 
-    $('#citas-tab').on('click', function() {
+    $('#citas-totales-tab').on('click', function() {
         dibujarCitasVentasTecnicasProductos();
     });
 
 });
+
+let citasVentasGlobal = [];
+let citasVentasEmpleado = [];
+let citasVentasAceptadas = [];
+
 
     function calcularTotalVentas(citas) {
         return citas.reduce((total, cita) => total + cita.venta.total, 0);
     }
 
     function dibujarCitasVentasTecnicasProductos() {
-        $.get('/venta/citas', function (citasVentas) {
-            citasVentasGlobal = [];
+    $.get('/venta/citas', function (citasVentas) {
+        console.log('Respuesta de /venta/citas:', citasVentas); // Añade esta línea para verificar la respuesta
 
-            $.each(citasVentas, function(index, cita) {
-                citasVentasGlobal.push({
-                    id: cita.id,
-                    fechaCita: cita.fechaCita,
-                    horaCita: cita.horaCita,
-                    venta: cita.venta,
-                    servicios: cita.servicios,
-                    usuario_empleado: cita.usuario_empleado
-                });
+        citasVentasGlobal = [];
+
+        $.each(citasVentas, function(index, cita) {
+            citasVentasGlobal.push({
+                id: cita.id,
+                fechaCita: cita.fechaCita,
+                horaCita: cita.horaCita,
+                venta: cita.venta,
+                servicios: cita.servicios,
+                usuario_empleado: cita.usuario_empleado
             });
-
-            console.log('todas las citas: ', citasVentasGlobal);
-            mostrarCitas(citasVentasGlobal);
         });
-    }
 
-    // dibujarCitasVentasTecnicasProductos();
+        console.log('Todas las citas procesadas:', citasVentasGlobal);
+        mostrarCitas(citasVentasGlobal);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Error al obtener /venta/citas:', textStatus, errorThrown); // Añade esto para manejar errores
+    });
+}
+
+    dibujarCitasVentasTecnicasProductos();
+
 
     function dibujarCitasVentasTecnicasProductosEmpleado() {
         $.get('/venta/citas/empleado', function (citasVentas) {
-            citasVentasEmpleado = [];
+
+            citasVentasEmpleado =[];
 
             $.each(citasVentas, function(index, cita) {
                 citasVentasEmpleado.push({
@@ -1308,93 +1285,117 @@ $(document).ready(function() {
         });
     }
 
-    dibujarCitasVentasTecnicasProductosEmpleado();
+    $('#mis-citas-tab').on('click', function() {
+        dibujarCitasVentasTecnicasProductosEmpleado();
+    })
 
 
     function dibujarCitasVentasTecnicasProductosAceptados() {
-        $.get('/venta/citas/aceptadas', function (citasVentas) {
-            citasVentasAceptadas = [];
+    $.get('/venta/citas/aceptadas', function (citasVentas) {
+        console.log('Respuesta de /venta/citas/aceptadas:', citasVentas); // Añade esta línea para verificar la respuesta
+        citasVentasAceptadas = [];
 
-            $.each(citasVentas, function(index, cita) {
-                citasVentasAceptadas.push({
-                    id: cita.id,
-                    fechaCita: cita.fechaCita,
-                    horaCita: cita.horaCita,
-                    venta: cita.venta,
-                    servicios: cita.servicios,
-                    usuario_empleado: cita.usuario_empleado
-                });
+
+        $.each(citasVentas, function(index, cita) {
+            citasVentasAceptadas.push({
+                id: cita.id,
+                fechaCita: cita.fechaCita,
+                horaCita: cita.horaCita,
+                venta: cita.venta,
+                servicios: cita.servicios,
+                usuario_empleado: cita.usuario_empleado
             });
-
-            console.log(citasVentasAceptadas);
-            mostrarCitasAceptadas(citasVentasAceptadas);
         });
-    }
+
+        console.log('Citas aceptadas procesadas:', citasVentasAceptadas);
+        mostrarCitasAceptadas(citasVentasAceptadas);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Error al obtener /venta/citas/aceptadas:', textStatus, errorThrown); // Añade esto para manejar errores
+    });
+}
+
+$('#citas-aceptadas-tab').on('click', function() {
+    dibujarCitasVentasTecnicasProductosAceptados();
+})
 
     
 
-    $('#compras-aceptadas-tab').on('click', function() {
+    $('#citas-aceptadas-tab').on('click', function() {
         dibujarCitasVentasTecnicasProductosAceptados();
     });
 
+  
     function mostrarCitasAceptadas(citas) {
-        let tablaVenta = $('#dibujarVentasAceptadas');
-        tablaVenta.empty();
+    let tablaVenta = $('#dibujarVentasAceptadas');
+    tablaVenta.empty();
 
-        $.each(citas, function (index, citaData) {
-            let cita = citaData;
-            let venta = citaData.venta;
-
-            tablaVenta.append(`
-                <tr>
-                    <td>Cita ${cita.id}</td>
-                    <td>${venta.total}</td>
-                    <td>${venta.fechaVenta}</td>
-                    <td>${cita.horaCita}</td>
-                    <td>${cita.usuario_empleado.name + " " + cita.usuario_empleado.apellido}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
-                </tr>
-            `);
-        });
-
-        let totalVentas = calcularTotalVentas(citas);
-        $('#totalVentasAceptadas').text('Total Vendido: ' + totalVentas.toFixed(2));
-
-        manejarEventosCitaAceptada();
+    if (citas.length === 0) {
+        tablaVenta.append('<tr><td colspan="6">No hay citas aceptadas para mostrar.</td></tr>');
+        return;
     }
+
+    $.each(citas, function (index, citaData) {
+        let cita = citaData;
+        let venta = citaData.venta;
+
+        tablaVenta.append(`
+            <tr>
+                <td>Cita ${cita.id}</td>
+                <td>${venta.total}</td>
+                <td>${venta.fechaVenta}</td>
+                <td>${cita.horaCita}</td>
+                <td>${cita.usuario_empleado.name + " " + cita.usuario_empleado.apellido}</td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
+            </tr>
+        `);
+    });
+
+    let totalVentas = calcularTotalVentas(citas);
+    $('#totalVentasAceptadas').text('Total Vendido: ' + totalVentas.toFixed(2));
+
+    manejarEventosCitaAceptada();
+}
+
+
 
     function mostrarCitas(citas) {
-        let tablaVenta = $('#dibujarVenta');
-        tablaVenta.empty();
+    let tablaVenta = $('#dibujarVenta');
+    tablaVenta.empty();
 
-        $.each(citas, function (index, citaData) {
-            let cita = citaData;
-            let venta = citaData.venta;
-
-            tablaVenta.append(`
-                <tr>
-                    <td>Cita ${cita.id}</td>
-                    <td>${venta.total}</td>
-                    <td>${venta.fechaVenta}</td>
-                    <td>${cita.horaCita}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i></button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i></button></td>
-                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i></button></td>
-                </tr>
-            `);
-        });
-
-        manejarEventos();
+    if (citas.length === 0) {
+        tablaVenta.append('<tr><td colspan="7">No hay citas para mostrar.</td></tr>');
+        return;
     }
+
+    $.each(citas, function (index, citaData) {
+        let cita = citaData;
+        let venta = citaData.venta;
+
+        tablaVenta.append(`
+            <tr>
+                <td>Cita ${cita.id}</td>
+                <td>${venta.total}</td>
+                <td>${venta.fechaVenta}</td>
+                <td>${cita.horaCita}</td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i></button></td>
+                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i></button></td>
+                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i></button></td>
+            </tr>
+        `);
+    });
+
+    manejarEventos();
+}
 
     function manejarEventos() {
         $(document).off('click', '.ver-detalles').on('click', '.ver-detalles', function () {
             let citaId = $(this).data('cita-id');
+            console.log('TODOOOOOOOOO: ',citasVentasGlobal);
             let citaData = citasVentasGlobal.find(cita => cita.id === citaId);
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
-            console.log('servicios: ', citaData.servicios); 
+            console.log('servicios: ', citaData); 
 
             if (citaData && citaData.servicios) {
                 citaData.servicios.forEach(servicio => {
@@ -1539,6 +1540,7 @@ $(document).ready(function() {
         $(document).off('click', '.ver-detalles').on('click', '.ver-detalles', function () {
             let citaId = $(this).data('cita-id');
             let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
+
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
@@ -1752,7 +1754,7 @@ $(document).ready(function() {
                 return fechaB - fechaA;
             }
         });
-        mostrarCitas(citasOrdenadas);
+        mostrarCitasEmpleado(citasOrdenadas);
     }
 
 
@@ -1827,6 +1829,8 @@ function aceptarVenta() {
             },
             success: function(response) {
                 console.log(response);
+                dibujarCitasVentasTecnicasProductosEmpleado();
+                dibujarCitasVentasTecnicasProductosAceptados();
                 dibujarCitasVentasTecnicasProductos();
                 $('#editAppointmentModalCit').modal('hide');
 
@@ -1850,6 +1854,7 @@ $(document).on('click', '.eliminarCita', function() {
 
 $('#rechazarCita').on('click', function() {
     let citaId = $(this).data('cita-id');
+
     eliminarCita(citaId);
 });
 
@@ -1863,6 +1868,8 @@ function eliminarCita(id){
         success: function(response){
             console.log(response);
             dibujarCitasVentasTecnicasProductos();
+            dibujarCitasVentasTecnicasProductosEmpleado();
+            $('#eliminarCita').modal('hide');
             mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
         },
         error: function(error) {

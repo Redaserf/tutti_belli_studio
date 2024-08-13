@@ -303,16 +303,17 @@ class RegistrosController extends Controller
                     $producto = $productoHasTecnica->producto;
 
 
-                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){
+                    if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
                         $detalleProductos = DetalleTecnicaProducto::create([
                             'citaId' => $cita->id,
                             'tecnicaId' => $servicio['tecnicaId'],
                             'productoId' => $productoHasTecnica->productoId,
                             'cantidadProducto' => $productoHasTecnica->cantidadDeUso
                         ]);
-                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso * 2;
                         //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
-                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso * 2;
                          //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
                          // se suma y no lo igualo pq alteraria el registro
                          $producto->save();//se guardan cambios
@@ -431,16 +432,17 @@ class RegistrosController extends Controller
                     $producto = $productoHasTecnica->producto;
 
 
-                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){
+                    if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
                         $detalleProductos = DetalleTecnicaProducto::create([
                             'citaId' => $cita->id,
                             'tecnicaId' => $servicio['tecnicaId'],
                             'productoId' => $productoHasTecnica->productoId,
                             'cantidadProducto' => $productoHasTecnica->cantidadDeUso
                         ]);
-                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso * 2;
                         //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
-                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso * 2;
                          //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
                          // se suma y no lo igualo pq alteraria el registro
                          $producto->save();//se guardan cambios
@@ -489,13 +491,18 @@ class RegistrosController extends Controller
             ->get();
 
             foreach($productosDevolverStock as $productoDetalle){
+                $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $productoDetalle->tecnicaId)
+                    ->where('productoId', $productoDetalle->productoId)
+                    ->value('cantidadDeUso');
+                
                 $producto = $productoDetalle->producto;
                 if($producto) {
-                    $producto->cantidadEnStock += $productoDetalle->cantidadProducto;
+                    $producto->cantidadEnStock += 2 * $cantidadPromedio;
                     $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
                     $producto->save();
                 }
             }
+            
 
             CitaHasServicio::where('citaId', $id)->delete();//eliminar relaciones
             DetalleTecnicaProducto::where('citaId', $id)->delete();
@@ -678,16 +685,17 @@ class RegistrosController extends Controller
                     $producto = $productoHasTecnica->producto;
 
 
-                    if($producto->cantidadEnStock + $producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso){
+                    if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
                         $detalleProductos = DetalleTecnicaProducto::create([
                             'citaId' => $cita->id,
                             'tecnicaId' => $servicio['tecnicaId'],
                             'productoId' => $productoHasTecnica->productoId,
                             'cantidadProducto' => $productoHasTecnica->cantidadDeUso
                         ]);
-                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso;
+
+                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso * 2;
                         //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
-                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso;
+                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso * 2;
                          //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
                          // se suma y no lo igualo pq alteraria el registro
                          $producto->save();//se guardan cambios
@@ -721,105 +729,95 @@ class RegistrosController extends Controller
 
 
     public function actualizarDetalleTecnica(Request $request)
-{
-    // $request->validate([
-    //     'changes.*' => 'required|integer|min:1',//verifica que todos los cambios sean positivos o que no sea cero
-    // ]);
-
-    $changes = $request->input('changes');
-
-    $cambiosArray = $request->changes;
-    if(empty($cambiosArray)){
-        return response()->json(['message' => 'Arreglo vacio'], 400);
-    }
-
-    DB::beginTransaction();
-    try {
-        foreach ($changes as $detalleTecnicaId => $cantidad) {
-            $detalleTecnica = DetalleTecnicaProducto::find($detalleTecnicaId);
-
-            if (!$detalleTecnica) {
-                throw new \Exception("Detalle técnica con ID $detalleTecnicaId no encontrado.");
-            }
-
-            $producto = Producto::find($detalleTecnica->productoId);
-
-            if (!$producto) {
-                throw new \Exception("Producto asociado con el detalle técnica no encontrado.");
-            }
-
-
-            //obtener la cantidad actual en detalleTecnicaProducto
-            $cantidadActual = $detalleTecnica->cantidadProducto;
-            $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $detalleTecnica->tecnicaId)
-            ->where('productoId', $detalleTecnica->productoId)->value('cantidadDeUso');
-            //Esto es para validar que no se usa el doble de la cantidad promedio, eso nos dijo el cliente
-            $count = 0;
-
-            if($cantidad < $cantidadPromedio){
-                throw new \Exception("La cantidad proporcionada por el producto '{$producto->nombre}' tiene que ser mayor a: {$cantidadPromedio}");
-
-            }
-
-
-
-            if ($cantidad > $producto->cantidadEnStock) {
-                throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' excede el stock disponible.");
-            }
-
-            if ($cantidad > 2 * $cantidadPromedio) {
-                throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' no puede exceder el doble de la cantidad promedio");
-            }
-            $producto->cantidadReserva -= $cantidadActual;//a la reserva le quitas la cantidad que estaba anteriormente
-            //La cantidad antigua es la cantidad promedio si es que no se habia editado antes
-            $producto->cantidadEnStock += $cantidadActual;//devuelve la cantidad antigua al stock
-
-            $producto->cantidadReserva += $cantidad;//le metes la nueva
-            $producto->cantidadEnStock -= $cantidad;//resta del stock la cantidad nueva
-            $producto->save();
-            $detalleTecnica->update(['cantidadProducto' => $cantidad]);
+    {
+        $changes = $request->input('changes');
+    
+        if(empty($changes)){
+            return response()->json(['message' => 'Arreglo vacío'], 400);
         }
-
-        DB::commit();
-        return response()->json(['success' => true, 'message' => 'Cantidades actualizadas correctamente.']);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
-    }
-}
-
-
-        public function aceptarVentaEditarEstado(Request $request)
-        {
-            DB::beginTransaction();
-            try {
-                $venta = Venta::findOrFail($request->ventaId);
-
-                $venta->update(['estadoVenta' => true]);
-
-                $citaHasServicio = CitaHasServicio::where('ventaId', $venta->id)->firstOrFail();
-                $cita = $citaHasServicio->cita;
-
-                $detalleTecnicas = DetalleTecnicaProducto::where('citaId', $cita->id)->get();
-
-                foreach ($detalleTecnicas as $detalle) {
-                    $producto = Producto::findOrFail($detalle->productoId);
-
-                    if ($producto->cantidadReserva < $detalle->cantidadProducto) {
-                        DB::rollBack();
-                        return response()->json(['message' => 'No hay suficiente stock para el producto ' . $producto->nombre], 400);
-                    }
-
-                    $producto->cantidadReserva -= $detalle->cantidadProducto;//Se resta a la reserva
-                    $producto->save();
+    
+        DB::beginTransaction();
+        try {
+            foreach ($changes as $detalleTecnicaId => $cantidad) {
+                $detalleTecnica = DetalleTecnicaProducto::find($detalleTecnicaId);
+    
+                if (!$detalleTecnica) {
+                    throw new \Exception("Detalle técnica con ID $detalleTecnicaId no encontrado.");
                 }
-
-                DB::commit();
-                return response()->json(['message' => 'Venta aceptada y stock actualizado con éxito'], 200);
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return response()->json(['message' => 'Error al aceptar la venta y actualizar el stock', 'error' => $e->getMessage()], 500);
+    
+                $producto = Producto::find($detalleTecnica->productoId);
+    
+                if (!$producto) {
+                    throw new \Exception("Producto asociado con el detalle técnica no encontrado.");
+                }
+    
+                $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $detalleTecnica->tecnicaId)
+                    ->where('productoId', $detalleTecnica->productoId)
+                    ->value('cantidadDeUso');
+    
+                if ($cantidad < $cantidadPromedio) {
+                    throw new \Exception("La cantidad proporcionada para el producto '{$producto->nombre}' tiene que ser mayor a: {$cantidadPromedio}");
+                }
+    
+                if ($cantidad > $producto->cantidadReserva) {
+                    throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' excede la cantidad en reserva disponible.");
+                }
+    
+                if ($cantidad > 2 * $cantidadPromedio) {
+                    throw new \Exception("La cantidad solicitada para el producto '{$producto->nombre}' no puede exceder el doble de la cantidad promedio.");
+                }
+    
+                $detalleTecnica->update(['cantidadProducto' => $cantidad]);
             }
+    
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Cantidades actualizadas correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
         }
+    }
+    
+    
+    public function aceptarVentaEditarEstado(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $venta = Venta::findOrFail($request->ventaId);
+            $venta->update(['estadoVenta' => true]);
+    
+            $citaHasServicio = CitaHasServicio::where('ventaId', $venta->id)->firstOrFail();
+            $cita = $citaHasServicio->cita;
+    
+            $detalleTecnicas = DetalleTecnicaProducto::where('citaId', $cita->id)->get();
+    
+            foreach ($detalleTecnicas as $detalle) {
+                $producto = Producto::findOrFail($detalle->productoId);
+                $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $detalle->tecnicaId)
+                    ->where('productoId', $detalle->productoId)
+                    ->value('cantidadDeUso');
+    
+                if ($producto->cantidadReserva < $detalle->cantidadProducto) {
+                    DB::rollBack();
+                    return response()->json(['message' => 'No hay suficiente stock en reserva para el producto ' . $producto->nombre], 400);
+                }
+    
+                $cantidadDoble = $cantidadPromedio * 2;
+                $diferencia = $cantidadDoble - $detalle->cantidadProducto;
+    
+                $producto->cantidadReserva -= $detalle->cantidadProducto;
+                $producto->cantidadEnStock += $diferencia;
+    
+                $producto->save();
+            }
+    
+            DB::commit();
+            return response()->json(['message' => 'Venta aceptada y stock actualizado con éxito'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al aceptar la venta y actualizar el stock', 'error' => $e->getMessage()], 500);
+        }
+    }
+    
 
 }
