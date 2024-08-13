@@ -388,7 +388,7 @@ header {
                     </a>
                 </li>
                 <li class="nav-link">
-                  <a href="/Ver-Ventas">
+                  <a href="/Ver-ventas-empleado">
                       <i class="fa-solid fa-money-bill-trend-up icon"></i>
                     <span class="text nav-text">Ventas</span>
                   </a>

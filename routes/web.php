@@ -98,7 +98,7 @@ use App\Models\Inscripcion;
 
 
     //ventas de cada empleado
-    Route::get('/venta/citas/aceptadas/empleado', [ConsultasController::class, 'ventasCitasEmpleadoAdmin']);
+    Route::get('/venta/citas/empleado', [ConsultasController::class, 'ventasCitasEmpleadoAdmin']);
 
 
 
@@ -144,6 +144,7 @@ use App\Models\Inscripcion;
 
     Route::get('/Home-empleado', [ViewsController::class, 'employeeHome']);
     Route::get('/Agregar-Cita-Empleado', [ViewsController::class, 'employeeAgregarCita']);
+    Route::get('/Ver-ventas-empleado',[ViewsController::class,'employeeVerVentas']);
 
     Route::get('/Ver-Citas-Empleado', [ConsultasController::class, 'mostrarServiciosTecnicasCitasEmpleado']);
 
