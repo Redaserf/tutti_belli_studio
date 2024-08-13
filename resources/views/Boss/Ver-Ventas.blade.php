@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 
-    
+
 <!-- datePicker -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- datePicker -->
@@ -255,7 +255,7 @@
             align-items: center;
             margin-top: 20px;
         }
-        
+
 
         .top a {
             margin-left: 0px;
@@ -403,16 +403,16 @@
         }
         /* Alerta bonita */
 
-        
+
 .btnMayorMenor {
-    background-color: #e60073; 
+    background-color: #e60073;
     color: white;
     border: none;
 }
 
 .btnMayorMenor:hover {
-    background-color: #cc005f; 
-}   
+    background-color: #cc005f;
+}
 
 
 .btn-pink {
@@ -657,12 +657,12 @@
                                 <option value="17:00:00">17:00:00</option>
                                 <option value="18:00:00">18:00:00</option>
                                 <option value="19:00:00">19:00:00</option>
-                                <option value="20:00:00">20:00:00</option>   
+                                <option value="20:00:00">20:00:00</option>
                             </select>
                             <label for="horaFiltro">Hora:</label>
                         </div>
                         <div class="form-floating mb-3 row">
-                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/U hora </button>
                             <button id="mostrarTodasCitas" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
                             <button id="ordenarAsc" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
                             <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
@@ -751,7 +751,7 @@
                             <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
                         </div>
                         <div class="form-floating mb-3 row">
-                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/U hora </button>
                             <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
                             <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
                             <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
@@ -1196,7 +1196,7 @@
     <!-- <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.min.js"></script> -->
     <script src="https://code.jquery.com/ui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+
     <script>
 //         $(document).ready(function() {
 //     // Cuando se cierra el modal 'detailsModalProducts'
@@ -1219,7 +1219,7 @@
 // });
 $(document).ready(function() {
     $('#fechaFiltro').datepicker({
-        dateFormat: 'yy-mm-dd', 
+        dateFormat: 'yy-mm-dd',
         maxDate: 0,
         changeMonth: true,
         changeYear: true
@@ -1227,7 +1227,7 @@ $(document).ready(function() {
 
     $("#fechaFiltroEmpleado").datepicker({
         dateFormat: 'yy-mm-dd',
-        maxDate: 0, 
+        maxDate: 0,
         changeMonth: true,
         changeYear: true
     });
@@ -1328,13 +1328,13 @@ $('#citas-aceptadas-tab').on('click', function() {
     dibujarCitasVentasTecnicasProductosAceptados();
 })
 
-    
+
 
     $('#citas-aceptadas-tab').on('click', function() {
         dibujarCitasVentasTecnicasProductosAceptados();
     });
 
-  
+
     function mostrarCitasAceptadas(citas) {
     let tablaVenta = $('#dibujarVentasAceptadas');
     tablaVenta.empty();
@@ -1405,7 +1405,7 @@ $('#citas-aceptadas-tab').on('click', function() {
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
-            console.log('servicios: ', citaData); 
+            console.log('servicios: ', citaData);
 
             if (citaData && citaData.servicios) {
                 citaData.servicios.forEach(servicio => {
@@ -1516,7 +1516,7 @@ $('#citas-aceptadas-tab').on('click', function() {
                 });
             });
         });
-    }   
+    }
 
 
     function manejarEventosCitaAceptada() {
@@ -1661,7 +1661,7 @@ $('#citas-aceptadas-tab').on('click', function() {
                             mostrarAlerta('No se hizo ningun cambio.', 'alert-primary', 'info-fill');
                         }
                         mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
-                        
+
                     }
                 });
             });
@@ -1791,7 +1791,7 @@ $('#citas-aceptadas-tab').on('click', function() {
     // $('#compras-totales-tab-citas').on('click', function() {
     //     dibujarCitasVentasTecnicasProductos();
     // });
-    
+
     //$('#compras-aceptadas-tab').on('click', function() {
     // Mostrar la pestaña de Compras Aceptadas
     //$('#comprasAceptadas').addClass('show active');
@@ -1918,17 +1918,17 @@ function eliminarCita(id){
 
     $(document).ready(function(){
 
- 
+
         $('a[data-bs-target="#editProductsModal1"]').click(function(e){
             e.preventDefault();
             $('#editProductsModal1').modal('show');
         });
 
-        
+
         $('#editProductsModal1').on('hidden.bs.modal', function () {
-            $('#editAppointmentModalCit').modal('show');    
+            $('#editAppointmentModalCit').modal('show');
         });
-        
+
 
 // Dashboard toggle
 const body = document.querySelector("body"),
@@ -1974,7 +1974,7 @@ sidebarBtn.addEventListener("click", () => {
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
 
-        $('#buscadorId').on('keyup', function() {
+        $('#buscadorIdCompra').on('keyup', function() {
             var value = $(this).val();
 
             // Filtra en la tabla de Todas las Compras
