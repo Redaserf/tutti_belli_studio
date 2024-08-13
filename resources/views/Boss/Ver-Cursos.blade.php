@@ -617,11 +617,14 @@ header {
                     <h2>Cursos</h2>
                     <a class="left" href="/Agregar-Curso" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Crear curso<i style="margin-left: 6px;" class="fa-solid fa-pencil"></i></button></a>
                 </div>
+
                 <div class="section-divider"></div>
 
                 <div>
 
+
                     <div class="container mt-1 pt-5">
+                        <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de curso">
                         <div id="cursos" class="row">
                           {{-- Cursos mediante backend --}}
                         </div>
@@ -1155,7 +1158,14 @@ $('#edit_imagenProducto').on('change', function() {
     if (file) {
         $('#edit_imagenCurso_preview').attr('src', URL.createObjectURL(file));
     }
-});
+})
+
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#cursos .card').filter(function() {
+            $(this).toggle($(this).find('.card-title').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
 
     $(document).ready(function(){
@@ -1226,7 +1236,7 @@ sidebarBtn.addEventListener("click", () => {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();

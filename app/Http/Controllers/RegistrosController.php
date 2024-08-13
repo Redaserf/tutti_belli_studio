@@ -173,7 +173,10 @@ class RegistrosController extends Controller
                 ]);
             }
 
+
+
             DB::commit();
+            return 'curso guardado exitosamente';
         }catch (\Exception $e){
             DB::rollback();
             return response()->json(['message' => 'Error: ',  $e->getMessage()], 500);
@@ -232,8 +235,8 @@ class RegistrosController extends Controller
             'after_or_equal' => 'La fecha debe ser hoy o posterior.',
             'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
-        
-    
+
+
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
 
@@ -250,13 +253,13 @@ class RegistrosController extends Controller
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
-    
+
         $user = Auth::user();
-    
+
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
         }
-    
+
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
         ->first();
@@ -282,7 +285,7 @@ class RegistrosController extends Controller
                 'estadoVenta' => false,
                 'usuarioId' => $cita->usuarioId
             ]);
-    
+
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
                     'citaId' => $cita->id,
@@ -353,20 +356,20 @@ class RegistrosController extends Controller
             'after_or_equal' => 'La fecha debe ser hoy o posterior.',
             'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
-        
-    
+
+
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
         if (empty($serviciosSeleccionados)) {
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
-    
+
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
-    
+
         $user = Auth::user();
-    
+
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
         }
@@ -555,6 +558,8 @@ class RegistrosController extends Controller
                     $producto->precio = $nuevoPrecio;
                     $producto->descuentoId = $descuento->id;
                     $producto->save();
+                }else{
+                    return 'error al aplicar el descuento favor de revisar los datos';
                 }
             }
 
@@ -562,7 +567,7 @@ class RegistrosController extends Controller
             return 'Descuento aplicado exitosamente';
         }catch (\Exception $e) {
             DB::rollBack();
-            return $e->getMessage();
+            return 'error al crear el descuento favor de revisar los datos';
         }
 
     }
@@ -607,12 +612,14 @@ class RegistrosController extends Controller
                     $tecnica->precio = $nuevoPrecio;
                     $tecnica->descuentoId = $descuento->id;
                     $tecnica->save();
+                }else{
+                    return x;
                 }
             }
 
             return 'descuento aplicado exitosamente';
         }catch (\Exception $e) {
-            return $e->getMessage();
+            return 'error al crear descuento favor de revisar los datos';
         }
 
 

@@ -456,7 +456,7 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%" min="0">
+                        <input name="porcentajeDescuento" type="number" class="form-control" id="porcentaje" placeholder="%" min="0" maxlength="100">
                         <label for="porcentaje">Porcentaje de Descuento</label>
                     </div>
                         <div>
@@ -635,6 +635,15 @@ sidebarBtn.addEventListener("click", () => {
                 });
             }
 
+    $('#porcentaje').on('input', function() {
+        let value = parseInt($(this).val());
+
+        if (value < 1) {
+            $(this).val(1);
+        } else if (value > 100) {
+            $(this).val(99);
+        }
+    });
 
     var discountPercentage;
 
@@ -663,7 +672,7 @@ sidebarBtn.addEventListener("click", () => {
             success: function (response) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                alert('Descuento agregado exitosamente');
+                alert(response);
                 window.location.href = '/Ver-Descuentos';
                 // console.log(descuentoId);  // Para verificar el valor
 
