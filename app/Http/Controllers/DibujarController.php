@@ -8,6 +8,7 @@ use App\Models\Cita;
 use App\Models\CitaHasServicio;
 use App\Models\Curso;
 use App\Models\DetalleProducto;
+use App\Models\DetalleTecnicaProducto;
 use App\Models\Inscripcion;
 use App\Models\Producto;
 use App\Models\Inventario;
@@ -193,7 +194,13 @@ class DibujarController extends Controller
     // ==========[ Eliminar un empleado ]==========
     function employeeDelete($id){
         try {
-            $empleado = User::findOrFail($id);
+            $empleado = User::find($id);
+            $citaIds = Cita::where('empleadoId', $empleado->id)->pluck('id');
+            CitaHasServicio::whereIn('citaId', $citaIds)->delete();
+            DetalleTecnicaProducto::whereIn('citaId', $citaIds)->delete();
+            $empleado->citasEmpleados()->delete();
+            $empleado->carrito()->delete();
+            $empleado->ususariosEmpleadoCursos()->update(['empleadoId' => null]);
             $empleado->delete();
             return response()->json(null, 204);
         } catch (\Exception $e) {

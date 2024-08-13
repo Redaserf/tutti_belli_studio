@@ -101,6 +101,45 @@
         height: 30px;
     
     }}
+
+    /* Alerta bonita */
+
+    @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
     
     </style>
 </head>
@@ -300,12 +339,20 @@ function mostrarCitaModal(citaId) {
             } else {
                 bodyCitas.append('<div class="modalInfo">No se encontraron servicios para esta cita.</div>');
             }
-            const detalleCita = `
+            if (empleado) {
+                const detalleCita = `
                 <div class="modalInfo">
                     Cita programada para el ${cita.fechaCita}
                     a las ${cita.horaCita} con el empleado ${empleado.name}.
-            `;
-            bodyCitas.append(detalleCita);
+                </div>`;
+                bodyCitas.append(detalleCita);
+            } else {
+                const detalleCita = `
+                <div class="modalInfo">
+                    La cita ha terminado o ha sido cancelada, para más información, ponte en contacto con nosotros mediante WhatsApp.
+                </div>`;
+                bodyCitas.append(detalleCita);
+            }
             $('#citaModal').modal('show');
         },
         error: function(error) {
@@ -329,7 +376,7 @@ function mostrarCitaModal(citaId) {
                     }
                     const detalleInscripcion = `<div class="modalInfo">
                         Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}<br> Cupos disponibles: ${curso.cupoLimite} <br><br> Inicia el ${curso.fechaInicio}
-                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <a href="/Home-usuario#contacto">Dirección</a> <br> Instructor oficial: ${empleado.name}
+                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <a href="/Home-usuario#contacto">Dirección</a> <br> Instructor oficial: ${empleado ? empleado.name : 'No asignado'}
                         
                         <br><br>Técnicas a enseñar en el curso:
                     </div>`;

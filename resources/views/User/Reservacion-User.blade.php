@@ -1053,7 +1053,8 @@ $('#citasModal').on('hidden.bs.modal', function () {
                         localStorage.setItem('alertIcon', alertIcon);
                     }
 
-                    window.location.href = '/Reservacion-User';//aqui va la puta vista que falta @aaron apurale alv
+                    
+                    window.location.href = '/Historial-User';
                     
                 },
                 error: function(xhr){
