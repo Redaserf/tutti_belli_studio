@@ -27,7 +27,7 @@
         }
 
         .header-section {
-           
+
             padding: 30px 0;
             border-radius: 10px;
             text-align: center;
@@ -35,7 +35,7 @@
         }
 
         .header-section h1 {
-            
+
         }
         h1 {
     color: #000000; /* Letra negra */
@@ -530,6 +530,8 @@
                         Agregar productos
                     </button>
                 </div>
+
+
                 <div class="form-floating mb-3" id="contenedoTecnicas">
 
 
@@ -578,7 +580,8 @@
                     <h5 class="modal-title" id="productosModalLabel">Selecciona los productos que se utilizaran en el curso</h5>
                 </div>
                 <div class="modal-body">
-
+                    <br>
+                    <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de producto">
                     <div id="productos" class="product-container">
 
                     </div>
@@ -959,6 +962,13 @@ function checkWidth() {
             }
         });
     }
+
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#productos .product-card').filter(function() {
+            $(this).toggle($(this).find('.product-title').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
     $(document).on('click', '#seleccionar', function() {
         let productId = $(this).data('id');

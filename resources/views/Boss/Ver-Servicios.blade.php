@@ -407,6 +407,8 @@
         <div class="section-divider"></div>
 
         <div class="table-responsive tab-content">
+
+            <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de servicio">
             <table class="table">
                 <thead>
                   <tr>
@@ -498,6 +500,13 @@ $.ajaxSetup({
         window.addEventListener('load', function(){
             $('#navbar').css('visibility', 'visible');
             loader.style.display = "none";
+        });
+
+        $('#buscadorNombre').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('#Servicios tr').filter(function() {
+                $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(value) > -1);
+            });
         });
 
         // Dibujar servicios

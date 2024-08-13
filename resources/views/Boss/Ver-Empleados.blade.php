@@ -10,9 +10,9 @@
     <style>
 
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
-        
-        
-        
+
+
+
         /* Dashboard */
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -209,7 +209,7 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-} 
+}
 .tab-content{
     padding: 36px;
 }
@@ -219,7 +219,7 @@ header {
     margin-left: 90px; /* Inicialmente, deja espacio para la sidebar */
     background: var(--body-color);
     transition: var(--tran-05);
-    
+
 }
 
 .sidebar.close ~ .home {
@@ -253,7 +253,7 @@ header {
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -311,7 +311,7 @@ header {
                     font-family: "Playwrite FR Moderne";
                     margin-right: 20px;
                 }
-                
+
                 .section-divider {
                 height: 3px;
                 background-color: rgba(0, 0, 0, 0.8);
@@ -328,9 +328,9 @@ header {
     <div class="overlay"></div>
     <button style="border-radius: 15px;" class="sidebar-btn">☰</button>
 
-    
+
     {{-- Sidebar --}}
-    
+
     <nav class="dashboard-container sidebar close">
         <header>
             <div class="image-text">
@@ -346,7 +346,7 @@ header {
                 </div>
                 <i class="fa-solid fa-angle-right toggle"></i>
             </header>
-    
+
             <div class="menu-bar "id="scrollDash">
                 <div class="menu">
                     <ul class="menu-links">
@@ -416,22 +416,23 @@ header {
                 </div>
                 </div>
             </nav>
-            
+
             {{-- Fin Sidebar --}}
-            
-            
+
+
             <section class="home">
                 <div class="top text-center">
                     <h2>Empleados</h2>
                     <a class="left" href="/Agregar-Empleado" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Registrar empleado<i style="margin-left: 6px" class="fa-solid fa-user-plus"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
-                
+
                 <div class="table-responsive tab-content">
+                    <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de empleado">
                     <div id="mensajeNoEmpleados" class="alert alert-warning text-center" style="display: none;">
                         No hay empleados para mostrar.
                     </div>
-                    
+
                     <table class="table">
                         <thead>
                           <tr>
@@ -446,14 +447,14 @@ header {
                         </tr>
                     </thead>
                     <tbody id="Empleados">
-                        
+
                         {{-- Empleados mediante JS --}}
-                        
+
                     </tbody>
                       </table>
-    
+
                     </div>
-                    
+
                 </section>
 
 {{-- Modal para editar perfil --}}
@@ -501,16 +502,16 @@ header {
         </div>
     </div>
   </div>
-                
-                
+
+
                 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-                
+
                 <script>
-                    
+
                     // Scripts para todas las vistas
-                    
+
                     // Pantalla de carga
         var loader = document.getElementById("contenedor_carga");
         var navbar = document.getElementById("navbar");
@@ -520,19 +521,27 @@ header {
         });
 
 
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+
+
+        $('#Empleados tr').filter(function() {
+            $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
         // Dibujar empleados
 
-        function tablaEmpleados() {
+  function tablaEmpleados() {
     $.ajax({
         url: '/get/empleados',
         method: 'GET',
         success: function(data) {
             const tableBody = $('#Empleados');
             const mensajeNoEmpleados = $('#mensajeNoEmpleados');
-            
+
             tableBody.empty();
-            
+
             if (data.length === 0) {
                 // Ocultar la tabla y mostrar el mensaje
                 tableBody.closest('table').hide();
@@ -541,7 +550,7 @@ header {
                 // Mostrar la tabla y ocultar el mensaje
                 tableBody.closest('table').show();
                 mensajeNoEmpleados.hide();
-                
+
                 data.forEach(empleado => {
                     const row = `<tr>
                         <td>${empleado.id}</td>
@@ -562,7 +571,7 @@ header {
         }
     });
 }
-        
+
         // Eliminar empleados
 
         function employeeDelete(id){
@@ -646,11 +655,11 @@ $('#editProfileForm').on('submit', function(e) {
     });
 });
 
-        
+
         $(document).ready(function(){
-            
+
             tablaEmpleados();
-            
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -687,14 +696,14 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
     $(window).resize(checkWidth);
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -703,11 +712,11 @@ function checkWidth() {
             }
             window.addEventListener('resize', botonSidebar);
             botonSidebar();
-    
+
         // Fin scripts para todas las vistas
-    
-    
-        function botones(){ 
+
+
+        function botones(){
               if (window.innerWidth <= 960) {
                 $('.top').css('flex-direction', 'column');
                 $('.top').css('gap', '10px');
@@ -718,16 +727,16 @@ function checkWidth() {
           }
           window.addEventListener('resize', botones);
           botones();
-    
 
 
 
 
 
-    
+
+
         // Fin document.ready
     });
-    
+
     </script>
 </body>
 </html>
