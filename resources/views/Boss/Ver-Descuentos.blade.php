@@ -457,14 +457,16 @@ header {
                             <a class="nav-link" id="tecnicas-descuento-tab" data-bs-toggle="tab" href="#tecnicas-descuento" role="tab" aria-controls="tecnicas-descuento" aria-selected="false">Técnicas</a>
                         </li>
                     </ul>
-                    
+
 
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="productos-descuento" role="tabpanel" aria-labelledby="productos-descuento-tab">
                         <div class="table-container mt-5">
+                            <input type="text" class="form-control mb-3" id="buscadorNombreProductoDescuento" placeholder="Buscar por nombre del producto">
                         <div id="mensajeNoProductos" class="alert alert-warning text-center" style="display: none;">
                             No hay productos con descuento para mostrar.
                         </div>
+
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -488,9 +490,11 @@ header {
                     </div>
                     <div class="tab-pane fade" id="tecnicas-descuento" role="tabpanel" aria-labelledby="tecnicas-descuento-tab">
                         <div class="table-container mt-5">
+                            <input type="text" class="form-control mb-3" id="buscadorNombreTecnicaDescuento" placeholder="Buscar por nombre de la tecnica">
                         <div id="mensajeNoTecnicas" class="alert alert-warning text-center" style="display: none;">
                             No hay técnicas con descuento para mostrar.
                         </div>
+
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -511,9 +515,9 @@ header {
                         </div>
                     </div>
                 </div>
-                
+
         </section>
-    
+
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -602,6 +606,14 @@ sidebarBtn.addEventListener("click", () => {
     // Fin document.ready
 });
 
+$('#buscadorNombreProductoDescuento').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+
+    $('#Productos tr').filter(function() {
+        $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(value) > -1);
+    });
+});
+
 function tablaDescuentosProducto() {
     $.ajax({
         url: 'get/productos/cd',
@@ -609,9 +621,9 @@ function tablaDescuentosProducto() {
         success: function(data) {
             const tableBody = $('#Productos');
             const mensajeNoProductos = $('#mensajeNoProductos');
-            
+
             tableBody.empty();
-            
+
             if (data.length === 0) {
                 // Ocultar la tabla y mostrar el mensaje
                 tableBody.closest('table').hide();
@@ -620,7 +632,7 @@ function tablaDescuentosProducto() {
                 // Mostrar la tabla y ocultar el mensaje
                 tableBody.closest('table').show();
                 mensajeNoProductos.hide();
-                
+
                 data.forEach(producto => {
                     const row = `<tr>
                                   <td>${producto.id}</td>
@@ -642,6 +654,13 @@ function tablaDescuentosProducto() {
     });
 }
 
+$('#buscadorNombreTecnicaDescuento').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $('#Tecnicas tr').filter(function() {
+        $(this).toggle($(this).find('td:nth-child(2)').text().toLowerCase().indexOf(value) > -1);
+    });
+});
+
 function tablaDescuentosTecnicas() {
     $.ajax({
         url: 'conDescuentoTecnica',
@@ -649,9 +668,9 @@ function tablaDescuentosTecnicas() {
         success: function(data) {
             const tableBody = $('#Tecnicas');
             const mensajeNoTecnicas = $('#mensajeNoTecnicas');
-            
+
             tableBody.empty();
-            
+
             if (data.length === 0) {
                 // Ocultar la tabla y mostrar el mensaje
                 tableBody.closest('table').hide();
@@ -660,7 +679,7 @@ function tablaDescuentosTecnicas() {
                 // Mostrar la tabla y ocultar el mensaje
                 tableBody.closest('table').show();
                 mensajeNoTecnicas.hide();
-                
+
                 data.forEach(tecnica => {
                     const row = `<tr>
                                   <td>${tecnica.id}</td>
@@ -713,7 +732,7 @@ function checkWidth() {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
@@ -736,7 +755,7 @@ function eliminarDescuentoTecnica(id){
             $('#contenedor_carga').css('display', 'none');
             alert("Descuento eliminado con éxito.");
             tablaDescuentosTecnicas();
-            
+
         },
         error: function(error){
             // Ocultar la pantalla de carga
