@@ -544,7 +544,9 @@ $(document).ready(function(){
                     productosComprados = [];
                     total = 0;
                     dibujarCarrito();
-                    window.location.href = '/Historial-User';
+                    setTimeout(function() {
+                        window.location.href = '/Historial-User';
+                    }, 1500);
                 },
                 error: function (response){
                     var mensajeError = response.responseJSON.message;
