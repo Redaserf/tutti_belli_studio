@@ -261,6 +261,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                 <br>
                 <br>
                 <br>
+                <br>
         </div>
         <div class="table-responsive table-container">
             <table class="table">
@@ -359,7 +360,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                 resumen.show();
                 mensajeVacio.hide();
 
-                let total = 0;
+                // let total = 0; que bien aaron
                 let cont2 = 0;
 
                 data.forEach(producto => {
