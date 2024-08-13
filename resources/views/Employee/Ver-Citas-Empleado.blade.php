@@ -620,7 +620,7 @@ margin-right: 20px;
                 </a>
             </li>
             <li class="nav-link">
-                  <a href="/Ver-Ventas">
+                  <a href="/Ver-ventas-empleado">
                       <i class="fa-solid fa-money-bill-trend-up icon"></i>
                     <span class="text nav-text">Ventas</span>
                   </a>
@@ -1437,10 +1437,10 @@ calendar.render();
                             else if(response.message === 'The fecha cita field must be a valid date.'){
                                 mostrarAlerta(`Error: Ingrese correctamente la fecha`, 'alert-danger', 'exclamation-triangle-fill');
                             }
-                            else{
-                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
-                            }
+
                         }
+                            mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+                            
 
                         if (alertMessage) {
                             mostrarAlerta(alertMessage, alertClass, alertIcon);

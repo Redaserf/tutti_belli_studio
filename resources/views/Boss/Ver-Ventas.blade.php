@@ -405,6 +405,49 @@
         }
         /* Alerta bonita */
 
+        
+.btnMayorMenor {
+    background-color: #e60073; 
+    color: white;
+    border: none;
+}
+
+.btnMayorMenor:hover {
+    background-color: #cc005f; 
+}   
+
+
+.btn-pink {
+    background-color: #ffb6c1;
+    color: black;
+    border: none;
+}
+
+.btn-pink:hover {
+    background-color: #ff69b4;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
 </style>
 
 </head>
@@ -521,14 +564,12 @@
                     <!-- Navegación de pestañas -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                        <button class="nav-link active" id="compra-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="true">Compras</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="citas-tab" data-bs-toggle="tab" data-bs-target="#citas" type="button" role="tab" aria-controls="citas" aria-selected="false">Citas</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras" type="button" role="tab" aria-controls="compras" aria-selected="false">Compras</button>
-                    </li>
+    
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab" aria-controls="cursos" aria-selected="false">Cursos</button>
                     </li>
@@ -537,7 +578,7 @@
                 <!-- Contenido de las pestañas -->
                 <div class="tab-content " id="myTabContent">
                     <!-- Pestaña General -->
-                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                    <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
                         <div class="table-container mt-5">
                             <h2>VENTAS</h2>
                             <table class="table table-striped">
@@ -584,7 +625,7 @@
                     <div class="tab-pane fade" id="citas" role="tabpanel" aria-labelledby="citas-tab">
                         <ul class="nav nav-tabs" id="citasTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="compras-totales-tab" data-bs-toggle="tab" data-bs-target="#citasPendientes" type="button" role="tab" aria-controls="citasPendientes" aria-selected="true">Citas de todos los empleados</button>
+                                <button class="nav-link active" id="compras-totales-tab-citas" data-bs-toggle="tab" data-bs-target="#citasPendientes" type="button" role="tab" aria-controls="citasPendientes" aria-selected="true">Citas de todos los empleados</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadas" type="button" role="tab" aria-controls="comprasAceptadas" aria-selected="false">Ventas de todos los empleados</button>
@@ -623,10 +664,10 @@
                                             <label for="horaFiltro">Hora:</label>
                                         </div>
                                         <div class="form-floating mb-3 row">
-                                            <button id="filtrarCitas" class="btn btn-primary mt-2 col-6 col-md-12 col-sm-12">Buscar por fecha Y/O hora</button>
-                                            <button id="mostrarTodasCitas" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Mostrar Todas las Citas</button>
-                                            <button id="ordenarAsc" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Ordenar de forma Ascendente por Fecha</button>
-                                            <button id="ordenarDesc" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Ordenar de forma Descendente por fecha </button>
+                                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                                            <button id="mostrarTodasCitas" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
+                                            <button id="ordenarAsc" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
+                                            <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                                         </div>
                                     </div>
                                     <table class="table table-striped" style="margin-top: 30px">
@@ -710,10 +751,10 @@
                                         <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
                                     </div>
                                         <div class="form-floating mb-3 row">
-                                            <button id="filtrarCitasEmpleado" class="btn btn-primary mt-2 col-6 col-md-12 col-sm-12">Buscar por fecha Y/O hora</button>
-                                            <button id="mostrarTodasCitasEmpleado" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Mostrar Todas las Citas</button>
-                                            <button id="ordenarAscEmpleado" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Ordenar de forma Ascendente por Fecha</button>
-                                            <button id="ordenarDescEmpleado" class="btn btn-secondary mt-2 col-6 col-md-12 col-sm-12">Ordenar de forma Descendente por fecha </button>
+                                        <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                                        <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
+                                        <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
+                                        <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                                         </div>
                                     </div>
                                     <table class="table table-striped" style="margin-top: 30px">
@@ -739,73 +780,71 @@
 
                           
 
-                    <!-- Pestaña Compras -->
-                    <div class="tab-pane fade  " id="compras" role="tabpanel" aria-labelledby="compras-tab">
-                        <!-- Navegación de pestaña de compras -->
-                        <ul class="nav nav-tabs" id="comprasTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="compras-totales-tab" data-bs-toggle="tab" data-bs-target="#comprasTotales" type="button" role="tab" aria-controls="comprasTotales" aria-selected="true">Compras Totales</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="compras-aceptadas-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadas" type="button" role="tab" aria-controls="comprasAceptadas" aria-selected="false">Compras Aceptadas</button>
-                            </li>
-                        </ul>
 
-{{--                        <BR>--}}
-                        <input type="text" class="form-control mb-3" id="buscadorId" placeholder="Buscar por por id de venta">
+    <div class="tab-content" id="comprasTabContent">
+        <!-- Pestaña Compras -->
+<div class="tab-pane fade show active" id="compras-main-tab" role="tabpanel" aria-labelledby="compras-main-tab-label">
+    <!-- Navegación de pestaña de compras -->
+    <ul class="nav nav-tabs" id="comprasNavTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="compras-totales-custom-tab" data-bs-toggle="tab" data-bs-target="#comprasTotalesTab" type="button" role="tab" aria-controls="comprasTotalesTab" aria-selected="true">Compras Totales</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="compras-aceptadas-custom-tab" data-bs-toggle="tab" data-bs-target="#comprasAceptadasTab" type="button" role="tab" aria-controls="comprasAceptadasTab" aria-selected="false">Compras Aceptadas</button>
+        </li>
+    </ul>
+
+    <br>
+
+    <input type="text" class="form-control mb-3" id="buscadorIdCompra" placeholder="Buscar por id de venta">
+
+    <div class="tab-content" id="comprasNavTabContent">
+        <!-- Pestaña compras totales -->
+        <div class="tab-pane fade show active" id="comprasTotalesTab" role="tabpanel" aria-labelledby="compras-totales-custom-tab">
+            <div class="table-container mt-5">
+                <h2>TODAS LAS COMPRAS</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Id de compra</th>
+                            <th>Total</th>
+                            <th>Día</th>
+                            <th>Detalles</th>
+                            <th>Aceptar</th>
+                            <th>Rechazar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ventasProductosTable">
+                        <!-- Contenido de la tabla -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Pestaña compras aceptadas -->
+        <div class="tab-pane fade" id="comprasAceptadasTab" role="tabpanel" aria-labelledby="compras-aceptadas-custom-tab">
+            <div class="table-container mt-5">
+                <h2>COMPRAS CONFIRMADAS</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Id de compra</th>
+                            <th>Total</th>
+                            <th>Día</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ventasConfirmadasTable">
+                        <!-- Contenido de la tabla -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-                        <div class="tab-content" id="comprasTabContent">
-                            <!-- Pestaña compras totales -->
-                            <div class="tab-pane fade show active" id="comprasTotales" role="tabpanel" aria-labelledby="compras-totales-tab">
-                                <div class="table-container mt-5">
-                                    <h2>TODAS LAS COMPRAS</h2>
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Id de compra</th>
-                                            <th>Total</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                            <th>Aceptar</th>
-                                            <th>Rechazar</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="ventasProductos">
-                                        <tr>
-                                            <!-- Contenido de la tabla -->
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- Pestaña compras aceptadas -->
-                            <div  class="tab-pane fade" id="comprasAceptadas" role="tabpanel" aria-labelledby="compras-aceptadas-tab">
-                                <div class="table-container mt-5">
-                                    <h2>COMPRAS CONFIRMADAS</h2>
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Tipo</th>
-                                            <th>Id de compra</th>
-                                            <th>Total</th>
-                                            <th>Día</th>
-                                            <th>Detalles</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="ventasConfirmadas">
-                                        <tr>
-
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-{{--                            </div>--}}
-                        </div>
-                    </div>
                     <!-- Pestaña Cursos -->
                     <div class="tab-pane fade" id="cursos" role="tabpanel" aria-labelledby="cursos-tab">
                         <div class="table-container mt-5">
@@ -1216,6 +1255,11 @@ $(document).ready(function() {
         changeMonth: true,
         changeYear: true
     });
+
+    $('#citas-tab').on('click', function() {
+        dibujarCitasVentasTecnicasProductos();
+    });
+
 });
 
     function calcularTotalVentas(citas) {
@@ -1237,15 +1281,15 @@ $(document).ready(function() {
                 });
             });
 
-            console.log(citasVentasGlobal);
+            console.log('todas las citas: ', citasVentasGlobal);
             mostrarCitas(citasVentasGlobal);
         });
     }
 
-    dibujarCitasVentasTecnicasProductos();
+    // dibujarCitasVentasTecnicasProductos();
 
     function dibujarCitasVentasTecnicasProductosEmpleado() {
-        $.get('/venta/citas/aceptadas/empleado', function (citasVentas) {
+        $.get('/venta/citas/empleado', function (citasVentas) {
             citasVentasEmpleado = [];
 
             $.each(citasVentas, function(index, cita) {
@@ -1308,7 +1352,7 @@ $(document).ready(function() {
                     <td>${venta.fechaVenta}</td>
                     <td>${cita.horaCita}</td>
                     <td>${cita.usuario_empleado.name + " " + cita.usuario_empleado.apellido}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
                 </tr>
             `);
         });
@@ -1333,9 +1377,9 @@ $(document).ready(function() {
                     <td>${venta.total}</td>
                     <td>${venta.fechaVenta}</td>
                     <td>${cita.horaCita}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita">No asistió</button></td>
-                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Aceptar</button></td>
+                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i></button></td>
+                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i></button></td>
+                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i></button></td>
                 </tr>
             `);
         });
@@ -1350,7 +1394,7 @@ $(document).ready(function() {
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
-            console.log('servicios: ', citaData.servicios);
+            console.log('servicios: ', citaData.servicios); 
 
             if (citaData && citaData.servicios) {
                 citaData.servicios.forEach(servicio => {
@@ -1461,7 +1505,7 @@ $(document).ready(function() {
                 });
             });
         });
-    }
+    }   
 
 
     function manejarEventosCitaAceptada() {
@@ -1491,6 +1535,127 @@ $(document).ready(function() {
         });
     }
 
+    function manejarEventosEmpleado() {
+        $(document).off('click', '.ver-detalles').on('click', '.ver-detalles', function () {
+            let citaId = $(this).data('cita-id');
+            let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
+
+            let tablaDetalles = $('#dibujarDetalles');
+            tablaDetalles.empty();
+            // console.log('servicios: ', citaData.servicios);
+
+            if (citaData && citaData.servicios) {
+                citaData.servicios.forEach(servicio => {
+                    servicio.tecnicas.forEach(tecnica => {
+                        let empleadoNombre = citaData.usuario_empleado ? (citaData.usuario_empleado.name + " " + citaData.usuario_empleado.apellido) : 'No asignado';
+
+                        tablaDetalles.append(`
+                            <tr>
+                                <td>${servicio.nombre}</td>
+                                <td>${tecnica.nombre}</td>
+                                <td>${empleadoNombre}</td>
+                            </tr>
+                        `);
+                    });
+                });
+            }
+        });
+
+        $(document).off('click', '.modificarProductos').on('click', '.modificarProductos', function () {
+            let citaId = $(this).data('cita-id');
+            let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
+
+            let ventaId = $(this).data('venta-id');
+            $('#aceptarCita').attr('data-venta-id', ventaId);
+
+            let tablaModificar = $('#dibujarDetalleTecnicas');
+            tablaModificar.empty();
+
+            let tablaDetallesTecnicas = $('#dibujarProductos');
+
+            let cambios = {};
+
+            if (citaData && citaData.servicios) {
+                citaData.servicios.forEach(servicio => {
+                    servicio.tecnicas.forEach(tecnica => {
+                        tablaModificar.append(`
+                            <tr>
+                                <td>${tecnica.nombre}</td>
+                                <td><button type="button" data-venta-id="${ventaId}" data-cita-id="${citaId}" data-servicio-id="${servicio.id}" data-tecnica-id="${tecnica.id}" class="btn btn-primary btn-sm productos" data-bs-toggle="modal" data-bs-target="#editProductsModal1">Productos/Modificar Cantidades</button></td>
+                            </tr>
+                        `);
+                    });
+                });
+            }
+
+            $(document).off('click', '.productos').on('click', '.productos', function () {
+                let tecnicaId = $(this).data('tecnica-id');
+                let ventaId = $(this).data('venta-id');
+                let citaId = $(this).data('cita-id');
+                let servicioId = $(this).data('servicio-id');
+                let servicio = citaData.servicios.find(s => s.id === servicioId);
+
+                let tecnica = servicio.tecnicas.find(t => t.id === tecnicaId);
+
+                if (tecnica) {
+                    tablaDetallesTecnicas.empty();
+                    tecnica.productos.forEach(producto => {
+                        producto.detalleTecnicaProducto.forEach(detalle => {
+                            tablaDetallesTecnicas.append(`
+                                <tr>
+                                    <td>${producto.nombre}</td>
+                                    <td><input type="number" min="1" data-tecnica-id="${tecnicaId}" data-cita-id="${citaId}" required id="cantidadInput${detalle.id}" value="${detalle.cantidadProducto}" data-detalle-id="${detalle.id}" class="form-control cantidadProducto"></td>
+                                </tr>
+                            `);
+                        });
+                    });
+                }
+            });
+
+            $(document).off('input', '.cantidadProducto').on('input', '.cantidadProducto', function () {
+                let detalleTecnicaId = $(this).data('detalle-id');
+                let citaId = $(this).data('cita-id');
+                let tecnicaId = $(this).data('tecnica-id');
+
+                let nuevaCantidad = $(this).val();
+
+                $('#guardarCambios').attr('data-cita-id', citaId);
+                $('#guardarCambios').attr('data-tecnica-id', tecnicaId);
+                cambios[detalleTecnicaId] = nuevaCantidad;
+            });
+
+            $(document).off('click', '#guardarCambios').on('click', '#guardarCambios', function () {
+                let citaId = $(this).data('cita-id');
+                let tecnicaId = $(this).data('tecnica-id');
+
+                $.ajax({
+                    url: `/detalleTecnica/actualizar`,
+                    method: 'PUT',
+                    data: {
+                        changes: cambios,
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        citaId: citaId,
+                        tecnicaId: tecnicaId
+                    },
+                    success: function (response) {
+                        $('#editProductsModal1').modal('hide');
+                        dibujarCitasVentasTecnicasProductosEmpleado();
+                        mostrarAlerta('Cantidades actualizadas correctamente.', 'alert-success', 'check-circle-fill');
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                        var response = xhr.responseJSON;
+                        if (response.message === 'Arreglo vacio') {
+                            mostrarAlerta('No se hizo ningun cambio.', 'alert-primary', 'info-fill');
+                        }
+                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+                        
+                    }
+                });
+            });
+        });
+    }
+
 
     function mostrarCitasEmpleado(citas) {
         let tablaVenta = $('#dibujarVentaEmpleado');
@@ -1506,17 +1671,17 @@ $(document).ready(function() {
                     <td>${venta.total}</td>
                     <td>${venta.fechaVenta}</td>
                     <td>${cita.horaCita}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita">No asistió</button></td>
-                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Aceptar</button></td>
+                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
+                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
+                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
                 </tr>
             `);
         });
 
-        manejarEventos();
+        manejarEventosEmpleado  ();
     }
 
-    $('#filtrarMisCitas').on('click', function () {
+    $('#filtrarCitasEmpleado').on('click', function () {
         let fechaFiltro = $('#fechaFiltroEmpleado').val();
         let horaFiltro = $('#horaFiltroEmpleado').val();
 
@@ -1527,7 +1692,7 @@ $(document).ready(function() {
             return coincideFecha && coincideHora;
         });
 
-        mostrarMisCitas(citasFiltradas);
+        mostrarCitasEmpleado(citasFiltradas);
         $('#fechaFiltroEmpleado').val('');
         $('#horaFiltroEmpleado').val('');
     });
@@ -1603,18 +1768,32 @@ $(document).ready(function() {
     $('#mostrarTodasCitasEmpleado').on('click', function() {
         $('#fechaFiltroEmpleado').val('');
         $('#horaFiltroEmpleado').val('');
-        dibujarCitasVentasTecnicasProductos();
+        dibujarCitasVentasTecnicasProductosEmpleado();
     });
 
 
-    $('#mis-citas-tab').on('click', function() {
-        dibujarCitasVentasTecnicasProductosEmpleado();
-    })
+    // $('#mis-citas-tab').on('click', function() {
+    //     dibujarCitasVentasTecnicasProductosEmpleado();
+    // })
 
-    $('#compras-totales-tab').on('click', function() {
-        dibujarCitasVentasTecnicasProductos();
-    })
+    // $('#compras-totales-tab-citas').on('click', function() {
+    //     dibujarCitasVentasTecnicasProductos();
+    // });
+    
+    //$('#compras-aceptadas-tab').on('click', function() {
+    // Mostrar la pestaña de Compras Aceptadas
+    //$('#comprasAceptadas').addClass('show active');
+    // Ocultar la pestaña de Compras Totales
+    //$('#comprasTotales').removeClass('show active');
+//});
 
+//$('#compras-totales-tab').on('click', function() {
+    // Mostrar la pestaña de Compras Totales
+    //$('#comprasTotales').addClass('show active');
+    // Ocultar la pestaña de Compras Aceptadas
+    //$('#comprasAceptadas').removeClass('show active');
+  //  dibujarCompras();  // Asegúrate de que esta función esté definida y funcione correctamente
+//});
 
     $('#ordenarAsc').on('click', function() {
         ordenarCitas('asc');
@@ -1722,6 +1901,18 @@ function eliminarCita(id){
 
     $(document).ready(function(){
 
+ 
+        $('a[data-bs-target="#editProductsModal1"]').click(function(e){
+            e.preventDefault();
+            $('#editProductsModal1').modal('show');
+        });
+
+        
+        $('#editProductsModal1').on('hidden.bs.modal', function () {
+            $('#editAppointmentModalCit').modal('show');    
+        });
+        
+
 // Dashboard toggle
 const body = document.querySelector("body"),
     sidebar = body.querySelector(".sidebar"),
@@ -1770,12 +1961,12 @@ sidebarBtn.addEventListener("click", () => {
             var value = $(this).val();
 
             // Filtra en la tabla de Todas las Compras
-            $('#ventasProductos tr').filter(function() {
+            $('#ventasProductosTable tr').filter(function() {
                 $(this).toggle($(this).find('th').text().indexOf(value) > -1);
             });
 
             // Filtra en la tabla de Compras Aceptadas
-            $('#ventasConfirmadas tr').filter(function() {
+            $('#ventasConfirmadasTable tr').filter(function() {
                 $(this).toggle($(this).find('th').text().indexOf(value) > -1);
             });
 
@@ -1803,9 +1994,9 @@ sidebarBtn.addEventListener("click", () => {
             url: '/get/compras',
             method: 'GET',
             success: function (data) {
-                $('#ventasProductos').empty(); // Limpiar la tabla antes de agregar nuevas filas
+                $('#ventasProductosTable').empty(); // Limpiar la tabla antes de agregar nuevas filas
                 data.forEach(venta => {
-                    const detallesCompra = $('#ventasProductos');
+                    const detallesCompra = $('#ventasProductosTable');
                     const fila = `
                         <tr>
                             <td>Compra</td>
@@ -1822,6 +2013,7 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
+    dibujarCompras();
 
     function dibujarCompraConfirmada(){
         $.ajax({
@@ -1829,7 +2021,7 @@ sidebarBtn.addEventListener("click", () => {
             method: 'GET',
             success: function (data) {
                 var cont = 0;
-                const detallesCompra = $('#ventasConfirmadas');
+                const detallesCompra = $('#ventasConfirmadasTable');
                 detallesCompra.empty();
                 data.forEach(venta => {
                         cont = venta.id;
@@ -1847,6 +2039,7 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
+    dibujarCompraConfirmada();
 
 
     function prepararConfirmacion(ventaId) {
@@ -1957,6 +2150,8 @@ sidebarBtn.addEventListener("click", () => {
             $('#scrollDash').removeClass('table-responsive');
         }
     }
+
+
     checkWidth();
     $(window).resize(checkWidth);
 </script>

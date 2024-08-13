@@ -242,6 +242,20 @@ class ViewsController extends Controller
             return view('Employee.Ver-Productos-Empleado');
         }
     }
+    public function employeeVerVentas(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return redirect('/Ver-Productos');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Productos-User');
+        } elseif ($user->rolId == 3) {
+            return view('Employee.Ver-ventas-empleado');
+        }
+    }
 
 
     // ==========[ Boss ]==========
