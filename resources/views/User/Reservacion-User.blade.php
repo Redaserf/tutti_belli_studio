@@ -374,7 +374,7 @@ gmp-map {
             top: 20px;
             right: 20px;
             display: none;
-            z-index: 2000;/* para que este por encima del modal */
+            z-index: 70000;/* para que este por encima del modal */
             animation-duration: 0.8s;
         }
 
@@ -1063,23 +1063,34 @@ $('#citasModal').on('hidden.bs.modal', function () {
                         let alertMessage = '';
                         let alertClass = 'alert-danger'; // clase predeterminada para errores
                         let alertIcon = 'exclamation-triangle-fill'; //icono de danger
+                        if (xhr.readyState === 4 && xhr.responseJSON) {
+                            if (xhr.responseJSON.error) {
+                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
+                            } 
+                            else if (xhr.responseJSON.message) {
+                                let alertMessage = '';
+                                let alertClass = 'alert-danger';
+                                let alertIcon = 'exclamation-triangle-fill';
 
-                        if (response && response.message) {
-                            if (response.message === 'Debe seleccionar al menos un servicio') {
-                                alertMessage = 'Por favor, selecciona al menos un servicio.';
-                                alertClass = 'alert-warning'; // Cambia a advertencia
-                                alertIcon = 'exclamation-triangle-fill'; 
-                            } else if (response.message == 'Ya existe una cita para esta fecha y hora') {
-                                alertMessage = 'Ya existe una cita para esta fecha y hora.';
-                                alertClass = 'alert-warning'; // Cambia a advertencia
-                                alertIcon = 'exclamation-triangle-fill'; 
+                                if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
+                                    alertMessage = 'Por favor, selecciona al menos un servicio.';
+                                    alertClass = 'alert-warning';
+                                } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
+                                    alertMessage = 'Ya existe una cita para esta fecha y hora.';
+                                    alertClass = 'alert-warning';
+                                } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
+                                    alertMessage = 'La fecha debe ser hoy o posterior.';
+                                } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
+                                    alertMessage = 'Error: Ingrese correctamente la fecha.';
+                                } else {
+                                    alertMessage = `Error: ${xhr.responseJSON.message}`;
+                                }
+
+                                mostrarAlerta(alertMessage, alertClass, alertIcon);
                             }
-                            else if(response.message === 'The fecha cita field must be a valid date.'){
-                                mostrarAlerta(`Error: Ingrese correctamente la fecha`, 'alert-danger', 'exclamation-triangle-fill');
-                            }
+                        } else {
+                            mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
                         }
-
-                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
 
 
                         if (alertMessage) {

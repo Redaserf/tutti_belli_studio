@@ -1229,14 +1229,7 @@ header {
                     console.log('hora de la cita: ', citasServicios.cita.horaCita);
 
                     // actualizarOpcionesSelect(citaDate);//no actualiza las fechas a la hora de editar
-                    if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
-                    {
-                        $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
-                    }
-                    else{
-
-                        $('#horaCita').val(citasServicios.cita.horaCita);
-                    }
+                   
 
 
                     citasServicios.servicios.forEach(servicio => {
@@ -1289,6 +1282,14 @@ header {
                     // moment(fechaCita).toDate()
                     // console.log('tu puta madre wey', fechaCita)
                     actualizarOpcionesSelect(fechaCita);
+                    if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
+                    {
+                        $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
+                    }
+                    else{
+
+                        $('#horaCita').val(citasServicios.cita.horaCita);
+                    }
 
             })
             $('#citasModal').modal('show');
