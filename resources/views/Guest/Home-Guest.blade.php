@@ -632,7 +632,7 @@
     </div>
 </section>
 <section class="text-center">
-    <a href="/Cursos-User">
+    <a href="/Login">
         <button onclick="" class="btn btn-dark btn-personalizado ">Mas Informacion -></button>
     </a>
 </section>
