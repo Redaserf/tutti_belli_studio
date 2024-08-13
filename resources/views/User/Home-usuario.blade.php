@@ -89,6 +89,7 @@ h1, h2, h3, h4, h5 ,a, li, p{
       background-color:#fa3284;
     }
     .btn-personalizado:hover{
+      color:white;
       background-color:#fa3284;
       border:0;
     }
@@ -480,7 +481,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   <section>
     <div data-aos="fade-up" data-aos-duration="1000" class="hero-image" style="position: relative; width: 100%; height: auto;">
       <img src="/resources/img/home/FONDOPRIN2.jpg" class="d-block w-100" alt="Promo image" style="object-fit: cover; height: 730px;">
-      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.2);">
+      <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; background: rgba(0, 0, 0, 0.1);">
         <img src="/resources/img/home/_CON.png" alt="Logo" class="logo-img">
       </div>
     </div>
@@ -600,7 +601,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
             <p class="fonts3">Nuestra meta es poder ofrecerte tratamientos de calidad con precios accesibles.</p>
             <p class="fonts3">Nos comprometemos a llevar tu tratamiento de principio a fin con la mejor asesoría por parte de nuestros especialistas altamente capacitados.</p>
             <a href="/Reservacion-User">
-              <button onclick="" class="btn btn-dark btn-personalizado">Reservar cita</button>
+              <button onclick="" class="btn btn-dark btn-personalizado ">Reservar cita</button>
             </a>
           </div>
         </div> 
@@ -640,23 +641,23 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="text-center row justify-content-center">
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img5g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR3.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img6g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR0.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img8g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR2.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/img7g.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/ICUR1.jpg" class="rounded img-galeria" alt="...">
             </div>
           </div>
         </div>
       </section>
       <section class="text-center">
             <a href="/Cursos-User">
-              <button onclick="" class="btn btn-dark">Mas Informacion -></button>
+              <button onclick="" class="btn btn-dark btn-personalizado">Mas Informacion -></button>
             </a>
       </section>
 
@@ -703,7 +704,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
             <!-- BOTÓN RESERVAR -->
             <a href="/Reservacion-User">
-              <button  id="reservarBtn" type="button" class=" reserve-button ">Reservar ahora</button>
+              <button  id="reservarBtn" type="button" class=" reserve-button btn-personalizado ">Reservar ahora</button>
             </a>
 
       <!-- FOOTER -->

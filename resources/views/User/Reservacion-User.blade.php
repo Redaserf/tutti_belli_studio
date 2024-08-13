@@ -49,7 +49,7 @@ body, html {
         height: 100vh;
         width: 100%;
         position: fixed;
-        z-index: 300000000000000;
+        z-index: 5000000;
     }
 
 .fonts3{
@@ -419,7 +419,7 @@ gmp-map {
       margin-top:70px;
     }
 .citasModal{
-    z-index: 2000000000000;
+    z-index: 60000;
 }
 @media (max-width: 480px) {
     .imgnavbar{
@@ -473,7 +473,7 @@ gmp-map {
   </nav>
 
 
-    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true" >
+    <div class="modal fade citasModal" id="citasModal" tabindex="-1" aria-labelledby="labelcitasModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="citaForm">
@@ -674,7 +674,6 @@ gmp-map {
 <script>
 
 $(document).ready(function(){
-    // ESTO ME LO DIO CHAT ME ESTRESE PQ SE CERRABA OTRO MODAL VA
     $('a[data-bs-target="#termsModal"]').click(function(e){
             e.preventDefault();
             $('#termsModal').modal('show');

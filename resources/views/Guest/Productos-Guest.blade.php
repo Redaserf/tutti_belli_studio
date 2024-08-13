@@ -236,7 +236,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
       </div>
 
-      <br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
 
             <!-- FOOTER -->
             <footer id="contacto" class="footer" class="fonts3">
