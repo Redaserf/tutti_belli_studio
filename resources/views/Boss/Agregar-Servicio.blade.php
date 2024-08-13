@@ -553,6 +553,8 @@ header {
                 <div class="modal-header">
                     <h5 class="modal-title" id="productosModalLabel">Productos</h5>
                 </div>
+                <br>
+                <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de producto">
                 <div class="modal-body product-container" id="contenedorProductos">
 
                 </div>
@@ -708,6 +710,13 @@ sidebarBtn.addEventListener("click", () => {
 
     // Fin document.ready
 });
+
+    $('#buscadorNombre').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#contenedorProductos .product-card').filter(function() {
+            $(this).toggle($(this).find('.product-title').text().toLowerCase().indexOf(value) > -1);
+        });
+    });
 
     function dibujarProductos() {
         $.ajax({
@@ -882,7 +891,7 @@ sidebarBtn.addEventListener("click", () => {
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
