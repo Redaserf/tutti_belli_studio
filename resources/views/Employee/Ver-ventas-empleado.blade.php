@@ -283,9 +283,7 @@ display: none;
 .sidebar.close .header-text {
 display: none;
 }
-.tab-content{
-padding: 36px;
-}
+
 /* Fin Dashboard */
 
 
@@ -576,7 +574,23 @@ margin-right: 20px;
 
 .btnMayorMenor:hover {
     background-color: #cc005f; 
-}
+} 
+.table-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+
+            max-width: 0 auto;
+            width: 0 auto;
+        }
+        .table-container h2 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tab-content{
+            padding:36px;
+        }
     /*estilos pa los modales pq pusiste jajaja hugo nmms xd*/
 </style>
 </head>
@@ -649,195 +663,194 @@ margin-right: 20px;
 </div>
 </nav>
         
-    <section class="home">
-        <div class="top text-center">
-        <div  id="misCitas" aria-labelledby="mis-citas-tab">
-                                <div class="table-container mt-5">
-                                    <h2>MIS CITAS</h2>
-                                    <div class="filtros mt-3">
-                                        <div class="form-floating mb-3">
-                                            <input type="input" id="fechaFiltroEmpleado" class="form-select">
-                                            <label for="fechaFiltroEmpleado">Fecha:</label>
-                                        </div>
-                                      
-
-                                        <div class="form-floating mb-3">
-                                        <select id="horaFiltroEmpleado" class="form-select">
-                                            <option value="">-- Seleccionar una hora</option>
-                                            <option value="09:00:00">09:00:00</option>
-                                            <option value="10:00:00">10:00:00</option>
-                                            <option value="11:00:00">11:00:00</option>
-                                            <option value="12:00:00">12:00:00</option>
-                                            <option value="13:00:00">13:00:00</option>
-                                            <option value="14:00:00">14:00:00</option>
-                                            <option value="15:00:00">15:00:00</option>
-                                            <option value="16:00:00">16:00:00</option>
-                                            <option value="17:00:00">17:00:00</option>
-                                            <option value="18:00:00">18:00:00</option>
-                                            <option value="19:00:00">19:00:00</option>
-                                            <option value="20:00:00">20:00:00</option>
-                                        </select>
-                                        <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
-                                    </div>
-                                        <div class="form-floating mb-3 row">
-                                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
-                                            <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
-                                            <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
-                                            <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
-                                        </div>
-                                    </div>
-                                    <table class="table table-striped" style="margin-top: 30px">
-                                        <thead>
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Total</th>
-                                                <th>Día</th>
-                                                <th>Hora</th>
-                                                <th>Detalles</th>
-                                                <th>No llevada a cabo</th>
-                                                <th>Aceptar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarVentaEmpleado">
-                                            <!-- Aquí se insertarán las filas de citas pendientes -->
-                                        </tbody>
-                                    </table>
-                                </div>
+<section class="home">
+    <div class="top text-center">
+        <div class="tab-content table-responsive" id="misCitas" aria-labelledby="mis-citas-tab">
+            <div class="container mt-5">
+                <h2>MIS CITAS</h2>
+                <div class="table-container table-responsive mt-4">
+                    <div class="filtros mb-3">
+                        <div class="form-floating mb-3">
+                            <input type="date" id="fechaFiltroEmpleado" class="form-control">
+                            <label for="fechaFiltroEmpleado">Fecha:</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select id="horaFiltroEmpleado" class="form-select">
+                                <option value="">-- Seleccionar una hora</option>
+                                <option value="09:00:00">09:00:00</option>
+                                <option value="10:00:00">10:00:00</option>
+                                <option value="11:00:00">11:00:00</option>
+                                <option value="12:00:00">12:00:00</option>
+                                <option value="13:00:00">13:00:00</option>
+                                <option value="14:00:00">14:00:00</option>
+                                <option value="15:00:00">15:00:00</option>
+                                <option value="16:00:00">16:00:00</option>
+                                <option value="17:00:00">17:00:00</option>
+                                <option value="18:00:00">18:00:00</option>
+                                <option value="19:00:00">19:00:00</option>
+                                <option value="20:00:00">20:00:00</option>
+                            </select>
+                            <label for="horaFiltroEmpleado">Hora:</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-2">
+                                <button id="filtrarCitasEmpleado" class="btn btn-light w-100" style="border: 2px solid black">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Buscar por fecha Y/O hora
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-6 mb-2">
+                                <button id="mostrarTodasCitasEmpleado" class="btn btn-dark w-100">
+                                    <i class="fa-regular fa-eye"></i> Ver todas las Citas
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-6 mb-2">
+                                <button id="ordenarAscEmpleado" class="btn btn-pink w-100">
+                                    <i class="fa-solid fa-arrow-down-wide-short"></i> Menor a mayor
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-6 mb-2">
+                                <button id="ordenarDescEmpleado" class="btn btn-dark w-100">
+                                    <i class="fa-solid fa-arrow-up-short-wide"></i> Mayor a menor
+                                </button>
                             </div>
                         </div>
                     </div>
-
-        </div>
-
-                  <!-- ESTE MODAL SERA PARA LAS CITAS DETALLES -->
-                  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>servicio</th>
-                                                <th>tecnica</th>
-                                                <th>empleado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarDetalles">
-                                            <!-- <tr>
-                                                <td>cejas,ojos,labios</td>
-                                                <td>tec1,tec2,tec3</td>
-                                                <td>anyelo</td>
-                                                <td>Pendiente</td>
-
-                                            </tr> -->
-                                            <!-- ESTE MODAL CON TABLA ESTA ECHO PRO SI QUIERES SER MAS ESPECIFICO EN CADA DETALLE DEL HISTORIAL YA DEPENDE DE COMO LO VEAN -->
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
-                                        
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  
-
-                <!-- ESTE MODALS SON PARA CITAS EDITAR -->
-                <div class="modal fade" id="editAppointmentModalCit" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editAppointmentModalLabel">Editar Cita</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Técnica</th>
-                                                <th>Productos</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarDetalleTecnicas">
-                                            <!-- <tr>
-                                                <td>Micropigmentación de Cejas</td>
-                                                <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal1">Productos</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Micropigmentación de Labios</td>
-                                                <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductsModal2">Productos</button></td>
-                                            </tr> -->
-                                        </tbody>
-                                    </table>
-                                    <div class="text-center">
-                                        <button type="button" class="btn btn-success" id="aceptarCita">Aceptar cita</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal">Cerrar</button>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ESTE ES EJEMPLO CUANDO PIQUE A PRODUCTOS DE UNA TECNICA EN CITAS-->
-                    <div class="modal fade" id="editProductsModal1" tabindex="-1" aria-labelledby="editProductsModal1Label" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editProductsModal1Label">Micropigmentación de Cejas - Productos</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Producto</th>
-                                                <th>Cantidad</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dibujarProductos">
-                                            <!-- <tr>
-                                                <td>Pigmento</td>
-                                                <td><input type="number" class="form-control" value="1"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Aguja</td>
-                                                <td><input type="number" class="form-control" value="1"></td>
-                                            </tr> -->
-                                        </tbody>
-                                    </table>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal">Cerrar</button>
-                                    <button type="sumbit" class="btn btn-primary editarDetalleTecnica" id="guardarCambios">Guardar Cambios</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <!-- modal para eliminarCita -->
-                <div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"> <!-- modal-lg para un modal más grande -->
-                        <div class="modal-content custom-modal-content">
-                            <div class="modal-header custom-modal-header">
-                                <h5 class="modal-title" id="labelEliminarCitasModal">Rechazar Cita</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body custom-modal-body">
-                                ¿Estás seguro de eliminar la cita?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-pink">Confirmar</button>
-                            </div>
-                        </div>
+                    <div class="table-responsive tab-content">
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Detalles</th>
+                                    <th>No llevada a cabo</th>
+                                    <th>Aceptar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarVentaEmpleado">
+                                <!-- Aquí se insertarán las filas de citas pendientes -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles de citas -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Técnica</th>
+                                    <th>Empleado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarDetalles">
+                                <!-- Aquí se insertarán las filas de detalles -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar citas -->
+    <div class="modal fade" id="editAppointmentModalCit" tabindex="-1" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAppointmentModalLabel">Editar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Técnica</th>
+                                    <th>Productos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarDetalleTecnicas">
+                                <!-- Aquí se insertarán las filas de técnicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success" id="aceptarCita">Aceptar cita</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para productos de una técnica -->
+    <div class="modal fade" id="editProductsModal1" tabindex="-1" aria-labelledby="editProductsModal1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductsModal1Label">Micropigmentación de Cejas - Productos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarProductos">
+                                <!-- Aquí se insertarán las filas de productos -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar cita -->
+    <div class="modal fade" id="eliminarCita" tabindex="-1" aria-labelledby="labelEliminarCitasModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="labelEliminarCitasModal">Rechazar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de eliminar la cita?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-pink">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
                      <!-- alerta -->
 
                      <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
