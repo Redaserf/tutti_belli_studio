@@ -453,7 +453,7 @@ class RegistrosController extends Controller
                          $producto->save();//se guardan cambios
 
                     }else{
-                        throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
+                        throw new \Exception("No hay suficientes productos para hacer la cita");
                     }
                 }
             }
