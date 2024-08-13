@@ -220,13 +220,13 @@ class RegistrosController extends Controller
 
     public function RegistroCita(Request $request) {
         $request->validate([
-            // 'fechaCita' => 'required|date|after_or_equal:today',
+            'fechaCita' => 'required|date|after_or_equal:today',
             'horaCita' => 'required|date_format:H:i:s',
             'usuarioId' => 'required|exists:users,id',
             'empleadoId' => 'required|exists:users,id',
             'serviciosSeleccionados' => 'required|json'
         ], [
-            // 'required' => 'Este campo es obligatorio.',
+            'required' => 'Este campo es obligatorio.',
             'date' => 'La fecha no es válida.',
             'date_format' => 'El formato de la hora es inválido.',
             'after_or_equal' => 'La fecha debe ser hoy o posterior.',
