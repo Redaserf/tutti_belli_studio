@@ -53,7 +53,25 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         position: fixed;
         z-index: 300000;
     }
-
+    .custom-alerts {
+        background-color: #e0e0e0; /* Color rosado */
+        border: 1px solid #e0e0e0;
+        color: #000000;
+        border-radius: 5px;
+        padding: 20px;
+        font-family: "Josefin Sans", sans-serif;
+    }
+    .custom-alerts .alert-heading {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .custom-alerts p {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    .custom-alerts hr {
+        border-top: 2px solid #000000;
+    }
     .main-container {
             font-family: "Josefin Sans", sans-serif !important;
             display: flex;
@@ -134,6 +152,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 .footer .container-fluid {
     padding: 0 40px;
 }
+
 
                 /* Alerta bonita */
 
@@ -233,6 +252,17 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
   <div class="row">
     <div class="col-12 d-flex flex-column">
+        <div id="mensajeCarritoVacio" class="text-center custom-alerts" style="display: none;">
+            <h4 class="alert-heading">¡No hay productos agregados a tu carrito actualmente!</h4>
+            <p>Actualmente no tienes productos en tu carrito. Agrega productos para poder ver tu carriro.</p>
+            <hr>
+            <p class="mb-0">Mientras tanto, puedes explorar otros servicios y productos que ofrecemos.</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+        </div>
         <div class="table-responsive table-container">
             <table class="table">
                 <thead>
@@ -257,7 +287,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         </div>
     </div>
 </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
       <!-- FOOTER -->
       <footer id="contacto" class="footer" class="fonts3">
@@ -307,17 +337,31 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     // var cont1;
 
     function dibujarCarrito() {
-        $.ajax({
-            url: '/get/carrito',
-            method: 'GET',
-            success: function(data) {
-                const carrito = $('#carritoTabla');
-                const costoTotal = $('#costo-total');
-                carrito.empty();
-                // let total = 0;
+    $.ajax({
+        url: '/get/carrito',
+        method: 'GET',
+        success: function(data) {
+            const carrito = $('#carritoTabla');
+            const costoTotal = $('#costo-total');
+            const resumen = $('.summary-container');
+            const tabla = $('.table-container');
+            const mensajeVacio = $('#mensajeCarritoVacio');
+
+            carrito.empty();
+
+            if (data.length === 0) {
+                // Si no hay productos en el carrito, ocultar tabla y resumen, y mostrar mensaje
+                tabla.hide();
+                resumen.hide();
+                mensajeVacio.show();
+            } else {
+                // Si hay productos en el carrito, mostrar tabla y resumen, y ocultar mensaje
+                tabla.show();
+                resumen.show();
+                mensajeVacio.hide();
+
+                // let total = 0; que bien aaron
                 let cont2 = 0;
-                // const productosComprados = [];
-                // const productosYaDibujados = [];
 
                 data.forEach(producto => {
                     cont2 = 1;
@@ -341,14 +385,13 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <td>${producto.descripcion}</td>
                         <td>$${producto.precio}</td>
                         <td id="${idCantidad}">1</td>
-                        <td id="${idCantidad}">${producto.cantidadEnStock}</td>
+                        <td>${producto.cantidadEnStock}</td>
                         <td>
                             <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
                         carrito.append(item);
                     } else {
-                        //Toma el valor del texto de la cantidad actual y le suma 1
                         cont2 = parseInt($('#' + idCantidad).text()) + 1;
                         $('#' + idCantidad).text(cont2);
                     }
@@ -358,13 +401,14 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
                 costoTotal.text('Costo Total: $' + total);
                 console.log(productosComprados);
-            },
-            error: function(error) {
-                console.log(error);
-                alert('Hubo un error al obtener los productos del carrito');
             }
-        });
-    }
+        },
+        error: function(error) {
+            console.log(error);
+            alert('Hubo un error al obtener los productos del carrito');
+        }
+    });
+}
 
 
         // Eliminar producto del carrito
@@ -496,14 +540,14 @@ $(document).ready(function(){
                 success: function (response){
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                    alert('compra realizada exitosamente')
+                    mostrarAlerta('Compra realizada exitosamente.', 'alert-success','check-circle-fill')
                     productosComprados = [];
                     total = 0;
                     dibujarCarrito();
                 },
                 error: function (response){
                     var mensajeError = response.responseJSON.message;
-                    alert(mensajeError);
+                    mostrarAlerta(mensajeError, 'alert-danger','exclamation-triangle-fill')
 
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
@@ -512,7 +556,7 @@ $(document).ready(function(){
         }else{
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
-            alert('Debes agregar los productos al carrito')
+            mostrarAlerta('Debes de agregar productos al carrito.', 'alert-warning','exclamation-triangle-fill')
         }
 
     });

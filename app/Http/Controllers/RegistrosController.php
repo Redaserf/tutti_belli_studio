@@ -714,6 +714,9 @@ class RegistrosController extends Controller
 
             Mail::to($request->user()->email)->send(new CorreoEspera($cita));
 
+            // Enviar correo al empleado seleccionado
+            $empleado = User::findOrFail($request->empleadoId);
+            Mail::to($empleado->email)->send(new NotificarAdministrador($cita));
 
             // Enviar correo al administrador
             $administradorEmail = 'tuttibellistudiotrc@gmail.com';

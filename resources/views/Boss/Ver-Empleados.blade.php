@@ -582,7 +582,7 @@ header {
                 if (error.status === 500) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                    alert('Este empleado está en un curso asignado.');
+                    alert('Este empleado se encuentra actualmente asignado a algo, intentalo más tarde.');
                 } else {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
