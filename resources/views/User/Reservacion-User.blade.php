@@ -505,8 +505,8 @@ gmp-map {
                         <div class="mt-3 text-center">
                         <p>
                             <input class="form-check-input text-center checkpersonalizado"id="CheckBoxCondiciones" type="checkbox" style="margin-right:12px;"><a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a></input></p>
-                            <p>Para que los resultados del tratamiento realizados durante la cita sean exitosos se deberá seguir con los tratamientos proporcionados al pie de la letra.</p>
-                            <a href="https://drive.google.com/your-document-link" target="_blank">Lista de Tratamientos</a>
+                            <p>Para que los resultados de los tratamiento realizados durante la cita sean exitosos, se deberá seguir con los tratamientos proporcionados al pie de la letra.</p>
+                            <a href="https://drive.google.com/drive/folders/12Zhf7GFmlEn2jwGzjygeUewU26XyBXLr?usp=sharing" target="_blank">Lista de Tratamientos</a>
                         </div>
                     </div>
                    
