@@ -255,9 +255,7 @@
             align-items: center;
             margin-top: 20px;
         }
-        .tab-content{
-    padding: 36px;
-}
+        
 
         .top a {
             margin-left: 0px;
@@ -578,44 +576,46 @@
     <div class="tab-pane fade" id="generalSalesContent" role="tabpanel" aria-labelledby="generalSales-tab">
         <div class="table-container mt-5">
             <h2>VENTAS</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Precio</th>
-                        <th>Día</th>
-                        <th>Detalles</th>
-                        <th>Rechazar</th>
-                        <th>Editar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Citas</td>
-                        <td>$50</td>
-                        <td>2024-07-01</td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
-                    </tr>
-                    <tr>
-                        <td>Compra</td>
-                        <td>$100</td>
-                        <td>2024-07-03</td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
-                    </tr>
-                    <tr>
-                        <td>Curso</td>
-                        <td>$2000</td>
-                        <td>2024-07-03</td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
-                        <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div  class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Día</th>
+                            <th>Detalles</th>
+                            <th>Rechazar</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Citas</td>
+                            <td>$50</td>
+                            <td>2024-07-01</td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">Ver detalles</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit">Editar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Compra</td>
+                            <td>$100</td>
+                            <td>2024-07-03</td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts">Ver detalles</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentProductsModal">Editar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Curso</td>
+                            <td>$2000</td>
+                            <td>2024-07-03</td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalCursos">Ver detalles</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="">Rechazar</button></td>
+                            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseProductsModal">Editar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -668,22 +668,24 @@
                             <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                         </div>
                     </div>
-                    <table class="table table-striped" style="margin-top: 30px">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Total</th>
-                                <th>Día</th>
-                                <th>Hora</th>
-                                <th>Detalles</th>
-                                <th>No llevada a cabo</th>
-                                <th>Aceptar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dibujarVenta">
-                            <!-- Aquí se insertarán las filas de citas pendientes -->
-                        </tbody>
-                    </table>
+                    <div  class="table-responsive">
+                        <table class="table table-striped" style="margin-top: 30px">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Detalles</th>
+                                    <th>No llevada a cabo</th>
+                                    <th>Aceptar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarVenta">
+                                <!-- Aquí se insertarán las filas de citas pendientes -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -695,27 +697,29 @@
                         <input type="text" id="nombreEmpleadoFiltro" class="form-control" placeholder="Nombre del empleado">
                         <label for="nombreEmpleadoFiltro">Buscar ventas del empleado:</label>
                     </div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Total</th>
-                                <th>Día</th>
-                                <th>Hora</th>
-                                <th>Empleado</th>
-                                <th>Detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dibujarVentasAceptadas">
-                            <!-- Aquí se insertarán las filas de las ventas aceptadas -->
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4"></td>
-                                <td id="totalVentasAceptadas"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Empleado</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarVentasAceptadas">
+                                <!-- Aquí se insertarán las filas de las ventas aceptadas -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td id="totalVentasAceptadas"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -753,22 +757,24 @@
                             <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
                         </div>
                     </div>
-                    <table class="table table-striped" style="margin-top: 30px">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Total</th>
-                                <th>Día</th>
-                                <th>Hora</th>
-                                <th>Detalles</th>
-                                <th>No llevada a cabo</th>
-                                <th>Aceptar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dibujarVentaEmpleado">
-                            <!-- Aquí se insertarán las filas de citas pendientes -->
-                        </tbody>
-                    </table>
+                    <div  class="table-responsive">
+                        <table class="table table-striped" style="margin-top: 30px">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Detalles</th>
+                                    <th>No llevada a cabo</th>
+                                    <th>Aceptar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dibujarVentaEmpleado">
+                                <!-- Aquí se insertarán las filas de citas pendientes -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -796,42 +802,46 @@
                 <div class="tab-pane fade show active" id="comprasTotalesContent" role="tabpanel" aria-labelledby="compras-totales-tab-btn">
                     <div class="table-container mt-5">
                         <h2>TODAS LAS COMPRAS</h2>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Id de compra</th>
-                                    <th>Total</th>
-                                    <th>Día</th>
-                                    <th>Detalles</th>
-                                    <th>Aceptar</th>
-                                    <th>Rechazar</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ventasProductosTable">
-                                <!-- Contenido de la tabla -->
-                            </tbody>
-                        </table>
+                        <div  class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Id de compra</th>
+                                        <th>Total</th>
+                                        <th>Día</th>
+                                        <th>Detalles</th>
+                                        <th>Aceptar</th>
+                                        <th>Rechazar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ventasProductosTable">
+                                    <!-- Contenido de la tabla -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <!-- Pestaña compras aceptadas -->
                 <div class="tab-pane fade" id="comprasAceptadasContent" role="tabpanel" aria-labelledby="compras-aceptadas-tab-btn">
                     <div class="table-container mt-5">
                         <h2>COMPRAS CONFIRMADAS</h2>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Id de compra</th>
-                                    <th>Total</th>
-                                    <th>Día</th>
-                                    <th>Detalles</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ventasConfirmadasTable">
-                                <!-- Contenido de la tabla -->
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Id de compra</th>
+                                        <th>Total</th>
+                                        <th>Día</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ventasConfirmadasTable">
+                                    <!-- Contenido de la tabla -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
