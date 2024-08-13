@@ -751,7 +751,7 @@
                             <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
                         </div>
                         <div class="form-floating mb-3 row">
-                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/O hora </button>
+                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/U hora </button>
                             <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
                             <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
                             <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
