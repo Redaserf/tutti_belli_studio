@@ -382,8 +382,10 @@ h1, h2, h3, h4, h5 ,a, li{
         method: 'GET',
         success: function(data) {
             const productos = $('#productos');
+            const buscadorproducto =$('#buscadorId');
             productos.empty();
             if (data.length === 0) {
+            buscadorId.hide();
             productos.append(`
               <div class="col-12 text-center my-5">
                 <div class="custom-alerts">
@@ -404,7 +406,7 @@ h1, h2, h3, h4, h5 ,a, li{
               </div>
             `);
           }
-            data.forEach(producto => {
+            data.forEach(producto => {               
                 const card = `
                     <div class="product-card">
                         <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
@@ -417,6 +419,9 @@ h1, h2, h3, h4, h5 ,a, li{
                     </div>
                 `;
                 productos.append(card);
+                buscadorId.show();
+                
+                
 
 
                 if ($('#cantidad_' + producto.id).data('stock') <= 0) {
