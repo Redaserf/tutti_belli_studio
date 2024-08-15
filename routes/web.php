@@ -170,6 +170,7 @@ use App\Models\Inscripcion;
     Route::get('/Agregar-Tecnica', [ViewsController::class, 'bossAgregarTecnica']);
     Route::get('/Ver-Inventario', [ViewsController::class, 'bossVerInventario']);
     Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
+    Route::get('/Ver-Reportes', [ViewsController::class, 'bossVerReportes']);
     Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
     Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
 
