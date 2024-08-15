@@ -29,4 +29,8 @@ class Venta extends Model
      public function citaHasServicio() {
         return $this->hasMany(CitaHasServicio::class, 'ventaId');
     }
+
+    public function detalleInscripciones(){
+        return $this->hasMany(DetalleInscripcion::class,'ventaId');
+    }
 }

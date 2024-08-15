@@ -878,9 +878,23 @@ margin-right: 20px;
 
                     let select = $('#horaCita');
                     select.show();
-                    actualizarOpcionesSelect(fechaSeleccionada);
+                    // actualizarOpcionesSelect(fechaSeleccionada);
 
                
+                },
+                beforeShowDay: function(fecha) {
+                    var dia = fecha.getDay();
+                    if (dia === 0) {//domingo
+                        return [false, "", "Domingo no disponible"];
+                    }
+                    var hoy = new Date();
+                    console.log('hoy: ',hoy)
+                    if (fecha.toDateString() === hoy.toDateString()) {
+                        if (hoy.getHours() >= 16) {//bloquea despues de las 4 de la tarde o sea 16:00:00
+                            return [false, "", "No se pueden seleccionar citas después de las 16:00"];
+                        }
+                    }
+                    return [true, "", ""];
                 }
             });
 
@@ -890,65 +904,65 @@ margin-right: 20px;
                 fecha1.getDate() === fecha2.getDate();
             }
 
-        function actualizarOpcionesSelect(date) {
-                let dia = date.getDay();
-                console.log('fecha: ',date);
-                console.log('Hoy: ', new Date());
-                let select = $('#horaCita');
+        // function actualizarOpcionesSelect(date) {
+        //         let dia = date.getDay();
+        //         console.log('fecha: ',date);
+        //         console.log('Hoy: ', new Date());
+        //         let select = $('#horaCita');
 
-                select.empty();
+        //         select.empty();
 
-                let hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
+        //         let hoy = new Date();
+        //         hoy.setHours(0, 0, 0, 0);
 
-                if(esMismaFecha(date, hoy)) {// si el dia es hoy\
-                    console.log(date, hoy);
+        //         if(esMismaFecha(date, hoy)) {// si el dia es hoy\
+        //             console.log(date, hoy);
                     
-                let horaInicio;
-                let horaFin;
-                if(dia>=1 && dia<=5){// lunes a viernes
-                    horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
-                    console.log('hora Actual mas dos horas: ', horaInicio);
-                    horaFin = 21;
+        //         let horaInicio;
+        //         let horaFin;
+        //         if(dia>=1 && dia<=5){// lunes a viernes
+        //             horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
+        //             console.log('hora Actual mas dos horas: ', horaInicio);
+        //             horaFin = 21;
                     
-                }else if(dia === 0 || dia === 6){//sabados y domingos
-                    horaInicio = new Date().getHours() + 2;
-                    console.log('hora hoy sabado 27 de julio: ', horaInicio);
-                    horaFin = 21;
-                }
+        //         }else if(dia === 0 || dia === 6){//sabados y domingos
+        //             horaInicio = new Date().getHours() + 2;
+        //             console.log('hora hoy sabado 27 de julio: ', horaInicio);
+        //             horaFin = 21;
+        //         }
                     
-                if(horaInicio > horaFin) {
-                    select.hide();
-                    mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
-                }
+        //         if(horaInicio > horaFin) {
+        //             select.hide();
+        //             mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
+        //         }
                 
 
-                for (let hora = horaInicio; hora < horaFin; hora++) {
-                    const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
-                    console.log('JAJAJJA: ',valorTiempo);
-                    select.append(new Option(valorTiempo, valorTiempo));
-                }
-                    return;
-            }
+        //         for (let hora = horaInicio; hora < horaFin; hora++) {
+        //             const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
+        //             console.log('JAJAJJA: ',valorTiempo);
+        //             select.append(new Option(valorTiempo, valorTiempo));
+        //         }
+        //             return;
+        //     }
 
 
-            let horaInicio;
-            let horaFin;
-            if(dia>=1 && dia<=5){
-                horaInicio = 9;
-                horaFin = 21;
-            }else if(dia === 0 || dia === 6){
-                horaInicio = 9;
-                horaFin = 21;
-            }
+        //     let horaInicio;
+        //     let horaFin;
+        //     if(dia>=1 && dia<=5){
+        //         horaInicio = 9;
+        //         horaFin = 21;
+        //     }else if(dia === 0 || dia === 6){
+        //         horaInicio = 9;
+        //         horaFin = 21;
+        //     }
 
-            for (let hora = horaInicio; hora < horaFin; hora++) {
-                const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
-                console.log(valorTiempo);
-                select.append(new Option(valorTiempo, valorTiempo));
-            }
+        //     for (let hora = horaInicio; hora < horaFin; hora++) {
+        //         const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
+        //         console.log(valorTiempo);
+        //         select.append(new Option(valorTiempo, valorTiempo));
+        //     }
 
-        }
+        // }
 
         // verificar fechas y horas ya seleccionadas
 
@@ -983,8 +997,8 @@ const calendarEl = document.getElementById('calendar');
 const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'timeGridWeek',
     initialDate: new Date().toISOString().split('T')[0],
-    slotMinTime: '09:00:00',
-    slotMaxTime: '21:00:00',
+    slotMinTime: '10:00:00',
+    slotMaxTime: '17:00:00',
     slotDuration: '01:00:00',
     slotLabelInterval: '01:00:00',
     validRange: {
@@ -992,16 +1006,12 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
         end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
     },
     events: citasEmpleado, // variable de eventos que agarra el arreglo events de el controlador
+    hiddenDays: [0], 
     businessHours: [
         {
-            daysOfWeek: [1, 2, 3, 4, 5], // Lunes a viernes
+            daysOfWeek: [1, 2, 3, 4, 5],
             startTime: '09:00',
-            endTime: '21:00'
-        },
-        {
-            daysOfWeek: [0, 6], // Domingo y sábado
-            startTime: '10:00',
-            endTime: '16:00'
+            endTime: '17:00'
         }
     ],
     selectable: true,
@@ -1014,7 +1024,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
         var fechaSeleccionada = new Date(info.event.start);
         console.log(citaId);
         editarCita(citaId);
-        actualizarOpcionesSelect(fechaSeleccionada);
+        // actualizarOpcionesSelect(fechaSeleccionada);
     },
     headerToolbar: {
         left: 'prev,next',
@@ -1069,7 +1079,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 
         $('#fechaCita').val(fechaFormatoDeseado); 
         console.log($('#fechaCita').val());
-        actualizarOpcionesSelect(info.date);
+        // actualizarOpcionesSelect(info.date);
         $('#horaCita').show();
         if ($('#horaCita').find(`option[value="${tiempoFormatoDeseado}"]`).length === 0) {
             $('#horaCita').append(new Option(tiempoFormatoDeseado, tiempoFormatoDeseado));
@@ -1279,7 +1289,7 @@ calendar.render();
                     // let fechaCita = citasServicios.cita.fechaCita;
                     // moment(fechaCita).toDate()
                     // console.log('tu puta madre wey', fechaCita)
-                    actualizarOpcionesSelect(fechaCita);
+                    // actualizarOpcionesSelect(fechaCita);
 
             })
             $('#citasModal').modal('show');
