@@ -26,7 +26,11 @@ class   Inscripcion extends Model
         return $this->belongsTo(Curso::class, 'cursoId');
     }
 
-    function productoHasInscripcion(){
+    public function productoHasInscripcion(){
         return $this->hasMany(ProductoHasInscripcion::class, 'inscripcionId');
+    }
+
+    public function detalleInscripciones(){
+        return $this->hasMany(DetalleInscripcion::class,'inscripcionId');
     }
 }

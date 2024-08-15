@@ -254,7 +254,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     <div class="col-12 d-flex flex-column">
         <div id="mensajeCarritoVacio" class="text-center custom-alerts" style="display: none;">
             <h4 class="alert-heading">¡No hay productos agregados a tu carrito actualmente!</h4>
-            <p>Actualmente no tienes productos en tu carrito. Agrega productos para poder ver tu carriro.</p>
+            <p>Actualmente no tienes productos en tu carrito. Agrega productos para poder ver tu carrito.</p>
             <hr>
             <p class="mb-0">Mientras tanto, puedes explorar otros servicios y productos que ofrecemos.</p>
                 <br>
@@ -271,8 +271,8 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <th scope="col">Producto</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Costo</th>
-                        <th scope="col"> Cantidad seleccionada</th>
-                        <th scope="col"> Cantidad Disponible en almacen</th>
+                        <th scope="col">Cantidad seleccionada</th>
+                        <th scope="col">Cantidad disponible en almacen</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
@@ -544,6 +544,9 @@ $(document).ready(function(){
                     productosComprados = [];
                     total = 0;
                     dibujarCarrito();
+                    setTimeout(function() {
+                        window.location.href = '/Historial-User';
+                    }, 1500);
                 },
                 error: function (response){
                     var mensajeError = response.responseJSON.message;

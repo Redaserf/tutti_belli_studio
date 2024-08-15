@@ -450,7 +450,7 @@
         @media (max-width: 480px) {
             .imgnavbar{
                 width:200px;
-                height: 30px;
+                height: 45px;
 
             }}
     </style>
@@ -587,25 +587,25 @@
 <section id="cursos" class="fonts3">
     <p class="text-uppercase text-center" style="font-size: 50px;">Cursos</p>
     <div data-aos="fade-up" data-aos-duration="1000" class="container">
-        <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+        <div  class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img1g.jpg" class="card-img-top" alt="...">
-            <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
+            <div style="margin-top: 20px;"  class="card-body">
                 <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
             </div>
         </div>
-        <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+        <div  class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img4g.jpg" class="card-img-top" alt="...">
-            <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
+            <div style="margin-top: 20px;"  class="card-body">
                 <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>
             </div>
         </div>
-        <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+        <div  class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img3g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
                 <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>
             </div>
         </div>
-        <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
+        <div  class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img2g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
                 <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
