@@ -638,7 +638,7 @@ function tablaDescuentosProducto() {
                                   <td>${producto.id}</td>
                                   <td>${producto.nombre}</td>
                                   <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="producto-imagen"></td>
-                                  <td>${producto.precio}</td>
+                                  <td>$${producto.precio}</td>
                                   <td>${producto.cantidadEnStock}</td>
                                   <td>${producto.descripcion}</td>
                                   <td>${producto.inventario.nombre}</td>

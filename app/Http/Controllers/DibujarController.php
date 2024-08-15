@@ -112,10 +112,14 @@ class DibujarController extends Controller
     // ==========[ obtener los productos con descuento ]==========
     function productosConDescuento()
     {
-        $productos = Producto::where('descuentoId', '>', 0)
-            ->where('inventarioId', '=', 1)
-            ->with(['inventario', 'descuento'])
-            ->get();
+        $productos = Producto::where(function($query) {
+            $query->where('descuentoId', '>', 0)
+                  ->orWhereNull('descuentoId');
+        })
+        ->where('inventarioId', '=', 1)
+        ->with(['inventario', 'descuento'])
+        ->get();
+
         return response()->json($productos);
 
     }
@@ -140,25 +144,28 @@ class DibujarController extends Controller
         try {
             $user = Auth::user();
             $productId = $request->input('productId');
+            $cantidad = $request->input('cantidad', 1); // Obtener la cantidad, por defecto 1
             $producto = Producto::find($productId);
-
+    
             if ($producto) {
                 $carrito = $user->carrito;
-
+    
                 if (!$carrito) {
                     $carrito = Carrito::create([
                         'usuarioId' => $user->id,
                         'costoTotal' => 0,
                     ]);
                 }
-
-                // Agregar el producto al carrito
-                $carrito->productos()->attach($producto->id);
-
+    
+                // Agregar la cantidad de productos al carrito
+                for ($i = 0; $i < $cantidad; $i++) {
+                    $carrito->productos()->attach($producto->id);
+                }
+    
                 // Actualizar el costo total del carrito
-                $carrito->costoTotal += $producto->precio;
+                $carrito->costoTotal += $producto->precio * $cantidad;
                 $carrito->save();
-
+    
                 return response()->json(['success' => 'Producto agregado al carrito']);
             } else {
                 return response()->json(['error' => 'Producto no encontrado'], 404);
