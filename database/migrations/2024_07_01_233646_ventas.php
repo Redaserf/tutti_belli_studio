@@ -19,12 +19,17 @@ return new class extends Migration
             $table->date('fechaVenta');
             // $table->date('fechaCreacion')->nullable();
             $table->boolean('estadoVenta')->nullable();
+            $table->enum('tipoVenta', ['cita', 'producto','inscripcion']);
             // checar atributo estatus faltante en el diagrama
 
             $table->unsignedBigInteger('usuarioId')->nullable();
+            $table->unsignedBigInteger('empleadoId')->nullable();
+            $table->unsignedBigInteger('reporteId');
             $table->timestamps();
 
             $table->foreign('usuarioId')->references('id')->on('users');
+            $table->foreign('empleadoId')->references('id')->on('users');
+            $table->foreign('reporteId')->references('id')->on('reportes');
         });
     }
 
