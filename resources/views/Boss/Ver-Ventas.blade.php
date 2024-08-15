@@ -554,7 +554,9 @@
             <section class="home">
             <div class="top text-center">
                     <h2>Ventas</h2>
-                    <a class="left" href="/Agregar-Producto" style="text-decoration: none; color:black; margin-left:10px"></a>
+                <a class="left" href="/Ver-Reportes" style="text-decoration: none; color:black; margin-left:10px">
+                <button class="btn btn-outline-success" style="width: auto;">Reportes de venta<i style="margin-left:6px;" class="fa-solid fa-money-bill-trend-up"></i></button>
+                </a>
                 </div>
                 <div class="section-divider"></div>
 
