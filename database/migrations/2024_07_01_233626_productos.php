@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('precio');
             $table->integer('cantidadEnStock');
             $table->integer('cantidadReserva')->default(0);
+            $table->double('precioAntiguo')->nullable();
             $table->string('imagen');
             $table->string('descripcion');
             $table->unsignedBigInteger('inventarioId');

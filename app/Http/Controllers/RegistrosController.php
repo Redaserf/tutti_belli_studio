@@ -551,6 +551,11 @@ class RegistrosController extends Controller
                 if ($producto) {
                     // Aplicar el descuento al precio actual
                     $precioActual = $producto->precio;
+
+                    if (is_null($producto->precioAntiguo)) {
+                        $producto->precioAntiguo = $producto->precio;
+                    }
+
                     $cantidadRestar = $precioActual * $porcentajeDescuento;
                     $nuevoPrecio = $precioActual - $cantidadRestar;
 
@@ -605,6 +610,9 @@ class RegistrosController extends Controller
                 if ($tecnica) {
                     // Aplicar el descuento al precio actual
                     $precioActual = $tecnica->precio;
+                    if (is_null($tecnica->precioAntiguo)) {
+                        $tecnica->precioAntiguo = $tecnica->precio;
+                    }
                     $cantidadRestar = $precioActual * $porcentajeDescuento;
                     $nuevoPrecio = $precioActual - $cantidadRestar;
 
