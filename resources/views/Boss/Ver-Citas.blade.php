@@ -1038,16 +1038,12 @@ header {
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
             events: eventos,//variable de eventos que agarra el arreglo events de el controlador
+            hiddenDays: [0], // Oculta domingos (0) y sábados (6)
             businessHours: [
                 {
                     daysOfWeek: [1, 2, 3, 4, 5], // Lunes a viernes
                     startTime: '09:00',
-                    endTime: '21:00'
-                },
-                {
-                    daysOfWeek: [0, 6], // Domingo y sábado
-                    startTime: '10:00',
-                    endTime: '16:00'
+                    endTime: '17:00'
                 }
             ],
                 selectable: true,
