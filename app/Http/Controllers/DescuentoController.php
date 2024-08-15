@@ -7,6 +7,7 @@ use App\Models\Descuento;
 use App\Models\Producto;
 use App\Models\Tecnica;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DescuentoController extends Controller
 {
@@ -59,6 +60,12 @@ class DescuentoController extends Controller
             if ($producto) {
                 // Aplicar el descuento al precio actual
                 $precioActual = $producto->precio;
+
+            if (is_null($producto->precioAntiguo)) {
+                $producto->precioAntiguo = $producto->precio;
+            }
+
+
                 $cantidadRestar = $precioActual * $porcentajeDescuento;
                 $nuevoPrecio = $precioActual - $cantidadRestar;
 
@@ -82,11 +89,10 @@ class DescuentoController extends Controller
         $precioNuevo = ($precioActual / $porcentajeTotalActual) * 100;
 
         $producto->precio = $precioNuevo;
+        $producto->precioAntiguo = null;
         $producto->descuentoId = null;
 
         $producto->save();
-
-
     }
 
     function eliminarDescuentoTecnica(Request $request , $id){
@@ -99,6 +105,7 @@ class DescuentoController extends Controller
         $precioNuevo = ($precioActual / $porcentajeTotalActual) * 100;
 
         $tecnica->precio = $precioNuevo;
+        $tecnica->precioAntiguo = null;
         $tecnica->descuentoId = null;
 
         $tecnica->save();
