@@ -682,7 +682,7 @@ $.ajax({
                     '<td>' + producto.nombre + '</td>' +
                     '<td>' + producto.descripcion + '</td>' +
                     '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
-                    '<td>' + producto.precio + '</td>' +
+                    '<td> $' + producto.precio + '</td>' +
                     '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
                     '</tr>';
                 targetTable.append(row);

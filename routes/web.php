@@ -378,6 +378,7 @@ Route::get('/productosCursos',[ProductoController::class,'productosCursos']);
 //productos inventario productos
 Route::get('/productosCompras',[ProductoController::class,'productosCompras']);
 
+
 //====[Compras]====
 //Crea una una compra con su venta y sus detalles
 Route::post('/crearCompra', [VentaController::class, 'crearCompra']);

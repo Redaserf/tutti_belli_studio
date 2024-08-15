@@ -69,6 +69,12 @@ input{
 button{
   font-family: "Josefin Sans", sans-serif !important;
 }
+select{
+  font-family: "Josefin Sans", sans-serif !important;
+}
+option{
+  font-family: "Josefin Sans", sans-serif !important;
+}
 
 h1, h2, h3, h4, h5 ,a, li{
   font-family: "Josefin Sans", sans-serif !important;
@@ -136,6 +142,9 @@ h1, h2, h3, h4, h5 ,a, li{
     font-weight: bold;
 }
 
+
+
+
 /*Footer*/
 .footer {
     background-color: #000000;
@@ -200,6 +209,7 @@ h1, h2, h3, h4, h5 ,a, li{
         font-size: 1.5rem;
         font-weight: bold;
     }
+    
     .custom-alerts p {
         font-size: 1.1rem;
         margin-bottom: 0;
@@ -307,9 +317,10 @@ h1, h2, h3, h4, h5 ,a, li{
   <br><br><br><br><br><br>
 
   <input type="text" class="form-control mb-3" id="buscadorId" placeholder="Buscar por nombre de producto">
-
-  <div id="productos" class="product-container">
-
+  <div class="row">
+    <div id="productoscd" class="product-container">
+  
+    </div>
   </div>
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
@@ -359,6 +370,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
   // Crear función alertas (esto va por encima de todo para que funcione)
 
+  
   function mostrarAlerta(text, alertClass, iconId) {
     $("#alertaTexto").text(text);
     $(".custom-alert")
@@ -375,54 +387,81 @@ h1, h2, h3, h4, h5 ,a, li{
   }
 
   // Dibujar productos
-
-  function dibujarProductos() {
+  function dibujarProductosCd() {
     $.ajax({
-        url: '/productosCompras',
+        url: '/get/productos/cd',
         method: 'GET',
         success: function(data) {
-            const productos = $('#productos');
-            const buscadorproducto =$('#buscadorId');
+            const productos = $('#productoscd');
             productos.empty();
+
+            // Priorizar productos con descuento
+            data.sort((a, b) => b.descuentoId - a.descuentoId);
+
             if (data.length === 0) {
-            buscadorId.hide();
-            productos.append(`
-              <div class="col-12 text-center my-5">
-                <div class="custom-alerts">
-                  <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
-                  <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
-                  <hr>
-                  <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
-                </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-              </div>
-            `);
-          }
-            data.forEach(producto => {               
+                productos.append(`
+                    <div class="col-12 text-center my-5">
+                        <div class="custom-alerts">
+                            <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
+                            <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
+                            <hr>
+                            <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                `);
+                return;
+            }
+
+            data.forEach(producto => {    
+                function generarOpcionesSelect(cantidadEnStock) {
+                    let opciones = '';
+                    let maxCantidad = cantidadEnStock > 99 ? 30 : 10;
+
+                    for (let i = 1; i <= maxCantidad && i <= cantidadEnStock; i++) {
+                        opciones += `<option class="text-center" value="${i}">${i}</option>`;
+                    }
+
+                    return opciones;
+                }
+
                 const card = `
                     <div class="product-card">
                         <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
                         <div class="product-info">
                             <h2 class="product-title">${producto.nombre}</h2>
                             <p class="product-description">${producto.descripcion}</p>
-                            <p class="product-price" >$${producto.precio}</p>
+                            ${producto.descuentoId ? `
+                                <div style="background-color:yellow;width:100%">
+                                    <p style="color:black;" class="product-description">Producto a precio especial</p>
+                                    <p style="color:red;"class="product-price" >$${producto.precio}</p>
+                                </div>
+                            ` : `
+                                <p class="product-price">$${producto.precio}</p>
+                            `}
+                            <div class="mb-3">
+                                <label for="cantidad_${producto.id}" class="form-label">Selecciona la cantidad</label>
+                                <select id="cantidad_${producto.id}" class="form-select cantidad-producto" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">
+                                    ${generarOpcionesSelect(producto.cantidadEnStock)}
+                                </select>
+                            </div>
                         </div>
                         <button id="cantidad_${producto.id}" style="margin-bottom: 10px;" type="button" class="btn btn-outline-success agregar-carrito" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">Agregar al carrito</button>
                     </div>
                 `;
                 productos.append(card);
-                buscadorId.show();
-                
-                
 
+                $(`#cantidad_${producto.id}`).on('change', function() {
+                    console.log(`Valor seleccionado para el producto ${producto.id}: ${$(this).val()}`);
+                });
 
                 if ($('#cantidad_' + producto.id).data('stock') <= 0) {
                     $('#cantidad_' + producto.id).prop('disabled', true);
@@ -438,6 +477,87 @@ h1, h2, h3, h4, h5 ,a, li{
         }
     });
 }
+//   function dibujarProductos() {
+//     $.ajax({
+//         url: '/get/productos/sd',
+//         method: 'GET',
+//         success: function(data) {
+//             const productos = $('#productos');
+//             const buscadorproducto =$('#buscadorId');
+//             productos.empty();
+//             function generarOpcionesSelect(cantidadEnStock) {
+//                     let opciones = '';
+//                     let maxCantidad = cantidadEnStock > 99 ? 30 : 10;
+
+//                     for (let i = 1; i <= maxCantidad && i <= cantidadEnStock; i++) {
+//                         opciones += `<option class="text-center" value="${i}">${i}</option>`;
+//                     }
+
+//                     return opciones;
+//                 }   
+//             if (data.length === 0) {
+//             buscadorId.hide();
+//             productos.append(`
+//               <div class="col-12 text-center my-5">
+//                 <div class="custom-alerts">
+//                   <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
+//                   <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
+//                   <hr>
+//                   <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
+//                 </div>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//                 <br>
+//               </div>
+//             `);
+//           }
+//             data.forEach(producto => {               
+//                 const card = `
+//                     <div class="product-card">
+//                         <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+//                         <div class="product-info">
+//                             <h2 class="product-title">${producto.nombre}</h2>
+//                             <p class="product-description">${producto.descripcion}</p>
+//                             <p class="product-description">En stock: ${producto.cantidadEnStock}</p>
+//                             <p class="product-price" >$${producto.precio}</p>
+//                             <div class="mb-3">
+//                                 <label for="cantidad_${producto.id}" class="form-label">Selecciona la cantidad</label>
+//                                 <select id="cantidad_${producto.id}" class="form-select  cantidad-producto" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">
+//                                     <!-- Opciones se generarán dinámicamente aquí -->
+//                                     ${generarOpcionesSelect(producto.cantidadEnStock)}
+//                                 </select>
+//                             </div>
+//                         </div>
+                        
+//                         <button id="cantidad_${producto.id}" style="margin-bottom: 10px;" type="button" class="btn btn-outline-success agregar-carrito" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">Agregar al carrito</button>
+//                     </div>
+//                 `;
+//                 productos.append(card);
+                
+                
+
+
+//                 if ($('#cantidad_' + producto.id).data('stock') <= 0) {
+//                     $('#cantidad_' + producto.id).prop('disabled', true);
+//                     $('#cantidad_' + producto.id).attr('class', 'btn btn-secondary agregar-carrito');
+//                     $('#cantidad_' + producto.id).text('Producto fuera de existencia');
+//                 }
+//             });
+
+//             // $('.agregar-carrito').click(function() {
+//             //     const productId = $(this).data('id');
+//             //     agregarAlCarrito(productId);
+//             // });
+//         }
+//     });
+// }
+
 
   //Ejecuta el codigo cada vez que una tecla se pulsa
   $('#buscadorId').on('keyup', function() {
@@ -455,12 +575,20 @@ h1, h2, h3, h4, h5 ,a, li{
   // // Llama a la función para dibujar los productos al cargar la página
   // dibujarProductos();
 
-function agregarAlCarrito(productId) {
+  function agregarAlCarrito(productId, descuentoId = null) {
+    let cantidad = parseInt($('#cantidad_' + productId).val()); // Obtener la cantidad seleccionada
+
+    // Si el producto tiene descuento, dividir la cantidad entre 2
+    // if (descuentoId > 0) {
+    //     cantidad = Math.ceil(cantidad / 2);
+    // }
+
     $.ajax({
         url: '/carrito/agregar',
         method: 'POST',
         data: {
             productId: productId,
+            cantidad: cantidad, // Enviar la cantidad ajustada
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
@@ -473,6 +601,12 @@ function agregarAlCarrito(productId) {
     });
 }
 
+$('.agregar-carrito').click(function() {
+    const productId = $(this).data('id');
+    const descuentoId = $(this).data('descuentoId'); // Asumiendo que hay un atributo data para el descuentoId
+    agregarAlCarrito(productId, descuentoId);
+});
+
                   // Pantalla de carga
                   var loader = document.getElementById("contenedor_carga");
                   var navbar = document.getElementById("navbar");
@@ -482,9 +616,8 @@ function agregarAlCarrito(productId) {
                   })
 
                   $(document).ready(function(){
-
-                    dibujarProductos();
-
+                    dibujarProductosCd();
+                    dibujarProductos();                 
                     function separadorHidden(){
                     var cuentaLi = document.getElementById("cuenta");
                     var carrito = document.getElementById("carrito");
