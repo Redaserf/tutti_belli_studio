@@ -71,6 +71,10 @@ class User extends Authenticatable
          return $this->hasMany(Venta::class,'usuarioId');
      }
 
+     public function ventaEmpleado(){
+        return $this->hasMany(Venta::class,'empleadoId');
+     }
+
 
     public function ususariosEmpleadoCursos(){
         return $this->hasMany(Curso::class,'empleadoId');

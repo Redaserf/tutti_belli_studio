@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Carrito;
 use App\Models\DetalleProducto;
 use App\Models\Producto;
+use App\Models\Reporte;
 use App\Models\Venta;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -25,14 +26,20 @@ class VentaController extends Controller
             //Obtiene el usuario logeado
             $usuario = Auth::user();
 
+            $reporte = Reporte::create([
+                "usuarioId" => $usuario->id
+            ]);
+
 
             // Da de alta la venta
             $venta = Venta::create([
                 'total' => $request->total,
 //                'fechaCreacion' => now(),
                 //Compra en espera
+                'tipoVenta' => 'producto',
                 'estadoVenta' => null,
                 'fechaVenta' => $request->fechaVenta,
+                "reporteId" => $reporte->id,
                 'usuarioId' => $usuario->id
             ]);
 
