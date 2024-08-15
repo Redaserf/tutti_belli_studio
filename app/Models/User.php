@@ -91,4 +91,26 @@ class User extends Authenticatable
         return $this->hasMany(Historial::class,'usuarioId');
     }
 
+    public function asistencias()
+    {
+        return $this->hasMany(Asistencia::class,'usuarioId');
+    }
+
+    public function vacaciones()
+    {
+        return $this->hasMany(Vacaciones::class,'usuarioId');
+    }
+
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class,'usuarioId');
+    }
+
+    public function reportes()
+    {
+        return $this->hasMany(Reporte::class,'usuarioId');
+    }
+
+
+
 }
