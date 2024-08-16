@@ -170,10 +170,10 @@ class VentaController extends Controller
                 // Guardar los cambios en el producto
                 $producto->save();
 
-               $detalle->delete();
+            //    $detalle->delete();
             }
 
-            $venta->delete();
+            // $venta->delete();
 
             DB::commit();
             return response()->json(['success' => 'Compra confirmada y stock actualizado'], 200);

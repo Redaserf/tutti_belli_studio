@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Cursos</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -330,7 +331,7 @@
 
     function dibujarCursos() {
       $.ajax({
-        url: '/get/cursos',
+        url: '/get/cursosActivos',
         method: 'GET',
         success: function(data) {
           console.log(data);
@@ -364,6 +365,11 @@
               const tecnicas = curso.tecnicas.map(tecnica => tecnica.nombre).join(', ');
               const buttonText = curso.inscrito ? 'Inscrito' : 'Inscribirme';
               const buttonDisabled = curso.inscrito ? 'disabled' : '';
+
+              // Verificar si se debe mostrar el botón de cancelar inscripción
+              const buttonCancelar = (curso.inscrito && (curso.estado === 0 || curso.estado === null) && curso.activo === 1) ? 
+                  `<button class="btn btn-danger cancelar-inscripcion-btn" data-inscripcion-id="${curso.inscripcionId}" data-curso-id="${curso.id}">Cancelar inscripción</button>` : '';
+
               const card = `
                 <div class="col-md-6 col-lg-4 col-xl-4 col-sm-12">
                   <div class="card">
@@ -376,6 +382,7 @@
                       <p class="card-text">Costo de inscripción: $${curso.precio}</p>
                       <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
                       <button class="btn btn-primary inscribirme-btn" data-curso-id="${curso.id}" ${buttonDisabled} data-bs-toggle="modal" data-bs-target="#inscripcionModal">${buttonText}</button>
+                      ${buttonCancelar}
                     </div>
                   </div>
                 </div>
@@ -443,6 +450,29 @@
   });
   }
 
+
+  $(document).on('click', '.cancelar-inscripcion-btn', function() {
+    const inscripcionId = $(this).data('inscripcion-id');
+    const cursoId = $(this).data('curso-id');
+
+    if (confirm('¿Estás seguro de que deseas cancelar la inscripción a este curso?')) {
+        $.ajax({
+            url: `/inscripcion/eliminarReal/${inscripcionId}`,
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                alert('Inscripción cancelada exitosamente.');
+                dibujarCursos(); // Redibuja los cursos para reflejar los cambios
+            },
+            error: function(error) {
+                alert('Hubo un error al cancelar la inscripción.');
+                console.log(error);
+            }
+        });
+    }
+});
 
 
 $(document).ready(function(){

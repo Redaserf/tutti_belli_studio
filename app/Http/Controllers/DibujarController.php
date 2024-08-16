@@ -110,13 +110,6 @@ class DibujarController extends Controller
     }
 
     // ==========[ obtener los productos con descuento ]==========
-    function productosConDescuentocd(){
-        $productos = Producto::where('descuentoId', '>', 0)
-            ->where('inventarioId', '=', 1)
-            ->with(['inventario', 'descuento'])
-            ->get();
-        return response()->json($productos);
-    }
     function productosConDescuento()
     {
         $productos = Producto::where(function($query) {
@@ -184,29 +177,14 @@ class DibujarController extends Controller
     }
 
     // ==========[ Eliminar un producto del carrito ]==========
-    function carritoDelete(Request $request, $id){
+    function carritoDelete($id){
         $user = Auth::user();
         $carrito = $user->carrito;
-    
+
         if ($carrito) {
-            $cantidadEliminar = $request->input('cantidad', 1); // Cantidad a eliminar, por defecto 1
-            $producto = $carrito->productos()->wherePivot('id', $id)->first();
-    
-            if ($producto) {
-                $cantidadActual = $producto->pivot->cantidad;
-    
-                if ($cantidadEliminar >= $cantidadActual || $request->input('eliminarTodo')) {
-                    // Si la cantidad a eliminar es igual o mayor a la actual, elimina el producto completo
-                    $carrito->productos()->wherePivot('id', $id)->detach();
-                } else {
-                    // Si la cantidad a eliminar es menor, actualiza la cantidad en la tabla pivote
-                    $carrito->productos()->updateExistingPivot($producto->id, ['cantidad' => $cantidadActual - $cantidadEliminar]);
-                }
-    
-                return response()->json(['success' => 'Producto actualizado en el carrito']);
-            } else {
-                return response()->json(['error' => 'Producto no encontrado en el carrito'], 404);
-            }
+        // Asegurarse de eliminar la relación específica usando el id de la tabla pivote
+        $carrito->productos()->wherePivot('id', $id)->detach();
+            return response()->json(['success' => 'Producto eliminado del carrito']);
         } else {
             return response()->json(['error' => 'El carrito no existe'], 404);
         }
@@ -241,12 +219,37 @@ class DibujarController extends Controller
 
     // ==========[ Obtener todos los cursos ]==========
     function cursosIndex(){
-        $cursos = Curso::with(['tecnicas', 'empleado'])->get();
+        $usuarioId = Auth::id();
+    
+        // Obtener solo los cursos que están activos
+        $cursos = Curso::with(['tecnicas', 'empleado'])->where('activo', 1)->get();
+    
+        // Obtener las inscripciones del usuario actual
+        $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->get();
+    
+        // Marcar los cursos en los que el usuario está inscrito y agregar inscripcionId
+        $cursos = $cursos->map(function($curso) use ($inscripciones) {
+            $inscripcion = $inscripciones->firstWhere('cursoId', $curso->id);
+            $curso->inscrito = $inscripcion ? true : false;
+            $curso->inscripcionId = $inscripcion ? $inscripcion->id : null;
+            $curso->estado = $inscripcion ? $inscripcion->estado : null;  // Agregar el estado de la inscripción
+            return $curso;
+        });
+    
+        return response()->json($cursos);
+    }
+
+    // ==========[ Obtener todos los cursos ]==========
+    function cursosIndex0(){
         $usuarioId = Auth::id();
 
-        // Ajusta la lógica para verificar si el usuario ya está inscrito en cada curso.
+        // Obtener solo los cursos que están inactivos ("eliminados")
+        $cursos = Curso::with(['tecnicas', 'empleado'])->where('activo', 0)->get();
+
+        // Obtener las inscripciones del usuario actual
         $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->pluck('cursoId')->toArray();
 
+        // Marcar los cursos en los que el usuario está inscrito
         $cursos = $cursos->map(function($curso) use ($inscripciones) {
             $curso->inscrito = in_array($curso->id, $inscripciones);
             return $curso;
@@ -291,17 +294,20 @@ class DibujarController extends Controller
         }
     }
 
-    // ==========[ Eliminar un curso ]==========
+    // ==========[ Eliminar un curso (ocultar) ]==========
     public function cursosDelete($id) {
         DB::beginTransaction();
         try {
-            $curso = Curso::findOrFail($id);
-            $curso->inscripciones()->delete();
-            $curso->empleado()->dissociate();
-            $curso->tecnicas()->detach();
+            $curso = Curso::find($id);
+            $inscripciones = $curso->inscripciones()->get();
 
-            $curso->delete();
+        foreach ($inscripciones as $inscripcion) {
+            $inscripcion->estado = null;
+            $inscripcion->save();
+        }
 
+            $curso->activo = 0;
+            $curso->save();
             DB::commit();
             return response()->json(['success' => 'Curso eliminado con éxito.']);
         } catch (\Exception $e) {

@@ -103,8 +103,6 @@ class ConsultasController extends Controller
     
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
-        } elseif ($user->rolId == 4) {
-            return redirect('/Ver-Citas');
         }
 
             $usuarios = User::whereHas('roles', function ($query) {

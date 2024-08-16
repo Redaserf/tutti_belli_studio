@@ -197,7 +197,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     @media (max-width: 480px) {
     .imgnavbar{
         width:200px;
-        height: 45px;
+        height: 30px;
 
     }}
         /* Alerta bonita */
@@ -378,6 +378,14 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
                         productosYaDibujados.push(producto.id);
 
+
+                        // Generar opciones dinámicas para el select basadas en la cantidad seleccionada
+                        console.log(producto.pivot.cantidad);
+                        let opciones = '';
+                        for (let i = 1; i <= 4; i++) {
+                            opciones += `<option value="${i}">${i}</option>`;
+                        }
+
                         const item = `
                     <tr>
                         <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
@@ -387,6 +395,9 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <td id="${idCantidad}">1</td>
                         <td>${producto.cantidadEnStock}</td>
                         <td>
+                            <select id="cantidad_${producto.pivot.id}" class="form-select" styles="width:40px;">
+                                ${opciones}
+                            </select>
                             <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
@@ -412,20 +423,26 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
 
         // Eliminar producto del carrito
-
         function carritoDelete(id){
-          $.ajax({
-              url: `/carrito/eliminar/${id}`,
-              method: 'GET',
-              success: function(){
-                  // dibujarCarrito();
-                  location.reload();
-              },
-              error: function(error){
-                  console.log(error)
-              }
-          });
+    const cantidad = $('#cantidad_' + id).val();
+    const button = $(`#delete-button-${id}`);
+    button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+    $.ajax({
+        url: `/carrito/eliminar/${id}`,
+        method: 'GET',
+        data: { cantidad: cantidad },
+        success: function(){
+            location.reload();
+        },
+        error: function(error){
+            console.log(error);
+            mostrarAlerta('Error al eliminar el producto', 'alert-danger', 'exclamation-triangle-fill');
+        },
+        complete: function() {
+            button.prop('disabled', false).html('<i class="fa-solid fa-trash"></i>');
         }
+    });
+}
 
 
             // Pantalla de carga

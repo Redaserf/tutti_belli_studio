@@ -730,7 +730,7 @@ header {
 
     function dibujarCursos() {
   $.ajax({
-    url: '/get/cursos',
+    url: '/get/cursosActivos',
     method: 'GET',
     success: function(data) {
       console.log(data);
@@ -809,7 +809,7 @@ function mostrarInscripciones(cursoId) {
                 if (inscripcion.estado == 0){
                     inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}" >
                         Inscripción ID #${inscripcion.id}<br>
-                        ${inscripcion.usuarios.name}${inscripcion.usuarios.apellido}<br>
+                        ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
                         Estado: <span style='color: #D5B533; font-weight:600;'>Pendiente</span><button class="btn" onclick="editarInscripcion(${inscripcion.id})" data-bs-toggle="modal" data-bs-target="#inscripcionModal"><i style="margin-left:-5px;" class="fa-solid fa-eye"></i></button>
                         </li>`;
                 }
@@ -1035,7 +1035,7 @@ function editarInscripcion(inscripcionId){
   if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
     $.ajax({
       url: `/cursos/eliminar/${id}`,
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },

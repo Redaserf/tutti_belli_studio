@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('cupoLimite');
             $table->date('fechaInicio');
             $table->time('horaInicio');
+            $table->boolean('activo')->default(1);
             $table->double('precio');
             $table->string('imagen');
             $table->longText('descripcion');
