@@ -197,7 +197,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     @media (max-width: 480px) {
     .imgnavbar{
         width:200px;
-        height: 30px;
+        height: 45px;
 
     }}
         /* Alerta bonita */

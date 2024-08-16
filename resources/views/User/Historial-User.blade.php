@@ -98,7 +98,7 @@
         }@media (max-width: 480px) {
     .imgnavbar{
         width:200px;
-        height: 30px;
+        height: 45px;
     
     }}
 

@@ -184,8 +184,8 @@ h1, h2, h3, h4, h5 ,a, li{
     }
     @media (max-width: 480px) {
     .imgnavbar{
-        width:200px;
-        height: 30px;
+      width:200px;
+      height: 45px;
     
     }}
 
