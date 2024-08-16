@@ -110,6 +110,13 @@ class DibujarController extends Controller
     }
 
     // ==========[ obtener los productos con descuento ]==========
+    function productosConDescuentocd(){
+        $productos = Producto::where('descuentoId', '>', 0)
+            ->where('inventarioId', '=', 1)
+            ->with(['inventario', 'descuento'])
+            ->get();
+        return response()->json($productos);
+    }
     function productosConDescuento()
     {
         $productos = Producto::where(function($query) {
@@ -177,14 +184,29 @@ class DibujarController extends Controller
     }
 
     // ==========[ Eliminar un producto del carrito ]==========
-    function carritoDelete($id){
+    function carritoDelete(Request $request, $id){
         $user = Auth::user();
         $carrito = $user->carrito;
-
+    
         if ($carrito) {
-        // Asegurarse de eliminar la relación específica usando el id de la tabla pivote
-        $carrito->productos()->wherePivot('id', $id)->detach();
-            return response()->json(['success' => 'Producto eliminado del carrito']);
+            $cantidadEliminar = $request->input('cantidad', 1); // Cantidad a eliminar, por defecto 1
+            $producto = $carrito->productos()->wherePivot('id', $id)->first();
+    
+            if ($producto) {
+                $cantidadActual = $producto->pivot->cantidad;
+    
+                if ($cantidadEliminar >= $cantidadActual || $request->input('eliminarTodo')) {
+                    // Si la cantidad a eliminar es igual o mayor a la actual, elimina el producto completo
+                    $carrito->productos()->wherePivot('id', $id)->detach();
+                } else {
+                    // Si la cantidad a eliminar es menor, actualiza la cantidad en la tabla pivote
+                    $carrito->productos()->updateExistingPivot($producto->id, ['cantidad' => $cantidadActual - $cantidadEliminar]);
+                }
+    
+                return response()->json(['success' => 'Producto actualizado en el carrito']);
+            } else {
+                return response()->json(['error' => 'Producto no encontrado en el carrito'], 404);
+            }
         } else {
             return response()->json(['error' => 'El carrito no existe'], 404);
         }

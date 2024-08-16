@@ -112,8 +112,8 @@ h1, h2, h3, option, select, a{
         }
         @media (max-width: 480px) {
     .imgnavbar{
-        width:200px;
-        height: 30px;
+      width:200px;
+      height: 45px;
     
     }}
     /* Alerta bonita */

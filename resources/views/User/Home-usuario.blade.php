@@ -466,8 +466,8 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     @media (max-width: 480px) {
     .imgnavbar{
-        width:200px;
-        height: 30px;
+      width:200px;
+      height: 45px;
     
     }
 }

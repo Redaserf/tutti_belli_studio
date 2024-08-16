@@ -369,6 +369,7 @@ Route::post('/eliminarDescuentoTecnica/{id}', [DescuentoController::class, 'elim
 Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']);
 //Obtener productos con descuento
 Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
+Route::get('get/productos/cdcd',[DibujarController::class,'productosConDescuentocd']);
 //===== [ProductoHasCurso] =====
 Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
 
