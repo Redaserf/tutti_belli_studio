@@ -803,7 +803,7 @@
                 <!-- Pestaña compras totales -->
                 <div class="tab-pane fade show active" id="comprasTotalesContent" role="tabpanel" aria-labelledby="compras-totales-tab-btn">
                     <div class="table-container mt-5">
-                        <h2>TODAS LAS COMPRAS</h2>
+                        <h2>COMPRAS PENDIENTES</h2>
                         <div  class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -865,9 +865,9 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>servicio</th>
-                                                <th>tecnica</th>
-                                                <th>empleado</th>
+                                                <th>Servicio</th>
+                                                <th>Técnica</th>
+                                                <th>Empleado</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dibujarDetalles">
@@ -897,7 +897,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Nombre del Producto</th>
+                                                <th>Nombre del producto</th>
                                                 <th>Cantidad</th>
                                                 <th>Acciones</th>
                                             </tr>
@@ -934,7 +934,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Nombre del Producto</th>
+                                                <th>Nombre del producto</th>
                                                 <th>Cantidad</th>
                                                 <th>Precio</th>
                                                 <th>Acciones</th>
@@ -1051,10 +1051,10 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>nombre</th>
-                                                <th>descripcion</th>
-                                                <th>precio</th>
-                                                <th>cantidad de productos</th>
+                                                <th>Nombre</th>
+                                                <th>Descripción</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
                                             </tr>
                                         </thead>
                                         <tbody id="detallesIndividualProducto">
@@ -1076,11 +1076,11 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">CONFIRMAR</h5>
+                                    <h5 class="modal-title">Confirmar compra</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p id="modal-body-text">Deseas confirmar que la compra de los productos se ha realizado exitosamente</p>
+                                    <p id="modal-body-text">¿Deseas confirmar que la compra de los productos se ha realizado exitosamente?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1353,7 +1353,7 @@ $('#citas-aceptadas-tab').on('click', function() {
         tablaVenta.append(`
             <tr>
                 <td>Cita ${cita.id}</td>
-                <td>${venta.total}</td>
+                <td>$${venta.total}</td>
                 <td>${venta.fechaVenta}</td>
                 <td>${cita.horaCita}</td>
                 <td>${cita.usuario_empleado.name + " " + cita.usuario_empleado.apellido}</td>
@@ -1363,7 +1363,7 @@ $('#citas-aceptadas-tab').on('click', function() {
     });
 
     let totalVentas = calcularTotalVentas(citas);
-    $('#totalVentasAceptadas').text('Total Vendido: ' + totalVentas.toFixed(2));
+    $('#totalVentasAceptadas').text('Total Vendido: $' + totalVentas.toFixed(2));
 
     manejarEventosCitaAceptada();
 }
@@ -2048,7 +2048,7 @@ sidebarBtn.addEventListener("click", () => {
                         <tr>
                             <td>Compra</td>
                             <th>${venta.id}</th>
-                            <td>${venta.total}</td>
+                            <td>$${venta.total}</td>
                             <td>${venta.fechaVenta}</td>
                             <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
                         </tr>
@@ -2062,12 +2062,12 @@ sidebarBtn.addEventListener("click", () => {
 
 
     function prepararConfirmacion(ventaId) {
-        $('#modal-body-text').text(`Deseas confirmar que la compra de los productos con ID ${ventaId} se ha realizado exitosamente`);
+        $('#modal-body-text').text(`¿Deseas confirmar que la compra de los productos con ID ${ventaId} se ha realizado exitosamente?`);
         $('#modal-confirm-btn').attr('onclick', `confirmarCompra(${ventaId})`);
     }
 
     function prepararRechazo(ventaId) {
-        $('#modal-reject-body-text').text(`Deseas rechazar la compra de los productos con ID ${ventaId}`);
+        $('#modal-reject-body-text').text(`¿Deseas rechazar la compra de los productos con ID ${ventaId}?`);
         $('#modal-reject-btn').attr('onclick', `rechazarCompra(${ventaId})`);
     }
 
@@ -2099,7 +2099,7 @@ sidebarBtn.addEventListener("click", () => {
                             <tr class="fila-dinamica">
                                <td>${detalle.nombre}</td>
                                <td>${detalle.descripcion}</td>
-                               <td>${detalle.precio}</td>
+                               <td>$${detalle.precio}</td>
                                <td id="${idCantidad}"> 1 </td>
                             </tr>
                         `;

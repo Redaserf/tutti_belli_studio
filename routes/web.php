@@ -252,8 +252,9 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     // =====[ Cursos ]=====
 
-    Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
-    Route::delete('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
+    Route::get('/get/cursosActivos',[DibujarController::class,'cursosIndex']);
+    Route::get('/get/cursosInactivos',[DibujarController::class,'cursosIndex0']);
+    Route::post('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
     Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
@@ -261,6 +262,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
     Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
     Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
+    Route::delete('/inscripcion/eliminarReal/{inscripcionId}',[InscripcionController::class,'eliminarInscripcionReal']);
     // Obtener productos con el curso seleccionado
     Route::get('/curso/productos/{cursoId}',[CursoController::class,'dibujarProductos']);
     //Obtener dia incial del curso

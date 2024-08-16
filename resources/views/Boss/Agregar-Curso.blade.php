@@ -892,7 +892,7 @@ function checkWidth() {
         }
 
         function loadEmpleados(){
-            $.get('/get/empleados', function(empleados){
+            $.get('/usuario/empleado', function(empleados){
                 empleadoSelect = $('#empleadoId');
                 empleadoSelect.empty();
 
