@@ -171,6 +171,7 @@ use App\Models\Inscripcion;
     Route::get('/Agregar-Tecnica', [ViewsController::class, 'bossAgregarTecnica']);
     Route::get('/Ver-Inventario', [ViewsController::class, 'bossVerInventario']);
     Route::get('/Ver-Ventas', [ViewsController::class, 'bossVerVentas']);
+    Route::get('/Ver-Reportes', [ViewsController::class, 'bossVerReportes']);
     Route::get('/Ver-Empleados', [ViewsController::class, 'bossVerEmpleados']);
     Route::get('/Ver-Descuentos', [ViewsController::class, 'bossVerDescuentos']);
 
@@ -237,7 +238,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
         // ===[ Carrito ]===
         Route::get('/get/carrito',[DibujarController::class,'carritoIndex']);
         Route::post('/carrito/agregar', [DibujarController::class, 'carritoAgregar'])->middleware('auth');
-        Route::get('/carrito/eliminar/{id}', [DibujarController::class, 'carritoDelete']);
+        Route::post('/carrito/eliminar/{pivotId}', [DibujarController::class, 'carritoDelete'])->name('carrito.eliminar');
 
 
 
@@ -254,8 +255,9 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     // =====[ Cursos ]=====
 
-    Route::get('/get/cursos',[DibujarController::class,'cursosIndex']);
-    Route::delete('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
+    Route::get('/get/cursosActivos',[DibujarController::class,'cursosIndex']);
+    Route::get('/get/cursosInactivos',[DibujarController::class,'cursosIndex0']);
+    Route::post('/cursos/eliminar/{id}',[DibujarController::class,'cursosDelete']);
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
     Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
@@ -263,6 +265,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
     Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);
     Route::delete('/inscripcion/eliminar/{inscripcionId}',[InscripcionController::class,'eliminarInscripcion']);
+    Route::delete('/inscripcion/eliminarReal/{inscripcionId}',[InscripcionController::class,'eliminarInscripcionReal']);
     // Obtener productos con el curso seleccionado
     Route::get('/curso/productos/{cursoId}',[CursoController::class,'dibujarProductos']);
     //Obtener dia incial del curso
@@ -371,6 +374,7 @@ Route::post('/eliminarDescuentoTecnica/{id}', [DescuentoController::class, 'elim
 Route::get('/get/productos/sd',[DibujarController::class,'productoSinDescuento']);
 //Obtener productos con descuento
 Route::get('/get/productos/cd',[DibujarController::class,'productosConDescuento']);
+Route::get('get/productos/cdcd',[DibujarController::class,'productosConDescuentocd']);
 //===== [ProductoHasCurso] =====
 Route::post('productosCursos',[ProductoHasCursoController::class, 'store']);
 

@@ -16,13 +16,13 @@ return new class extends Migration
 
             $table->id();
             $table->date('fechaInscripcion');
-            $table->boolean('estado');
+            $table->boolean('estado')->nullable();
             $table->unsignedBigInteger('usuarioId');
             $table->unsignedBigInteger('cursoId');
             $table->timestamps();
 
-            $table->foreign('usuarioId')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('cursoId')->references('id')->on('cursos')->onDelete('cascade');
+            $table->foreign('usuarioId')->references('id')->on('users');
+            $table->foreign('cursoId')->references('id')->on('cursos');
 
 
 

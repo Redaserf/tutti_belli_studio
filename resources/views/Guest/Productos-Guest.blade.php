@@ -184,8 +184,8 @@ h1, h2, h3, h4, h5 ,a, li{
     }
     @media (max-width: 480px) {
     .imgnavbar{
-        width:200px;
-        height: 30px;
+      width:200px;
+      height: 45px;
     
     }}
 
@@ -230,9 +230,45 @@ h1, h2, h3, h4, h5 ,a, li{
       </nav>
 
       <br><br><br><br><br><br>
+      <div class="container mt-5">
+  <div class="input-group mb-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 10px;">
+    <input type="text" class="form-control" id="buscadorId" placeholder="Buscar por nombre de producto" style="border: none; background-color: transparent;">
+    <div class="input-group-append" >
+      <span class="input-group-text" id="basic-addon2" style="background-color: transparent; border: none;">
+        <i class="fas fa-search" style="color: #6c757d;"></i>
+      </span>
+    </div>
+  </div>
+  <div class="dropdown mb-3">
+    <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; border: 1px solid #ced4da; border-radius: 25px; color: #495057;">
+      Filtrar por precio
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end p-3 shadow-sm" aria-labelledby="dropdownMenuButton" style="background-color: white; border-radius: 15px; border: 1px solid #ced4da;">
+      <li class="mb-2">
+        <input type="checkbox" class="form-check-input precio-filtro" id="menos50" value="menos50">
+        <label class="form-check-label ms-2" for="menos50">Menor que $50</label>
+      </li>
+      <li class="mb-2">
+        <input type="checkbox" class="form-check-input precio-filtro" id="menos100" value="menos100">
+        <label class="form-check-label ms-2" for="menos100">Menor que $100</label>
+      </li>
+      <li class="mb-2">
+        <input type="checkbox" class="form-check-input precio-filtro" id="menos200" value="menos200">
+        <label class="form-check-label ms-2" for="menos200">Menor que $200</label>
+      </li>
+      <li>
+        <input type="checkbox" class="form-check-input precio-filtro" id="mas200" value="mas200">
+        <label class="form-check-label ms-2" for="mas200">Mayor que $200</label>
+      </li>
+    </ul>
+  </div>
 
-
-      <div id="productos" class="product-container">
+  <div class="row">
+    <div id="productoscd" class="product-container">
+      <!-- Aquí van los productos -->
+    </div>
+  </div>
+</div>
 
       </div>
 
@@ -259,49 +295,142 @@ h1, h2, h3, h4, h5 ,a, li{
 
   // Dibujar productos
 
-  function dibujarProductos() {
-          $.ajax({
-        url: '/productosCompras',
+  function dibujarProductosCd() {
+    $.ajax({
+        url: '/get/productos/cd',
         method: 'GET',
         success: function(data) {
-          const productos = $('#productos');
-          productos.empty();
-          if (data.length === 0) {
-            productos.append(`
-              <div class="col-12 text-center my-5">
-                <div class="custom-alert" role="alert">
-                  <h4 class="alert-heading">¡No hay productos disponibles en este momento!</h4>
-                  <p>Actualmente no hay productos. Vuelve más tarde para ver si hay productos disponibles.</p>
-                  <hr>
-                  <p class="mb-0">Mientras tanto, puedes explorar otros servicios que ofrecemos.</p>
-                </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-              </div>
-            `);
-          }
-          data.forEach(producto => {
-                const card = `
-                <div class="product-card">
-                        <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
-                        <div class="product-info">
-                            <h2 class="product-title">${producto.nombre}</h2>
-                            <p class="product-description">${producto.descripcion}</p>
-                            <p class="product-price">$${producto.precio}</p>
+            const productos = $('#productoscd');
+            productos.empty();
+
+            // Priorizar productos con descuento
+            data.sort((a, b) => b.descuentoId - a.descuentoId);
+
+            // Obtener valor del buscador
+            const busqueda = $('#buscadorId').val().toLowerCase();
+
+            // Obtener valores seleccionados del filtro de precios (checkboxes)
+            const filtrosPrecio = [];
+            $('.precio-filtro:checked').each(function() {
+                filtrosPrecio.push($(this).val());
+            });
+
+            // Filtrar productos por nombre y por precio
+            const productosFiltrados = data.filter(producto => {
+                let cumpleBusqueda = producto.nombre.toLowerCase().includes(busqueda);
+
+                let cumpleFiltroPrecio = filtrosPrecio.length === 0 || filtrosPrecio.some(filtro => {
+                    switch (filtro) {
+                        case 'menos50':
+                            return producto.precio <= 50;
+                        case 'menos100':
+                            return producto.precio <= 100;
+                        case 'menos200':
+                            return producto.precio <= 200;
+                        case 'mas200':
+                            return producto.precio > 200;
+                    }
+                });
+
+                return cumpleBusqueda && cumpleFiltroPrecio;
+            });
+
+            // Separar productos con stock y sin stock
+            const productosConStock = productosFiltrados.filter(producto => producto.cantidadEnStock > 0);
+            const productosSinStock = productosFiltrados.filter(producto => producto.cantidadEnStock <= 0);
+
+            if (productosFiltrados.length === 0) {
+                // Si no hay productos filtrados, agregar 5 <br> para empujar el footer hacia abajo
+                productos.append(`
+                    <div class="col-12 text-center my-5">
+                        <h4 class="alert-heading">No se encontraron productos que coincidan con el filtro seleccionado.</h4>
+                        ${'<br>'.repeat(5)}
+                    </div>
+                `);
+            } else {
+                const renderProducto = (producto) => {
+                    function generarOpcionesSelect(cantidadEnStock) {
+                        let opciones = '';
+                        let maxCantidad = cantidadEnStock > 99 ? 10 : 10;
+
+                        for (let i = 1; i <= maxCantidad && i <= cantidadEnStock; i++) {
+                            opciones += `<option class="text-center" value="${i}">${i}</option>`;
+                        }
+
+                        return opciones;
+                    }
+
+                    const card = `
+                        <div class="product-card">
+                            <img src="/storage/${producto.imagen}" alt="${producto.nombre}" class="product-image">
+                            <div class="product-info">
+                                <h2 class="product-title">${producto.nombre}</h2>
+                                <p class="product-description">${producto.descripcion}</p>
+                                ${producto.descuentoId ? `
+                                    <div style="width:100%">
+                                        <p style="color:black;" class="product-description">Producto a precio especial</p>
+                                        <p style="color:gray; text-decoration: line-through 1.5px;" class="product-description">$${producto.precioAntiguo}</p>
+                                        <p style="color:black;"class="product-price" >$${producto.precio}</p>
+                                    </div>
+                                ` : `
+                                    <p class="product-price">$${producto.precio}</p>
+                                `}
+                                <div class="mb-3">
+                                    <label for="cantidad_${producto.id}" class="form-label">Selecciona la cantidad</label>
+                                    <select id="cantidad_${producto.id}"disabled class="form-select cantidad-producto" data-id="${producto.id}" data-stock="${producto.cantidadEnStock}">
+                                        ${generarOpcionesSelect(producto.cantidadEnStock)}
+                                    </select>
+                                </div>
+                            </div>
+                            <a href="/Login">
+                              <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-success">Agregar al carrito</button>
+                            </a>
                         </div>
-                        <a href="/Login">
-                          <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-success">Agregar al carrito</button>
-                          </a>
-                          </div>
-                          `;
-                          productos.append(card);
-                        });
-                      }
+                    `;
+                    productos.append(card);
+
+                    // Desactivar el botón si no hay stock
+                    if (producto.cantidadEnStock <= 0) {
+                        $('#boton_' + producto.id).prop('disabled', true);
+                        $('#boton_' + producto.id).attr('class', 'btn btn-secondary');
+                        $('#boton_' + producto.id).text('Producto fuera de existencia');
+                        $('#cantidad_' + producto.id).prop('disabled', true);
+                    }
+
+                    // Manejo del cambio de cantidad
+                    $(`#cantidad_${producto.id}`).on('change', function() {
+                        console.log(`Valor seleccionado para el producto ${producto.id}: ${$(this).val()}`);
                     });
-                  }
+                };
+
+                // Renderizar primero los productos con stock
+                productosConStock.forEach(renderProducto);
+
+                // Renderizar después los productos sin stock
+                productosSinStock.forEach(renderProducto);
+
+            }
+        }
+    });
+}
+$('.precio-filtro').on('change', function() {
+    $('.precio-filtro').not(this).prop('checked', false);
+    dibujarProductosCd();
+});
+// Llamar a la función dibujarProductosCd cuando se use el buscador o el filtro de precios
+$('#buscadorId').on('input', dibujarProductosCd);
+$('.precio-filtro').on('change', dibujarProductosCd)
+$('#buscadorId').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    // obtiene todos los productos con clase .product-card y los filtra
+    $('#productoscd .product-card').filter(function() {
+        // Encuentra el nombre del producto con .product-title
+        var text = $(this).find('.product-title').text().toLowerCase();
+
+        // Verifica si value se encuentra dentro de text, de ser asi lo muestra con toggle, de lo contrario lo oculta
+        $(this).toggle(text.indexOf(value) > -1);
+    });
+});
 
                   // Pantalla de carga
                   var loader = document.getElementById("contenedor_carga");
@@ -314,7 +443,7 @@ h1, h2, h3, h4, h5 ,a, li{
 
 $(document).ready(function(){
 
-  dibujarProductos();
+  dibujarProductosCd();
 
 
   

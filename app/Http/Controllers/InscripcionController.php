@@ -32,11 +32,12 @@ class InscripcionController extends Controller
 
     public function getInscripciones($cursoId)
     {
-        $inscripciones = Inscripcion::where('cursoId', $cursoId)->with('usuarios')->get();
+        $inscripciones = Inscripcion::where('cursoId', $cursoId)->whereNotNull('estado')->with('usuarios')->get();
         $curso = Curso::find($cursoId);
-
+    
         return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
     }
+    
 
     public function index($inscripcionId)
     {
@@ -156,6 +157,29 @@ class InscripcionController extends Controller
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
 
+            $inscripcion->estado = null;
+            $inscripcion->save();
+            // $inscripcion->delete();
+
+            DB::commit();
+            return response()->json(['success' => 'Inscripción eliminada exitosamente'], 200);
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['error' => 'Error al eliminar la inscripción: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function eliminarInscripcionReal($inscripcionId){
+        DB::beginTransaction();
+        try{
+            $inscripcion = Inscripcion::find($inscripcionId);
+
+            if (!$inscripcion) {
+                return response()->json(['error' => 'Inscripción no encontrada.'], 404);
+            }
+
+            // $inscripcion->estado = null;
+            // $inscripcion->save();
             $inscripcion->delete();
 
             DB::commit();

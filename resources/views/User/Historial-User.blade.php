@@ -98,7 +98,7 @@
         }@media (max-width: 480px) {
     .imgnavbar{
         width:200px;
-        height: 30px;
+        height: 45px;
     
     }}
 
@@ -328,7 +328,7 @@
     cita.citas_has_servicios.forEach(servicio => {
         const infoCitas = `<tr>
             <td>Cita</td>
-            <td>${servicio.venta ? servicio.venta.total : 'N/A'}</td>
+            <td>$${servicio.venta ? servicio.venta.total : 'N/A'}</td>
             <td>
                 <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
             </td>
@@ -338,25 +338,67 @@
 });
 
         inscripciones.forEach(inscripcion => {
-            const infoInscripciones = `<tr>
-                <td>Inscripción</td>
-                <td>${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+            if (inscripcion.estado == null) {
+                const infoInscripcionesExpiradas = `<tr>
+                <td><span style='color: #A81416; font-weight:600;'>Inscripción</span></td>
+                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
                 <td>
                     <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
                 </td>
             </tr>`;
-            historiales.append(infoInscripciones);
+            historiales.append(infoInscripcionesExpiradas);
+            }
+            else if (inscripcion.estado == 1) {
+                const infoInscripcionesAceptadas = `<tr>
+                <td><span style='color: #39BF3D; font-weight:600;'>Inscripción</span></td>
+                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                <td>
+                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+            historiales.append(infoInscripcionesAceptadas);
+            }
+            else {
+                const infoInscripciones = `<tr>
+                    <td><span style='color: #D5B533; font-weight:600;'>Inscripción</span></td>
+                    <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                </tr>`;
+                historiales.append(infoInscripciones);
+            }
         });
 
         ventas.forEach(venta => {
-            const infoVentas = `<tr>
-                <td>Compra</td>
-                <td>${venta.total}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoVentas);
+            if (venta.estadoVenta == 0) {
+                const infoVentasCancelada = `<tr>
+                    <td><span style='color: #A81416; font-weight:600;'>Compra</span></td>
+                    <td>$${venta.total}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                </tr>`;
+                historiales.append(infoVentasCancelada);
+            } else if (venta.estadoVenta == 1) {
+                const infoVentasAceptada = `<tr>
+                    <td><span style='color: #39BF3D; font-weight:600;'>Compra</span></td>
+                    <td>$${venta.total}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                </tr>`;
+                historiales.append(infoVentasAceptada);
+            } else {
+                const infoVentas = `<tr>
+                    <td><span style='color: #D5B533; font-weight:600;'>Compra</span></td>
+                    <td>$${venta.total}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                    </td>
+                </tr>`;
+                historiales.append(infoVentas);
+            }
         });
     }
     },
@@ -380,7 +422,7 @@ function mostrarCitaModal(citaId) {
                     const servicios = `<div class="modalInfo">
                         Servicio: ${item.servicio ? item.servicio.nombre : 'N/A'} <br>
                         Técnica: ${item.tecnica ? item.tecnica.nombre : 'N/A'} <br>
-                        Costo de la técnica: ${item.tecnica ? item.tecnica.precio : 'N/A'} <br>
+                        Costo de la técnica: $${item.tecnica ? item.tecnica.precio : 'N/A'} <br>
                     </div>`;
                     bodyCitas.append(servicios);
                 });
@@ -417,18 +459,15 @@ function mostrarCitaModal(citaId) {
                     const inscripcionModal = $('#modal-bodyInscripcion');
                     inscripcionModal.empty();
                     const { curso, empleado, tecnicas, inscripcion } = data;
-                    if (inscripcion.estado == 0){
-                        inscripcion.estado = "<span style='color: #D5B533;'>Pendiente</span>";
-                    } else {
-                        inscripcion.estado = "<span style='color: #39BF3D;'>Aceptado</span>";
-                    }
-                    const detalleInscripcion = `<div class="modalInfo">
-                        Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}<br> Cupos disponibles: ${curso.cupoLimite} <br><br> Inicia el ${curso.fechaInicio}
-                        a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <a href="/Home-usuario#contacto">Dirección</a> <br> Instructor oficial: ${empleado ? empleado.name : 'No asignado'}
-                        
-                        <br><br>Técnicas a enseñar en el curso:
-                    </div>`;
-                    inscripcionModal.append(detalleInscripcion);
+
+                    if (curso.activo == 0 && inscripcion.estado == null) {
+                        const cursoFinalizado = `<div class="modalInfo">
+                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Finalizado.</p> Tuvo comienzo el pasado ${curso.fechaInicio}
+                        a las ${curso.horaInicio}. Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros</a> 
+                        <br><br>Técnicas enseñadas en el curso:
+                        </div>`;
+
+                    inscripcionModal.append(cursoFinalizado);
                     if (tecnicas.length > 0){
                         tecnicas.forEach(item => {
                             const tecnicasInfo = `<div class="">
@@ -441,6 +480,40 @@ function mostrarCitaModal(citaId) {
                         inscripcionModal.append('<div class="modalInfo">Este curso no cuenta con técnicas para enseñar.</div>');
                         console.log(tecnica);
                     }
+                    }
+                    else if (curso.activo == 1 && inscripcion.estado == null) {
+                        const inscripcionCancelada = `<div class="modalInfo">
+                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Inscripción cancelada</p> Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros.</a> 
+                        </div>`;
+
+                    inscripcionModal.append(inscripcionCancelada);
+                    }
+                    else {
+                        if (inscripcion.estado == 0){
+                            inscripcion.estado = "<span style='color: #D5B533;'>Pendiente</span>";
+                        } else {
+                            inscripcion.estado = "<span style='color: #39BF3D;'>Aceptado</span>";
+                        }
+                        const detalleInscripcion = `<div class="modalInfo">
+                            Inscripción al curso <p class="" style="font-size:17px; font-weight:500; margin:0;">${curso.nombre}.</p> Estado: ${inscripcion.estado}<br> Cupos disponibles: ${curso.cupoLimite} <br><br> Inicia el ${curso.fechaInicio}
+                            a las ${curso.horaInicio}. Realiza tu pago dentro de 24 horas para asegurar tu lugar en el curso, posterior a las 24 horas se cancelará la inscripción. <a href="/Home-usuario#contacto">Dirección</a> <br> Instructor oficial: ${empleado ? empleado.name : 'No asignado'}
+                            
+                            <br><br>Técnicas a enseñar en el curso:
+                            </div>`;
+                            inscripcionModal.append(detalleInscripcion);
+                            if (tecnicas.length > 0){
+                                tecnicas.forEach(item => {
+                                    const tecnicasInfo = `<div class="">
+                                        <li style="padding:0px;margin-left:20px;">${item.tecnicas ? item.tecnicas.nombre : 'N/A'}</li>
+                                        </div>`;
+                                        inscripcionModal.append(tecnicasInfo);
+                                    });
+                                    inscripcionModal.append("<br>")
+                                } else {
+                                    inscripcionModal.append('<div class="modalInfo">Este curso no cuenta con técnicas para enseñar.</div>');
+                                    console.log(tecnica);
+                                }
+                            }
                     $('#inscripcionModal').modal('show');
                 },
                 error: function(error) {
@@ -457,23 +530,58 @@ function mostrarCitaModal(citaId) {
                     const productoModalBody = $('#productoModalBody');
                     productoModalBody.empty();
                     const { venta, producto } = data;
+                    let productosYaDibujados = []; // Para rastrear los productos ya dibujados
+                    let productosUnificados = {}; // Para unificar cantidades
+                    let totalProductos = 0;
+
+                    // Unificar productos por ID y acumular cantidades
+                    producto.forEach(item => {
+                        if (productosUnificados[item.producto.id]) {
+                            productosUnificados[item.producto.id].cantidad += 1; // Incrementar la cantidad
+                        } else {
+                            productosUnificados[item.producto.id] = {
+                                ...item.producto,
+                                cantidad: 1
+                            };
+                        }
+                        totalProductos += 1;
+                    });
+
                     if (producto.length > 0) {
-                        producto.forEach (item => {
-                            const detalleProducto = `<div class="modalInfo">
-                                <img src="/storage/${item.producto.imagen}" alt="Producto" width="80" height="80" style="margin-right:10px">  
-                                  ${item.producto.nombre} - $${item.producto.precio}
-                                </div>`;
-                                productoModalBody.append(detalleProducto);
-                                console.log(producto)
-                            });
+                    // Dibujar productos unificados
+                    for (let id in productosUnificados) {
+                        const item = productosUnificados[id];
+                        const detalleProducto = `<div class="modalInfo">
+                            <img src="/storage/${item.imagen}" alt="Producto" width="80" height="80" style="margin-right:10px">  
+                            ${item.nombre} - $${item.precio} |
+                            Cantidad: ${item.cantidad}
+                        </div>`;
+                        productoModalBody.append(detalleProducto);
+                    }
                     } else {
                         productoModalBody.append('<div class="modalInfo">No se encontraron productos para esta venta.</div>');
                     }
                     const infoExtra = `<div class="modalInfo text-center">
-                        Compra con ${producto.length} productos.
+                        Compra con un total de ${totalProductos} productos.
                         <br>Costo total: $${venta.total}<br>
                     </div>`;
                     productoModalBody.append(infoExtra);
+                    if (venta.estadoVenta == null) {
+                        const pendienteRecoger = `<div class="modalInfo text-center">
+                        <span style='color: #D5B533; font-weight:600;'>Pendiente de recoger.</span> Para más información acceda al correo que se le generó anteriormente.
+                    </div>`;
+                    productoModalBody.append(pendienteRecoger);
+                    } else if (venta.estadoVenta == 1) {
+                        const compraAceptada = `<div class="modalInfo text-center">
+                        <span style='color: #39BF3D; font-weight:600;'>Compra aceptada y entregada con éxito.</span> Si no se le entregó su pedido o hubo algún problema con este, favor de ponerse en contacto con nosotros.
+                    </div>`;
+                    productoModalBody.append(compraAceptada);
+                    } else {
+                        const compraRechazada = `<div class="modalInfo text-center">
+                        <span style='color: #A81416; font-weight:600;'>Compra cancelada.</span>
+                    </div>`;
+                    productoModalBody.append(compraRechazada);
+                    }
                     $('#productoModal').modal('show');
                 },
                 error: function(error) {

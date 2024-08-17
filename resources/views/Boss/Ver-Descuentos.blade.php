@@ -616,7 +616,7 @@ $('#buscadorNombreProductoDescuento').on('keyup', function() {
 
 function tablaDescuentosProducto() {
     $.ajax({
-        url: 'get/productos/cd',
+        url: 'get/productos/cdcd',
         method: 'GET',
         success: function(data) {
             const tableBody = $('#Productos');

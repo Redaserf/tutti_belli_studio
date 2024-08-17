@@ -16,7 +16,7 @@ class ViewsController extends Controller
         if (!Auth::check()) {
             return view('Guest.Home-guest');
         }
-        
+
         $user = Auth::user();
         if ($user->rolId == 4) {
             return redirect('/Home-administrador');
@@ -217,7 +217,7 @@ class ViewsController extends Controller
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
-        
+
         $user = Auth::user();
         if ($user->rolId == 4) {
             return redirect('/Ver-Citas');
@@ -529,11 +529,22 @@ class ViewsController extends Controller
         }
     }
 
+    public function bossVerReportes(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Ver-Reportes');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
+    }
 
 
-
-
-    // Ver producto específico (no mames aarón)
     public function Producto(){
         return view('User.Ver-Prodcuto-especifico');
     }
