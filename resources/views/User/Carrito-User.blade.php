@@ -263,6 +263,14 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                 <br>
                 <br>
         </div>
+        <div id="buscadoridcarrito" class="input-group mb-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 10px;">
+            <input type="text" class="form-control" id="buscadorId" placeholder="Buscar por nombre de producto" style="border: none; background-color: transparent;">
+            <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2" style="background-color: transparent; border: none;">
+                <i class="fas fa-search" style="color: #6c757d;"></i>
+            </span>
+            </div>
+        </div>
         <div class="table-responsive table-container">
             <table class="table">
                 <thead>
@@ -335,7 +343,9 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     var cont2;
     //Contador para id dinamico
     // var cont1;
-
+    
+   
+    
     function dibujarCarrito() {
     $.ajax({
         url: '/get/carrito',
@@ -346,68 +356,93 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
             const resumen = $('.summary-container');
             const tabla = $('.table-container');
             const mensajeVacio = $('#mensajeCarritoVacio');
+            const buscador = $('#buscadorId');
+            const buscadorocultar= $('#buscadoridcarrito');
+            
 
             carrito.empty();
 
             if (data.length === 0) {
-                // Si no hay productos en el carrito, ocultar tabla y resumen, y mostrar mensaje
                 tabla.hide();
                 resumen.hide();
                 mensajeVacio.show();
+                buscadorocultar.hide();
+                
             } else {
-                // Si hay productos en el carrito, mostrar tabla y resumen, y ocultar mensaje
                 tabla.show();
                 resumen.show();
                 mensajeVacio.hide();
+                buscadorocultar.show();
+                
 
-                // let total = 0; que bien aaron
                 let cont2 = 0;
 
-                data.forEach(producto => {
-                    cont2 = 1;
-                    let idCantidad = 'cantidad' + producto.id;
+                // Función para filtrar productos según el valor del buscador
+                function filtrarProductos() {
+                    let filtro = buscador.val().toLowerCase();
+                    let productosFiltrados = data.filter(producto => 
+                        producto.nombre.toLowerCase().includes(filtro)
+                    );
 
-                    productosComprados.push({
-                        id: producto.id,
-                        nombre: producto.nombre,
-                        descripcion: producto.descripcion,
-                        precio: producto.precio
+                    renderizarProductos(productosFiltrados);
+                }
+
+                function renderizarProductos(productos) {
+                    carrito.empty();
+                    productosComprados = [];
+                    productosYaDibujados = [];
+                    total = 0;
+
+                    productos.forEach(producto => {
+                        cont2 = 1;
+                        let idCantidad = 'cantidad' + producto.id;
+
+                        productosComprados.push({
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            descripcion: producto.descripcion,
+                            precio: producto.precio
+                        });
+
+                        if (!productosYaDibujados.includes(producto.id)) {
+                            productosYaDibujados.push(producto.id);
+
+                            const item = `
+                            <tr>
+                                <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
+                                <td>${producto.nombre}</td>
+                                <td>${producto.descripcion}</td>
+                                <td>$${producto.precio}</td>
+                                <td id="${idCantidad}">1</td>
+                                <td>${producto.cantidadEnStock}</td>
+                                <td>
+                                    <input type="number" min="1" id="cantidad_input_${producto.pivot.id}" value="1">
+                                    <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>`;
+                            carrito.append(item);
+                            $('#cantidad_input_' + producto.pivot.id).on('input', function() {
+                                const max = parseInt($('#' + idCantidad).text());
+                                if (parseInt($(this).val()) > max) {
+                                    $(this).val(max);
+                                }
+                            });
+                        } else {
+                            cont2 = parseInt($('#' + idCantidad).text()) + 1;
+                            $('#' + idCantidad).text(cont2);
+                        }
+
+                        total += producto.precio;
                     });
 
-                    if (!productosYaDibujados.includes(producto.id)) {
+                    costoTotal.text('Costo Total: $' + total);
+                }
 
-                        productosYaDibujados.push(producto.id);
+                // Inicializar con todos los productos
+                renderizarProductos(data);
 
-                        const item = `
-                    <tr>
-                        <td><img src="/storage/${producto.imagen}" alt="${producto.nombre}"></td>
-                        <td>${producto.nombre}</td>
-                        <td>${producto.descripcion}</td>
-                        <td>$${producto.precio}</td>
-                        <td id="${idCantidad}">1</td>
-                        <td>${producto.cantidadEnStock}</td>
-                        <td>
-                            <input type="number" min="1" id="cantidad_input_${producto.pivot.id}" value="1">
-                            <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>`;
-                        carrito.append(item);
-                        $('#cantidad_input_' + producto.pivot.id).on('input', function() {
-                            const max = parseInt($('#' + idCantidad).text()); // Obtenemos el valor de idCantidad
-                            if (parseInt($(this).val()) > max) {
-                                $(this).val(max); // Establece el valor máximo si se excede
-                            }
-                        });
-                    } else {
-                        cont2 = parseInt($('#' + idCantidad).text()) + 1;
-                        $('#' + idCantidad).text(cont2);
-                    }
-
-                    total += producto.precio;
-                });
-
-                costoTotal.text('Costo Total: $' + total);
-                console.log(productosComprados);
+                // Añadir evento de búsqueda
+                buscador.on('input', filtrarProductos);
             }
         },
         error: function(error) {
@@ -416,8 +451,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         }
     });
 }
-
-function carritoDelete(pivotId) {
+ function carritoDelete(pivotId) {
     const cantidadEliminar = parseInt($(`#cantidad_input_${pivotId}`).val(), 10); // Obtener la cantidad del input
 
     console.log(`Solicitando eliminar ${cantidadEliminar} unidades del producto con pivotId: ${pivotId}`);
