@@ -411,6 +411,13 @@
             <!-- Input para buscar por hora -->
             <input type="time" class="form-control mb-3" id="buscadorHoraCita" placeholder="Buscar por hora de cita">
 
+            <select class="form-control mb-3" id="filtroEstadoCita">
+                <option value="">Filtrar por estado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="rechazada">Rechazada</option>
+                <option value="aceptada">Aceptada</option>
+            </select>
+
             <div class="table-container mt-4">
                 <div class="table-responsive">
                     <table class="table table-striped">
