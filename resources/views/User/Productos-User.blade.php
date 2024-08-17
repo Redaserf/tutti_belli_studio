@@ -431,7 +431,7 @@ h1, h2, h3, h4, h5 ,a, li{
       .removeClass("show")
       .addClass("hide")
       .fadeOut();
-    }, 6000);
+    }, 1500);
   }
 
   // Dibujar productos
