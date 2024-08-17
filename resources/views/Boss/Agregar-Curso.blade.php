@@ -891,6 +891,10 @@ function checkWidth() {
                 });
         }
 
+
+
+        // ========= QUIZÁ CAMBIAR ESTA RUTA ========= 
+
         function loadEmpleados(){
             $.get('/usuario/empleado', function(empleados){
                 empleadoSelect = $('#empleadoId');

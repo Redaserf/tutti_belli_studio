@@ -1029,26 +1029,35 @@ function editarInscripcion(inscripcionId){
 
 
 
-        // Eliminar un curso
-
-        function cursoDelete(id){
-  if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
-    $.ajax({
-      url: `/cursos/eliminar/${id}`,
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      success: function(){
-        alert('Curso eliminado exitosamente.');
-        dibujarCursos();
-      },
-      error: function(error){
-        alert('Hubo un error al eliminar el curso');
-        console.log(error);
-      }
-    });
-  }
+// Eliminar un curso
+function cursoDelete(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+        $.ajax({
+            url: `/cursos/eliminar/${id}`,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.error) {
+                    // Muestra el mensaje de error personalizado desde el controlador
+                    alert(response.error);
+                } else {
+                    alert('Curso eliminado exitosamente.');
+                    dibujarCursos();
+                }
+            },
+            error: function(xhr) {
+                // Muestra el mensaje de error desde la respuesta del servidor
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    alert(xhr.responseJSON.error);
+                } else {
+                    alert('Hubo un error al eliminar el curso');
+                }
+                console.log(xhr);
+            }
+        });
+    }
 }
 
 function modalEditar(id) {
@@ -1093,27 +1102,36 @@ $('#editCursoForm').on('submit', function(e) {
     const precio = parseFloat($('#edit_precio').val());
 
     if (precio < 0){
-            alert("Ingresa valores correctos.")
-        } else {
-
-    $.ajax({
-        url: `/cursos/actualizar/${$('#edit_id').val()}`,
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            $('#editCursoModal').modal('hide');
-            dibujarCursos();
-            alert('Curso actualizado exitosamente');
-        },
-        error: function(error) {
-            console.log(error);
-            alert('Hubo un error al actualizar el curso');
-        }
-    });
-}
+        alert("Ingresa valores correctos.");
+    } else {
+        $.ajax({
+            url: `/cursos/actualizar/${$('#edit_id').val()}`,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if(response.error) {
+                    // Mostrar el mensaje de error del controlador en un alert
+                    alert(response.error);
+                } else {
+                    $('#editCursoModal').modal('hide');
+                    dibujarCursos();
+                    alert('Curso actualizado exitosamente');
+                }
+            },
+            error: function(xhr) {
+                // Capturar y mostrar el mensaje de error del servidor
+                if(xhr.status === 403) {
+                    alert(xhr.responseJSON.error);
+                } else {
+                    alert('Hubo un error al actualizar el curso');
+                }
+            }
+        });
+    }
 });
+
 
     function dibujarProductosUsados(id){
         $('#productosModal').modal('show');
