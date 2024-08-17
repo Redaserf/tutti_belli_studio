@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Servicio;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -45,7 +46,7 @@ class UsuarioController extends Controller
 
 
     public function Registro(Request $request){
-        
+
         $fechaNacimiento = new \DateTime($request->fechaNacimiento);
         $hoy = new \DateTime();
         $edad = $hoy->diff($fechaNacimiento)->y;
@@ -81,9 +82,9 @@ class UsuarioController extends Controller
             $user->gender = $request->input('gender');
             $user->email = $request->input('email');
             $user->numeroTelefono = $request->input('phone');
-    
+
             $user->save();
-    
+
             return response()->json(['success' => 'Perfil actualizado exitosamente']);
         } else {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
@@ -99,15 +100,15 @@ class UsuarioController extends Controller
             $user->gender = $request->input('gender');
             $user->email = $request->input('email');
             $user->numeroTelefono = $request->input('phone');
-    
+
             $user->save();
-    
+
             return response()->json(['success' => 'Perfil actualizado exitosamente']);
         } else {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
     }
-    
+
     public function Logout(){
         Auth::logout();
         return redirect('/Home-guest');
@@ -115,6 +116,13 @@ class UsuarioController extends Controller
 
     public function obtenerEmpleado($id) {
         $empleado = User::find($id);
+
+        return response()->json($empleado);
+    }
+
+    public function empleadoYAdmin(){
+        $empleado = User::where('rolId', 3)->
+                    orWhere('rolId', 4)->get();
 
         return response()->json($empleado);
     }

@@ -539,6 +539,7 @@ $(document).ready(function(){
                     },
                 success: function (response){
                 // Ocultar la pantalla de carga
+                    console.log(response)
                 $('#contenedor_carga').css('display', 'none');
                     mostrarAlerta('Compra realizada exitosamente.', 'alert-success','check-circle-fill')
                     productosComprados = [];
