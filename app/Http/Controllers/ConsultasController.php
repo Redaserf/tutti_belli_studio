@@ -139,9 +139,18 @@ class ConsultasController extends Controller
             return redirect('/Ver-Citas-Empleado');
         }
     
-        $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user) {
-            $query->where('estadoCita', true);
-            $query->where('empleadoId', $user->id);
+        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+    
+        $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user, $fechaHoraActual) {
+            $query->where('estadoCita', true)
+                  ->where('empleadoId', $user->id)
+                  ->where(function($query) use ($fechaHoraActual) {
+                      $query->where('fechaCita', '>', $fechaHoraActual->toDateString())
+                            ->orWhere(function($query) use ($fechaHoraActual) {
+                                $query->where('fechaCita', $fechaHoraActual->toDateString())
+                                      ->where('horaCita', '>', $fechaHoraActual->format('H:i:s'));
+                            });
+                  });
         }])->get();
     
         $citasGrouped = $citasHasServicios->groupBy('citaId');
@@ -171,13 +180,18 @@ class ConsultasController extends Controller
         if ($user->rolId == 4) {
             return view('Boss.Ver-Citas', compact('events'));
         }
+    
+        return redirect('/Home-guest'); // Redirige si no tiene el rol adecuado
     }
+    
     
 
     
     
     public function mostrarServiciosTecnicasCitasEmpleado()
     {
+        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+    
         if (!Auth::check()) {
             return redirect('/Home-guest');
         }
@@ -192,9 +206,16 @@ class ConsultasController extends Controller
     
         $citasEmpleado = [];
     
-        $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user) {
-            $query->where('estadoCita', true);
-            $query->where('empleadoId', $user->id);
+        $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user, $fechaHoraActual) {
+            $query->where('estadoCita', true)
+                  ->where('empleadoId', $user->id)
+                  ->where(function($query) use ($fechaHoraActual) {
+                      $query->where('fechaCita', '>', $fechaHoraActual->toDateString())
+                            ->orWhere(function($query) use ($fechaHoraActual) {
+                                $query->where('fechaCita', $fechaHoraActual->toDateString())
+                                      ->where('horaCita', '>', $fechaHoraActual->format('H:i:s'));
+                            });
+                  });
         }, 'servicio', 'tecnica'])->get();
     
         $citasGrouped = $citasHasServicios->groupBy('citaId');
@@ -225,6 +246,7 @@ class ConsultasController extends Controller
     
         return redirect('/Home-guest'); // Redirige si no tiene el rol adecuado
     }
+    
     
 
 
@@ -281,7 +303,7 @@ class ConsultasController extends Controller
                       ->where('citas_has_servicios.citaId', $id)
                       ->select('tecnicas.*', 'citas_has_servicios.servicioId as pivot_servicioId');
             }]);
-        }])->with('usuario')->findOrFail($id);
+        }])->with('usuario')->with('usuarioEmpleado.horarios')->findOrFail($id);
         
         $result = [
             'cita' => $cita,
