@@ -256,6 +256,7 @@ class ViewsController extends Controller
             return view('Employee.Ver-ventas-empleado');
         }
     }
+    
 
 
     // ==========[ Boss ]==========
@@ -547,6 +548,21 @@ class ViewsController extends Controller
 
     public function Producto(){
         return view('User.Ver-Prodcuto-especifico');
+    }
+
+    public function bossVercitasdeemp(){
+        if (!Auth::check()) {
+            return redirect('/Home-guest');
+        }
+
+        $user = Auth::user();
+        if ($user->rolId == 4) {
+            return view('Boss.Vistas-pend-Emp');
+        } elseif ($user->rolId == 2) {
+            return redirect('/Home-usuario');
+        } elseif ($user->rolId == 3) {
+            return redirect('/Home-empleado');
+        }
     }
 
 
