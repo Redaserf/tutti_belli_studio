@@ -767,14 +767,11 @@
                     tablaRaiz.empty();
 
                     ventas.forEach(venta => {
-                        console.log("Empleado Venta:", venta.empleadoVenta); // Verifica que este campo no sea undefined o null
-                        let empleadoNombre = venta.empleadoVenta ? venta.empleadoVenta.name : 'No asignado';
-                        console.log("Nombre del empleado:", empleadoNombre);
 
                         let contenido = `<tr>
                         <td>${venta.tipoVenta}</td>
                         <td>${venta.fechaVenta}</td>
-                        <td>${empleadoNombre}</td>
+                        <td>${venta.empleadoNombre}</td>
                         <td>${venta.total}</td>
                         </tr>`;
                         tablaRaiz.append(contenido);
