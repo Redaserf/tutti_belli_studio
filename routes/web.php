@@ -180,6 +180,7 @@ use App\Models\Inscripcion;
     Route::get('/Ver-Cursos', [ViewsController::class, 'bossVerCursos']);
     Route::get('/Ver-Productos', [ViewsController::class, 'bossVerProductos']);
     Route::get('/Ver-Servicios', [ViewsController::class, 'bossVerServicios']);
+    Route::get('/Ver-citas-emp-pen',[ViewsController::class,'bossVercitasdeemp']);
     Route::get('/Perfil-Admin',[ViewsController ::class,'bossVerPerfil']);
 
 
