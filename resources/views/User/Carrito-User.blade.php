@@ -387,11 +387,17 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <td id="${idCantidad}">1</td>
                         <td>${producto.cantidadEnStock}</td>
                         <td>
-                            <input type="number" min="1" max="${producto.cantidadEnStock}" id="cantidad_input_${producto.pivot.id}" value="1">
+                            <input type="number" min="1" id="cantidad_input_${producto.pivot.id}" value="1">
                             <button class="btn btn-danger" onclick="carritoDelete(${producto.pivot.id})"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
                         carrito.append(item);
+                        $('#cantidad_input_' + producto.pivot.id).on('input', function() {
+                            const max = parseInt($('#' + idCantidad).text()); // Obtenemos el valor de idCantidad
+                            if (parseInt($(this).val()) > max) {
+                                $(this).val(max); // Establece el valor máximo si se excede
+                            }
+                        });
                     } else {
                         cont2 = parseInt($('#' + idCantidad).text()) + 1;
                         $('#' + idCantidad).text(cont2);
