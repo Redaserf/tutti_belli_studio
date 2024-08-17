@@ -176,19 +176,86 @@ class DibujarController extends Controller
         }
     }
 
-    // ==========[ Eliminar un producto del carrito ]==========
-    function carritoDelete($id){
-        $user = Auth::user();
-        $carrito = $user->carrito;
 
-        if ($carrito) {
-        // Asegurarse de eliminar la relación específica usando el id de la tabla pivote
-        $carrito->productos()->wherePivot('id', $id)->detach();
-            return response()->json(['success' => 'Producto eliminado del carrito']);
-        } else {
-            return response()->json(['error' => 'El carrito no existe'], 404);
+
+
+public function carritoDelete(Request $request, $pivotId) {
+    $user = Auth::user();
+    $carrito = $user->carrito;
+    $cantidadEliminar = (int) $request->input('cantidad'); // Cantidad a eliminar
+
+    Log::info("HOLAALALALAL");
+    Log::info("Usuario: {$user->id} ha solicitado eliminar {$cantidadEliminar} unidades del producto con pivotId: {$pivotId}");
+
+    if ($carrito) {
+        if ($cantidadEliminar <= 0) {
+            Log::warning("Cantidad inválida solicitada para eliminación: {$cantidadEliminar}");
+            return response()->json(['error' => 'Cantidad inválida'], 400);
         }
+
+        // Obtener el producto en el carrito usando el pivotId
+        $productoEnCarrito = $carrito->productos()->wherePivot('id', $pivotId)->first();
+
+        if (!$productoEnCarrito) {
+            Log::warning("Producto no encontrado en el carrito para pivotId: {$pivotId}");
+            return response()->json(['error' => 'Producto no encontrado en el carrito'], 404);
+        }
+
+        $productoId = $productoEnCarrito->pivot->productoId;
+        Log::info("Producto ID: {$productoId}");
+
+        // Obtener todos los IDs de las instancias del producto en el carrito
+        $instanciasProducto = DB::table('carrito_has_productos')
+            ->where('productoId', $productoId)
+            ->where('carritoId', $carrito->id)
+            ->pluck('id')
+            ->toArray();
+
+        Log::info("IDs de los registros de este producto: " . implode(", ", $instanciasProducto));
+
+        $cantidadActual = count($instanciasProducto);
+        Log::info("Cantidad actual en el carrito del producto: {$cantidadActual}");
+
+        if ($cantidadEliminar >= $cantidadActual) {
+            Log::info("Eliminando todas las unidades del producto con productoId: {$productoId}");
+            // Eliminar todos los registros correspondientes
+            DB::table('carrito_has_productos')
+                ->where('productoId', $productoId)
+                ->where('carritoId', $carrito->id)
+                ->delete();
+        } else {
+            // Mezclar los IDs de manera aleatoria
+            shuffle($instanciasProducto);
+
+            Log::info("IDs después de mezclar: " . implode(", ", $instanciasProducto));
+            Log::info("Eliminando {$cantidadEliminar} unidades de {$cantidadActual} del producto con productoId: {$productoId}");
+
+            // Eliminar la cantidad solicitada de productos
+            $idsParaEliminar = array_slice($instanciasProducto, 0, $cantidadEliminar);
+            Log::info("IDs seleccionados para eliminar: " . implode(", ", $idsParaEliminar));
+
+            DB::table('carrito_has_productos')
+                ->whereIn('id', $idsParaEliminar)
+                ->delete();
+        }
+
+        Log::info("Eliminación completada para el producto con productoId: {$productoId}");
+        return response()->json(['success' => 'Producto(s) eliminado(s) del carrito']);
+    } else {
+        Log::error("El carrito no existe para el usuario: {$user->id}");
+        return response()->json(['error' => 'El carrito no existe'], 404);
     }
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 // =============================================================================================
 
