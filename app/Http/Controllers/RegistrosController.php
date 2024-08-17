@@ -26,6 +26,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\DetalleTecnica;
 use App\Models\DetalleTecnicaProducto;
 use App\Models\ProductoHasTecnica;
+use App\Models\Horario;
+use App\Models\EmpleadoHasHorario;
+
+use App\Models\Reporte;
+
 
 
 
@@ -82,19 +87,112 @@ class RegistrosController extends Controller
 
     function RegistroEmpleado(Request $request)
     {
-        $empleado = new User();
-        $empleado->name = $request->name;
-        $empleado->apellido = $request->apellido;
-        $empleado->fechaNacimiento = $request->fechaNacimiento;
-        $empleado->gender = $request->gender;
-        $empleado->email = $request->email;
-        $empleado->password  = bcrypt($request->password);
-        $empleado->fotoPerfil = $request->fotoPerfil;
-        $empleado->numeroTelefono  = $request->numeroTelefono;
-        $empleado->rolId = $request->rolId;
-        $empleado->save();
 
+        // $request->validate([
+        //     'employeePhone' => ['required', 'regex:/^\d{10,}$/'],
+        // ], [
+        //     'employeePhone.required' => 'El número de teléfono es obligatorio.',
+        //     'employeePhone.regex' => 'El número de teléfono no es válido. Debe contener al menos 10 dígitos.',
+        // ]);
+
+
+        try{
+            $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+            $fechaFinAnio = '2024-12-31 23:59:59';
+
+            $empleado = new User();
+            $empleado->name = $request->employeeName;
+            $empleado->apellido = $request->employeeLastname;
+            $empleado->fechaNacimiento = $request->employeeBirthDate;
+            $empleado->gender = $request->employeeGender;
+            $empleado->email = $request->employeeEmail;
+            $empleado->password  = bcrypt($request->employeePassword);
+            $empleado->fotoPerfil = $request->fotoPerfil;
+            $empleado->numeroTelefono  = $request->employeePhone;
+            $empleado->rolId = 3;
+            $empleado->save();
+
+
+        $diaSemana = $request->opcionesCheckbox;
+        
+        if (is_null($request->horaInicioForm)) {
+            throw  new \Exception('No se seleccionaron horas');
+        }
+
+        if (is_null($diaSemana)) {
+            throw  new \Exception('No se seleccionaron los dias');
+        }
+
+        if (!is_array($diaSemana)) {
+            return response()->json(['message' => 'Los días de la semana deben ser un array'], 400);
+        }
+
+        
+
+        foreach ($diaSemana as $dia) {
+            $horario = Horario::create([
+                'diaSemana' => $dia,
+                'horaInicio' => $request->horaInicioForm,
+                'horaFin' => $request->horaFinForm,
+            ]);
+            
+            $tablaPivote = EmpleadoHasHorario::create([
+                'empleadoId' => $empleado->id,
+                'horarioId' => $horario->id
+            ]);
+
+        }
+
+            DB::commit();
+            return response()->json(['message' => 'Empleado creado con exito'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al crear el empleado', 'error' => $e->getMessage()], 500);
+        }
     }
+
+    function editarHorarioEmpleado(Request $request, $id) {
+        try {
+            $empleado = User::with('horarios')->findOrFail($id);
+
+            $horarioIds = EmpleadoHasHorario::where('empleadoId', $id)->pluck('horarioId');
+            EmpleadoHasHorario::where('empleadoId', $id)->delete();
+            Horario::whereIn('id', $horarioIds)->delete(); 
+
+            $diaSemana = $request->opcionesCheckbox;
+    
+            if (is_null($request->horaInicio)) {
+                throw new \Exception('No se seleccionaron horas');
+            }
+    
+            if (is_null($diaSemana)) {
+                throw new \Exception('No se seleccionaron los días');
+            }
+    
+            if (!is_array($diaSemana)) {
+                returnresponse()->json(['message' => 'Los días de la semana deben ser un array'], 400);
+            }
+    
+            foreach ($diaSemana as $dia) {
+                $horario = Horario::create([
+                    'diaSemana' => $dia,
+                    'horaInicio' => $request->horaInicio,
+                    'horaFin' => $request->horaFin,
+                ]);
+                
+                EmpleadoHasHorario::create([
+                    'empleadoId' => $empleado->id,
+                    'horarioId' => $horario->id
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Horario editado con éxito'], 200);
+        } catch (\Exception$e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+    
 
     function RegistroCurso(Request $request)
     {
@@ -279,12 +377,19 @@ class RegistrosController extends Controller
                 "estadoCita" => true
             ]);
 
+            $reporte = Reporte::create([
+                'usuarioId' => $cita->empleadoId
+            ]);
+
             $venta = Venta::create([
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
                 'estadoVenta' => false,
-                'usuarioId' => $cita->usuarioId
+                'usuarioId' => $cita->usuarioId,
+                'reporteId' => $reporte->id
             ]);
+
+            
 
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
@@ -670,12 +775,6 @@ class RegistrosController extends Controller
 
         DB::beginTransaction();
         try {
-            $venta = Venta::create([
-                'fechaVenta' => $request->fechaCita,
-                'total' => 0,
-                'estadoVenta' => false,
-            ]);
-
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
@@ -684,6 +783,20 @@ class RegistrosController extends Controller
                 "notasCita" => $request->notasCita ?? null,
                 "estadoCita" => false
             ]);
+
+            
+            $reporte = Reporte::create([
+                'usuarioId' => $cita->empleadoId
+            ]);
+
+            $venta = Venta::create([
+                'fechaVenta' => $request->fechaCita,
+                'total' => 0,
+                'estadoVenta' => false,
+                'usuarioId' => $cita->usuarioId,
+                'reporteId' => $reporte->id
+            ]);
+
 
             foreach ($serviciosSeleccionados as $servicio) {
                 $citaHasServicios = CitaHasServicio::create([
@@ -841,6 +954,7 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Error al aceptar la venta y actualizar el stock', 'error' => $e->getMessage()], 500);
         }
     }
+
     
 
 }

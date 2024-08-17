@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('fechaInicio');
-            $table->dateTime('fechaFin');
-            $table->unsignedBigInteger('usuarioId');
+            $table->enum('diaSemana', ['0', '1', '2', '3', '4', '5', '6']);
+            $table->time('horaInicio');
+            $table->time('horaFin');
             $table->timestamps();
 
-            $table->foreign('usuarioId')->references('id')->on('users');
 
 
         });

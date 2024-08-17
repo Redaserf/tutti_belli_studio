@@ -13,6 +13,9 @@ use App\Models\Inscripcion;
 use App\Models\Producto;
 use App\Models\Inventario;
 use App\Models\TecnicaHasCurso;
+use App\Models\Horario;
+use App\Models\EmpleadoHasHorario;
+
 use App\Models\User;
 use App\Models\Venta;
 use Illuminate\Http\Request;
@@ -205,6 +208,13 @@ class DibujarController extends Controller
             $citaIds = Cita::where('empleadoId', $empleado->id)->pluck('id');
             CitaHasServicio::whereIn('citaId', $citaIds)->delete();
             DetalleTecnicaProducto::whereIn('citaId', $citaIds)->delete();
+
+
+            $horarioIds = EmpleadoHasHorario::where('empleadoId', $empleado->id)->pluck('horarioId');
+            EmpleadoHasHorario::where('empleadoId', $empleado->id)->delete();
+            Horario::whereIn('id', $horarioIds)->delete();
+            
+            
             $empleado->citasEmpleados()->delete();
             $empleado->carrito()->delete();
             $empleado->ususariosEmpleadoCursos()->update(['empleadoId' => null]);

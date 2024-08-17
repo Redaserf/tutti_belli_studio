@@ -103,7 +103,7 @@ class User extends Authenticatable
 
     public function horarios()
     {
-        return $this->hasMany(Horario::class,'usuarioId');
+        return $this->belongsToMany(Horario::class,'empleados_has_horarios', 'empleadoId', 'horarioId');
     }
 
     public function reportes()

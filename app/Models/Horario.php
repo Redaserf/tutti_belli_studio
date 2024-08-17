@@ -11,13 +11,13 @@ class Horario extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
-        'fechaInicio',
-        'fechaFin'.
-        'usuarioId'
+        'diaSemana',
+        'horaInicio',
+        'horaFin'
     ];
     use HasFactory;
 
-    public function usuario(){
-        return $this->belongsTo(User::class, 'usuarioId');
+    public function empleadoHasHorario(){
+        return $this->hasMany(EmpleadoHasHorario::class, 'horarioId');
     }
 }

@@ -17,7 +17,9 @@ use App\Models\Cita;
 use App\Models\CitaHasServicio;
 use App\Models\ProductoHasTecnica;
 use App\Models\Venta;
+use App\Models\Horario;
 use App\Models\DetalleTecnicaProducto;
+
 
 
 use DateTime;
@@ -59,10 +61,10 @@ class ConsultasController extends Controller
     }
 
 
-    public function usuarioGuest() // se trae los usuarios que tengan el rol de Usuario y Guest
+    public function usuarioGuest() // se trae los usuarios que tengan Guest
     {
         $usuarios = User::whereHas('roles', function ($query) {
-            $query->where('nombre', 'Guest');
+            $query->where('id', 1);
         })->get();
     
         return response()->json($usuarios);
@@ -103,9 +105,10 @@ class ConsultasController extends Controller
     
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
-        } elseif ($user->rolId == 4) {
-            return redirect('/Ver-Citas');
         }
+        // } elseif ($user->rolId == 4) {
+        //     return redirect('/Ver-Citas');
+        // }
 
             $usuarios = User::whereHas('roles', function ($query) {
                 $query->whereIn('nombre', ['Empleado', 'Administrador']);
@@ -278,7 +281,7 @@ class ConsultasController extends Controller
                       ->where('citas_has_servicios.citaId', $id)
                       ->select('tecnicas.*', 'citas_has_servicios.servicioId as pivot_servicioId');
             }]);
-        }])->findOrFail($id);
+        }])->with('usuario')->findOrFail($id);
         
         $result = [
             'cita' => $cita,
@@ -345,8 +348,6 @@ class ConsultasController extends Controller
     
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
-        } elseif ($user->rolId == 4) {
-            return redirect('/Ver-Citas');
         }
     
         $citas = Cita::where('estadoCita', '=', false)->where('empleadoId', $user->id)
@@ -596,6 +597,21 @@ class ConsultasController extends Controller
 
 
 
+
+    public function horarioEmpleado($id){
+        $empleado = User::with('horarios')->find($id);
+
+        return response()->json($empleado);
+    }
+
+    public function horarioEmpleadoLogeado(){
+        $user = Auth::user();
+    
+        // Traer el usuario con sus horarios y citas
+        $jaja = User::with(['horarios', 'citasEmpleados'])->where('id', $user->id)->get();
+    
+        return response()->json($jaja);
+    }
 
     
 }    

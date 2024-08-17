@@ -570,6 +570,8 @@ header {
         box-shadow: 0 0 5px rgba(232, 62, 140, 0.5);
     }
         /*estilos pa los modales pq pusiste jajaja hugo nmms xd*/
+
+        
     </style>
 
 </head>
@@ -720,19 +722,18 @@ header {
                                         <input type="hidden" id="serviciosSeleccionados"  class="custom-input" name="serviciosSeleccionados">
                                     </div>
                                     <div class="form-floating mb-3">
-                                    <select class="form-control custom-select" name="usuarioId" id="usuarioId" readonly>
-                                    </select>
-
-                                        <label for="usuarioId">Cliente</label>
+                                        <input type="hidden" class="form-control" name="usuarioId" id="usuarioId" readonly>
+                                        <input type="text" id="nombreUsuario" class="form-control" style="display: none" readonly>
+                                        <label for="nombreUsuario" id="nombreUsuarioLabel" style="display: none">Cliente</label>
 
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control custom-input" type="number" id="emailUsuario" style="display: none" readonly>
-                                        <label for="emailUsuario" id="labelTelefono" style="display: none">Telefono</label>
+                                        <input class="form-control custom-input" type="number" id="telefonoUsuario" style="display: none" readonly>
+                                        <label for="telefonoUsuario" id="labelTelefono" style="display: none">Telefono</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <select class="form-control custom-select" name="empleadoId" id="empleadoId"></select>
-                                        <label for="empleadoId">Empleado</label>
+                                        <input type="hidden" class="form-control" name="empleadoId" value="{{ Auth::user()->id }}" id="empleadoId" readonly>
+                                        <!-- <label for="empleadoId">Empleado</label> -->
                                     </div>
                                     <div style="display:none" id="msg"></div>
                                     <div class="mb-3">
@@ -898,43 +899,56 @@ header {
 
 
 
-            $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
-                dateFormat: 'yy-mm-dd',
-                minDate: 0, // No permite seleccionar fechas anteriores a hoy
-                maxDate: "+3M -1D",//permite hacer citas a de hoy a un mes y diez dias
-                regional: "es",// no agarra el español
-                onSelect: function(dateText) {
+//             $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
+//                 dateFormat: 'yy-mm-dd',
+//                 minDate: 0, // No permite seleccionar fechas anteriores a hoy
+//                 maxDate: "+3M -1D",//permite hacer citas a de hoy a un mes y diez dias
+//                 regional: "es",// no agarra el español
+//                 onSelect: function(dateText) {
 
-                    console.log(dateText)
-// separa la fecha de dateText ya que si da la fecha bien pero al ponerla asi actualizarOpciones(new Date(dateText)) muestra una fecha anterior
-                    var partes = dateText.split('-');
-                    var anio = parseInt(partes[0], 10);
-                    var mes = parseInt(partes[1], 10) - 1; 
-                    var dia = parseInt(partes[2], 10);
+//                     console.log(dateText)
+// // separa la fecha de dateText ya que si da la fecha bien pero al ponerla asi actualizarOpciones(new Date(dateText)) muestra una fecha anterior
+//                     var partes = dateText.split('-');
+//                     var anio = parseInt(partes[0], 10);
+//                     var mes = parseInt(partes[1], 10) - 1; 
+//                     var dia = parseInt(partes[2], 10);
                     
                  
-                    var fechaSeleccionada = new Date(anio, mes, dia);
+//                     var fechaSeleccionada = new Date(anio, mes, dia);
 
-                    console.log('Fecha seleccionada:', fechaSeleccionada);
+//                     console.log('Fecha seleccionada:', fechaSeleccionada);
 
-                    let select = $('#horaCita');
-                    select.show();
-                    actualizarOpcionesSelect(fechaSeleccionada);
+//                     let select = $('#horaCita');
+//                     select.show();
+//                     // actualizarOpcionesSelect(fechaSeleccionada);
 
-               
-                }
-            });
+//                 },
+//                 beforeShowDay: function(fecha) {
+//                     var dia = fecha.getDay();
+//                     if (dia === 0) {//domingo
+//                         return [false, "", "Domingo no disponible"];
+//                     }
+//                     var hoy = new Date();
+//                     console.log('hoy: ',hoy)
+//                     if (fecha.toDateString() === hoy.toDateString()) {
+//                         if (hoy.getHours() >= 16) {//bloquea despues de las 4 de la tarde o sea 16:00:00
+//                             return [false, "", "No se pueden seleccionar citas después de las 16:00"];
+//                         }
+//                     }
+//                     return [true, "", ""];
+//                 }
+//             });
 
-            $("#fechaCita").on('input', function() {
-                var fechaTexto = $(this).val();
-                    var partes = fechaTexto.split('-');
-                    var anio = parseInt(partes[0], 10);
-                    var mes = parseInt(partes[1], 10) - 1; 
-                    var dia = parseInt(partes[2], 10);
+            // $("#fechaCita").on('input', function() {
+            //     var fechaTexto = $(this).val();
+            //         var partes = fechaTexto.split('-');
+            //         var anio = parseInt(partes[0], 10);
+            //         var mes = parseInt(partes[1], 10) - 1; 
+            //         var dia = parseInt(partes[2], 10);
                     
-                    var fechaSeleccionada = new Date(anio, mes, dia);
-                        actualizarOpcionesSelect(fechaSeleccionada);
-            });
+            //         var fechaSeleccionada = new Date(anio, mes, dia);
+            //             // actualizarOpcionesSelect(fechaSeleccionada);
+            // });
 
             function esMismaFecha(fecha1, fecha2) {//compara si es el mismo anño, mes y dia
                 return fecha1.getFullYear() === fecha2.getFullYear() &&
@@ -942,65 +956,65 @@ header {
                 fecha1.getDate() === fecha2.getDate();
             }
 
-        function actualizarOpcionesSelect(date) {
-                let dia = date.getDay();
-                console.log('fecha: ',date);
-                console.log('Hoy: ', new Date());
-                let select = $('#horaCita');
+        // function actualizarOpcionesSelect(date) {
+        //         let dia = date.getDay();
+        //         console.log('fecha: ',date);
+        //         console.log('Hoy: ', new Date());
+        //         let select = $('#horaCita');
 
-                select.empty();
+        //         select.empty();
 
-                let hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
+        //         let hoy = new Date();
+        //         hoy.setHours(0, 0, 0, 0);
 
-                if(esMismaFecha(date, hoy)) {// si el dia es hoy\
-                    console.log(date, hoy);
+        //         if(esMismaFecha(date, hoy)) {// si el dia es hoy\
+        //             console.log(date, hoy);
                     
-                let horaInicio;
-                let horaFin;
-                if(dia>=1 && dia<=5){// lunes a viernes
-                    horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
-                    console.log('hora Actual mas dos horas: ', horaInicio);
-                    horaFin = 21;
+        //         let horaInicio;
+        //         let horaFin;
+        //         if(dia>=1 && dia<=5){// lunes a viernes
+        //             horaInicio = new Date().getHours() + 2;//solo puede hacer citas 2 horas despues
+        //             console.log('hora Actual mas dos horas: ', horaInicio);
+        //             horaFin = 21;
                     
-                }else if(dia === 0 || dia === 6){//sabados y domingos
-                    horaInicio = new Date().getHours() + 2;
-                    console.log('hora hoy sabado 27 de julio: ', horaInicio);
-                    horaFin = 21;
-                }
+        //         }else if(dia === 0 || dia === 6){//sabados y domingos
+        //             horaInicio = new Date().getHours() + 2;
+        //             console.log('hora hoy sabado 27 de julio: ', horaInicio);
+        //             horaFin = 21;
+        //         }
                     
-                if(horaInicio > horaFin) {
-                    select.hide();
-                    mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
-                }
+        //         if(horaInicio > horaFin) {
+        //             select.hide();
+        //             mostrarAlerta('Ya no hay horarios disponibles por hoy.', 'alert-primary', 'info-fill')
+        //         }
                 
 
-                for (let hora = horaInicio; hora < horaFin; hora++) {
-                    const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
-                    console.log('JAJAJJA: ',valorTiempo);
-                    select.append(new Option(valorTiempo, valorTiempo));
-                }
-                    return;
-            }
+        //         for (let hora = horaInicio; hora < horaFin; hora++) {
+        //             const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
+        //             console.log('JAJAJJA: ',valorTiempo);
+        //             select.append(new Option(valorTiempo, valorTiempo));
+        //         }
+        //             return;
+        //     }
 
 
-            let horaInicio;
-            let horaFin;
-            if(dia>=1 && dia<=5){
-                horaInicio = 9;
-                horaFin = 21;
-            }else if(dia === 0 || dia === 6){
-                horaInicio = 9;
-                horaFin = 21;
-            }
+        //     let horaInicio;
+        //     let horaFin;
+        //     if(dia>=1 && dia<=5){
+        //         horaInicio = 9;
+        //         horaFin = 21;
+        //     }else if(dia === 0 || dia === 6){
+        //         horaInicio = 9;
+        //         horaFin = 21;
+        //     }
 
-            for (let hora = horaInicio; hora < horaFin; hora++) {
-                const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
-                console.log(valorTiempo);
-                select.append(new Option(valorTiempo, valorTiempo));
-            }
+        //     for (let hora = horaInicio; hora < horaFin; hora++) {
+        //         const valorTiempo = `${String(hora).padStart(2, '0')}:00:00`;
+        //         console.log(valorTiempo);
+        //         select.append(new Option(valorTiempo, valorTiempo));
+        //     }
 
-        }
+        // }
 
         // verificar fechas y horas ya seleccionadas
 
@@ -1023,57 +1037,125 @@ header {
         const eventos = @json($events);
 
         // console.log("eventos", eventos);
+        function configurarSelectHoras(select, fecha, horarios, citas) {
+    // Limpiar opciones anteriores
+    select.empty();
 
-        //calendario
+    // Obtener el día de la semana y el horario correspondiente
+    var diaSemana = fecha.getDay();
+    var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+    if (horarioDia) {
+        let horaInicio = new Date(fecha);
+        horaInicio.setHours(horarioDia.horaInicio.split(':')[0]);
+        horaInicio.setMinutes(horarioDia.horaInicio.split(':')[1]);
+        horaInicio.setSeconds(0);
+
+        let horaFin = new Date(fecha);
+        horaFin.setHours(horarioDia.horaFin.split(':')[0]);
+        horaFin.setMinutes(horarioDia.horaFin.split(':')[1]);
+        horaFin.setSeconds(0);
+
+        let horasDisponibles = 0; // Contador para verificar si hay horas disponibles
+
+        // Generar las opciones para el select
+        while (horaInicio < horaFin) {
+            let horaTexto = horaInicio.toTimeString().substring(0, 8); // hh:mm:ss
+
+            // Verificar si ya hay una cita en esta fecha y hora
+            let citaExistente = citas.some(cita => cita.fechaCita === fecha.toISOString().split('T')[0] && cita.horaCita === horaTexto);
+
+            if (!citaExistente) {
+                let hora12 = horaInicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); // AM/PM
+                let option = new Option(hora12, horaTexto);
+                select.append(option);
+                horasDisponibles++;
+            }
+            horaInicio.setMinutes(horaInicio.getMinutes() + 60); // Incrementa en 1 hora
+        }
+
+        // Si no hay horas disponibles, mostrar un mensaje y deshabilitar el select
+        if (horasDisponibles === 0) {
+            select.append(new Option("No hay horas disponibles", ""));
+            select.prop('disabled', true);
+        } else {
+            select.prop('disabled', false);
+        }
+    } else {
+        select.append(new Option("No hay horas disponibles", ""));
+        select.prop('disabled', true);
+    }
+
+    // Mostrar el select
+    select.show();
+}
+$.ajax({
+    url: `/horario/empleado`, // Ruta donde obtendrás los horarios y citas del empleado
+    method: 'GET',
+    success: function(data) {
+        // Extraer el horario y las citas del empleado
+        const empleado = data[0];
+        const horarios = empleado.horarios;
+        const citas = empleado.citas_empleados; // Suponiendo que citas están en 'citas_empleados'
+
+        // Crear un arreglo para los horarios de trabajo
+        const businessHours = horarios.map(horario => {
+            return {
+                daysOfWeek: [parseInt(horario.diaSemana)], // Convertir el día de la semana a número (0-6)
+                startTime: horario.horaInicio,
+                endTime: horario.horaFin
+            };
+        });
+
+        // Calcular slotMinTime y slotMaxTime
+        const slotMinTime = horarios.reduce((min, horario) => {
+            return horario.horaInicio < min ? horario.horaInicio : min;
+        }, horarios[0].horaInicio);
+
+        const slotMaxTime = horarios.reduce((max, horario) => {
+            return horario.horaFin > max ? horario.horaFin : max;
+        }, horarios[0].horaFin);
+
+        // Configurar los días ocultos
+        const hiddenDays = horarios
+            .filter(horario => horario.horaInicio === null && horario.horaFin === null)
+            .map(horario => parseInt(horario.diaSemana));
+
+        // Configurar el calendario
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
             initialDate: new Date().toISOString().split('T')[0],
-            slotMinTime: '09:00:00',
-            slotMaxTime: '21:00:00',
+            slotMinTime: slotMinTime,  // Usar slotMinTime calculado
+            slotMaxTime: slotMaxTime,  // Usar slotMaxTime calculado
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
             validRange: {
-                start: fechaHoraActual,
+                start: new Date().toISOString().split('T')[0],
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
-            events: eventos,//variable de eventos que agarra el arreglo events de el controlador
-            hiddenDays: [0], // Oculta domingos (0) y sábados (6)
-            businessHours: [
-                {
-                    daysOfWeek: [1, 2, 3, 4, 5], // Lunes a viernes
-                    startTime: '09:00',
-                    endTime: '17:00'
-                }
-            ],
-                selectable: true,
-                selectOverlap: function(event) {
-                    return event.display !== 'background';
-                },
-                eventClick: function(info) {
-                // Prevenir el comportamiento por defecto del navegador
-                info.jsEvent.preventDefault();
-
-                var citaId = info.event.id;
-
-                var fechaSeleccionada = new Date(info.event.start);
-
-
-                console.log(citaId);
-
-                editarCita(citaId);
-                actualizarOpcionesSelect(fechaSeleccionada);
-
-
+            events: eventos, // Asegúrate de que 'eventos' esté disponible en tu contexto
+            hiddenDays: hiddenDays, 
+            businessHours: businessHours, // Usar businessHours calculado
+            selectable: true,
+            selectOverlap: function(event) {
+                return event.display !== 'background';
             },
-            headerToolbar: {//y asi se dibujan los eventos en el calendario
+            eventClick: function(info) {
+                info.jsEvent.preventDefault();
+                var citaId = info.event.id;
+                var fechaSeleccionada = new Date(info.event.start);
+                console.log(citaId);
+                editarCita(citaId);
+            },
+            headerToolbar: {
                 left: 'prev,next',
                 center: 'title',
-                right: 'timeGridWeek,timeGridDay' 
+                right: 'timeGridWeek,timeGridDay'
             },
-            locales: [ 'es' ],
+            locales: ['es'],
             locale: 'es',
-            slotLabelFormat: { // Ajusta el formato de las horas en el calendario
+            slotLabelFormat: {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: false
@@ -1087,61 +1169,113 @@ header {
                 hour12: false
             },
             dateClick: function(info) {
+                dibujarGuest();
                 limpiarFormulario();
 
-
                 var fechaHora = info.date;
-                console.log('fecha y hora: ', fechaHora);
+                var select = $('#horaCita');
+                configurarSelectHoras(select, fechaHora, horarios, citas);
 
-                
-
-
-                // Obtener la fecha (YYYY-MM-DD)
+                // Asignar la fecha seleccionada al campo oculto de fecha
                 var anio = fechaHora.getFullYear();
                 var mes = String(fechaHora.getMonth() + 1).padStart(2, '0'); 
                 var dia = String(fechaHora.getDate()).padStart(2, '0');
                 var fechaFormatoDeseado = `${anio}-${mes}-${dia}`;
 
-                // Obtener la hora (HH:MM:SS) 
-                var hora = String(fechaHora.getHours()).padStart(2, '0');
-                var minutos = String(fechaHora.getMinutes()).padStart(2, '0');
-                var segundos = String(fechaHora.getSeconds()).padStart(2, '0');
-                var tiempoFormatoDeseado = `${hora}:${minutos}:${segundos}`;
-
-                // Fecha actual en formato (YYYY-MM-DD)
-                var anioActual = new Date().getFullYear();
-                var mesActual = String(new Date().getMonth() + 1).padStart(2, '0');
-                var diaActual = String(new Date().getDate()).padStart(2, '0');
-                var fechaActualJA = `${anioActual}-${mesActual}-${diaActual}`;
-
-                if(fechaFormatoDeseado === fechaActualJA) {
-
-                    if (fechaHora.getHours() < dosHorasDespues.getHours()) {
-                        mostrarAlerta('Las citas solo se pueden hacer con al menos 2 horas de anticipación.', "alert-primary", "info-fill");
-                        return;
-                    }
-
-                }
-
-                console.log('Fecha:', fechaFormatoDeseado);
-                console.log('Hora:', tiempoFormatoDeseado);
-                
-                $('#fechaCita').val(fechaFormatoDeseado); 
-                console.log($('#fechaCita').val());
-                actualizarOpcionesSelect(info.date);
-                $('#horaCita').show();
-                if ($('#horaCita').find(`option[value="${tiempoFormatoDeseado}"]`).length === 0)
-                {
-                    $('#horaCita').append(new Option(tiempoFormatoDeseado, tiempoFormatoDeseado));
-                }
-                $('#horaCita').val(tiempoFormatoDeseado);
-
+                $('#fechaCita').val(fechaFormatoDeseado);
                 $('#btnEliminar').hide();
                 $('#citasModal').modal('show');
             }
         });
 
         calendar.render();
+
+        // Configurar el datepicker
+        $("#fechaCita").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: 0, // No permite seleccionar fechas anteriores a hoy
+            maxDate: "+3M -1D", // Permite hacer citas a partir de hoy hasta dentro de tres meses menos un día
+            regional: "es", // Asignar localización en español
+            onSelect: function(dateText) {
+                var partes = dateText.split('-');
+                var anio = parseInt(partes[0], 10);
+                var mes = parseInt(partes[1], 10) - 1; 
+                var dia = parseInt(partes[2], 10);
+                
+                var fechaSeleccionada = new Date(anio, mes, dia);
+                var select = $('#horaCita');
+                configurarSelectHoras(select, fechaSeleccionada, horarios, citas);
+            },
+            beforeShowDay: function(fecha) {
+                var dia = fecha.getDay();
+                var fechaFormato = fecha.toISOString().split('T')[0];
+                var hoy = new Date();
+
+                // Filtrar horarios para el día seleccionado
+                var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
+                if (!horarioDia) return [false, "", "Día no laborable"];
+
+                // Verificar si todas las horas están ocupadas o si ya han pasado
+                let todasHorasOcupadas = true;
+
+                let horaInicio = new Date(fecha);
+                horaInicio.setHours(horarioDia.horaInicio.split(':')[0]);
+                horaInicio.setMinutes(horarioDia.horaInicio.split(':')[1]);
+                horaInicio.setSeconds(0);
+
+                let horaFin = new Date(fecha);
+                horaFin.setHours(horarioDia.horaFin.split(':')[0]);
+                horaFin.setMinutes(horarioDia.horaFin.split(':')[1]);
+                horaFin.setSeconds(0);
+
+                while (horaInicio < horaFin) {
+                    let horaTexto = horaInicio.toTimeString().substring(0, 8); // hh:mm:ss
+                    let citaExistente = citas.some(cita => cita.fechaCita === fechaFormato && cita.horaCita === horaTexto);
+
+                    if (!citaExistente && (fecha.toDateString() !== hoy.toDateString() || horaInicio.getTime() > hoy.getTime())) {
+                        todasHorasOcupadas = false;
+                        break;
+                    }
+
+                    horaInicio.setMinutes(horaInicio.getMinutes() + 60); // Incrementa en 1 hora
+                }
+
+                if (todasHorasOcupadas) {
+                    return [false, "", "Todas las horas ocupadas o ya han pasado"];
+                }
+
+                return [true, "", ""];
+            }
+        });
+
+        // Aplicar localización en español
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+
+        // Ejecutar la función cada vez que cambia el valor del select
+        $('#horaCita').on('change', function() {
+            var fechaSeleccionada = new Date($('#fechaCita').val());
+            configurarSelectHoras($(this), fechaSeleccionada, horarios, citas);
+        });
+
+        // Ejecutar la función al cambiar la fecha
+        $('#fechaCita').on('change', function() {
+            var partes = $(this).val().split('-');
+            var anio = parseInt(partes[0], 10);
+            var mes = parseInt(partes[1], 10) - 1; 
+            var dia = parseInt(partes[2], 10);
+            var fechaSeleccionada = new Date(anio, mes, dia);
+            configurarSelectHoras($('#horaCita'), fechaSeleccionada, horarios, citas);
+        });
+    },
+    error: function(err) {
+        console.error('Error al cargar los horarios:', err);
+    }
+});
+
+
+
+
+
 
 
         // function recargarEventos() {
@@ -1211,7 +1345,6 @@ header {
                 console.log(`Id de la cita: `, citasServicios.cita.id);
 
                 
-
                 $('#btnEliminar').show();
                 
                     $('#id').val(citasServicios.cita.id);
@@ -1252,6 +1385,9 @@ header {
                             });
                         })
                     })
+
+
+                    $('#nombreUsuario').val(citasServicios.cita.usuario.name + ' ' + citasServicios.cita.usuario.apellido);
                     $('#usuarioId').val(citasServicios.cita.usuarioId);
                     // $('#usuarioId').prop('readonly', true);
                     // $('#emailUsuario').prop('readonly', true);
@@ -1265,11 +1401,20 @@ header {
 
                     if (citasServicios.cita.usuarioId === 1) {//Usuario default
                         telefonoInput.hide();
+                        $('#nombreUsuario').hide();
+                        $('#nombreUsuarioLabel').hide();
+
+                        telefonoInput.hide();
+                        labelTelefono.hide();
                     } else {
-                        let telefono = opcion.data('telefono-usuario');
-                        telefonoInput.val(telefono);
+                        // let telefono = opcion.data('telefono-usuario');
+ 
+                        $('#nombreUsuario').show();
+                        $('#nombreUsuarioLabel').show();
+
                         telefonoInput.show();
                         labelTelefono.show();
+                        telefonoInput.val(citasServicios.cita.usuario.numeroTelefono);
                     }
 
 
@@ -1277,7 +1422,7 @@ header {
                     // let fechaCita = citasServicios.cita.fechaCita;
                     // moment(fechaCita).toDate()
                     // console.log('tu puta madre wey', fechaCita)
-                    actualizarOpcionesSelect(fechaCita);
+                    // actualizarOpcionesSelect(fechaCita);
                     if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0)
                     {
                         $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
@@ -1333,45 +1478,50 @@ header {
             })//Fin de dibujar servicios y sus tecnicas pipipi
             console.log($('.multiselect-option'));
 
-            //Dibujar usuarios
-            $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
-                let selectUsuarios = $('#usuarioId');
-                selectUsuarios.empty();
-                let telefono = $('#emailUsuario'); 
-                telefono.empty();
+            // //Dibujar usuarios
+            // $.get('/usuarios/rol/usuario', function(usersRolUsuario) {
+            //     let selectUsuarios = $('#usuarioId');
+            //     selectUsuarios.empty();
+            //     let telefono = $('#emailUsuario'); 
+            //     telefono.empty();
 
-                usersRolUsuario.forEach(usuario => {
-                    selectUsuarios.append(`
-                        <option class="text-center" data-telefono-usuario="${usuario.numeroTelefono}" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
-                    `)
-                    console.log(usersRolUsuario);
-                })
+            //     usersRolUsuario.forEach(usuario => {
+            //         selectUsuarios.append(`
+            //             <option class="text-center" data-telefono-usuario="${usuario.numeroTelefono}" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
+            //         `)
+            //         console.log(usersRolUsuario);
+            //     })
 
-                selectUsuarios.change(function() {
-                    let opcionSelected = selectUsuarios.find('option:selected');
-                    let value = $(this).val();
+            //     selectUsuarios.change(function() {
+            //         let opcionSelected = selectUsuarios.find('option:selected');
+            //         let value = $(this).val();
 
-                    if(value === "1"){
-                        telefono.hide();
-                    }else{
-                        let telefonoUsuario = opcionSelected.data('telefono-usuario');
-                        telefono.val(telefonoUsuario);
-                        telefono.show()
-                        $('#labelTelefono').show();
-                    }
-                })
-            })
+            //         if(value === "1"){
+            //             telefono.hide();
+            //         }else{
+            //             let telefonoUsuario = opcionSelected.data('telefono-usuario');
+            //             telefono.val(telefonoUsuario);
+            //             telefono.show()
+            //             $('#labelTelefono').show();
+            //         }
+            //     })
+            // })
+
+            function dibujarGuest(){//asignarle al input usuario el id de guest
+                $.get('/usuario/guest', function(guest) {
+                    let inputUsuario = $('#usuarioId');
+                    let guestDefault = guest[0];
+                    inputUsuario.empty();
+                    inputUsuario.val(guestDefault.id);
+                });
+            }
 
             //Dibujar empleados
-            $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
-                let selectUsuarios = $('#empleadoId');
-
-                usersRolEmpleado.forEach(usuario => {
-                    selectUsuarios.append(`
-                        <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
-                    `)
-                    console.log(usersRolEmpleado);
-                })
+            $.get('/usuario/empleado', function(usersRolEmpleado) {//solo se trae el empleado logeado
+                let usuarios = $('#empleadoId');
+                let empleado = usersRolEmpleado[0];
+                usuarios.val(empleado.id);
+                console.log('id del usuario: ', empleado.id);
             })
 
 
@@ -1509,52 +1659,101 @@ header {
             $('#btnEliminar').hide();
         })
 
-
-
-        //dibujar citas no aceptadas
-        function citasNoAceptadas(){
-
-            $.get('/cita/usuario/empleado', function(citas) {
-                let tabla = $('#tablaCitas');
-                let mensajeNoCitas = $('#mensajeNoCitas');
-                
-                tabla.empty(); // Vaciar la tabla
-                
-                if (citas.length === 0) {
-                    // Ocultar la tabla y mostrar el mensaje
-                    tabla.closest('table').hide();
-                    mensajeNoCitas.show();
-                } else {
-                    // Mostrar la tabla y ocultar el mensaje
-                    tabla.closest('table').show();
-                    mensajeNoCitas.hide();
+          //dibujar citas no aceptadas
+          function citasNoAceptadas(){
+                $.get('/cita/por/empleado', function(citas) {
+                    let tabla = $('#tablaCitas');
+                    let mensajeNoCitas = $('#mensajeNoCitas');
                     
-                    citas.forEach(cita => {
-                        tabla.append(`
-                            <tr>
-                                <td>${cita.fechaCita}</td>
-                                <td>${cita.horaCita}</td>
-                                <td>${cita.usuario.clienteNombreCompleto}</td>
-                                <td>${cita.usuario.numeroTelefono}</td>
-                                <td>${cita.usuario.email}</td>
-                                <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
-                                <td>
-                                    <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
-                                    <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                }
-            });
+                    tabla.empty(); // Vaciar la tabla
+                    
+                    // if (citas.length === 0) {
+                    //     // Ocultar la tabla y mostrar el mensaje
+                    //     tabla.closest('table').hide();
+                    //     mensajeNoCitas.show();
+                    // } else {
+                    //     // Mostrar la tabla y ocultar el mensaje
+                    //     tabla.closest('table').show();
+                    //     mensajeNoCitas.hide();
+                        
+                        citas.forEach(cita => {
+                            tabla.append(`
+                                <tr>
+                                    <td>${cita.fechaCita}</td>
+                                    <td>${cita.horaCita}</td>
+                                    <td>${cita.usuario.clienteNombreCompleto}</td>
+                                    <td>${cita.usuario.numeroTelefono}</td>
+                                    <td>${cita.usuario.email}</td>
+                                    <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
+                                    <td>
+                                        <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
+                                        <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    // }
+                });
+            }
 
-        }
+            citasNoAceptadas();    
 
-        citasNoAceptadas();      
+        // //dibujar citas no aceptadas
+        // function citasNoAceptadas(){
+
+        //     $.get('/cita/por/empleado', function(citas) {
+        //         console.log('lasc iatas no acpetasdas: ', citas);
+        //         let tabla = $('#tablaCitas');
+        //         let mensajeNoCitas = $('#mensajeNoCitas');
+                
+        //         tabla.empty(); // Vaciar la tabla
+                
+        //         if (citas.length === 0) {
+        //             // Ocultar la tabla y mostrar el mensaje
+        //             tabla.closest('table').hide();
+        //             mensajeNoCitas.show();
+        //         } else {
+        //             // Mostrar la tabla y ocultar el mensaje
+        //             tabla.closest('table').show();
+        //             mensajeNoCitas.hide();
+                    
+        //             citas.forEach(cita => {
+        //                 tabla.append(`
+        //                     <tr>
+        //                         <td>${cita.fechaCita}</td>
+        //                         <td>${cita.horaCita}</td>
+        //                         <td>${cita.usuario.clienteNombreCompleto}</td>
+        //                         <td>${cita.usuario.numeroTelefono}</td>
+        //                         <td>${cita.usuario.email}</td>
+        //                         <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
+        //                         <td>
+        //                             <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
+        //                             <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
+        //                         </td>
+        //                     </tr>
+        //                 `);
+        //             });
+        //         }
+        //     });
+
+        // }
+
+        // citasNoAceptadas();     
+        
+        $('#btnVerCitas').on('click', function() {
+            citasNoAceptadas(); 
+        })
         
         $(document).on('click', '.aceptar-cita', function() {
             let citaId = $(this).data('cita-id');
             let fechaCita = $('#fechaCita').val();
+            $('#nombreUsuario').show();
+            $('#nombreUsuarioLabel').show();
+
+            let telefonoInput = $('#telefonoUsuario');
+            let labelTelefono = $('#labelTelefono');
+            telefonoInput.show();
+            labelTelefono.show();
             editarCita(citaId);
         })
 

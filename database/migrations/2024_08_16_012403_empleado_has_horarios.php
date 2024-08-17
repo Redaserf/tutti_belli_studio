@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vacaciones', function (Blueprint $table) {//por cada dia de vacaciones se generara un registro de este
+        Schema::create('empleados_has_horarios', function (Blueprint $table) {//por cada dia de vacaciones se generara un registro de este
             $table->id();
-            $table->date('fechaInicio');
-            $table->string('motivo', 250)->default('vacaciones');
             $table->unsignedBigInteger('empleadoId');
+            $table->unsignedBigInteger('horarioId');
             $table->timestamps();
 
             $table->foreign('empleadoId')->references('id')->on('users');
-
+            $table->foreign('horarioId')->references('id')->on('horarios');
 
         });
     }
@@ -29,6 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vacaciones');
+        Schema::table('empleados_has_horarios', function (Blueprint $table) {
+            $table->foreign('horarioId')->references('id')->on('horarios')->onDelete('cascade');
+        });
     }
 };

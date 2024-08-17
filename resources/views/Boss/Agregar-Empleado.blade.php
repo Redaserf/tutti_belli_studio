@@ -320,6 +320,9 @@
     </style>
 </head>
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 <body class="hiddenX">
 
     <div id="contenedor_carga"></div>
@@ -430,7 +433,7 @@
                     <div class="row">
                         <h2>Agregar Empleado</h2>
                     </div>
-                    <form action="/RegistroEmpleado" method="POST">
+                    <form id="empleadoForm">
                         @csrf
                         <div class="col-md-12">
                             <div class="form-floating mb-3">
@@ -450,7 +453,7 @@
                                 <label for="employeeGender">Género</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)" min="0">
+                            <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)" min="0" pattern="\d{10}"  title="El número de teléfono debe contener exactamente 10 dígitos.">
                                 <label for="employeePhone">Número telefónico</label>
                             </div>
                             <div class="form-floating mb-3">
@@ -466,7 +469,17 @@
                                 <label for="employeePassword">Contraseña</label>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-dark btn-block w-100" id="agregarEmpleado">Agregar Empleado</button>
+                                <!-- <input type="hidden" id="opcionesCheckbox" name="opcionesCheckbox"> -->
+                                <input type="hidden" id="horaInicioForm" name="horaInicioForm">
+                                <input type="hidden" id="horaFinForm" name="horaFinForm">
+                            </div>
+                            <div>
+                                
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#crearHorarioModal" class="btn btn-primary btn-block w-100" id="agregarHorario"><i class="fa-regular fa-calendar"></i></button>
+                                
+                            </div>
+                            <div style="margin-top: 20px">
+                                <button type="submit" class="btn btn-dark btn-block w-100" id="agregarEmpleado">Agregar Empleado</button>
                             </div>
                         </div>
                     </form>
@@ -477,6 +490,73 @@
     </div>
 
 </div>
+
+
+       <!-- Modal de Creación de Nuevo Horario -->
+       <div class="modal fade" id="crearHorarioModal" tabindex="-1" aria-labelledby="crearHorarioModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearHorarioModalLabel">Crear Nuevo Horario del Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="crearHorarioForm">
+                    <div class="modal-body">
+                    <input type="hidden" id="nuevoEmpleadoId" name="empleadoId">
+
+                    <div class="mb-3">
+                        <label for="nuevoHoraInicio" class="form-label">Hora de Inicio</label>
+                        <select class="form-select" id="nuevoHoraInicio" name="horaInicio">
+                        <!-- Se llenará mediante JavaScript -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nuevoHoraFin" class="form-label">Hora de Fin</label>
+                        <select class="form-select" id="nuevoHoraFin" name="horaFin">
+                        <!-- Se llenará mediante JavaScript -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Días de la Semana</label>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="nuevoLunes">
+                        <label class="form-check-label" for="nuevoLunes">Lunes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="2" id="nuevoMartes">
+                        <label class="form-check-label" for="nuevoMartes">Martes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="3" id="nuevoMiercoles">
+                        <label class="form-check-label" for="nuevoMiercoles">Miércoles</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="4" id="nuevoJueves">
+                        <label class="form-check-label" for="nuevoJueves">Jueves</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="5" id="nuevoViernes">
+                        <label class="form-check-label" for="nuevoViernes">Viernes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="6" id="nuevoSabado">
+                        <label class="form-check-label" for="nuevoSabado">Sábado</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="0" id="nuevoDomingo">
+                        <label class="form-check-label" for="nuevoDomingo">Domingo</label>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+
+
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -495,6 +575,66 @@
     });
 
 $(document).ready(function(){
+
+    const horaInicioSelect = $('#nuevoHoraInicio');
+    const horaFinSelect = $('#nuevoHoraFin');
+
+    function generarOpciones(startHour, endHour) {
+    let options = '';
+    for (let hora = startHour; hora <= endHour; hora++) {
+        options += `<option value="${hora}:00:00">${hora}:00:00</option>`;
+    }
+    return options;
+    }
+
+    horaInicioSelect.html(generarOpciones(9, 13));
+
+    horaFinSelect.html(generarOpciones(13, 21));
+
+    //inicializar el horaFin en 14 horas
+
+    horaInicioSelect.val('10:00:00');
+    horaFinSelect.val('16:00:00');
+    // let jaja = valInicio.split(':');
+    // console.log('jajajaj: ',jaja + 8);
+    // horaFinSelect.val(valInicio + '08:00:00');
+
+    $('#nuevoLunes').prop('checked', true);
+    $('#nuevoMartes').prop('checked', true);
+    $('#nuevoMiercoles').prop('checked', true);
+    $('#nuevoJueves').prop('checked', true);
+    $('#nuevoViernes').prop('checked', true);
+    $('#nuevoSabado').prop('checked', true);
+
+    horaInicioSelect.on('change', function() {
+    const horaInicio = parseInt($(this).val().split(':')[0], 10);
+    const horaFinStart = horaInicio + 4;
+    const horaFinEnd = Math.min(horaInicio + 12, 21);
+    horaFinSelect.html(generarOpciones(horaFinStart, horaFinEnd));
+
+    // if (horaFinStart <= 16 && 16 <= horaFinEnd) {
+    //     horaFinSelect.val('16:00:00');
+    // } else {
+    //     horaFinSelect.val(horaFinSelect.find('option').first().val());
+    // }
+
+    });
+
+
+    let telefono = $('#employeePhone');
+
+    function validarTelefono(input) {
+        let value = $(input).val(); 
+        if (value.length !== 10) {
+            input.setCustomValidity("El número de teléfono debe contener exactamente 10 dígitos.");
+        } else {
+            input.setCustomValidity(""); 
+        }
+    }
+
+    telefono.on('input', function() {
+        validarTelefono(this);
+    });
 
 // Dashboard toggle
 const body = document.querySelector("body"),
@@ -551,56 +691,73 @@ sidebarBtn.addEventListener("click", () => {
     checkWidth();
     $(window).resize(checkWidth);
 
-    //Script para registrar el nuevo Empleado
-    $('#agregarEmpleado').on('click', function(e) {
+    // Script para registrar el nuevo Empleado
+    $('#empleadoForm').on('submit', function(e) {
         e.preventDefault();
+
+        let opcionesSeleccionadas = [];
+        let horaInicio = $('#nuevoHoraInicio').val();
+        let horaFin = $('#nuevoHoraFin').val();
+
+        let inputOpciones = $('#opcionesCheckbox');
+
+        $("input[type='checkbox']:checked").each(function() {
+            opcionesSeleccionadas.push($(this).val());
+
+            $('#empleadoForm').append(
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'opcionesCheckbox[]',
+                value: $(this).val(),
+                class: 'opcionCheckbox'
+            })
+        );
+        })
+        console.log('checkboxesss: ',opcionesSeleccionadas);
+        $('#horaInicioForm').val(horaInicio);
+        $('#horaFinForm').val(horaFin);
+        // inputOpciones.val(opcionesSeleccionadas);
 
                 // Mostrar la pantalla de carga
                 $('#contenedor_carga').css('display', 'block');
 
-        let employeeName = $('#employeeName').val();
-        let employeeLastname = $('#employeeLastname').val();
-        let employeeGender = $('#employeeGender').val();
-        let employeePhone = $('#employeePhone').val();
-        let employeeBirthDate = $('#employeeBirthDate').val();
-        let employeeEmail = $('#employeeEmail').val();
-        let employeePassword = $('#employeePassword').val();
+        // let employeeName = $('#employeeName').val();
+        // let employeeLastname = $('#employeeLastname').val();
+        // let employeeGender = $('#employeeGender').val();
+        // let employeePhone = $('#employeePhone').val();
+        // let employeeBirthDate = $('#employeeBirthDate').val();
+        // let employeeEmail = $('#employeeEmail').val();
+        // let employeePassword = $('#employeePassword').val();
+
+        let formData = $(this).serialize();
 
         $.ajax({
             url: '/RegistroEmpleado',
-            type: 'POST',
-            data: {
-                _token: $('input[name="_token"]').val(),
-                name: employeeName,
-                apellido: employeeLastname,
-                gender: employeeGender,
-                numeroTelefono:employeePhone,
-                fechaNacimiento:employeeBirthDate,
-                email: employeeEmail,
-                password: employeePassword,
-                rolId: 3
-            },
+            method: 'POST',
+            data: formData,         
             success: function(response) {
+                console.log(response);
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
                 alert("Empleado agregado exitosamente");
                 window.location.href = '/Ver-Empleados';
-            },
+        },
             error: function(error) {
+                console.log(error);
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
                 alert('Ocurrió un error al agregar al empleado');
-                $('#employeeName').val('');
-                $('#employeeLastname').val('');
-                $('#employeeGender').val('');
-                $('#employeePhone').val('');
-                $('#employeeBirthDate').val('');
-                $('#employeeEmail').val('');
-                $('#employeePassword').val('');
+                // $('#employeeName').val('');
+                // $('#employeeLastname').val('');
+                // $('#employeeGender').val('');
+                // $('#employeePhone').val('');
+                // $('#employeeBirthDate').val('');
+                // $('#employeeEmail').val('');
+                // $('#employeePassword').val('');
             }
         });
     });
-    //Fin script para registrar empleado
+    // Fin script para registrar empleado
 
 
 

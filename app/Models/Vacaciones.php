@@ -13,11 +13,11 @@ class Vacaciones extends Model
     protected $fillable = [
         'fechaInicio',
         'fechaFin',
-        'usuarioId'
+        'empleadoId'
     ];
     use HasFactory;
 
-    public function usuario(){
-        return $this->belongsTo(User::class, 'usuarioId');
+    public function empleado(){
+        return $this->belongsTo(User::class, 'empleadoId');
     }
 }

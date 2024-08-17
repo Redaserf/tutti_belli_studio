@@ -100,7 +100,8 @@ use App\Models\Inscripcion;
     //ventas de cada empleado
     Route::get('/venta/citas/empleado', [ConsultasController::class, 'ventasCitasEmpleadoAdmin']);
 
-
+    //horario de empleado Logeado
+    Route::get('/horario/empleado', [ConsultasController::class, 'horarioEmpleadoLogeado']);
 
 
 
@@ -247,7 +248,9 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/empleado/{id}', [UsuarioController::class, 'obtenerEmpleado']);
     Route::post('/ActualizarPerfilEmpleado/{empleadoId}',[UsuarioController::class, 'actualizarPerfilEmpleado']);
 
+    Route::put('/editar/horario/empleado/{id}', [RegistrosController::class, 'editarHorarioEmpleado']);
 
+    Route::get('/horario/empleado/{id}', [ConsultasController::class, 'horarioEmpleado']);
 
     // =====[ Cursos ]=====
 

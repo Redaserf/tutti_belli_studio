@@ -493,6 +493,7 @@ header {
                         <label for="edit_phone">Número de teléfono</label>
                         <input type="number" class="form-control" id="edit_phone" name="phone" value="{{ Auth::user()->numeroTelefono }}" oninput="this.value = this.value.slice(0, 10)">
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -502,6 +503,77 @@ header {
         </div>
     </div>
   </div>
+
+
+
+                <!-- Modal para editar horario del empleado -->
+       <div class="modal fade" id="editarHorarioModal" tabindex="-1" aria-labelledby="editarHorarioModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarHorarioModalLabel">Crear Nuevo Horario del Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editarHorarioForm">
+                    @csrf
+                    <div class="modal-body">
+                    <input type="hidden" id="nuevoEmpleadoId" name="empleadoId">
+
+                    <div class="mb-3">
+                        <label for="nuevoHoraInicio" class="form-label">Hora de Inicio</label>
+                        <select class="form-select" id="nuevoHoraInicio" name="horaInicio">
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nuevoHoraFin" class="form-label">Hora de Fin</label>
+                        <select class="form-select" id="nuevoHoraFin" name="horaFin">
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Días de la Semana</label>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="nuevoLunes">
+                        <label class="form-check-label" for="nuevoLunes">Lunes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="2" id="nuevoMartes">
+                        <label class="form-check-label" for="nuevoMartes">Martes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="3" id="nuevoMiercoles">
+                        <label class="form-check-label" for="nuevoMiercoles">Miércoles</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="4" id="nuevoJueves">
+                        <label class="form-check-label" for="nuevoJueves">Jueves</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="5" id="nuevoViernes">
+                        <label class="form-check-label" for="nuevoViernes">Viernes</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="6" id="nuevoSabado">
+                        <label class="form-check-label" for="nuevoSabado">Sábado</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="0" id="nuevoDomingo">
+                        <label class="form-check-label" for="nuevoDomingo">Domingo</label>
+                        </div>
+                        <!-- <div>
+                            <input type="hidden" id="dias" name="dias">
+                            <input type="hidden" id="horaInicio" name="horaInicioHorario">
+                            <input type="hidden" id="horaFin" name="horaFinHorario">
+                        </div> -->
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" id="editarEmpleadoHorario" class="btn btn-success">Guardar Horario</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
 
 
                 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
@@ -563,6 +635,8 @@ header {
                         <td>
                             <button class="btn btn-warning" onclick="cargarEmpleado(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="fa-solid fa-user-pen"></i></button>
                             <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></button>
+                            <button class="btn btn-primary" onclick="editarHorario(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editarHorarioModal"><i class="fa-regular fa-calendar"></i></button>
+
                         </td>
                     </tr>`;
                     tableBody.append(row);
@@ -571,6 +645,118 @@ header {
         }
     });
 }
+        // editar horario
+
+        const horaInicioSelect = $('#nuevoHoraInicio');
+const horaFinSelect = $('#nuevoHoraFin');
+
+function generarOpciones(startHour, endHour) {
+    let options = '';
+    for (let hora = startHour; hora <= endHour; hora++) {
+        options += `<option value="${hora}:00:00">${hora}:00:00</option>`;
+    }
+    return options;
+}
+
+horaInicioSelect.html(generarOpciones(9, 13));
+horaFinSelect.html(generarOpciones(13, 21));
+
+horaInicioSelect.on('change', function() {
+    const horaInicio = parseInt($(this).val().split(':')[0], 10);
+    const horaFinStart = horaInicio + 4;
+    const horaFinEnd = Math.min(horaInicio + 12, 21);
+    horaFinSelect.html(generarOpciones(horaFinStart, horaFinEnd));
+});
+
+function editarHorario(id) {
+    $.get(`/horario/empleado/${id}`, function(empleado) {
+        console.log('empleado: ', empleado);
+        let selectInicio = $('#nuevoHoraInicio');
+        let selectFin = $('#nuevoHoraFin');
+
+        // Genera todas las opciones para horaInicio antes de intentar seleccionar un valor
+        selectInicio.html(generarOpciones(9, 13));
+        selectFin.html(generarOpciones(13, 21));
+
+        $('#editarHorarioForm').attr('data-empleado-id', id);
+        $('#nuevoLunes, #nuevoMartes, #nuevoMiercoles, #nuevoJueves, #nuevoViernes, #nuevoSabado, #nuevoDomingo').prop('checked', false);
+
+        empleado.horarios.forEach(horario => {
+            // Asegúrate de que la opción de horaInicio existe antes de intentar seleccionarla
+            if (selectInicio.find(`option[value="${horario.horaInicio}"]`).length) {
+                selectInicio.val(horario.horaInicio);
+            }
+
+            const horaInicio = parseInt(horario.horaInicio.split(':')[0], 10);
+            const horaFinStart = horaInicio + 4;
+            const horaFinEnd = Math.min(horaInicio + 12, 21);
+            selectFin.html(generarOpciones(horaFinStart, horaFinEnd));
+
+            // Asegúrate de que la opción de horaFin existe antes de intentar seleccionarla
+            if (selectFin.find(`option[value="${horario.horaFin}"]`).length) {
+                selectFin.val(horario.horaFin);
+            }
+
+            $(`input[type='checkbox']`).each(function() {
+                if ($(this).val() === horario.diaSemana) {
+                    $(this).prop('checked', true);
+                }
+            });
+        });
+    });
+}
+
+$('#editarHorarioForm').on('submit', function(e) {
+    e.preventDefault();
+    let empleadoId = $(this).data('empleado-id');
+
+    let arregloDias = [];
+    $(`input[type='checkbox']:checked`).each(function() {
+        arregloDias.push($(this).val());
+
+        $('#editarHorarioForm').append(
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'opcionesCheckbox[]',
+                value: $(this).val(),
+                class: 'opcionCheckbox'
+            })
+        );
+    });
+
+    let formData = $(this).serialize();
+
+    $.ajax({
+        url: `/editar/horario/empleado/${empleadoId}`,
+        method: 'PUT',
+        data: formData,
+        success: function(response) {
+            console.log(response);
+            alert('Horario editado con éxito');
+        },
+        error: function(error){
+            alert('Error al editar el horario');
+            console.log(error);
+        }
+    });
+});
+
+
+       
+
+        // function mostrarHorario(){
+        //     $(document).off('click', '#editarHorarioModal').on('click', '#editarHorarioModal', function() {
+                
+        //         let selectInicio = $('#horaInicio');
+        //         let selectFin = $('#horaFin');
+
+        //         empleadoHorario.forEach(horario => {
+        //             console.log('dia del horario: ',horario.diaSemana);
+                  
+        //         })
+        //     })
+
+        // }
 
         // Eliminar empleados
 
@@ -657,6 +843,7 @@ $('#editProfileForm').on('submit', function(e) {
 
 
         $(document).ready(function(){
+
 
             tablaEmpleados();
 
