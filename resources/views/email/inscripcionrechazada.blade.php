@@ -48,7 +48,9 @@
         }
 
         @media (max-width:620px) {
-            .desktop_hide table.icons-inner {
+
+            .desktop_hide table.icons-inner,
+            .social_block.desktop_hide .social-table {
                 display: inline-block !important;
             }
 
@@ -158,7 +160,7 @@
                                         <tr>
                                             <td class="pad" style="padding-left:10px;padding-right:10px;padding-top:10px;">
                                                 <div style="color:#333333;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:26px;line-height:120%;text-align:center;mso-line-height-alt:31.2px;">
-                                                    <p style="margin: 0;"><strong>Haz sido aceptado</strong></p>
+                                                    <p style="margin: 0;"><strong>Estimado/a Usuario</strong></p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -168,14 +170,7 @@
                                             <td class="pad">
                                                 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;">
                                                     <p style="margin: 0; margin-bottom: 1px;"> </p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Estimado usuario,</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Nos complace informarle que se ha aceptado su inscripción.</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Estamos muy emocionados de contar con su participación y esperamos que disfrute y aproveche al máximo esta experiencia de aprendizaje.</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>A continuación, le recordamos algunos detalles importantes del curso:</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Curso: {{ $cursoNombre }}</strong><br/><strong>Fecha de Inicio: {{ $fechaInicio }}</strong><br/><strong>Horario: {{ $horaInicio }}</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Si tiene alguna pregunta o necesita más información, no dude en contactarnos a través de WhatsApp al número +52 871 382 6767.</strong></p>
-                                                    <p style="margin: 0; margin-bottom: 1px;"><strong>Estamos ansiosos por verle en el curso y deseamos que tenga una experiencia enriquecedora.</strong></p>
-                                                    <p style="margin: 0;"><strong>Atentamente,</strong><br/><strong>Tutti Belli Studio</strong></p>
+                                                    <p style="margin: 0;"><strong>Queremos empezar agradeciéndote por tu interés en nuestro curso . Lamentablemente, nos vemos en la necesidad de informarte que hemos tenido que cancelar tu inscripción a {{ $nombreCurso }} debido a motivos personales</strong></p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -196,7 +191,16 @@
                             <tbody>
                             <tr>
                                 <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 35px; padding-left: 35px; padding-right: 35px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-                                    <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                    <table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td class="pad">
+                                                <div style="color:#333333;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:13px;line-height:150%;text-align:center;mso-line-height-alt:19.5px;">
+                                                    <p style="margin: 0;"><strong>deseamos que esta situación no se repita en su próxima inscripción.</strong></p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
                                         <tr>
                                             <td class="pad" style="padding-left:10px;padding-right:10px;padding-top:10px;">
                                                 <div style="color:#333333;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:26px;line-height:120%;text-align:center;mso-line-height-alt:31.2px;">
@@ -285,7 +289,7 @@
                                             <td class="pad">
                                                 <div style="color:#444a5b;direction:ltr;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:18px;">
                                                     <p style="margin: 0; margin-bottom: 18px;">Direccion</p>
-                                                    <p style="margin: 0;">Ex Hacienda la Joya, Zafiro #67 </p>
+                                                    <p style="margin: 0;">Ex Hacienda la Joya , Zafiro #67 </p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -316,6 +320,18 @@
                                                 <td class="pad" style="padding-bottom:5px;padding-left:10px;padding-right:10px;padding-top:5px;">
                                                     <div style="color:#333333;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:11px;line-height:120%;text-align:left;mso-line-height-alt:13.2px;">
                                                         <p style="margin: 0;">tuttibellistudiotrc@gmail.com</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table border="0" cellpadding="0" cellspacing="0" class="social_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                            <tr>
+                                                <td class="pad" style="padding-right:10px;text-align:left;padding-left:0px;">
+                                                    <div align="left" class="alignment">
+                                                        <table border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;" width="144px">
+                                                            <tr>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                 </td>
                                             </tr>
