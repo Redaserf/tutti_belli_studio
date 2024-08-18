@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InscripcionAceptada;
 use Illuminate\Support\Facades\DB;
+use App\Mail\InscripcionCancelada;
 
 class InscripcionController extends Controller
 {
@@ -209,6 +210,10 @@ class InscripcionController extends Controller
         try{
             $inscripcion = Inscripcion::find($inscripcionId);
 
+            $usuario = $inscripcion->usuarios;
+            $nombreCurso = $inscripcion->cursos->nombre;
+
+
             if (!$inscripcion) {
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
@@ -216,6 +221,8 @@ class InscripcionController extends Controller
             $inscripcion->estado = null;
             $inscripcion->save();
             // $inscripcion->delete();
+
+            // Enviar correo de cancelación usando la instancia completa de la inscripción
 
             DB::commit();
             return response()->json(['success' => 'Inscripción eliminada exitosamente'], 200);
