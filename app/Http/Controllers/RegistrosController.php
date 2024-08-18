@@ -385,8 +385,10 @@ class RegistrosController extends Controller
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
                 'estadoVenta' => false,
+                'tipoVenta' => 'cita',
                 'usuarioId' => $cita->usuarioId,
-                'reporteId' => $reporte->id
+                'reporteId' => $reporte->id,
+                'empleadoId' => $cita->empleadoId
             ]);
 
             
@@ -587,7 +589,25 @@ class RegistrosController extends Controller
 
 
 
+    public function citaRechazada($id) {
+        DB::beginTransaction();
+        try {
+            $cita = Cita::findOrFail($id);
+            $usuario = $cita->usuario;
 
+            $cita->update([
+                'estadoCita' => null
+            ]);
+            
+            Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
+
+            DB::commit();
+            return response()->json(['message' => 'Cita y venta eliminadas con éxito'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al eliminar la cita', 'error' => $e->getMessage()], 500);
+        }
+    }
 
 
 
@@ -597,7 +617,7 @@ class RegistrosController extends Controller
             $cita = Cita::findOrFail($id);
             $usuario = $cita->usuario;
 
-            $ventaId = $cita->ventaId;
+            $ventaId = CitaHasServicio::where('citaId', $id)->value('ventaId');
 
             $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
             ->with('producto')
@@ -625,7 +645,7 @@ class RegistrosController extends Controller
 
             Venta::where('id', $ventaId)->delete();
 
-            Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
+            // Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
 
             DB::commit();
             return response()->json(['message' => 'Cita y venta eliminadas con éxito'], 200);
@@ -766,7 +786,7 @@ class RegistrosController extends Controller
 
         //verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-                            ->where('horaCita', $request->horaCita)
+                            ->where('horaCita', $request->horaCita)->where('empleadoId', $request->id)
                             ->first();
 
         if ($citaExistente) {

@@ -324,6 +324,9 @@ Route::get('/servicios/tecnicas', [ConsultasController::class, 'serviciosConTecn
     //eliminar cita Administradir
     Route::delete('/eliminar/cita/{id}', [RegistrosController::class, 'eliminarCita']);
 
+    Route::put('/rechazar/cita/{id}', [RegistrosController::class, 'citaRechazada']);
+
+
     //editar detalleTecnica
     Route::put('/detalleTecnica/actualizar', [RegistrosController::class, 'actualizarDetalleTecnica']);
 

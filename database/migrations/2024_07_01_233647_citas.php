@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->date('fechaCita');
             $table->time('horaCita');
-            $table->boolean('estadoCita');
+            $table->boolean('estadoCita')->nullable();
             $table->string('notasCita', 150)->nullable();
             $table->unsignedBigInteger('usuarioId');
             $table->unsignedBigInteger('empleadoId');
