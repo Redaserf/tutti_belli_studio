@@ -23,11 +23,11 @@ class VentaController extends Controller
         // Inicia la transacción
         DB::beginTransaction();
         try {
+
             //Obtiene el usuario logeado
             $usuario = Auth::user();
-
             $reporte = Reporte::create([
-                "usuarioId" => $usuario->id
+                'usuarioId' => 2
             ]);
 
 
@@ -40,7 +40,8 @@ class VentaController extends Controller
                 'estadoVenta' => null,
                 'fechaVenta' => $request->fechaVenta,
                 "reporteId" => $reporte->id,
-                'usuarioId' => $usuario->id
+                'usuarioId' => $usuario->id,
+                'empleadoId' => 2
             ]);
 
             // Arreglo que recorre los productos comprados
@@ -99,7 +100,7 @@ class VentaController extends Controller
             $carritoPorVaciar->productos()->detach();
 
             // Enviar correo al usuario
-            Mail::to($usuario->email)->send(new CompraRealizada($venta));
+//            Mail::to($usuario->email)->send(new CompraRealizada($venta));
 
             DB::commit();
 
@@ -107,7 +108,7 @@ class VentaController extends Controller
             // Si ocurre algún error, revierte la transacción
             DB::rollBack();
 
-            return response()->json(['error' => $e ], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -182,6 +183,116 @@ class VentaController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    function ventasPeriodo(Request $request)
+    {
+        $fechaInicio = $request->fechaInicio;
+        $fechaFin = $request->fechaFin;
+
+        //con wherebewtween e busca entre los valores
+        // $ventas = Venta::with('empleadoVenta')->whereBetween('fechaVenta', [$fechaInicio, $fechaFin])->get();
+
+        $ventas = Venta::with(['empleadoVenta' => function($query) {
+            $query->select('id', 'name'); // 'id' es el empleadoId, y 'name' es el nombre del empleado
+        }])
+            ->whereBetween('fechaVenta', [$fechaInicio, $fechaFin])
+            ->whereNotNull('empleadoId') // Excluir ventas con empleadoId nulo
+            ->get();
+
+
+        $ventas = $ventas->map(function($venta) {
+            return [
+                'id' => $venta->id,
+                'tipoVenta' => $venta->tipoVenta,
+                'fechaVenta' => $venta->fechaVenta,
+                'empleadoId' => $venta->empleadoId,
+                'empleadoNombre' => $venta->empleadoVenta->name ?? null, // Incluye el nombre del empleado
+                'total'=> $venta->total
+
+            ];
+        });
+
+        return response()->json($ventas);
+    }
+
+    public function filtroUnoVenta(Request $request){
+    $fechaInicio = $request->fechaInicio;
+    $fechaFin = $request->fechaFin;
+
+    $ventas = Venta::with(['empleadoVenta' => function($query) {
+        $query->select('id', 'name');
+    }])
+        ->where('empleadoId', $request->empleadoSeleccionado)
+        ->where('tipoVenta', $request->ventaSeleccionada)
+        ->whereBetween('fechaVenta', [$fechaInicio, $fechaFin])
+        ->get();
+
+
+    $ventas = $ventas->map(function($venta) {
+        return [
+            'id' => $venta->id,
+            'tipoVenta' => $venta->tipoVenta,
+            'fechaVenta' => $venta->fechaVenta,
+            'empleadoId' => $venta->empleadoId,
+            'empleadoNombre' => $venta->empleadoVenta->name ?? null,
+            'total'=> $venta->total
+        ];
+    });
+
+    return response()->json($ventas);
+}
+
+    public function filtroDosVenta(Request $request){
+        $fechaInicio = $request->fechaInicio;
+        $fechaFin = $request->fechaFin;
+
+        $ventas = Venta::with(['empleadoVenta' => function($query) {
+            $query->select('id', 'name');
+        }])
+            ->where('empleadoId', $request->empleadoSeleccionado)
+            ->whereBetween('fechaVenta', [$fechaInicio, $fechaFin])
+            ->get();
+
+
+        $ventas = $ventas->map(function($venta) {
+            return [
+                'id' => $venta->id,
+                'tipoVenta' => $venta->tipoVenta,
+                'fechaVenta' => $venta->fechaVenta,
+                'empleadoId' => $venta->empleadoId,
+                'empleadoNombre' => $venta->empleadoVenta->name ?? null,
+                'total'=> $venta->total
+            ];
+        });
+
+        return response()->json($ventas);
+    }
+
+    public function filtroTresVenta(Request $request){
+        $fechaInicio = $request->fechaInicio;
+        $fechaFin = $request->fechaFin;
+
+        $ventas = Venta::with(['empleadoVenta' => function($query) {
+            $query->select('id', 'name');
+        }])
+            ->where('tipoVenta', $request->ventaSeleccionada)
+            ->whereBetween('fechaVenta', [$fechaInicio, $fechaFin])
+            ->get();
+
+
+        $ventas = $ventas->map(function($venta) {
+            return [
+                'id' => $venta->id,
+                'tipoVenta' => $venta->tipoVenta,
+                'fechaVenta' => $venta->fechaVenta,
+                'empleadoId' => $venta->empleadoId,
+                'empleadoNombre' => $venta->empleadoVenta->name ?? null,
+                'total'=> $venta->total
+            ];
+        });
+
+        return response()->json($ventas);
     }
 
 }

@@ -312,6 +312,26 @@
 
         /* Aquí tus estilos */
 
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.375rem 0.75rem;
+            margin-left: 2px;
+            border-radius: 4px;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            /*color: white !important;*/
+        }
+
 
 
     </style>
@@ -442,103 +462,147 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="reporte-mensual" data-bs-toggle="tab" href="#reporte-men" role="tab" aria-controls="reporte-men" aria-selected="false">Reporte mensual</a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="reporte-historial" data-bs-toggle="tab" href="#historial-reportes" role="tab" aria-controls="historial-reportes" aria-selected="false">Reporte mensual</a>
+                </li>
             </ul>
 
+        @csrf
             <div class="tab-content" id="myTabContent">
                 <!-- Pestaña de Reporte Parcial -->
                 <div class="tab-pane fade show active" id="reporte-par" role="tabpanel" aria-labelledby="reporte-parcial">
                     <div class="table-container mt-5">
-                        <h2 class="text-center" style="margin: 0;">Reporte Parcial</h2>
+                        <h2 class="text-center" style="margin: 0;">Reportes</h2>
                         <div class="flex-container">
                             <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">
                                 <label for="info-label" style="font-weight: bold;">Información</label>
                             </div>
+
+                            <label for="info-label" style="font-weight: 5;">Desde: </label>
+                            <input type="date" class="form-control" id="fechaInicio" style="width:250px; display: inline-block; margin-right: 15px;">
+
+                            <label for="info-label" style="font-weight: 5;">Hasta: </label>
+                            <input type="date" class="form-control" id="fechaFin" style="width:250px; display: inline-block; margin-right: 15px;">
+
+                            <button id="botonBuscar" class="btn btn-success"> Buscar <i class="fa-solid fa-magnifying-glass"></i></button>
+
+                            <label for="info-label" style="font-weight: 5;">Total del periodo: </label>
+                            <label id="etiquetaTotal" for="info-label" style="font-weight: 5;"> </label>
+                            <br>
                             <select class="form-control mb-3" id="select-empleado" style="width:250px; display: inline-block; margin-right: 15px;">
                                 <option value="">Seleccionar Empleado</option>
-                                <option value="empleado1">Empleado 1</option>
-                                <option value="empleado2">Empleado 2</option>
-                                <option value="empleado3">Empleado 3</option>
                                 <!-- porsiacaso -->
                             </select>
                             <select class="form-control mb-3" id="select-opcion" style="width:250px; display: inline-block;">
-                                <option value="">Seleccionar opción</option>
-                                <option value="productos">Productos</option>
-                                <option value="citas">Citas</option>
-                                <option value="inscripciones">Inscripciones</option>
+                                <option value="null">Seleccionar opción</option>
+                                <option value="producto">Productos</option>
+                                <option value="cita">Citas</option>
+                                <option value="inscripcion">Inscripciones</option>
                             </select>
+
+                            <button id="botonPdf" class="btn btn-danger"> Generar <PDF></PDF> <i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Imagen</th>
                                         <th>Nombre</th>
-                                        <th>Descripción</th>
+                                        <th>Fecha de Venta</th>
+                                        <th>Empleado</th>
                                         <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-reporte-parcial">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
+
                                 </tbody>
                             </table>
                         </div>
-                        <div class="flex-container">
-                            <a class="left" href="/GENERARCORTE" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Generar Reporte<i style="margin-left: 6px" class="fa-solid fa-money-bill-trend-up"></i></button></a>
-                        </div>
+{{--                        <div class="flex-container">--}}
+{{--                            --}}
+{{--                        </div>--}}
                     </div>
                 </div>
 
                 <!-- Pestaña de Reporte Mensual -->
                 <div class="tab-pane fade" id="reporte-men" role="tabpanel" aria-labelledby="reporte-mensual">
-                    <div class="table-container mt-5">
-                        <h2 class="text-center" style="margin: 0;">Reporte Mensual</h2>
-                        <div class="flex-container">
-                            <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">
-                                <label for="info-label" style="font-weight: bold;">Información</label>
-                            </div>
-                            <select class="form-control mb-3" id="select-empleado2" style="width:250px; display: inline-block; margin-right: 15px;">
-                                <option value="">Seleccionar Empleado</option>
-                                <option value="empleado1">Empleado 1</option>
-                                <option value="empleado2">Empleado 2</option>
-                                <option value="empleado3">Empleado 3</option>
-                            </select>
-                            <select class="form-control mb-3" id="select-mes" style="width:250px; display: inline-block;">
-                                <option value="">Seleccionar Mes</option>
-                                <option value="enero">Enero</option>
-                                <option value="febrero">Febrero</option>
-                                <option value="marzo">Marzo</option>
-                                <option value="abril">Abril</option>
-                                <option value="mayo">Mayo</option>
-                                <option value="junio">Junio</option>
-                                <option value="julio">Julio</option>
-                                <option value="agosto">Agosto</option>
-                                <option value="septiembre">Septiembre</option>
-                                <option value="octubre">Octubre</option>
-                                <option value="noviembre">Noviembre</option>
-                                <option value="diciembre">Diciembre</option>
-                            </select>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Imagen</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-reporte-mensual">
-                                    <!-- Los productos serán insertados aquí por jQuery -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+{{--                    <div class="table-container mt-5">--}}
+{{--                        <h2 class="text-center" style="margin: 0;">Reporte Mensual</h2>--}}
+{{--                        <div class="flex-container">--}}
+{{--                            <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">--}}
+{{--                                <label for="info-label" style="font-weight: bold;">Información</label>--}}
+{{--                            </div>--}}
+{{--                            <select class="form-control mb-3" id="select-empleado2" style="width:250px; display: inline-block; margin-right: 15px;">--}}
+{{--                                <option value="">Seleccionar Empleado</option>--}}
+
+{{--                            </select>--}}
+{{--                            <select class="form-control mb-3" id="select-mes" style="width:250px; display: inline-block;">--}}
+{{--                                <option value="">Seleccionar Mes</option>--}}
+{{--                                <option value="enero">Enero</option>--}}
+{{--                                <option value="febrero">Febrero</option>--}}
+{{--                                <option value="marzo">Marzo</option>--}}
+{{--                                <option value="abril">Abril</option>--}}
+{{--                                <option value="mayo">Mayo</option>--}}
+{{--                                <option value="junio">Junio</option>--}}
+{{--                                <option value="julio">Julio</option>--}}
+{{--                                <option value="agosto">Agosto</option>--}}
+{{--                                <option value="septiembre">Septiembre</option>--}}
+{{--                                <option value="octubre">Octubre</option>--}}
+{{--                                <option value="noviembre">Noviembre</option>--}}
+{{--                                <option value="diciembre">Diciembre</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                        <div class="table-responsive">--}}
+{{--                            <table class="table table-striped">--}}
+{{--                                <thead>--}}
+{{--                                    <tr>--}}
+{{--                                        <th>Imagen</th>--}}
+{{--                                        <th>Nombre</th>--}}
+{{--                                        <th>Descripción</th>--}}
+{{--                                        <th>Cantidad</th>--}}
+{{--                                        <th>Precio Unitario</th>--}}
+{{--                                        <th>Editar</th>--}}
+{{--                                    </tr>--}}
+{{--                                </thead>--}}
+{{--                                <tbody id="table-reporte-mensual">--}}
+{{--                                    <!-- Los productos serán insertados aquí por jQuery -->--}}
+{{--                                </tbody>--}}
+{{--                            </table>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
+
+                <!-- Pestaña de Reporte Historial de ventas -->
+                <div class="tab-pane fade" id="historial-reportes" role="tabpanel" aria-labelledby="historial-reportes">
+{{--                    <div class="table-container mt-5">--}}
+{{--                        <h2 class="text-center" style="margin: 0;">Historial de Reportes</h2>--}}
+{{--                        <div class="flex-container">--}}
+{{--                            <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">--}}
+{{--                                <label for="info-label" style="font-weight: bold;">Información</label>--}}
+{{--                            </div>--}}
+{{--                            <select class="form-control mb-3" id="select-empleado2" style="width:250px; display: inline-block; margin-right: 15px;">--}}
+{{--                                <option value="">Seleccionar Empleado</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                        <div class="table-responsive">--}}
+{{--                            <table class="table table-striped">--}}
+{{--                                <thead>--}}
+{{--                                <tr>--}}
+{{--                                    <th>Imagen</th>--}}
+{{--                                    <th>Nombre</th>--}}
+{{--                                    <th>Descripción</th>--}}
+{{--                                    <th>Cantidad</th>--}}
+{{--                                    <th>Precio Unitario</th>--}}
+{{--                                    <th>Editar</th>--}}
+{{--                                </tr>--}}
+{{--                                </thead>--}}
+{{--                                <tbody id="table-reporte-mensual">--}}
+{{--                                <!-- Los productos serán insertados aquí por jQuery -->--}}
+{{--                                </tbody>--}}
+{{--                            </table>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+                </div>
+
             </div>
     </div>
 
@@ -552,7 +616,7 @@
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
 
     // Scripts para todas las vistas
@@ -638,13 +702,593 @@
         botones();
         // Fin scripts para todas las vistas
 
+        //Ajax para dibujara los empleados en los select
+        $.ajax({
+            url: '/get/empleado-admin',
+            method: 'GET',
+            success: function (empleados) {
+                let select = $('#select-empleado');
+                select.empty(); // Limpiar el select
+                select.append(`<option value="">Seleccione un empleado</option>`);
+                empleados.forEach(empleado =>{
+
+                    select.append(`<option value="${empleado.id}">` + empleado.name + '</option>');
+                })
+
+            }
+        });
 
 
 
 
+        // dibujarParcial();
+
+        $('#select-empleado').prop('disabled',true);
+        $('#select-opcion').prop('disabled',true);
+        $('#botonPdf').prop('disabled',true);
 
 // Fin document.ready
     });
+
+    let fechaSeleccionadaInicial;
+    let fechaSeleccionadaFinal;
+    let empleadoSeleccionado;
+    let ventaSeleccionada;
+    let valorPdf = 0;
+
+    $('#botonPdf').on('click',function (){
+        switch (valorPdf){
+            case 0:
+                // $.ajax({
+                //     url: '/Pdf-valor_cero',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+                let url = '/Pdf-valor_cero?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url;
+                break;
+            case 1:
+                // $.ajax({
+                //     url: '/Pdf-valor_uno',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         empleadoSeleccionado: empleadoSeleccionado,
+                //         ventaSeleccionada:ventaSeleccionada,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                 let url1 = '/Pdf-valor_uno?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&empleadoSeleccionado=' + encodeURIComponent(empleadoSeleccionado)+
+                    '&ventaSeleccionada='+ encodeURIComponent(ventaSeleccionada)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url1;
+                break;
+            case 2:
+
+                // $.ajax({
+                //     url: '/Pdf-valor_dos',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         empleadoSeleccionado: empleadoSeleccionado,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                let url2 = '/Pdf-valor_dos?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&empleadoSeleccionado=' + encodeURIComponent(empleadoSeleccionado)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url2;
+                break;
+            case 3:
+
+                // $.ajax({
+                //     url: '/Pdf-valor_tres',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         ventaSeleccionada:ventaSeleccionada,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                let url3 = '/Pdf-valor_tres?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&ventaSeleccionada='+ encodeURIComponent(ventaSeleccionada)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url3;
+                break;
+        }
+    });
+
+    $('#botonBuscar').on('click',function (){
+
+         fechaSeleccionadaInicial = $('#fechaInicio').val();
+         fechaSeleccionadaFinal = $('#fechaFin').val();
+
+        console.log(fechaSeleccionadaInicial);
+        console.log(fechaSeleccionadaFinal);
+
+        if(fechaSeleccionadaInicial > fechaSeleccionadaFinal ){
+            alert('La fecha inicial debe de ser anterior a la fecha final');
+        }
+        else
+        {
+            //$ajax que nos trae las ventas emtre esas fechas
+            $.ajax({
+                url:'ventas-periodo',
+                method:'GET',
+                data:{
+                    fechaInicio: fechaSeleccionadaInicial,
+                    fechaFin: fechaSeleccionadaFinal
+                },
+                success: function (ventas){
+                    console.log("Ventas recibidas:", ventas);
+                    let total = 0;
+
+                    let tablaRaiz = $('#table-reporte-parcial');
+                    tablaRaiz.empty();
+
+                    if ($.fn.DataTable.isDataTable('.table')) {
+                        $('.table').DataTable().clear().destroy();
+                    }
+
+                    // Vaciar la tabla
+                    tablaRaiz.empty();
+
+                    ventas.forEach(venta => {
+
+                        let contenido = `<tr>
+                        <td>${venta.tipoVenta}</td>
+                        <td>${venta.fechaVenta}</td>
+                        <td>${venta.empleadoNombre}</td>
+                        <td>${venta.total}</td>
+                        </tr>`;
+                        tablaRaiz.append(contenido);
+
+                        total += venta.total
+                    });
+
+                    valorPdf=0;
+                    $('#etiquetaTotal').text(total);
+                    $('#select-empleado').prop('disabled',false);
+                    $('#select-opcion').prop('disabled',false);
+                    $('#botonPdf').prop('disabled',false);
+
+
+                        $('.table').DataTable({
+                            "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                            "pagingType": "full_numbers",
+                            "language": {
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Último",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            },
+                            "pageLength": 10, // Número de registros por página
+                            "lengthChange": false, // Oculta el selector de "Show entries"
+                            "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                            "searching": false, // Oculta el campo de búsqueda
+                        });
+                }
+            });
+        }
+    });
+
+    $('#select-empleado').on('change',function (){
+        empleadoSeleccionado = $('#select-empleado').val();
+        ventaSeleccionada = $('#select-opcion').val();
+
+        let tablaRaiz = $('#table-reporte-parcial');
+        tablaRaiz.empty();
+
+        if(ventaSeleccionada === 'null' && empleadoSeleccionado === "" ){
+            document.getElementById('botonBuscar').click();
+        }else{
+            if(ventaSeleccionada !== 'null' && empleadoSeleccionado === "" ){
+                $.ajax({
+                    url:'/get/filtro-tres',
+                    method: 'GET',
+                    data: {
+                        ventaSeleccionada:ventaSeleccionada,
+                        fechaInicio: fechaSeleccionadaInicial,
+                        fechaFin: fechaSeleccionadaFinal
+                    },
+                    success: function (ventas){
+                        let total = 0;
+                        console.log("Ventas recibidas:", ventas);
+                        console.log(empleadoSeleccionado);
+                        console.log(ventaSeleccionada);
+                        if ($.fn.DataTable.isDataTable('.table')) {
+                            $('.table').DataTable().clear().destroy();
+                        }
+
+                        // Vaciar la tabla
+                        tablaRaiz.empty();
+
+                        ventas.forEach(venta => {
+
+                            console.log("Datos de venta individual:", venta);
+
+                            let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                            tablaRaiz.append(contenido);
+                            total += venta.total
+                        });
+                        valorPdf = 3;
+                        $('#etiquetaTotal').text(total);
+
+
+                        $('.table').DataTable({
+                            "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                            "pagingType": "full_numbers",
+                            "language": {
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Último",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            },
+                            "pageLength": 10, // Número de registros por página
+                            "lengthChange": false, // Oculta el selector de "Show entries"
+                            "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                            "searching": false, // Oculta el campo de búsqueda
+                        });
+
+                    }
+                });
+            }else{
+                if(ventaSeleccionada === 'null' && empleadoSeleccionado !== "" ){
+                    $.ajax({
+                        url:'/get/filtro-dos',
+                        method: 'GET',
+                        data: {
+                            empleadoSeleccionado: empleadoSeleccionado,
+                            fechaInicio: fechaSeleccionadaInicial,
+                            fechaFin: fechaSeleccionadaFinal
+                        },
+                        success: function (ventas){
+                            let total = 0
+                            console.log("Ventas recibidas:", ventas);
+                            console.log(empleadoSeleccionado);
+                            console.log(ventaSeleccionada);
+                            if ($.fn.DataTable.isDataTable('.table')) {
+                                $('.table').DataTable().clear().destroy();
+                            }
+
+                            // Vaciar la tabla
+                            tablaRaiz.empty();
+                            ventas.forEach(venta => {
+
+                                console.log("Datos de venta individual:", venta);
+
+                                let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                                tablaRaiz.append(contenido);
+                                total += venta.total
+                            });
+                            valorPdf = 2;
+                            $('#etiquetaTotal').text(total);
+
+                            $('.table').DataTable({
+                                "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                                "pagingType": "full_numbers",
+                                "language": {
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                },
+                                "pageLength": 10, // Número de registros por página
+                                "lengthChange": false, // Oculta el selector de "Show entries"
+                                "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                                "searching": false, // Oculta el campo de búsqueda
+                            });
+                        }
+                    });
+                }else{
+                    console.log('FRECUANCIIA DE PAPU')
+                    $.ajax({
+                        url:'/get/filtro-uno',
+                        method: 'GET',
+                        data: {
+                            empleadoSeleccionado: empleadoSeleccionado,
+                            ventaSeleccionada:ventaSeleccionada,
+                            fechaInicio: fechaSeleccionadaInicial,
+                            fechaFin: fechaSeleccionadaFinal
+                        },
+                        success: function (ventas){
+                            let total = 0;
+                            console.log("Ventas recibidas:", ventas);
+                            console.log(empleadoSeleccionado);
+                            console.log(ventaSeleccionada);
+                            if ($.fn.DataTable.isDataTable('.table')) {
+                                $('.table').DataTable().clear().destroy();
+                            }
+
+                            // Vaciar la tabla
+                            tablaRaiz.empty();
+
+                            ventas.forEach(venta => {
+
+                                console.log("Datos de venta individual:", venta);
+
+                                let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                                tablaRaiz.append(contenido);
+                                total += venta.total
+                            });
+                            valorPdf=1;
+                            $('#etiquetaTotal').text(total);
+
+
+                            $('.table').DataTable({
+                                "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                                "pagingType": "full_numbers",
+                                "language": {
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                },
+                                "pageLength": 10, // Número de registros por página
+                                "lengthChange": false, // Oculta el selector de "Show entries"
+                                "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                                "searching": false, // Oculta el campo de búsqueda
+                            });
+
+
+                        }
+                    });
+                }
+            }
+
+        }
+
+
+
+    });
+
+    $('#select-opcion').on('change',function (){
+        empleadoSeleccionado = $('#select-empleado').val();
+        ventaSeleccionada = $('#select-opcion').val();
+
+        let tablaRaiz = $('#table-reporte-parcial');
+        tablaRaiz.empty();
+
+        if(ventaSeleccionada === 'null' && empleadoSeleccionado === "" ){
+            document.getElementById('botonBuscar').click();
+        }else{
+            if(ventaSeleccionada !== 'null' && empleadoSeleccionado === "" ){
+                $.ajax({
+                    url:'/get/filtro-tres',
+                    method: 'GET',
+                    data: {
+                        ventaSeleccionada:ventaSeleccionada,
+                        fechaInicio: fechaSeleccionadaInicial,
+                        fechaFin: fechaSeleccionadaFinal
+                    },
+                    success: function (ventas){
+                        let total = 0;
+                        console.log("Ventas recibidas:", ventas);
+                        console.log(empleadoSeleccionado);
+                        console.log(ventaSeleccionada);
+
+                        if ($.fn.DataTable.isDataTable('.table')) {
+                            $('.table').DataTable().clear().destroy();
+                        }
+
+                        valorPdf = 3
+                        tablaRaiz.empty();
+
+                        ventas.forEach(venta => {
+
+                            console.log("Datos de venta individual:", venta);
+
+                            let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                            tablaRaiz.append(contenido);
+                            total += venta.total
+                        });
+                        $('#etiquetaTotal').text(total);
+
+                        $('.table').DataTable({
+                            "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                            "pagingType": "full_numbers",
+                            "language": {
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Último",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            },
+                            "pageLength": 10, // Número de registros por página
+                            "lengthChange": false, // Oculta el selector de "Show entries"
+                            "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                            "searching": false, // Oculta el campo de búsqueda
+                        });
+                    }
+                });
+            }else{
+                if(ventaSeleccionada === 'null' && empleadoSeleccionado !== "" ){
+                    $.ajax({
+                        url:'/get/filtro-dos',
+                        method: 'GET',
+                        data: {
+                            empleadoSeleccionado: empleadoSeleccionado,
+                            fechaInicio: fechaSeleccionadaInicial,
+                            fechaFin: fechaSeleccionadaFinal
+                        },
+                        success: function (ventas){
+                            let total = 0;
+                            console.log("Ventas recibidas:", ventas);
+                            console.log(empleadoSeleccionado);
+                            console.log(ventaSeleccionada);
+                            if ($.fn.DataTable.isDataTable('.table')) {
+                                $('.table').DataTable().clear().destroy();
+                            }
+
+                            valorPdf = 2;
+                            tablaRaiz.empty();
+
+                            ventas.forEach(venta => {
+
+                                console.log("Datos de venta individual:", venta);
+
+                                let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                                tablaRaiz.append(contenido);
+                                total += venta.total;
+                            });
+                            $('#etiquetaTotal').text(total);
+
+
+                            $('.table').DataTable({
+                                "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                                "pagingType": "full_numbers",
+                                "language": {
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                },
+                                "pageLength": 10, // Número de registros por página
+                                "lengthChange": false, // Oculta el selector de "Show entries"
+                                "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                                "searching": false, // Oculta el campo de búsqueda
+                            });
+                        }
+                    });
+                }else{
+                    console.log('FRECUANCIIA DE PAPU')
+                    $.ajax({
+                        url:'/get/filtro-uno',
+                        method: 'GET',
+                        data: {
+                            empleadoSeleccionado: empleadoSeleccionado,
+                            ventaSeleccionada:ventaSeleccionada,
+                            fechaInicio: fechaSeleccionadaInicial,
+                            fechaFin: fechaSeleccionadaFinal
+                        },
+                        success: function (ventas){
+                            let total = 0;
+                            console.log("Ventas recibidas:", ventas);
+                            console.log(empleadoSeleccionado);
+                            console.log(ventaSeleccionada);
+                            if ($.fn.DataTable.isDataTable('.table')) {
+                                $('.table').DataTable().clear().destroy();
+                            }
+
+                            valorPdf = 1;
+                            tablaRaiz.empty();
+
+                            ventas.forEach(venta => {
+
+                                console.log("Datos de venta individual:", venta);
+                                let contenido = `<tr>
+                                <td>${venta.tipoVenta}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td>${venta.empleadoNombre}</td>
+                                <td>${venta.total}</td>
+                                </tr>`;
+                                tablaRaiz.append(contenido);
+                                total += venta.total
+                            });
+                            $('#etiquetaTotal').text(total);
+
+
+
+                            $('.table').DataTable({
+                                "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                                "pagingType": "full_numbers",
+                                "language": {
+                                    "paginate": {
+                                        "first": "Primero",
+                                        "last": "Último",
+                                        "next": "Siguiente",
+                                        "previous": "Anterior"
+                                    }
+                                },
+                                "pageLength": 10, // Número de registros por página
+                                "lengthChange": false, // Oculta el selector de "Show entries"
+                                "info": false, // Oculta la información de "Showing X to Y of Z entries"
+                                "searching": false, // Oculta el campo de búsqueda
+                            });
+                        }
+                    });
+                }
+            }
+
+        }
+
+    });
+
+    //Ajax y filtros para el historial de reportes
+
+
 </script>
 </body>
 </html>
