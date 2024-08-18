@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\DetalleInscripcion;
 use App\Models\Inscripcion;
 use App\Models\Producto;
+use App\Models\Reporte;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InscripcionAceptada;
 use Illuminate\Support\Facades\DB;
+use App\Mail\InscripcionCancelada;
 
 class InscripcionController extends Controller
 {
@@ -34,10 +38,10 @@ class InscripcionController extends Controller
     {
         $inscripciones = Inscripcion::where('cursoId', $cursoId)->whereNotNull('estado')->with('usuarios')->get();
         $curso = Curso::find($cursoId);
-    
+
         return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
     }
-    
+
 
     public function index($inscripcionId)
     {
@@ -101,6 +105,37 @@ class InscripcionController extends Controller
                         Mail::to($inscripcion->usuarios->email)->send(new InscripcionAceptada($inscripcion->usuarios, $inscripcion));
                     }
 
+                    //Crear venta
+                    $usuario = Auth::user();
+
+                    $reporte = Reporte::create([
+                        'usuarioId' => 2
+                    ]);
+
+                    $venta = Venta::create([
+                        'total' => $curso->precio,
+                        'tipoVenta'=> 'inscripcion',
+                        'estadoVenta' => true,
+                        'reporteId' => $reporte->id,
+                        'fechaVenta' => now(),
+                        'empleadoId' => 2,
+                        'usuarioId' => $usuario->id
+                    ]);
+
+                    if(!$venta){
+                        return 'no hay $venta';
+                    }
+
+
+                     $detalle = DetalleInscripcion::create([
+                        'ventaId' => $venta->id,
+                        'inscripcionId' => $inscripcion->id,
+                    ]);
+
+                    if(!$detalle){
+                        return 'no hay detalle';
+                    }
+
                     DB::commit();
                     return 'Inscripcion contretada correctamente';
                 }
@@ -111,10 +146,9 @@ class InscripcionController extends Controller
 
 
 
-
         }catch (\Exception $e){
             DB::rollback();
-            return response()->json(['error' => $e ], 500);
+            return response()->json(['error' => $e->getMessage() ], 500);
         }
 
     }
@@ -140,11 +174,26 @@ class InscripcionController extends Controller
                 $inscripcion->estado = false;
                 $inscripcion->save();
 
+            $detalles = $inscripcion->detalleInscripciones;
+
+            foreach ($detalles as $detalle) {
+
+                $venta = $detalle->venta;
+
+
+                $detalle->delete();
+
+
+                if ($venta->detalleInscripciones()->count() == 0) {
+                    $venta->delete();
+                }
+            }
+
                 DB::commit();
 
         }catch (\Exception $e){
             DB::rollback();
-            return response()->json(['error' => $e ], 500);
+            return response()->json(['error' => $e->getMessage() ], 500);
         }
     }
 
@@ -153,6 +202,10 @@ class InscripcionController extends Controller
         try{
             $inscripcion = Inscripcion::find($inscripcionId);
 
+            $usuario = $inscripcion->usuarios;
+            $nombreCurso = $inscripcion->cursos->nombre;
+
+
             if (!$inscripcion) {
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
@@ -160,6 +213,8 @@ class InscripcionController extends Controller
             $inscripcion->estado = null;
             $inscripcion->save();
             // $inscripcion->delete();
+
+            // Enviar correo de cancelación usando la instancia completa de la inscripción
 
             DB::commit();
             return response()->json(['success' => 'Inscripción eliminada exitosamente'], 200);
