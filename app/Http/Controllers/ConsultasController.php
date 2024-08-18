@@ -140,6 +140,7 @@ class ConsultasController extends Controller
         }
     
         $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        
     
         $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user, $fechaHoraActual) {
             $query->where('estadoCita', true)
@@ -620,20 +621,65 @@ class ConsultasController extends Controller
 
 
 
-    public function horarioEmpleado($id){
-        $empleado = User::with('horarios')->find($id);
-
-        return response()->json($empleado);
-    }
-
     public function horarioEmpleadoLogeado(){
         $user = Auth::user();
     
         // Traer el usuario con sus horarios y citas
-        $jaja = User::with(['horarios', 'citasEmpleados'])->where('id', $user->id)->get();
+        $jaja = User::with(['horarios', 'citasEmpleados' =>  function($cita) {
+            $cita->where('estadoCita', '<>', null);
+        }])->where('id', $user->id)->get();
     
         return response()->json($jaja);
     }
 
+       
+    public function todasCitasEmpleados()//mo importa el estado
+    {
+        $citasHasServicios = CitaHasServicio::with(['cita.usuarioEmpleado', 'cita.usuario', 'servicio'])
+            ->get();
     
+        $citasGrouped = $citasHasServicios->groupBy('citaId');
+    
+        $result = $citasGrouped->map(function ($citaGroup) {
+            $cita = $citaGroup->first()->cita;
+    
+            return [
+                'citaId' => $cita->id,
+                'fechaCita' => $cita->fechaCita,
+                'horaCita' => $cita->horaCita,
+                'notasCita' => $cita->notasCita,
+                'estadoCita' => $cita->estadoCita,
+                'usuarioEmpleado' => $cita->usuarioEmpleado,
+                'usuario' => $cita->usuario,
+                'servicios' => $citaGroup->map(function ($item) use ($cita) {
+                    $tecnicas = $item->servicio->tecnica($cita->id)->get();
+    
+                    return [
+                        'servicioId' => $item->servicio->id,
+                        'nombreServicio' => $item->servicio->nombre,
+                        'tecnicas' => $tecnicas->map(function ($tecnica) {
+                            return [
+                                'tecnicaId' => $tecnica->id,
+                                'nombre' => $tecnica->nombre,
+                            ];
+                        }),
+                    ];
+                }),
+            ];
+        });
+    
+        return response()->json($result);
+    }
+    
+
+    public function horarioUnEmpleado($id)
+    {
+        $empleado = User::with(['horarios', 'citasEmpleados' => function($cita) {
+            $cita->where('estadoCita', '<>', null);
+        }])->where('id', $id)->get();
+    
+        return response()->json($empleado);
+    }
+    
+
 }    

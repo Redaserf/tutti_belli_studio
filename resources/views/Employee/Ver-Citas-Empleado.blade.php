@@ -996,32 +996,26 @@ margin-right: 20px;
 
 // console.log("eventos", eventos);
 $.ajax({
-url: `/horario/empleado`, // Ruta donde obtendrás los horarios del empleado
+url: `/horario/empleado`,
 method: 'GET',
 success: function(data) {
-  // Extraer el horario del empleado
   const empleado = data[0];
   horarios = empleado.horarios;
 
-  // Obtener los días de la semana en los que el empleado trabaja
-  const workingDays = horarios.map(horario => parseInt(horario.diaSemana));
+  const diasTrabajo = horarios.map(horario => parseInt(horario.diaSemana));
 
-  // Todos los días de la semana (0=Domingo, 6=Sábado)
   const allDays = [0, 1, 2, 3, 4, 5, 6];
 
-  // Determinar los días que el empleado no trabaja
-  const hiddenDays = allDays.filter(day => !workingDays.includes(day));
+  const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
 
-  // Crear un arreglo para los horarios de trabajo
   const businessHours = horarios.map(horario => {
       return {
-          daysOfWeek: [parseInt(horario.diaSemana)], // Convertir el día de la semana a número (0-6)
+          daysOfWeek: [parseInt(horario.diaSemana)], 
           startTime: horario.horaInicio,
           endTime: horario.horaFin
       };
   });
 
-  // Calcular slotMinTime y slotMaxTime
   const slotMinTime = horarios.reduce((min, horario) => {
       return horario.horaInicio < min ? horario.horaInicio : min;
   }, horarios[0].horaInicio);
@@ -1030,10 +1024,9 @@ success: function(data) {
       return horario.horaFin > max ? horario.horaFin : max;
   }, horarios[0].horaFin);
 
-  // Función para actualizar el select de horas
   function actualizarOpcionesHora(fechaHora) {
       let select = $('#horaCita');
-      select.empty(); // Limpiar opciones anteriores
+      select.empty();
 
       var hoy = new Date();
       var diaSemana = fechaHora.getDay();
@@ -1050,29 +1043,19 @@ success: function(data) {
           horaFin.setMinutes(horarioDia.horaFin.split(':')[1]);
           horaFin.setSeconds(0);
 
-          // Generar las opciones para el select
           while (horaInicio < horaFin) {
-              // Asegúrate de que la hora de inicio es al menos 2 horas después de la hora actual
               if (fechaHora.toDateString() !== hoy.toDateString() || horaInicio.getTime() > (hoy.getTime() + 2 * 60 * 60 * 1000)) {
-                  let horaTexto = horaInicio.toTimeString().substring(0, 8); // hh:mm:ss
+                  let horaTexto = horaInicio.toTimeString().substring(0, 8); //domrato hh:mm:ss
                   let option = new Option(horaTexto, horaTexto);
                   select.append(option);
               }
-              horaInicio.setMinutes(horaInicio.getMinutes() + 60); // Incrementa en 1 hora
-          }
-
-          // Seleccionar automáticamente la primera opción
-          if (select.children('option').length > 0) {
-              select.val(select.children('option').first().val());
-          } else {
-              alert('No hay horas disponibles para la fecha seleccionada.');
+              horaInicio.setMinutes(horaInicio.getMinutes() + 60);
           }
       }
   }
 
 
 
-  // Configurar FullCalendar
 const calendarEl = document.getElementById('calendar');
 const calendar = new FullCalendar.Calendar(calendarEl, {
 initialView: 'timeGridWeek',
@@ -1120,10 +1103,10 @@ titleFormat: {
   hour12: false
 },
 dateClick: function(info) {
-  var fechaHora = info.date; // Fecha y hora seleccionada en el calendario
+  var fechaHora = info.date; //fecha y hora seleccionada en el calendario
   var hoy = new Date();
 
-  // Verifica si el día actual es hoy y si la hora es después de las 15:00
+  //verrifica si el día actual es hoy y si la hora es después de las 15:00
   if (fechaHora.toDateString() === hoy.toDateString() && hoy.getHours() >= 15) {
       alert('No se pueden hacer citas el día de hoy después de las 15:00.');
       return;
@@ -1139,18 +1122,14 @@ dateClick: function(info) {
 
   console.log('Fecha y hora seleccionada:', fechaHora);
 
-  // Actualizar el select de horas al hacer clic en el calendario, pasando 'horarios'
   actualizarOpcionesHora(fechaHora);
   $('#horaCita').show();
 
-  // Convertir la hora seleccionada a formato 'HH:mm:ss'
-  let horaSeleccionada = fechaHora.toTimeString().substring(0, 8); // hh:mm:ss
+  let horaSeleccionada = fechaHora.toTimeString().substring(0, 8);
 
-  // Asignar la hora seleccionada al select de horas
   let select = $('#horaCita');
   select.val(horaSeleccionada);
 
-  // Asignar la fecha seleccionada al campo oculto de fecha
   var anio = fechaHora.getFullYear();
   var mes = String(fechaHora.getMonth() + 1).padStart(2, '0');
   var dia = String(fechaHora.getDate()).padStart(2, '0');
@@ -1163,24 +1142,20 @@ dateClick: function(info) {
 });
   calendar.render();
 
-  // Configurar el datepicker
   $("#fechaCita").datepicker({
       dateFormat: 'yy-mm-dd',
-      minDate: 0, // No permite seleccionar fechas anteriores a hoy
-      maxDate: "+3M -1D", // Permite hacer citas a partir de hoy hasta dentro de tres meses menos un día
-      regional: "es", // Asignar localización en español
+      minDate: 0,
+      maxDate: "+3M -1D",
+      regional: "es",
       beforeShowDay: function(fecha) {
           var dia = fecha.getDay();
 
-          // Bloquear días no laborables
           if (hiddenDays.includes(dia)) {
               return [false, "", "Día no laborable"];
           }
 
-          // Verifica si la fecha es hoy
           var hoy = new Date();
           if (fecha.toDateString() === hoy.toDateString()) {
-              // Bloquear la selección antes de 2 horas desde la hora actual
               const horaInicioLimite = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
               const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '16:00:00';
               const horaFinHoyParts = horaFinHoy.split(':');
@@ -1203,13 +1178,11 @@ dateClick: function(info) {
 
           console.log('Fecha seleccionada:', fechaSeleccionada);
 
-          // Actualizar el select de horas al seleccionar una fecha en el datepicker
           actualizarOpcionesHora(fechaSeleccionada);
           $('#horaCita').show();
       }
   });
 
-  // Evento para actualizar el select de horas mientras se escribe en el input de fecha
   $("#fechaCita").on('input', function() {
       var fechaText = $(this).val();
       if (fechaText) {
@@ -1222,14 +1195,12 @@ dateClick: function(info) {
 
           console.log('Fecha seleccionada:', fechaSeleccionada);
 
-          // Actualizar el select de horas mientras se escribe en el input
           actualizarOpcionesHora(fechaSeleccionada);
           $('#horaCita').show();
       }
   });
 
-  // Aplicar localización en español
-  $.datepicker.setDefaults($.datepicker.regional['es']);
+  $.datepicker.setDefaults($.datepicker.regional['es']);//no jala esto, se queda en ingles
 },
 error: function(err) {
   console.error('Error al cargar los horarios:', err);
@@ -1237,48 +1208,45 @@ error: function(err) {
 });
 
 
-function actualizarOpcionesHora(fechaHora) {
-let select = $('#horaCita');
-select.empty(); // Limpiar opciones anteriores
+    function actualizarOpcionesHora(fechaHora) {
+        let select = $('#horaCita');
+        select.empty();
 
-var hoy = moment(); // Usar moment para la fecha y hora actual
-var diaSemana = fechaHora.day(); // Obtener el día de la semana con moment
-var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+        var hoy = moment();//es fundamental para que funcione jajaja
+        var diaSemana = fechaHora.day();
+        var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
 
-if (horarioDia) {
-  let horaInicio = moment(fechaHora).set({
-      hour: horarioDia.horaInicio.split(':')[0],
-      minute: horarioDia.horaInicio.split(':')[1],
-      second: 0
-  });
+        if (horarioDia) {
+        let horaInicio = moment(fechaHora).set({
+            hour: horarioDia.horaInicio.split(':')[0],
+            minute: horarioDia.horaInicio.split(':')[1],
+            second: 0
+        });
 
-  let horaFin = moment(fechaHora).set({
-      hour: horarioDia.horaFin.split(':')[0],
-      minute: horarioDia.horaFin.split(':')[1],
-      second: 0
-  });
+        let horaFin = moment(fechaHora).set({
+            hour: horarioDia.horaFin.split(':')[0],
+            minute: horarioDia.horaFin.split(':')[1],
+            second: 0
+        });
 
-  // Generar las opciones para el select
-  while (horaInicio.isBefore(horaFin)) {
-      // Asegúrate de que la hora de inicio es al menos 2 horas después de la hora actual
-      if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
-          let horaTexto = horaInicio.format('HH:mm:ss'); // Formatear la hora usando moment
-          let option = new Option(horaTexto, horaTexto);
-          select.append(option);
-      }
-      horaInicio.add(1, 'hour'); // Incrementa en 1 hora usando moment
-  }
+        while (horaInicio.isBefore(horaFin)) {
+            if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
+                let horaTexto = horaInicio.format('HH:mm:ss'); 
+                let option = new Option(horaTexto, horaTexto);
+                select.append(option);
+            }
+            horaInicio.add(1, 'hour');
+        }
 
-  console.log('Opciones agregadas:', select.children('option').length); // Verifica cuántas opciones se agregaron
+        console.log('Opciones agregadas:', select.children('option').length);
 
-  // Seleccionar automáticamente la primera opción
-  if (select.children('option').length > 0) {
-      select.val(select.children('option').first().val());
-  } else {
-      alert('No hay horas disponibles para la fecha seleccionada.');
-  }
-}
-}
+        if (select.children('option').length > 0) {
+            select.val(select.children('option').first().val());
+        } else {
+            alert('No hay horas disponibles para la fecha seleccionada.');
+        }
+        }
+    }
 
 // calendar.render();
 
@@ -1362,16 +1330,13 @@ if (horarioDia) {
         $('#id').val(citasServicios.cita.id);
         $('#fechaCita').val(citasServicios.cita.fechaCita);
 
-        // Convertir la fecha de la cita a un objeto moment
         const citaDate = moment(citasServicios.cita.fechaCita + ' ' + citasServicios.cita.horaCita, 'YYYY-MM-DD HH:mm:ss');
 
         console.log('Número del día: ', citaDate.day());
         console.log('Hora de la cita: ', citasServicios.cita.horaCita);
 
-        // Actualizar el select de horas al cargar la fecha de la cita
         actualizarOpcionesHora(citaDate);
 
-        // Asegurarse de que la hora de la cita esté seleccionada en el select
         if ($('#horaCita').find(`option[value="${citasServicios.cita.horaCita}"]`).length === 0) {
             $('#horaCita').append(new Option(citasServicios.cita.horaCita, citasServicios.cita.horaCita));
         }
@@ -1405,7 +1370,7 @@ if (horarioDia) {
         let telefonoInput = $('#telefonoUsuario');
         let labelTelefono = $('#labelTelefono');
 
-        if (citasServicios.cita.usuarioId === 1) { // Usuario default
+        if (citasServicios.cita.usuarioId === 1) {
             telefonoInput.hide();
             $('#nombreUsuario').hide();
             $('#nombreUsuarioLabel').hide();

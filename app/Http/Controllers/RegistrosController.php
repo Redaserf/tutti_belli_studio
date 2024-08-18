@@ -363,7 +363,7 @@ class RegistrosController extends Controller
         ->first();
 
         if ($citaExistente) {
-            return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+            throw new \Exception ('Ya existe una cita para esta fecha y hora');
         }
 
         DB::beginTransaction();
@@ -484,11 +484,11 @@ class RegistrosController extends Controller
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)
         ->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
-        ->where('id', '<>', $id)
+        ->where('id', '<>', $id)//agarraba tambien el id de la cita que se estaba editando
         ->first();
 
         if ($citaExistente) {
-            return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+            throw new \Exception ('Ya existe una cita para esta fecha y hora');
         }
 
         DB::beginTransaction();
@@ -786,11 +786,13 @@ class RegistrosController extends Controller
 
         //verificar si ya existe una cita con la misma fecha y hora
         $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-                            ->where('horaCita', $request->horaCita)->where('empleadoId', $request->id)
-                            ->first();
+        ->where('horaCita', $request->horaCita)
+        ->where('empleadoId', $request->empleadoId)
+        ->where('estadoCita', '<>', null)
+        ->first();
 
         if ($citaExistente) {
-            return response()->json(['message' => 'Ya existe una cita para esta fecha y hora'], 400);
+            throw new \Exception ('Ya existe una cita para esta fecha y hora');
         }
 
         DB::beginTransaction();

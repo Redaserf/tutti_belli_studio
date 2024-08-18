@@ -104,6 +104,18 @@ use App\Models\Inscripcion;
     Route::get('/horario/empleado', [ConsultasController::class, 'horarioEmpleadoLogeado']);
 
 
+    //horario de un empleado NO logeado necesariamente
+    Route::get('/un/empleado/horarios/citas/{id}', [ConsultasController::class, 'horarioUnEmpleado']);
+
+
+
+
+
+    //todas las citas de todos los empleados con servicios tecnicas y usuario
+    Route::get('/citas/empleados', [ConsultasController::class, 'todasCitasEmpleados']);
+
+
+
 
 
     // ===== [Sevicios] =====
@@ -252,7 +264,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
 
     Route::put('/editar/horario/empleado/{id}', [RegistrosController::class, 'editarHorarioEmpleado']);
 
-    Route::get('/horario/empleado/{id}', [ConsultasController::class, 'horarioEmpleado']);
+    // Route::get('/horario/empleado/{id}', [ConsultasController::class, 'horarioEmpleado']);
 
     // =====[ Cursos ]=====
 

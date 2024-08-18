@@ -403,13 +403,64 @@
         <div class="container mt-5">
 
             <!-- Input para buscar por nombre -->
-            <input type="text" class="form-control mb-3" id="buscadorNombreEmpleado" placeholder="Buscar por nombre de empleado">
+
+            
+                 <input type="text" class="form-control mb-3" id="buscadorNombreEmpleado" placeholder="Buscar por nombre de empleado">
+
 
             <!-- Input para buscar por fecha -->
+
+                        
+            <div class="input-group mb-3">
             <input type="date" class="form-control mb-3" id="buscadorFechaCita" placeholder="Buscar por fecha de cita">
 
+                <div class="input-group-append">
+                    <button class="btn btn-info" id="clearFecha">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+
             <!-- Input para buscar por hora -->
-            <input type="time" class="form-control mb-3" id="buscadorHoraCita" placeholder="Buscar por hora de cita">
+
+            
+            <div class="input-group mb-3">
+                <select class="form-control" id="buscadorHoraCita">
+                    <option value="">Selecciona una hora</option>
+                    <option value="09:00:00">09:00:00</option>
+                    <option value="10:00:00">10:00:00</option>
+                    <option value="11:00:00">11:00:00</option>
+                    <option value="12:00:00">12:00:00</option>
+                    <option value="13:00:00">13:00:00</option>
+                    <option value="14:00:00">14:00:00</option>
+                    <option value="15:00:00">15:00:00</option>
+                    <option value="16:00:00">16:00:00</option>
+                    <option value="17:00:00">17:00:00</option>
+                    <option value="18:00:00">18:00:00</option>
+                    <option value="19:00:00">19:00:00</option>
+                    <option value="20:00:00">20:00:00</option>
+                    <option value="21:00:00">21:00:00</option>
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-info" id="clearHora">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <select class="form-control" id="filtroEstadoCita">
+                    <option value="">Filtrar por estado</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="rechazada">Rechazada</option>
+                    <option value="aceptada">Aceptada</option>
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-info" id="clearEstadoCita">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
 
             <div class="table-container mt-4">
                 <div class="table-responsive">
@@ -433,6 +484,42 @@
 
     </section>
 
+    <!-- Modal para ver detalles -->
+<div class="modal fade" id="verDetalles" tabindex="-1" aria-labelledby="verDetallesLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verDetallesLabel">Detalles de la Cita</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong></strong> <span id="detalleEmpleado"></span></p>
+        <p><strong></strong> <span id="detalleFecha"></span></p>
+        <p><strong></strong> <span id="detalleHora"></span></p>
+        <p><strong></strong> <span id="detalleEstado"></span></p>
+        <p><strong></strong> <span id="detalleUsuario"></span></p>
+        <p><strong></strong> <span id="detalleNota"></span></p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Servicio</th>
+              <th>Técnica</th>
+
+            </tr>
+          </thead>
+          <tbody id="detalleServiciosTable">
+            <!-- Aquí se agregarán las filas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -445,6 +532,153 @@
             loader.style.display = "none";
         });
         $(document).ready(function(){
+
+    function dibujarCitas() {
+        $.get('/citas/empleados', function(citas) {
+            console.log(citas);
+            
+            let tablaEmpleado = $('#citasEmpleadosTable');
+            tablaEmpleado.empty(); 
+
+            $.each(citas, function(key, cita) {
+                let estadoNombre;
+                let estadoColor;
+                
+                if (cita.estadoCita === null) {
+                    estadoNombre = "Rechazada";
+                    estadoColor = "red";
+                } else if (cita.estadoCita === 1) {
+                    estadoNombre = "Aceptada";
+                    estadoColor = "green";
+                } else {
+                    estadoNombre = "Pendiente";
+                    estadoColor = "yellow";
+                }
+
+                tablaEmpleado.append(`
+                    <tr class="cita-row" data-nombre="${cita.usuarioEmpleado.name} ${cita.usuarioEmpleado.apellido}"
+                    data-fecha="${cita.fechaCita}" data-hora="${cita.horaCita}" data-estado="${estadoNombre.toLowerCase()}">
+                        <td>${cita.usuarioEmpleado.name} ${cita.usuarioEmpleado.apellido}</td>
+                        <td>${cita.fechaCita}</td>
+                        <td>${cita.horaCita}</td>
+                        <td><div class="text-center" style="background-color: ${estadoColor}; padding: 10px; border-radius: 5px;">${estadoNombre}</div></td>
+                        <td><button data-cita-id="${cita.citaId}" class="btn btn-primary ver-detalles" data-bs-target="#verDetalles" data-bs-toggle="modal">Ver Detalles</button></td>
+                    </tr>
+                `);
+            });
+
+            $('#citasEmpleadosTable').on('click', '.ver-detalles', function() {
+                const citaId = $(this).data('cita-id');
+                const cita = citas[citaId];
+
+                $('#detalleServiciosTable').empty();
+
+                $('#detalleEmpleado').html(`
+                    <div style="background-color: yellow">
+
+                        <p><strong>Empleado:</strong>${cita.usuarioEmpleado.name} ${cita.usuarioEmpleado.apellido}</p>
+                        <p><strong>Email:</strong> ${cita.usuarioEmpleado.email}</p>
+                        <p><strong>Teléfono:</strong> ${cita.usuarioEmpleado.numeroTelefono}</p>
+                    </div>
+                `);
+
+                if(cita.notasCita === null){
+                    $('#detalleUsuario').html(
+                    `
+                    <div style="background-color: lightblue">
+                        <p><strong style="margin-right: 15px">Usuario:</strong>${cita.usuario.name} ${cita.usuario.apellido}</p>
+                        <p><strong style="margin-right: 15px>Email:</strong> ${cita.usuario.email}</p>
+                        <p><strong style="margin-right: 15px>Teléfono:</strong> ${cita.usuario.numeroTelefono}</p>
+                        <p><strong style="margin-right: 15px>Nota:</strong>Sin notas</p>
+                    </div>
+                `);
+                }else{
+                    $('#detalleUsuario').html(`
+                    <div style="background-color: lightblue">
+                        <p><strong>Usuario:</strong><div style="background-color: lightblue"> ${cita.usuario.name} ${cita.usuario.apellido}</div></p>
+                        <p><strong>Email:</strong> ${cita.usuario.email}</p>
+                        <p><strong>Teléfono:</strong> ${cita.usuario.numeroTelefono}</p>
+                        <p><strong>Nota: </strong>${cita.notasCita}</p>
+                    </div>
+                `);
+                }
+                
+
+                cita.servicios.forEach(servicio => {
+                    servicio.tecnicas.forEach(tecnica => {
+                        $('#detalleServiciosTable').append(`
+                            <tr>
+                                <td>${servicio.nombreServicio}</td>
+                                <td>${tecnica.nombre}</td>
+                            </tr>
+                        `);
+                    });
+                });
+
+                $('#verDetalles').modal('show');
+            });
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX:", textStatus, errorThrown);
+        });
+    }
+            dibujarCitas();
+
+            function filtrarCitas() {
+                let nombre = $('#buscadorNombreEmpleado').val().toLowerCase();
+                let fecha = $('#buscadorFechaCita').val();
+                let hora = $('#buscadorHoraCita').val();
+                let estado = $('#filtroEstadoCita').val().toLowerCase();
+
+                $('.cita-row').each(function() {
+                    let row = $(this);
+                    let rowNombre = row.data('nombre').toLowerCase();
+                    let rowFecha = row.data('fecha');
+                    let rowHora = row.data('hora');
+                    let rowEstado = row.data('estado').toLowerCase();
+
+                    let mostrar = true;
+
+                    if (nombre && !rowNombre.includes(nombre)) {
+                        mostrar = false;
+                    }
+                    if (fecha && rowFecha !== fecha) {
+                        mostrar = false;
+                    }
+                    if (hora && rowHora !== hora) {
+                        mostrar = false;
+                    }
+                    if (estado && rowEstado !== estado) {
+                        mostrar = false;
+                    }
+
+                    if (mostrar) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+            }
+
+            $('#clearFecha').on('click', function() {
+                $('#buscadorFechaCita').val('');
+                filtrarCitas();
+            })
+
+            $('#clearHora').on('click', function() {
+                $('#buscadorHoraCita').val('');
+            })
+            $('#clearEstadoCita').on('click', function() {
+                $('#filtroEstadoCita').val('');
+            })//resetear filtros
+            $('#buscadorNombreEmpleado').on('input', filtrarCitas);
+            
+            $('#buscadorFechaCita').on('change', filtrarCitas);
+            $('#buscadorHoraCita').on('change', filtrarCitas);
+            $('#filtroEstadoCita').on('change', filtrarCitas);
+
+            dibujarCitas();
+
 
             // Dashboard toggle
             const body = document.querySelector("body"),
