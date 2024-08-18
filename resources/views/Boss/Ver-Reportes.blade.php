@@ -459,12 +459,7 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="reporte-parcial" data-bs-toggle="tab" href="#reporte-par" role="tab" aria-controls="reporte-par" aria-selected="true">Reporte parcial</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="reporte-mensual" data-bs-toggle="tab" href="#reporte-men" role="tab" aria-controls="reporte-men" aria-selected="false">Reporte mensual</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="reporte-historial" data-bs-toggle="tab" href="#historial-reportes" role="tab" aria-controls="historial-reportes" aria-selected="false">Reporte mensual</a>
-                </li>
+
             </ul>
 
         @csrf
@@ -517,90 +512,7 @@
                                 </tbody>
                             </table>
                         </div>
-{{--                        <div class="flex-container">--}}
-{{--                            --}}
-{{--                        </div>--}}
                     </div>
-                </div>
-
-                <!-- Pestaña de Reporte Mensual -->
-                <div class="tab-pane fade" id="reporte-men" role="tabpanel" aria-labelledby="reporte-mensual">
-{{--                    <div class="table-container mt-5">--}}
-{{--                        <h2 class="text-center" style="margin: 0;">Reporte Mensual</h2>--}}
-{{--                        <div class="flex-container">--}}
-{{--                            <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">--}}
-{{--                                <label for="info-label" style="font-weight: bold;">Información</label>--}}
-{{--                            </div>--}}
-{{--                            <select class="form-control mb-3" id="select-empleado2" style="width:250px; display: inline-block; margin-right: 15px;">--}}
-{{--                                <option value="">Seleccionar Empleado</option>--}}
-
-{{--                            </select>--}}
-{{--                            <select class="form-control mb-3" id="select-mes" style="width:250px; display: inline-block;">--}}
-{{--                                <option value="">Seleccionar Mes</option>--}}
-{{--                                <option value="enero">Enero</option>--}}
-{{--                                <option value="febrero">Febrero</option>--}}
-{{--                                <option value="marzo">Marzo</option>--}}
-{{--                                <option value="abril">Abril</option>--}}
-{{--                                <option value="mayo">Mayo</option>--}}
-{{--                                <option value="junio">Junio</option>--}}
-{{--                                <option value="julio">Julio</option>--}}
-{{--                                <option value="agosto">Agosto</option>--}}
-{{--                                <option value="septiembre">Septiembre</option>--}}
-{{--                                <option value="octubre">Octubre</option>--}}
-{{--                                <option value="noviembre">Noviembre</option>--}}
-{{--                                <option value="diciembre">Diciembre</option>--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                        <div class="table-responsive">--}}
-{{--                            <table class="table table-striped">--}}
-{{--                                <thead>--}}
-{{--                                    <tr>--}}
-{{--                                        <th>Imagen</th>--}}
-{{--                                        <th>Nombre</th>--}}
-{{--                                        <th>Descripción</th>--}}
-{{--                                        <th>Cantidad</th>--}}
-{{--                                        <th>Precio Unitario</th>--}}
-{{--                                        <th>Editar</th>--}}
-{{--                                    </tr>--}}
-{{--                                </thead>--}}
-{{--                                <tbody id="table-reporte-mensual">--}}
-{{--                                    <!-- Los productos serán insertados aquí por jQuery -->--}}
-{{--                                </tbody>--}}
-{{--                            </table>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                </div>
-
-                <!-- Pestaña de Reporte Historial de ventas -->
-                <div class="tab-pane fade" id="historial-reportes" role="tabpanel" aria-labelledby="historial-reportes">
-{{--                    <div class="table-container mt-5">--}}
-{{--                        <h2 class="text-center" style="margin: 0;">Historial de Reportes</h2>--}}
-{{--                        <div class="flex-container">--}}
-{{--                            <div class="info-box" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: inline-block; margin-right: 15px;">--}}
-{{--                                <label for="info-label" style="font-weight: bold;">Información</label>--}}
-{{--                            </div>--}}
-{{--                            <select class="form-control mb-3" id="select-empleado2" style="width:250px; display: inline-block; margin-right: 15px;">--}}
-{{--                                <option value="">Seleccionar Empleado</option>--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                        <div class="table-responsive">--}}
-{{--                            <table class="table table-striped">--}}
-{{--                                <thead>--}}
-{{--                                <tr>--}}
-{{--                                    <th>Imagen</th>--}}
-{{--                                    <th>Nombre</th>--}}
-{{--                                    <th>Descripción</th>--}}
-{{--                                    <th>Cantidad</th>--}}
-{{--                                    <th>Precio Unitario</th>--}}
-{{--                                    <th>Editar</th>--}}
-{{--                                </tr>--}}
-{{--                                </thead>--}}
-{{--                                <tbody id="table-reporte-mensual">--}}
-{{--                                <!-- Los productos serán insertados aquí por jQuery -->--}}
-{{--                                </tbody>--}}
-{{--                            </table>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                 </div>
 
             </div>
