@@ -11,6 +11,7 @@ class Reporte extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = [
+        'esActivo',
         'usuarioId'
     ];
     use HasFactory;

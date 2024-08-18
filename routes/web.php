@@ -409,6 +409,16 @@ Route::get('/get/filtro-uno', [VentaController::class, 'filtroUnoVenta']);
 Route::get('/get/filtro-dos', [VentaController::class, 'filtroDosVenta']);
 Route::get('/get/filtro-tres', [VentaController::class, 'filtroTresVenta']);
 
+
+
+//===[PDF]=========
+Route::get('/Pdf-valor_cero', [ReporteController::class, 'PdfCero']);
+Route::get('/Pdf-valor_uno', [ReporteController::class, 'PdfUno']);
+Route::get('/Pdf-valor_dos', [ReporteController::class, 'PdfDos']);
+Route::get('/Pdf-valor_tres', [ReporteController::class, 'PdfTres']);
+
+
+
 //====[Reportes]=====
 //trae todas las ventas que pertenecen al reporte 1
 Route::get('/reporteParcialActual', [ReporteController::class, 'parcialActual']);

@@ -467,6 +467,7 @@
                 </li>
             </ul>
 
+        @csrf
             <div class="tab-content" id="myTabContent">
                 <!-- Pestaña de Reporte Parcial -->
                 <div class="tab-pane fade show active" id="reporte-par" role="tabpanel" aria-labelledby="reporte-parcial">
@@ -724,12 +725,114 @@
 
         $('#select-empleado').prop('disabled',true);
         $('#select-opcion').prop('disabled',true);
+        $('#botonPdf').prop('disabled',true);
 
 // Fin document.ready
     });
 
     let fechaSeleccionadaInicial;
     let fechaSeleccionadaFinal;
+    let empleadoSeleccionado;
+    let ventaSeleccionada;
+    let valorPdf = 0;
+
+    $('#botonPdf').on('click',function (){
+        switch (valorPdf){
+            case 0:
+                // $.ajax({
+                //     url: '/Pdf-valor_cero',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+                let url = '/Pdf-valor_cero?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url;
+                break;
+            case 1:
+                // $.ajax({
+                //     url: '/Pdf-valor_uno',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         empleadoSeleccionado: empleadoSeleccionado,
+                //         ventaSeleccionada:ventaSeleccionada,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                 let url1 = '/Pdf-valor_uno?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&empleadoSeleccionado=' + encodeURIComponent(empleadoSeleccionado)+
+                    '&ventaSeleccionada='+ encodeURIComponent(ventaSeleccionada)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url1;
+                break;
+            case 2:
+
+                // $.ajax({
+                //     url: '/Pdf-valor_dos',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         empleadoSeleccionado: empleadoSeleccionado,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                let url2 = '/Pdf-valor_dos?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&empleadoSeleccionado=' + encodeURIComponent(empleadoSeleccionado)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url2;
+                break;
+            case 3:
+
+                // $.ajax({
+                //     url: '/Pdf-valor_tres',
+                //     method: 'POST',
+                //     data:{
+                //         _token: $('input[name="_token"]').val(),
+                //         ventaSeleccionada:ventaSeleccionada,
+                //         fechaInicio: fechaSeleccionadaInicial,
+                //         fechaFin: fechaSeleccionadaFinal
+                //     },
+                //     success: function (){
+                //
+                //     }
+                // });
+
+                let url3 = '/Pdf-valor_tres?' +
+                    'fechaInicio=' + encodeURIComponent(fechaSeleccionadaInicial) +
+                    '&fechaFin=' + encodeURIComponent(fechaSeleccionadaFinal) +
+                    '&ventaSeleccionada='+ encodeURIComponent(ventaSeleccionada)+
+                    '&_token=' + encodeURIComponent($('input[name="_token"]').val());
+
+                window.location.href = url3;
+                break;
+        }
+    });
 
     $('#botonBuscar').on('click',function (){
 
@@ -779,9 +882,11 @@
                         total += venta.total
                     });
 
+                    valorPdf=0;
                     $('#etiquetaTotal').text(total);
                     $('#select-empleado').prop('disabled',false);
                     $('#select-opcion').prop('disabled',false);
+                    $('#botonPdf').prop('disabled',false);
 
 
                         $('.table').DataTable({
@@ -806,8 +911,8 @@
     });
 
     $('#select-empleado').on('change',function (){
-        let empleadoSeleccionado = $('#select-empleado').val();
-        let ventaSeleccionada = $('#select-opcion').val();
+        empleadoSeleccionado = $('#select-empleado').val();
+        ventaSeleccionada = $('#select-opcion').val();
 
         let tablaRaiz = $('#table-reporte-parcial');
         tablaRaiz.empty();
@@ -843,12 +948,13 @@
                             let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                             tablaRaiz.append(contenido);
                             total += venta.total
                         });
+                        valorPdf = 3;
                         $('#etiquetaTotal').text(total);
 
 
@@ -899,12 +1005,13 @@
                                 let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total
                             });
+                            valorPdf = 2;
                             $('#etiquetaTotal').text(total);
 
                             $('.table').DataTable({
@@ -955,12 +1062,13 @@
                                 let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total
                             });
+                            valorPdf=1;
                             $('#etiquetaTotal').text(total);
 
 
@@ -994,8 +1102,8 @@
     });
 
     $('#select-opcion').on('change',function (){
-        let empleadoSeleccionado = $('#select-empleado').val();
-        let ventaSeleccionada = $('#select-opcion').val();
+        empleadoSeleccionado = $('#select-empleado').val();
+        ventaSeleccionada = $('#select-opcion').val();
 
         let tablaRaiz = $('#table-reporte-parcial');
         tablaRaiz.empty();
@@ -1022,7 +1130,7 @@
                             $('.table').DataTable().clear().destroy();
                         }
 
-                        // Vaciar la tabla
+                        valorPdf = 3
                         tablaRaiz.empty();
 
                         ventas.forEach(venta => {
@@ -1032,7 +1140,7 @@
                             let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                             tablaRaiz.append(contenido);
@@ -1069,6 +1177,7 @@
                             fechaFin: fechaSeleccionadaFinal
                         },
                         success: function (ventas){
+                            let total = 0;
                             console.log("Ventas recibidas:", ventas);
                             console.log(empleadoSeleccionado);
                             console.log(ventaSeleccionada);
@@ -1076,7 +1185,7 @@
                                 $('.table').DataTable().clear().destroy();
                             }
 
-                            // Vaciar la tabla
+                            valorPdf = 2;
                             tablaRaiz.empty();
 
                             ventas.forEach(venta => {
@@ -1086,10 +1195,11 @@
                                 let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
+                                total += venta.total;
                             });
                             $('#etiquetaTotal').text(total);
 
@@ -1132,7 +1242,7 @@
                                 $('.table').DataTable().clear().destroy();
                             }
 
-                            // Vaciar la tabla
+                            valorPdf = 1;
                             tablaRaiz.empty();
 
                             ventas.forEach(venta => {
@@ -1141,7 +1251,7 @@
                                 let contenido = `<tr>
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
-                                <td>${venta.empleadoId}</td>
+                                <td>${venta.empleadoNombre}</td>
                                 <td>${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
