@@ -667,9 +667,11 @@
 
             $('#clearHora').on('click', function() {
                 $('#buscadorHoraCita').val('');
+                filtrarCitas();
             })
             $('#clearEstadoCita').on('click', function() {
                 $('#filtroEstadoCita').val('');
+                filtrarCitas();
             })//resetear filtros
             $('#buscadorNombreEmpleado').on('input', filtrarCitas);
             

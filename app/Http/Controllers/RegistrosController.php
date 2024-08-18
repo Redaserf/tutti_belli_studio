@@ -781,7 +781,7 @@ class RegistrosController extends Controller
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
         if (empty($serviciosSeleccionados)) {
-            return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
+            throw new \Exception ('Debe seleccionar al menos un servicio');
         }
 
         //verificar si ya existe una cita con la misma fecha y hora

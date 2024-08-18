@@ -666,6 +666,7 @@ gmp-map {
       </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -751,7 +752,6 @@ $('#citasModal').on('hidden.bs.modal', function () {
             }
         });
 
-        // Inicializar el datepicker si ya hay un valor seleccionado en el select al cargar la página
         let empleado = $('#empleadoId').val();
         if (empleado) {
             datepicker(empleado);
@@ -766,14 +766,54 @@ $('#citasModal').on('hidden.bs.modal', function () {
             method: 'GET',
             success: function(response) {
                 const empleado = response[0];
-
                 const horarios = empleado.horarios;
 
                 const diasTrabajo = horarios.map(horario => parseInt(horario.diaSemana));
 
                 const allDays = [0, 1, 2, 3, 4, 5, 6];
-
                 const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
+
+                function actualizarOpcionesHora(fechaHora) {
+                let select = $('#horaCita');
+                select.empty();
+
+                var hoy = moment(); // Usar moment para la fecha actual
+                var fechaMoment = moment(fechaHora); // Convertir fechaHora a un objeto moment
+                var diaSemana = fechaMoment.day(); // Obtener el día de la semana con moment
+
+                var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+                if (horarioDia) {
+                    let horaInicio = moment(fechaMoment).set({
+                        hour: horarioDia.horaInicio.split(':')[0],
+                        minute: horarioDia.horaInicio.split(':')[1],
+                        second: 0
+                    });
+
+                    let horaFin = moment(fechaMoment).set({
+                        hour: horarioDia.horaFin.split(':')[0],
+                        minute: horarioDia.horaFin.split(':')[1],
+                        second: 0
+                    });
+
+                    while (horaInicio.isBefore(horaFin)) {
+                        if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
+                            let horaTexto = horaInicio.format('HH:mm:ss'); 
+                            let option = new Option(horaTexto, horaTexto);
+                            select.append(option);
+                        }
+                        horaInicio.add(1, 'hour');
+                    }
+
+                    console.log('Opciones agregadas:', select.children('option').length);
+
+                    if (select.children('option').length > 0) {
+                        select.val(select.children('option').first().val());
+                    } else {
+                        alert('No hay horas disponibles para la fecha seleccionada.');
+                    }
+                }
+            }
 
                 $("#fechaCita").datepicker({
                     dateFormat: 'yy-mm-dd',
@@ -781,20 +821,25 @@ $('#citasModal').on('hidden.bs.modal', function () {
                     maxDate: "+3M -1D",
                     regional: "es",
                     beforeShowDay: function(fecha) {
-                        var dia = fecha.getDay();
+                        var dia = moment(fecha).day(); // Usar moment para obtener el día de la semana
 
                         if (hiddenDays.includes(dia)) {
                             return [false, "", "Día no laborable"];
                         }
 
-                        var hoy = new Date();
-                        if (fecha.toDateString() === hoy.toDateString()) {
-                            const horaInicioLimite = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
-                            const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '16:00:00';
+                        var hoy = moment(); // Usar moment para la fecha actual
+                        if (moment(fecha).isSame(hoy, 'day')) {
+                            const horaInicioLimite = moment(hoy).add(2, 'hours');
+                            const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
+                            const horaFinHoy = horarioDia ? horarioDia.horaFin : '16:00:00';
                             const horaFinHoyParts = horaFinHoy.split(':');
-                            hoy.setHours(horaFinHoyParts[0], horaFinHoyParts[1], 0, 0);
+                            hoy.set({
+                                hour: horaFinHoyParts[0],
+                                minute: horaFinHoyParts[1],
+                                second: 0
+                            });
 
-                            if (horaInicioLimite >= hoy) {
+                            if (horaInicioLimite.isSameOrAfter(hoy)) {
                                 return [false, "", `Las citas deben ser al menos 2 horas después de la hora actual`];
                             }
                         }
@@ -802,16 +847,11 @@ $('#citasModal').on('hidden.bs.modal', function () {
                         return [true, "", ""];
                     },
                     onSelect: function(dateText) {
-                        var partes = dateText.split('-');
-                        var anio = parseInt(partes[0], 10);
-                        var mes = parseInt(partes[1], 10) - 1;
-                        var dia = parseInt(partes[2], 10);
-
-                        var fechaSeleccionada = new Date(anio, mes, dia);
+                        var fechaSeleccionada = moment(dateText, 'YYYY-MM-DD').toDate(); // Convertir la fecha seleccionada a moment
 
                         console.log('Fecha seleccionada:', fechaSeleccionada);
 
-                        actualizarOpcionesHora(fechaSeleccionada);
+                        actualizarOpcionesHora(fechaSeleccionada); // Asegúrate de que esta función también use moment si es necesario
                         $('#horaCita').show();
                     }
                 });
@@ -819,16 +859,11 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 $("#fechaCita").on('input', function() {
                     var fechaText = $(this).val();
                     if (fechaText) {
-                        var partes = fechaText.split('-');
-                        var anio = parseInt(partes[0], 10);
-                        var mes = parseInt(partes[1], 10) - 1;
-                        var dia = parseInt(partes[2], 10);
-
-                        var fechaSeleccionada = new Date(anio, mes, dia);
+                        var fechaSeleccionada = moment(fechaText, 'YYYY-MM-DD').toDate(); // Convertir la fecha ingresada a moment
 
                         console.log('Fecha seleccionada:', fechaSeleccionada);
 
-                        actualizarOpcionesHora(fechaSeleccionada);
+                        actualizarOpcionesHora(fechaSeleccionada); // Asegúrate de que esta función también use moment si es necesario
                         $('#horaCita').show();
                     }
                 });
@@ -839,6 +874,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
             }
         });
     }
+
 
 //     $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
 //             dateFormat: 'yy-mm-dd',
@@ -967,45 +1003,6 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
         // }
 
-        function actualizarOpcionesHora(fechaHora) {
-            let select = $('#horaCita');
-            select.empty();
-
-            var hoy = moment();//es fundamental para que funcione jajaja
-            var diaSemana = fechaHora.day();
-            var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
-
-            if (horarioDia) {
-            let horaInicio = moment(fechaHora).set({
-                hour: horarioDia.horaInicio.split(':')[0],
-                minute: horarioDia.horaInicio.split(':')[1],
-                second: 0
-            });
-
-            let horaFin = moment(fechaHora).set({
-                hour: horarioDia.horaFin.split(':')[0],
-                minute: horarioDia.horaFin.split(':')[1],
-                second: 0
-            });
-
-            while (horaInicio.isBefore(horaFin)) {
-                if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
-                    let horaTexto = horaInicio.format('HH:mm:ss'); 
-                    let option = new Option(horaTexto, horaTexto);
-                    select.append(option);
-                }
-                horaInicio.add(1, 'hour');
-            }
-
-            console.log('Opciones agregadas:', select.children('option').length);
-
-            if (select.children('option').length > 0) {
-                select.val(select.children('option').first().val());
-            } else {
-                alert('No hay horas disponibles para la fecha seleccionada.');
-            }
-            }
-        }
 
         function dibujarServiciosTecnicas() {
             $.get('/servicios/tecnicas', function(serviciosTecnicas) {
@@ -1199,46 +1196,25 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 },
                 error: function(xhr){
                     console.log(xhr);
-                    var response = xhr.responseJSON;
-                        let alertMessage = '';
-                        let alertClass = 'alert-danger'; // clase predeterminada para errores
-                        let alertIcon = 'exclamation-triangle-fill'; //icono de danger
-                        if (xhr.readyState === 4 && xhr.responseJSON) {
-                            if (xhr.responseJSON.error) {
-                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
-                            } 
-                            else if (xhr.responseJSON.message) {
-                                let alertMessage = '';
-                                let alertClass = 'alert-danger';
-                                let alertIcon = 'exclamation-triangle-fill';
+            if (xhr.readyState === 4 && xhr.responseJSON) {
+                if (xhr.responseJSON.message) {
+                    if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
+                        mostrarAlerta('Por favor, selecciona al menos un servicio.', 'alert-warning', 'exclamation-triangle-fill');
+                    } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
+                        mostrarAlerta('Ya existe una cita para esta fecha y hora.', 'alert-warning', 'exclamation-triangle-fill');
+                    } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
+                        mostrarAlerta('La fecha debe ser hoy o posterior.', 'alert-warning', 'exclamation-triangle-fill');
+                    } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
+                        mostrarAlerta('Error: Ingrese correctamente la fecha.', 'alert-danger', 'exclamation-triangle-fill');
+                    } else {
+                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+                    }
+                }
+            } else {
+                mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
+            }
 
-                                if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
-                                    alertMessage = 'Por favor, selecciona al menos un servicio.';
-                                    alertClass = 'alert-warning';
-                                } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
-                                    alertMessage = 'Ya existe una cita para esta fecha y hora.';
-                                    alertClass = 'alert-warning';
-                                } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
-                                    alertMessage = 'La fecha debe ser hoy o posterior.';
-                                } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
-                                    alertMessage = 'Error: Ingrese correctamente la fecha.';
-                                } else {
-                                    alertMessage = `Error: ${xhr.responseJSON.message}`;
-                                }
-
-                                mostrarAlerta(alertMessage, alertClass, alertIcon);
-                            }
-                        } else {
-                            mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
-                        }
-
-
-                        if (alertMessage) {
-                            mostrarAlerta(alertMessage, alertClass, alertIcon);
-                        }
-
-                // Ocultar la pantalla de carga si hay un error
-                $('#contenedor_carga').css('display', 'none');
+            $('#contenedor_carga').css('display', 'none');
 
                 }
             });
