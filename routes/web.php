@@ -8,6 +8,7 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoHasCursoController;
 use App\Http\Controllers\RegistrosController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TecnicaController;
 use App\Http\Controllers\TecnicaHasCursoController;
@@ -415,6 +416,31 @@ Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
 //Rechazar la compra
 Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
+
+//====[Ventas]=====
+Route::get('/ventas-periodo',[VentaController::class,'ventasPeriodo']);
+//filtros de ventas
+Route::get('/get/filtro-uno', [VentaController::class, 'filtroUnoVenta']);
+Route::get('/get/filtro-dos', [VentaController::class, 'filtroDosVenta']);
+Route::get('/get/filtro-tres', [VentaController::class, 'filtroTresVenta']);
+
+
+
+//===[PDF]=========
+Route::get('/Pdf-valor_cero', [ReporteController::class, 'PdfCero']);
+Route::get('/Pdf-valor_uno', [ReporteController::class, 'PdfUno']);
+Route::get('/Pdf-valor_dos', [ReporteController::class, 'PdfDos']);
+Route::get('/Pdf-valor_tres', [ReporteController::class, 'PdfTres']);
+
+
+
+//====[Reportes]=====
+//trae todas las ventas que pertenecen al reporte 1
+Route::get('/reporteParcialActual', [ReporteController::class, 'parcialActual']);
+
+//Trae al empleado o al administrador
+Route::get('/get/empleado-admin', [UsuarioController::class, 'empleadoYAdmin']);
+
 
 
 

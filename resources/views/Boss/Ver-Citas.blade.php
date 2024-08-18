@@ -789,12 +789,6 @@ header {
                             No hay citas para mostrar
                         </div>
                         <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <input type="text" id="filtroFecha" class="form-control" placeholder="Buscar por fecha">
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="filtroUsuario" class="form-control" placeholder="Buscar por usuario">
-                                </div>
                             </div>
                             <div class="table-responsive"> <!-- Agregar clase table-responsive -->
                                 <table id="tablaCitas" class="table table-hover">

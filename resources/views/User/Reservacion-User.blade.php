@@ -485,6 +485,10 @@ gmp-map {
                     <div class="modal-body">
                         <input type="hidden" id='id'>
                         <div class="form-floating mb-3">
+                            <select class="form-control" name="empleadoId" id="empleadoId">
+                            </select>
+                        </div>
+                        <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
                             <label for="fechaCita">Fecha de la cita</label>
                         </div>
@@ -497,10 +501,6 @@ gmp-map {
                         </div>
                         <div class="form-floating mb-3">
                             <input type="hidden" class="form-control" name="usuarioId" value="{{ Auth::user()->id }}" id="usuarioId">
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select class="form-control" name="empleadoId" id="empleadoId">
-                            </select>
                         </div>
                         <div class="mt-3 text-center">
                         <p>
@@ -675,6 +675,7 @@ gmp-map {
 <script>
 
 $(document).ready(function(){
+    $('#fechaCita').prop('disabled', true).hide();
     $('a[data-bs-target="#termsModal"]').click(function(e){
             e.preventDefault();
             $('#termsModal').modal('show');
@@ -761,25 +762,25 @@ $('#citasModal').on('hidden.bs.modal', function () {
     });
 
     function datepicker(empleadoId){
-        $.ajax({
-            url: `/un/empleado/horarios/citas/${empleadoId}`,
-            method: 'GET',
-            success: function(response) {
-                const empleado = response[0];
-                const horarios = empleado.horarios;
+    $.ajax({
+        url: `/un/empleado/horarios/citas/${empleadoId}`,
+        method: 'GET',
+        success: function(response) {
+            const empleado = response[0];
+            const horarios = empleado.horarios;
 
-                const diasTrabajo = horarios.map(horario => parseInt(horario.diaSemana));
+            const diasTrabajo = horarios.map(horario => parseInt(horario.diaSemana));
 
-                const allDays = [0, 1, 2, 3, 4, 5, 6];
-                const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
+            const allDays = [0, 1, 2, 3, 4, 5, 6];
+            const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
 
-                function actualizarOpcionesHora(fechaHora) {
+            function actualizarOpcionesHora(fechaHora) {
                 let select = $('#horaCita');
                 select.empty();
 
-                var hoy = moment(); // Usar moment para la fecha actual
-                var fechaMoment = moment(fechaHora); // Convertir fechaHora a un objeto moment
-                var diaSemana = fechaMoment.day(); // Obtener el día de la semana con moment
+                var hoy = moment();
+                var fechaMoment = moment(fechaHora);
+                var diaSemana = fechaMoment.day();
 
                 var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
 
@@ -798,14 +799,12 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
                     while (horaInicio.isBefore(horaFin)) {
                         if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
-                            let horaTexto = horaInicio.format('HH:mm:ss'); 
+                            let horaTexto = horaInicio.format('HH:mm:ss');
                             let option = new Option(horaTexto, horaTexto);
                             select.append(option);
                         }
                         horaInicio.add(1, 'hour');
                     }
-
-                    console.log('Opciones agregadas:', select.children('option').length);
 
                     if (select.children('option').length > 0) {
                         select.val(select.children('option').first().val());
@@ -815,65 +814,73 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 }
             }
 
-                $("#fechaCita").datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    minDate: 0,
-                    maxDate: "+3M -1D",
-                    regional: "es",
-                    beforeShowDay: function(fecha) {
-                        var dia = moment(fecha).day(); // Usar moment para obtener el día de la semana
+            $("#fechaCita").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+                maxDate: "+3M -1D",
+                regional: "es",
+                beforeShowDay: function(fecha) {
+                    var dia = moment(fecha).day();
 
-                        if (hiddenDays.includes(dia)) {
-                            return [false, "", "Día no laborable"];
-                        }
-
-                        var hoy = moment(); // Usar moment para la fecha actual
-                        if (moment(fecha).isSame(hoy, 'day')) {
-                            const horaInicioLimite = moment(hoy).add(2, 'hours');
-                            const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
-                            const horaFinHoy = horarioDia ? horarioDia.horaFin : '16:00:00';
-                            const horaFinHoyParts = horaFinHoy.split(':');
-                            hoy.set({
-                                hour: horaFinHoyParts[0],
-                                minute: horaFinHoyParts[1],
-                                second: 0
-                            });
-
-                            if (horaInicioLimite.isSameOrAfter(hoy)) {
-                                return [false, "", `Las citas deben ser al menos 2 horas después de la hora actual`];
-                            }
-                        }
-
-                        return [true, "", ""];
-                    },
-                    onSelect: function(dateText) {
-                        var fechaSeleccionada = moment(dateText, 'YYYY-MM-DD').toDate(); // Convertir la fecha seleccionada a moment
-
-                        console.log('Fecha seleccionada:', fechaSeleccionada);
-
-                        actualizarOpcionesHora(fechaSeleccionada); // Asegúrate de que esta función también use moment si es necesario
-                        $('#horaCita').show();
+                    if (hiddenDays.includes(dia)) {
+                        return [false, "", "Día no laborable"];
                     }
-                });
 
-                $("#fechaCita").on('input', function() {
-                    var fechaText = $(this).val();
-                    if (fechaText) {
-                        var fechaSeleccionada = moment(fechaText, 'YYYY-MM-DD').toDate(); // Convertir la fecha ingresada a moment
+                    var hoy = moment();
+                    if (moment(fecha).isSame(hoy, 'day')) {
+                        const horaInicioLimite = moment(hoy).add(2, 'hours');
+                        const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
+                        const horaFinHoy = horarioDia ? horarioDia.horaFin : '16:00:00';
+                        const horaFinHoyParts = horaFinHoy.split(':');
+                        hoy.set({
+                            hour: horaFinHoyParts[0],
+                            minute: horaFinHoyParts[1],
+                            second: 0
+                        });
 
-                        console.log('Fecha seleccionada:', fechaSeleccionada);
-
-                        actualizarOpcionesHora(fechaSeleccionada); // Asegúrate de que esta función también use moment si es necesario
-                        $('#horaCita').show();
+                        if (horaInicioLimite.isSameOrAfter(hoy)) {
+                            return [false, "", `Las citas deben ser al menos 2 horas después de la hora actual`];
+                        }
                     }
-                });
 
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
+                    return [true, "", ""];
+                },
+                onSelect: function(dateText) {
+                    var fechaSeleccionada = moment(dateText, 'YYYY-MM-DD').toDate();
+
+                    actualizarOpcionesHora(fechaSeleccionada);
+                    $('#horaCita').show();
+                }
+            });
+
+            $("#fechaCita").on('input', function() {
+                var fechaText = $(this).val();
+                if (fechaText) {
+                    var fechaSeleccionada = moment(fechaText, 'YYYY-MM-DD').toDate();
+
+                    actualizarOpcionesHora(fechaSeleccionada);
+                    $('#horaCita').show();
+                }
+            });
+
+        },
+        error: function(error){
+            console.log(error);
+        }
+    });
+}
+
+$('#empleadoId').change(function() {
+    var empleadoId = $(this).val();
+
+    // Resetear el selector de fecha y ocultar el de hora
+    $('#fechaCita').val('').datepicker('destroy'); // Limpiar y destruir el datepicker anterior
+    $('#horaCita').hide().empty(); // Ocultar y vaciar el select de horas
+
+    if (empleadoId) {
+        datepicker(empleadoId); // Volver a inicializar el datepicker con el nuevo empleado
     }
+});
 
 
 //     $("#fechaCita").datepicker({//cada que le pica al input de fechaCita se actualiza el select de horas y se muestra un calendario 
@@ -1116,25 +1123,35 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
        //Dibujar empleados
        $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
-                console.log('empleados y admins: ', usersRolEmpleado);
-                let selectUsuarios = $('#empleadoId');
-                selectUsuarios.empty();
+    console.log('empleados y admins: ', usersRolEmpleado);
+    let selectUsuarios = $('#empleadoId');
+    selectUsuarios.empty();
 
-                const indiceAleatorio = Math.floor(Math.random() * usersRolEmpleado.length);
-                const empleadoAleatorio = usersRolEmpleado[indiceAleatorio].id;
+    // Agregar la opción "Selecciona un empleado" como predeterminada y no seleccionable
+    selectUsuarios.append(`
+        <option class="text-center" value="" disabled selected>Selecciona un empleado</option>
+    `);
 
+    usersRolEmpleado.forEach(usuario => {
+        selectUsuarios.append(`
+            <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
+        `);
+        console.log(usersRolEmpleado);
+    });
 
-                selectUsuarios.append(`
-                    <option class="text-center" value="${empleadoAleatorio}" selected>Cualquier empleado</option>
-                `)
-
-                usersRolEmpleado.forEach(usuario => {
-                    selectUsuarios.append(`
-                        <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
-                    `)
-                    console.log(usersRolEmpleado);
-                })
-            })
+    // Habilitar y mostrar los campos de fecha y hora cuando se selecciona un empleado
+    selectUsuarios.change(function() {
+        var empleadoId = $(this).val();
+        if (empleadoId) {
+            $('#fechaCita').prop('disabled', false).show();
+            $('#horaCita').prop('disabled', false).hide(); // Sigue oculto hasta que se seleccione una fecha
+        } else {
+            $('#fechaCita').prop('disabled', true).hide();
+            $('#horaCita').prop('disabled', true).hide();
+        }
+    });
+});
+            
 
 
         $('#citaForm').on('submit', function(e) {
