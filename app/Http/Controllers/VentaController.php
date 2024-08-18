@@ -27,7 +27,7 @@ class VentaController extends Controller
             //Obtiene el usuario logeado
             $usuario = Auth::user();
             $reporte = Reporte::create([
-                'esActivo' => true
+                'usuarioId' => 2
             ]);
 
 
@@ -100,7 +100,7 @@ class VentaController extends Controller
             $carritoPorVaciar->productos()->detach();
 
             // Enviar correo al usuario
-            Mail::to($usuario->email)->send(new CompraRealizada($venta));
+//            Mail::to($usuario->email)->send(new CompraRealizada($venta));
 
             DB::commit();
 

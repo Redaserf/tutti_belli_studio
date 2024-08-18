@@ -109,16 +109,8 @@ class InscripcionController extends Controller
                     $usuario = Auth::user();
 
                     $reporte = Reporte::create([
-                        'esActivo' => true
+                        'usuarioId' => 2
                     ]);
-//
-//                    $reporte = Reporte::create([
-//                        "usuarioId" => $usuario->id
-//                    ]);
-
-//                    if(!$reporte){
-//                        return 'no hay reporte';
-//                    }
 
                     $venta = Venta::create([
                         'total' => $curso->precio,
