@@ -10,6 +10,7 @@
 <!-- datePicker -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <!-- datePicker -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
 <!--Esto es para e; calendario-->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
@@ -749,7 +750,7 @@ margin-right: 20px;
             </div>
             <div class="modal-body custom-modal-body">
                 <div class="table-responsive"> <!-- Agregar clase table-responsive -->
-                    <table class="table table-hover">
+                    <table id="tablaCitas" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Fecha de la cita</th>
@@ -802,6 +803,7 @@ margin-right: 20px;
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
@@ -820,6 +822,35 @@ margin-right: 20px;
         });
     
     $(document).ready(function(){
+        let tabla = $('#tablaCitas').DataTable({
+        "pageLength": 8, // Número de filas por página
+        "searching": true, // Activa la búsqueda
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    // Filtrar por fecha
+    $('#filtroFecha').on('keyup change', function() {
+        tabla.column(0).search(this.value).draw();
+    });
+
+    // Filtrar por usuario
+    $('#filtroUsuario').on('keyup change', function() {
+        tabla.column(2).search(this.value).draw();
+    });
+
 
         var valorActual = $('#usuarioId').val();
 
@@ -1586,35 +1617,31 @@ error: function(err) {
 
 
         //dibujar citas no aceptadas
-        function citasNoAceptadas(){
-
+        function citasNoAceptadas() {
             $.get('/cita/por/empleado', function(citas) {
-                let tabla = $('#tablaCitas');
-                tabla.empty(); 
+                let tabla = $('#tablaCitas').DataTable();
+                tabla.clear(); // Limpiar la tabla
+                
                 if (citas.length === 0) {
                     // Mostrar mensaje si no hay citas
-                    tabla.append('<tr><td colspan="7" class="text-center">No hay citas para mostrar</td></tr>');
-                }             
-                citas.forEach(cita => {
-                    console.log(cita.id);
-                    tabla.append(`
-                        <tr>
-                            <td>${cita.fechaCita}</td>
-                            <td>${cita.horaCita}</td>
-                            <td>${cita.usuario.clienteNombreCompleto}</td>
-                            <td>${cita.usuario.numeroTelefono}</td>
-                            <td>${cita.usuario.email}</td>
-                            <td>${cita.usuario_empleado.empleadoNombreCompleto}</td>
-                            <td>
-                                <button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
-                                <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>
-
-                            </td>
-                        </tr>
-                    `);
-                });
+                    tabla.row.add([
+                        '<td colspan="7" class="text-center">No hay citas para mostrar</td>'
+                    ]).draw();
+                } else {
+                    citas.forEach(cita => {
+                        tabla.row.add([
+                            cita.fechaCita,
+                            cita.horaCita,
+                            cita.usuario.clienteNombreCompleto,
+                            cita.usuario.numeroTelefono,
+                            cita.usuario.email,
+                            cita.usuario_empleado.empleadoNombreCompleto,
+                            `<button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>`
+                        ]).draw(false);
+                    });
+                }
             });
-
         }
 
         citasNoAceptadas();      
