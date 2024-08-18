@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Historial del usuario</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&display=swap');
@@ -188,7 +189,7 @@
     <!-- ESTA TABLA ES PARA VER POR ENCIMA EL HISTORIAL ALGO BASICO NO TAN AMONTONADO -->
     <div class="table-container mt-5">
         <h2>Historial</h2>
-        <table class="table table-striped">
+        <table id="tablaHistorial" class="table table-striped">
             <thead>
                 <tr>
                     <th>Tipo</th>
@@ -271,6 +272,7 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script>
@@ -307,108 +309,87 @@
                 localStorage.removeItem('alertIcon');
             }
             //alertas
-        function dibujarHistorial() {
-      $.ajax({
-        url: '/get/historial',
-        method: 'GET',
-        success: function(data) {
-          console.log(data);
-          const historiales = $('#bodyHistorial');
-          historiales.empty();
-          const { citas, inscripciones, ventas } = data;
+            function dibujarHistorial() {
+            $.ajax({
+                url: '/get/historial',
+                method: 'GET',
+                success: function(data) {
+                    const tabla = $('#tablaHistorial').DataTable();
+                    tabla.clear(); // Limpiar la tabla antes de agregar nuevas filas
+                    const { citas, inscripciones, ventas } = data;
 
-    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
-        historiales.append(`
-            <tr>
-                <td colspan="4">No hay historial disponible.</td>
-            </tr>
-        `);
-    } else {
-        citas.forEach(cita => {
-            let venta;
-            cita.citas_has_servicios.forEach(servicio => {
-                venta = servicio.venta;
-            })
-        const infoCitas = `<tr>
-            <td>Cita</td>
-            <td>$${venta ? venta.total : 'N/A'}</td>
-            <td>
-                <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
-            </td>
-        </tr>`;
-        historiales.append(infoCitas);
-});
+                    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
+                        tabla.row.add([
+                            '<td colspan="3" class="text-center">No hay historial disponible.</td>'
+                        ]).draw();
+                    } else {
+                        citas.forEach(cita => {
+                            let venta;
+                            cita.citas_has_servicios.forEach(servicio => {
+                                venta = servicio.venta;
+                            });
+                            const infoCitas = `<tr>
+                                <td>Cita</td>
+                                <td>$${venta ? venta.total : 'N/A'}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoCitas)).draw(false);
+                        });
 
-        inscripciones.forEach(inscripcion => {
-            if (inscripcion.estado == null) {
-                const infoInscripcionesExpiradas = `<tr>
-                <td><span style='color: #A81416; font-weight:600;'>Inscripción</span></td>
-                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoInscripcionesExpiradas);
-            }
-            else if (inscripcion.estado == 1) {
-                const infoInscripcionesAceptadas = `<tr>
-                <td><span style='color: #39BF3D; font-weight:600;'>Inscripción</span></td>
-                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoInscripcionesAceptadas);
-            }
-            else {
-                const infoInscripciones = `<tr>
-                    <td><span style='color: #D5B533; font-weight:600;'>Inscripción</span></td>
-                    <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoInscripciones);
-            }
-        });
+                        inscripciones.forEach(inscripcion => {
+                            let estadoClase = '';
+                            let color = '';
+                            if (inscripcion.estado == null) {
+                                estadoClase = 'Inscripción';
+                                color = '#A81416'; // Rojo para expiradas
+                            } else if (inscripcion.estado == 1) {
+                                estadoClase = 'Inscripción';
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                estadoClase = 'Inscripción';
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
+                            const infoInscripciones = `<tr>
+                                <td><span style='color: ${color}; font-weight:600;'>${estadoClase}</span></td>
+                                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoInscripciones)).draw(false);
+                        });
 
-        ventas.forEach(venta => {
-            if (venta.estadoVenta == 0) {
-                const infoVentasCancelada = `<tr>
-                    <td><span style='color: #A81416; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentasCancelada);
-            } else if (venta.estadoVenta == 1) {
-                const infoVentasAceptada = `<tr>
-                    <td><span style='color: #39BF3D; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentasAceptada);
-            } else {
-                const infoVentas = `<tr>
-                    <td><span style='color: #D5B533; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentas);
-            }
-        });
-    }
-    },
-        error: function(error) {
-        console.error('Error al obtener el historial', error);
+                        ventas.forEach(venta => {
+                            let estadoVentaClase = '';
+                            let color = '';
+                            if (venta.estadoVenta == 0) {
+                                estadoVentaClase = 'Compra';
+                                color = '#A81416'; // Rojo para canceladas
+                            } else if (venta.estadoVenta == 1) {
+                                estadoVentaClase = 'Compra';
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                estadoVentaClase = 'Compra';
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
+                            const infoVentas = `<tr>
+                                <td><span style='color: ${color}; font-weight:600;'>${estadoVentaClase}</span></td>
+                                <td>$${venta.total}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoVentas)).draw(false);
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.error('Error al obtener el historial', error);
+                }
+            });
         }
-    });
-}
 
 
 function mostrarCitaModal(citaId) {
@@ -594,6 +575,25 @@ function mostrarCitaModal(citaId) {
 
 
         $(document).ready(function(){
+            let tabla = $('#tablaHistorial').DataTable({
+                "pageLength": 8, // Número de filas por página
+                "searching": true, // Activa la búsqueda
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontró historial",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
 
             dibujarHistorial();
 
