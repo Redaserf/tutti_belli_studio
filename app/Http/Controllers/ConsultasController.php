@@ -79,9 +79,6 @@ class ConsultasController extends Controller
         $user = Auth::user();
 
 
-        if ($user->id === 2) {
-            return redirect('/Home-usuario');
-        }
     
         // Trae el usuario logueado junto con los usuarios que tienen los roles de 'Empleado' o 'Administrador'
         $usuarios = User::WhereHas('roles', function ($query) {

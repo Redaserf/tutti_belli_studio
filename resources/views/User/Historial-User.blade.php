@@ -325,16 +325,18 @@
         `);
     } else {
         citas.forEach(cita => {
-    cita.citas_has_servicios.forEach(servicio => {
+            let venta;
+            cita.citas_has_servicios.forEach(servicio => {
+                venta = servicio.venta;
+            })
         const infoCitas = `<tr>
             <td>Cita</td>
-            <td>$${servicio.venta ? servicio.venta.total : 'N/A'}</td>
+            <td>$${venta ? venta.total : 'N/A'}</td>
             <td>
                 <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
             </td>
         </tr>`;
         historiales.append(infoCitas);
-    });
 });
 
         inscripciones.forEach(inscripcion => {
