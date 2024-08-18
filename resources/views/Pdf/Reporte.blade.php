@@ -16,7 +16,9 @@
         h1, h2 {
             text-align: center;
             font-weight: bold;
-            color: #2c3e50;
+            color: #000;
+            font-size: 36px;
+            font-family: 'Georgia', serif; 
         }
         .logo {
             text-align: center;
@@ -25,30 +27,37 @@
         .logo img {
             max-width: 120px;
         }
-        .sales-report {
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
         .sales-report table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         .sales-report th, .sales-report td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ccc;
-        }
-        .sales-report th {
-            background-color: #2c3e50;
-            color: white;
-            font-size: 16px;
-        }
-        .sales-report td {
+            border-bottom: 1px solid #ddd;
             font-size: 14px;
+        }
+
+        .sales-report th {
+            background-color: #000; /* Fondo negro para los encabezados */
+            color: white; /* Texto blanco para los encabezados */
+            font-size: 16px;
+            text-transform: uppercase; /* Texto en mayúsculas para los encabezados */
+        }
+
+        .sales-report tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fila de fondo gris claro para alternar */
+        }
+
+        .sales-report tr:hover {
+            background-color: #f1f1f1; /* Fila que se ilumina al pasar el cursor */
+        }
+
+        .sales-report td {
+            color: #000; /* Texto negro para las celdas */
+            background-color: white; /* Fondo blanco para las celdas */
         }
         .total-sales {
             margin-top: 30px;
@@ -80,7 +89,7 @@
     <table>
         <thead>
         <tr>
-            <th>Nombre</th>
+            <th>Servicio</th>
             <th>Fecha de Venta</th>
             <th>Empleado</th>
             <th>Cantidad</th>
@@ -107,8 +116,8 @@
 </div>
 
 <div class="footer">
-    <p></p>
-    <p></p>
+    <p>Este reporte ha sido generado automáticamente por el sistema de ventas.</p>
+    <p>&copy; 2024 Tutti Belli Studio. Todos los derechos reservados.</p>
 </div>
 
 </body>
