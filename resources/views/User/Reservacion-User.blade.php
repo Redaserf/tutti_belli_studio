@@ -675,6 +675,7 @@ gmp-map {
 <script>
 
 $(document).ready(function(){
+    $('#fechaCita').prop('disabled', true).hide();
     $('a[data-bs-target="#termsModal"]').click(function(e){
             e.preventDefault();
             $('#termsModal').modal('show');
@@ -1122,25 +1123,35 @@ $('#empleadoId').change(function() {
 
        //Dibujar empleados
        $.get('/usuarios/rol/empleado', function(usersRolEmpleado) {
-                console.log('empleados y admins: ', usersRolEmpleado);
-                let selectUsuarios = $('#empleadoId');
-                selectUsuarios.empty();
+    console.log('empleados y admins: ', usersRolEmpleado);
+    let selectUsuarios = $('#empleadoId');
+    selectUsuarios.empty();
 
-                const indiceAleatorio = Math.floor(Math.random() * usersRolEmpleado.length);
-                const empleadoAleatorio = usersRolEmpleado[indiceAleatorio].id;
+    // Agregar la opción "Selecciona un empleado" como predeterminada y no seleccionable
+    selectUsuarios.append(`
+        <option class="text-center" value="" disabled selected>Selecciona un empleado</option>
+    `);
 
+    usersRolEmpleado.forEach(usuario => {
+        selectUsuarios.append(`
+            <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
+        `);
+        console.log(usersRolEmpleado);
+    });
 
-                selectUsuarios.append(`
-                    <option class="text-center" value="${empleadoAleatorio}" selected>Cualquier empleado</option>
-                `)
-
-                usersRolEmpleado.forEach(usuario => {
-                    selectUsuarios.append(`
-                        <option class="text-center" value="${usuario.id}">${usuario.name + " " +usuario.apellido}</option>
-                    `)
-                    console.log(usersRolEmpleado);
-                })
-            })
+    // Habilitar y mostrar los campos de fecha y hora cuando se selecciona un empleado
+    selectUsuarios.change(function() {
+        var empleadoId = $(this).val();
+        if (empleadoId) {
+            $('#fechaCita').prop('disabled', false).show();
+            $('#horaCita').prop('disabled', false).hide(); // Sigue oculto hasta que se seleccione una fecha
+        } else {
+            $('#fechaCita').prop('disabled', true).hide();
+            $('#horaCita').prop('disabled', true).hide();
+        }
+    });
+});
+            
 
 
         $('#citaForm').on('submit', function(e) {
