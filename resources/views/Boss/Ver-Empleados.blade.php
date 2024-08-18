@@ -426,7 +426,7 @@ header {
                     <a class="left" href="/Agregar-Empleado" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Registrar empleado<i style="margin-left: 6px" class="fa-solid fa-user-plus"></i></button></a>
                     <a class="left" href="/Ver-citas-emp" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Ver citas de empleados<i style="margin-left: 6px" class="fa-solid fa-eye"></i></button></a>
                 </div>
-                <div class="section-divider"></div>
+                <div class="section-divider"></div> 
 
                 <div class="table-responsive tab-content">
                     <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de empleado">
