@@ -424,7 +424,7 @@ header {
                 <div class="top text-center">
                     <h2>Empleados</h2>
                     <a class="left" href="/Agregar-Empleado" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Registrar empleado<i style="margin-left: 6px" class="fa-solid fa-user-plus"></i></button></a>
-                    <a class="left" href="/Ver-citas-emp-pen" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Ver citas de empleados<i style="margin-left: 6px" class="fa-solid fa-eye"></i></button></a>
+                    <a class="left" href="/Ver-citas-emp" style="text-decoration: none; color:black; margin-left:10px"><button class="btn btn-outline-success" style="width: auto;">Ver citas de empleados<i style="margin-left: 6px" class="fa-solid fa-eye"></i></button></a>
                 </div>
                 <div class="section-divider"></div>
 
