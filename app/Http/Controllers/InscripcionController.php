@@ -210,9 +210,12 @@ class InscripcionController extends Controller
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
 
+
             $inscripcion->estado = null;
             $inscripcion->save();
-            // $inscripcion->delete();
+//             $inscripcion->delete();
+
+            Mail::to($usuario->email)->send(new InscripcionCancelada($inscripcion,$nombreCurso));
 
             // Enviar correo de cancelación usando la instancia completa de la inscripción
 
