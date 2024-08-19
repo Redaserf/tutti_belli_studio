@@ -782,6 +782,26 @@ $('#citasModal').on('hidden.bs.modal', function () {
             const allDays = [0, 1, 2, 3, 4, 5, 6];
             const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
 
+            let cursosFechas = response.fechasCursos;
+        console.log('cursosssssssssssssssssssssss: ', cursosFechas);
+
+        
+        function deshabilitarFechaPorCurso(fecha, fechasCursos) {
+            const fechaMoment = moment(fecha).format('YYYY-MM-DD');
+
+            for (let curso of fechasCursos) {
+                if (
+                    fechaMoment === curso.primeraFecha ||
+                    fechaMoment === curso.segundaFecha ||
+                    fechaMoment === curso.terceraFecha
+                ) {
+                    return [false, "", "Fecha de curso"]; 
+                }
+            }
+
+            return [true, "", ""];
+        }
+
             
         function deshabilitarFecha(fecha) {
             const fechaMoment = moment(fecha);
@@ -882,6 +902,11 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 regional: "es",
                 beforeShowDay: function(fecha) {
                     var dia = moment(fecha).day();
+
+                    var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
+                    if (resultadoCurso[0] === false) {
+                        return resultadoCurso;
+                    }
 
                     if (hiddenDays.includes(dia)) {
                         return [false, "", "Día no laborable"];

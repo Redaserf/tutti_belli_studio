@@ -1095,6 +1095,26 @@ $.ajax({
             return horario.horaFin > max ? horario.horaFin : max;
         }, horarios[0].horaFin);
 
+        let cursosFechas = data.fechasCursos;
+        console.log('cursosssssssssssssssssssssss: ', cursosFechas);
+
+
+        function deshabilitarFechaPorCurso(fecha, fechasCursos) {
+            const fechaMoment = moment(fecha).format('YYYY-MM-DD');
+
+            for (let curso of fechasCursos) {
+                if (
+                    fechaMoment === curso.primeraFecha ||
+                    fechaMoment === curso.segundaFecha ||
+                    fechaMoment === curso.terceraFecha
+                ) {
+                    return [false, "", "Fecha de curso"]; 
+                }
+            }
+
+            return [true, "", ""];
+        }
+
 
         function deshabilitarFecha(fecha) {
             const fechaMoment = moment(fecha);
@@ -1301,6 +1321,12 @@ $.ajax({
             beforeShowDay: function(fecha) {
                 var dia = fecha.getDay();
 
+                var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
+                if (resultadoCurso[0] === false) {
+                    return resultadoCurso;
+                }
+
+                
                 if (hiddenDays.includes(dia)) {
                     return [false, "", "Día no laborable"];
                 }

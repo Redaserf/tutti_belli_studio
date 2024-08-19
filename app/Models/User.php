@@ -54,6 +54,9 @@ class User extends Authenticatable
         ];
     }
 
+    public function curso(){
+        return $this->hasMany(Curso::class, 'empleadoId');
+    }
 
     public function roles(){
         return $this->belongsTo(Rol::class, 'rolId');

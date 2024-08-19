@@ -622,15 +622,34 @@ class ConsultasController extends Controller
 
     public function horarioEmpleadoLogeado(){
         $user = Auth::user();
-    
-        // Traer el usuario con sus horarios y citas
-        $jaja = User::with(['horarios', 'citasEmpleados' =>  function($cita) {
-            $cita->where('estadoCita', '<>', null);
-        }])->where('id', $user->id)->get();
-    
-        return response()->json($jaja);
-    }
 
+        $fechasCursos = Curso::where('empleadoId', $user->id)->where('activo', true)->pluck('fechaInicio');
+    
+        if ($fechasCursos->isEmpty()) {
+            $fechasCursosExtendidas = null;
+        } else {
+            $fechasCursosExtendidas = $fechasCursos->map(function($fechaInicio) {
+                return [
+                    'primeraFecha' => $fechaInicio,
+                    'segundaFecha' => Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
+                    'terceraFecha' => Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
+                ];
+            });
+        }
+    
+        $empleado = User::with(['horarios', 'citasEmpleados' => function($cita) {
+            $cita->where('estadoCita', '<>', null);
+        }])->where('id', $user->id)->first();
+    
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+    
+        return response()->json([
+            $empleado,
+            'fechasCursos' => $fechasCursosExtendidas
+        ]);
+    }
        
     public function todasCitasEmpleados()//mo importa el estado
     {
@@ -673,7 +692,7 @@ class ConsultasController extends Controller
 
     public function horarioUnEmpleado($id)
     {
-        $fechasCursos = Curso::where('empleadoId', $id)->pluck('fechaInicio');
+        $fechasCursos = Curso::where('empleadoId', $id)->where('activo', true)->pluck('fechaInicio');
     
         if ($fechasCursos->isEmpty()) {
             $fechasCursosExtendidas = null;
