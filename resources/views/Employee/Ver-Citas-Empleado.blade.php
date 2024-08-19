@@ -1053,6 +1053,41 @@ $.ajax({
             return horario.horaFin > max ? horario.horaFin : max;
         }, horarios[0].horaFin);
 
+        
+        function deshabilitarFecha(fecha) {
+            const fechaMoment = moment(fecha);
+            const diaSemana = fechaMoment.day();
+            const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+            if (!horarioDia) return false;
+
+            let horaInicio = moment(fechaMoment).set({
+                hour: horarioDia.horaInicio.split(':')[0],
+                minute: horarioDia.horaInicio.split(':')[1],
+                second: 0
+            });
+
+            let horaFin = moment(fechaMoment).set({
+                hour: horarioDia.horaFin.split(':')[0],
+                minute: horarioDia.horaFin.split(':')[1],
+                second: 0
+            });
+
+            let horasOcupadas = empleado.citas_empleados
+                .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+
+            while (horaInicio.isBefore(horaFin)) {
+                let horaTexto = horaInicio.format('HH:mm:ss');
+                if (!horasOcupadas.includes(horaTexto)) {
+                    return true; //si hay una hora minimo
+                }
+                horaInicio.add(1, 'hour');
+            }
+
+            return false; //deshabilita la fecha en el datepicker
+        }
+
         function actualizarOpcionesHora(fechaHora) {
             let select = $('#horaCita');
             select.empty();
@@ -1220,6 +1255,10 @@ $.ajax({
 
                 if (hiddenDays.includes(dia)) {
                     return [false, "", "Día no laborable"];
+                }
+
+                if (!deshabilitarFecha(fecha)) {//si no hay horas en el select se deshabilita la fecha
+                    return [false, "", "No hay horas disponibles"];
                 }
 
                 var hoy = new Date();

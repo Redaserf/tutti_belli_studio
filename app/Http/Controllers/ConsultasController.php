@@ -19,7 +19,9 @@ use App\Models\ProductoHasTecnica;
 use App\Models\Venta;
 use App\Models\Horario;
 use App\Models\DetalleTecnicaProducto;
+use App\Models\Curso;
 
+use Carbon\Carbon;
 
 
 use DateTime;
@@ -671,12 +673,35 @@ class ConsultasController extends Controller
 
     public function horarioUnEmpleado($id)
     {
+        $fechasCursos = Curso::where('empleadoId', $id)->pluck('fechaInicio');
+    
+        if ($fechasCursos->isEmpty()) {
+            $fechasCursosExtendidas = null;
+        } else {
+            $fechasCursosExtendidas = $fechasCursos->map(function($fechaInicio) {
+                return [
+                    'primeraFecha' => $fechaInicio,
+                    'segundaFecha' => Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
+                    'terceraFecha' => Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
+                ];
+            });
+        }
+    
         $empleado = User::with(['horarios', 'citasEmpleados' => function($cita) {
             $cita->where('estadoCita', '<>', null);
-        }])->where('id', $id)->get();
+        }])->where('id', $id)->first();
     
-        return response()->json($empleado);
+        if (!$empleado) {
+            return response()->json(['message' => 'Empleado no encontrado'], 404);
+        }
+    
+        return response()->json([
+            $empleado,
+            'fechasCursos' => $fechasCursosExtendidas
+        ]);
     }
+    
+    
     
 
 }    

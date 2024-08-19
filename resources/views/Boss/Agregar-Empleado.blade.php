@@ -586,7 +586,7 @@ $(document).ready(function(){
     function validarEdad(fechaNacimiento) {
         const fechaNacimientoDate = new Date(fechaNacimiento);
         const hoy = new Date();
-        const edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
         const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
         if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
             edad--;

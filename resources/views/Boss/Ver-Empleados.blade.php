@@ -676,7 +676,6 @@ function editarHorario(id) {
         let selectInicio = $('#nuevoHoraInicio');
         let selectFin = $('#nuevoHoraFin');
 
-        // Genera todas las opciones para horaInicio antes de intentar seleccionar un valor
         selectInicio.html(generarOpciones(9, 13));
         selectFin.html(generarOpciones(13, 21));
 
@@ -684,7 +683,6 @@ function editarHorario(id) {
         $('#nuevoLunes, #nuevoMartes, #nuevoMiercoles, #nuevoJueves, #nuevoViernes, #nuevoSabado, #nuevoDomingo').prop('checked', false);
 
         empleado.horarios.forEach(horario => {
-            // Asegúrate de que la opción de horaInicio existe antes de intentar seleccionarla
             if (selectInicio.find(`option[value="${horario.horaInicio}"]`).length) {
                 selectInicio.val(horario.horaInicio);
             }
@@ -694,7 +692,6 @@ function editarHorario(id) {
             const horaFinEnd = Math.min(horaInicio + 12, 21);
             selectFin.html(generarOpciones(horaFinStart, horaFinEnd));
 
-            // Asegúrate de que la opción de horaFin existe antes de intentar seleccionarla
             if (selectFin.find(`option[value="${horario.horaFin}"]`).length) {
                 selectFin.val(horario.horaFin);
             }

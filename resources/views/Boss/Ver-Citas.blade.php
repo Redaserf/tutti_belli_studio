@@ -901,19 +901,19 @@ header {
         });
 
         function mostrarAlerta(text, alertClass, iconId) {
-                $("#alertaTexto").text(text);
+            $("#alertaTexto").text(text);
+            $(".custom-alert")
+                .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+                .addClass(`show ${alertClass}`)
+                .fadeIn();
+            $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+            setTimeout(function() {
                 $(".custom-alert")
-                    .removeClass("alert-primary alert-success alert-warning alert-danger hide")
-                    .addClass(`show ${alertClass}`)
-                    .fadeIn();
-                $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
-                setTimeout(function() {
-                    $(".custom-alert")
-                        .removeClass("show")
-                        .addClass("hide")
-                        .fadeOut();
-                }, 6500);
-            }
+                    .removeClass("show")
+                    .addClass("hide")
+                    .fadeOut();
+            }, 6500);
+        }
 
             const alertMessage = localStorage.getItem('alertMessage');
             const alertClass = localStorage.getItem('alertClass');
@@ -1095,6 +1095,41 @@ $.ajax({
             return horario.horaFin > max ? horario.horaFin : max;
         }, horarios[0].horaFin);
 
+
+        function deshabilitarFecha(fecha) {
+            const fechaMoment = moment(fecha);
+            const diaSemana = fechaMoment.day();
+            const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+            if (!horarioDia) return false;
+
+            let horaInicio = moment(fechaMoment).set({
+                hour: horarioDia.horaInicio.split(':')[0],
+                minute: horarioDia.horaInicio.split(':')[1],
+                second: 0
+            });
+
+            let horaFin = moment(fechaMoment).set({
+                hour: horarioDia.horaFin.split(':')[0],
+                minute: horarioDia.horaFin.split(':')[1],
+                second: 0
+            });
+
+            let horasOcupadas = empleado.citas_empleados
+                .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+
+            while (horaInicio.isBefore(horaFin)) {
+                let horaTexto = horaInicio.format('HH:mm:ss');
+                if (!horasOcupadas.includes(horaTexto)) {
+                    return true; //si hay una hora minimo
+                }
+                horaInicio.add(1, 'hour');
+            }
+
+            return false; //deshabilita la fecha en el datepicker
+        }
+
         function actualizarOpcionesHora(fechaHora) {
             let select = $('#horaCita');
             select.empty();
@@ -1125,7 +1160,7 @@ $.ajax({
                     while (horaInicio.isBefore(horaFin)) {
                         let horaTexto = horaInicio.format('HH:mm:ss');
                         
-                        //si es el día actual, quitar las horas con menos de 1 hora de anticipación
+                        //si es el día actual quita las horas con menos de 1 hora de anticipación
                         if (!horasOcupadas.includes(horaTexto)) {
                             if (fechaMoment.isSame(hoy, 'day')) {
                                 if (horaInicio.isAfter(limiteHora)) {
@@ -1220,12 +1255,12 @@ $.ajax({
                 });
 
                 if (citaExistente) {
-                    alert('Ya existe una cita para esta fecha y hora.');
+                    mostrarAlerta('Ya existe una cita para esta fecha y hora.', 'alert-primary', 'info-fill');
                     return;
                 }
 
                 if (fechaHora.toDateString() === hoy.toDateString() && fechaHora.getTime() < limiteHora.getTime()) {
-                    alert('No se pueden hacer citas con menos de 1 hora de anticipación.');
+                    mostrarAlerta('No se pueden hacer citas con menos de 1 hora de anticipación.', 'alert-primary', 'info-fill');
                     return;
                 }
 
@@ -1270,10 +1305,14 @@ $.ajax({
                     return [false, "", "Día no laborable"];
                 }
 
+                if (!deshabilitarFecha(fecha)) {//si no hay horas en el select se deshabilita la fecha
+                    return [false, "", "No hay horas disponibles"];
+                }
+
                 var hoy = new Date();
                 if (fecha.toDateString() === hoy.toDateString()) {
                     const horaInicioLimite = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
-                    const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '16:00:00';
+                    const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '21:00:00';
                     const horaFinHoyParts = horaFinHoy.split(':');
                     hoy.setHours(horaFinHoyParts[0], horaFinHoyParts[1], 0, 0);
 
@@ -1407,7 +1446,7 @@ function actualizarOpcionesHora(fechaHora) {
                 error: function(error) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                    alert("Hubo un error al tratar de eliminar la cita.")
+                    mostrarAlerta("Hubo un error al tratar de eliminar la cita.", 'alert-danger', 'exclamation-triangle-fill');
                     console.log(error);
                 }
         })
@@ -1435,7 +1474,7 @@ function actualizarOpcionesHora(fechaHora) {
                 error: function(error) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                    alert("Hubo un error al tratar de eliminar la cita.")
+                    mostrarAlerta("Hubo un error al tratar de eliminar la cita.", 'alert-danger', 'exclamation-triangle-fill');
                     console.log(error);
                 }
         })

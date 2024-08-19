@@ -485,7 +485,7 @@ gmp-map {
                     <div class="modal-body">
                         <input type="hidden" id='id'>
                         <div class="form-floating mb-3">
-                            <select class="form-control" name="empleadoId" id="empleadoId">
+                            <select class="form-control" name="empleadoId" id="empleadoId" required>
                             </select>
                         </div>
                         <div class="form-floating mb-3">
@@ -782,6 +782,41 @@ $('#citasModal').on('hidden.bs.modal', function () {
             const allDays = [0, 1, 2, 3, 4, 5, 6];
             const hiddenDays = allDays.filter(day => !diasTrabajo.includes(day));
 
+            
+        function deshabilitarFecha(fecha) {
+            const fechaMoment = moment(fecha);
+            const diaSemana = fechaMoment.day();
+            const horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+            if (!horarioDia) return false;
+
+            let horaInicio = moment(fechaMoment).set({
+                hour: horarioDia.horaInicio.split(':')[0],
+                minute: horarioDia.horaInicio.split(':')[1],
+                second: 0
+            });
+
+            let horaFin = moment(fechaMoment).set({
+                hour: horarioDia.horaFin.split(':')[0],
+                minute: horarioDia.horaFin.split(':')[1],
+                second: 0
+            });
+
+            let horasOcupadas = empleado.citas_empleados
+                .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+
+            while (horaInicio.isBefore(horaFin)) {
+                let horaTexto = horaInicio.format('HH:mm:ss');
+                if (!horasOcupadas.includes(horaTexto)) {
+                    return true; //si hay una hora minimo
+                }
+                horaInicio.add(1, 'hour');
+            }
+
+            return false; //deshabilita la fecha en el datepicker
+        }
+
             function actualizarOpcionesHora(fechaHora) {
                 let select = $('#horaCita');
                 select.empty();
@@ -850,6 +885,10 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
                     if (hiddenDays.includes(dia)) {
                         return [false, "", "Día no laborable"];
+                    }
+
+                    if (!deshabilitarFecha(fecha)) {//si no hay horas en el select se deshabilita la fecha
+                        return [false, "", "No hay horas disponibles"];
                     }
 
                     var hoy = moment();

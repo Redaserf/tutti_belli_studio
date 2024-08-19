@@ -535,7 +535,6 @@
                         ]).draw(false);
                     });
 
-                    // Manejar el evento de clic en los botones de "Ver Detalles"
                     $('#citasEmpleadosTable').on('click', '.ver-detalles', function() {
                         const citaId = $(this).data('cita-id');
                         const cita = citas[citaId];

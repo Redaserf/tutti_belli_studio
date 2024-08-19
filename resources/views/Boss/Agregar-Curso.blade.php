@@ -830,7 +830,9 @@ function checkWidth() {
                 },
                 error: function(error) {
 
-                    alert('Ocurrió un error al agregar el Curso');
+                    console.log(error)
+
+                    // alert('Ocurrió un error al agregar el Curso');
                     console.log(selectedTecnicas)
 
                 }

@@ -602,6 +602,23 @@ class RegistrosController extends Controller
             $cita->update([
                 'estadoCita' => null
             ]);
+
+            $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
+            ->with('producto')
+            ->get();
+
+            foreach($productosDevolverStock as $productoDetalle){
+                $cantidadPromedio = ProductoHasTecnica::where('tecnicaId', $productoDetalle->tecnicaId)
+                    ->where('productoId', $productoDetalle->productoId)
+                    ->value('cantidadDeUso');
+                
+                $producto = $productoDetalle->producto;
+                if($producto) {
+                    $producto->cantidadEnStock += 2 * $cantidadPromedio;
+                    $producto->cantidadReserva -= $productoDetalle->cantidadProducto;
+                    $producto->save();
+                }
+            }
             
             Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
 
