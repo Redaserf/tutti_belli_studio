@@ -833,6 +833,8 @@ $('#editProfileForm').on('submit', function(e) {
             $('#contenedor_carga').css('display', 'none');
             $('#editProfileModal').modal('hide');
             alert('Perfil actualizado con éxito.');
+            $('#emailError').text('Correo ya en uso.');
+                $('#emailError').css('display', 'none');
             tablaEmpleados();
         },
         error: function(error) {
