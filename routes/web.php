@@ -417,6 +417,8 @@ Route::get('/get/compras/{id}', [DetalleProductoController::class, 'ticket']);
 Route::post('/confirmarCompra/{id}', [VentaController::class, 'confirmarCompra']);
 //Rechazar la compra
 Route::post('/rechazarCompra/{id}', [VentaController::class, 'rechazarCompra']);
+//Dibujar compras rechazadas
+Route::get('/get-Rechazadas', [DetalleProductoController::class, 'comprasRechazadas']);
 
 //====[Ventas]=====
 Route::get('/ventas-periodo',[VentaController::class,'ventasPeriodo']);
