@@ -562,6 +562,7 @@ class ConsultasController extends Controller
                             });
                     })
                     ->with('usuarioEmpleado')
+                    ->with('usuario')
                     ->with('servicios');
             }
         ])

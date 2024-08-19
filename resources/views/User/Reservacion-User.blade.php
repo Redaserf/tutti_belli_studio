@@ -884,64 +884,70 @@ $('#citasModal').on('hidden.bs.modal', function () {
             return false; //deshabilita la fecha en el datepicker
         }
 
-            function actualizarOpcionesHora(fechaHora) {
-                let select = $('#horaCita');
-                select.empty();
+        function actualizarOpcionesHora(fechaHora) {
+            let select = $('#horaCita');
+            select.empty();
 
-                let fechaMoment = moment(fechaHora);
+            let fechaMoment = moment(fechaHora);
 
-                var hoy = moment();
-                var diaSemana = fechaMoment.day();
-                var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+            var hoy = moment();
+            var diaSemana = fechaMoment.day();
+            var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
 
-                if (horarioDia) {
-                    let horaInicio = moment(fechaMoment).set({
-                        hour: horarioDia.horaInicio.split(':')[0],
-                        minute: horarioDia.horaInicio.split(':')[1],
-                        second: 0
-                    });
+            if (horarioDia) {
+                let horaInicio = moment(fechaMoment).set({
+                    hour: horarioDia.horaInicio.split(':')[0],
+                    minute: horarioDia.horaInicio.split(':')[1],
+                    second: 0
+                });
 
-                    let horaFin = moment(fechaMoment).set({
-                        hour: horarioDia.horaFin.split(':')[0],
-                        minute: horarioDia.horaFin.split(':')[1],
-                        second: 0
-                    });
+                let horaFin = moment(fechaMoment).set({
+                    hour: horarioDia.horaFin.split(':')[0],
+                    minute: horarioDia.horaFin.split(':')[1],
+                    second: 0
+                });
 
-                    let horasOcupadas = empleado.citas_empleados
-                        .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
-                        .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+                let horasOcupadas = empleado.citas_empleados
+                    .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                    .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
 
-                        while (horaInicio.isBefore(horaFin)) {
-                            let horaTexto = horaInicio.format('HH:mm:ss');
-                            
-                            //si es el día actual, quitar las horas con menos de 1 hora de anticipación
-                            if (!horasOcupadas.includes(horaTexto)) {
-                                if (fechaMoment.isSame(hoy, 'day')) {
-                                    if (horaInicio.isAfter(limiteHora)) {
-                                        let option = new Option(horaTexto, horaTexto);
-                                        select.append(option);
-                                    }
-                                } else {
-                                    let option = new Option(horaTexto, horaTexto);
-                                    select.append(option);
-                                }
+                let limiteHora = new Date();
+                let dosHorasDespues = moment().add(2, 'hours');
+
+                while (horaInicio.isBefore(horaFin)) {
+                    let horaTexto = horaInicio.format('HH:mm:ss');
+
+                    if (!horasOcupadas.includes(horaTexto)) {
+                        // Verifica si el día seleccionado es hoy
+                        if (fechaMoment.isSame(hoy, 'day')) {
+                            // Solo agrega opciones para las horas que son posteriores a dos horas desde ahora
+                            if (horaInicio.isAfter(dosHorasDespues)) {
+                                let option = new Option(horaTexto, horaTexto);
+                                select.append(option);
                             }
-
-                            horaInicio.add(1, 'hour');
+                        } else {
+                            let option = new Option(horaTexto, horaTexto);
+                            select.append(option);
                         }
-
-                    console.log('Opciones agregadas:', select.children('option').length);
-
-                    if (select.children('option').length > 0) {
-                        select.val(select.children('option').first().val());
-                    } else {
-                        alert('No hay horas disponibles para la fecha seleccionada.');
-                        $('#citasModal').modal('hide');
-                        $('#fechaCita').hide();
-
                     }
+
+                    horaInicio.add(1, 'hour');
+                }
+
+                console.log('Opciones agregadas:', select.children('option').length);
+
+                if (select.children('option').length > 0) {
+                    select.val(select.children('option').first().val());
+                } else {
+                    alert('No hay horas disponibles para la fecha seleccionada.');
+                    $('#citasModal').modal('hide');
                 }
             }
+        }
+
+
+
+
             $("#fechaCita").datepicker({
                 dateFormat: 'yy-mm-dd',
                 minDate: 0,

@@ -1182,26 +1182,28 @@ $.ajax({
                     .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
                     .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
 
-                    while (horaInicio.isBefore(horaFin)) {
-                        let horaTexto = horaInicio.format('HH:mm:ss');
-                        
+                let limiteHora = new Date();
+                let dosHorasDespues = moment().add(2, 'hours');
 
-                        limiteHora = new Date();
-                        //si es el día actual quita las horas con menos de 1 hora de anticipación
-                        if (!horasOcupadas.includes(horaTexto)) {
-                            if (fechaMoment.isSame(hoy, 'day')) {
-                                if (horaInicio.isAfter(limiteHora)) {
-                                    let option = new Option(horaTexto, horaTexto);
-                                    select.append(option);
-                                }
-                            } else {
+                while (horaInicio.isBefore(horaFin)) {
+                    let horaTexto = horaInicio.format('HH:mm:ss');
+
+                    if (!horasOcupadas.includes(horaTexto)) {
+                        // Verifica si el día seleccionado es hoy
+                        if (fechaMoment.isSame(hoy, 'day')) {
+                            // Solo agrega opciones para las horas que son posteriores a dos horas desde ahora
+                            if (horaInicio.isAfter(dosHorasDespues)) {
                                 let option = new Option(horaTexto, horaTexto);
                                 select.append(option);
                             }
+                        } else {
+                            let option = new Option(horaTexto, horaTexto);
+                            select.append(option);
                         }
-
-                        horaInicio.add(1, 'hour');
                     }
+
+                    horaInicio.add(1, 'hour');
+                }
 
                 console.log('Opciones agregadas:', select.children('option').length);
 
@@ -1210,10 +1212,10 @@ $.ajax({
                 } else {
                     alert('No hay horas disponibles para la fecha seleccionada.');
                     $('#citasModal').modal('hide');
-
                 }
             }
         }
+
 
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {

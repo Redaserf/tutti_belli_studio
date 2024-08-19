@@ -7,6 +7,9 @@
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+
 <!-- datePicker -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <!-- datePicker -->
@@ -716,13 +719,14 @@ margin-right: 20px;
                         </div>
                     </div>
                     <div class="table-responsive tab-content">
-                        <table class="table table-striped mt-3">
+                        <table id="tablaVenta" class="table table-striped mt-3">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
                                     <th>Total</th>
                                     <th>Día</th>
                                     <th>Hora</th>
+                                    <th>Usuario</th>
                                     <th>Detalles</th>
                                     <th>No llevada a cabo</th>
                                     <th>Aceptar</th>
@@ -872,14 +876,14 @@ margin-right: 20px;
             </div>
 
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     
 <script>
 
@@ -988,51 +992,75 @@ function mostrarAlerta(text, alertClass, iconId) {
     }, 6500);
 }
 
+
 function dibujarCitasVentasTecnicasProductosEmpleado() {
-        $.get('/venta/citas/empleado', function (citasVentas) {
-            citasVentasEmpleado = [];
+    $.get('/venta/citas/empleado', function (citasVentas) {
+        citasVentasEmpleado = [];
 
-            $.each(citasVentas, function(index, cita) {
-                citasVentasEmpleado.push({
-                    id: cita.id,
-                    fechaCita: cita.fechaCita,
-                    horaCita: cita.horaCita,
-                    venta: cita.venta,
-                    servicios: cita.servicios,
-                    usuario_empleado: cita.usuario_empleado
-                });
+        $.each(citasVentas, function(index, cita) {
+            citasVentasEmpleado.push({
+                id: cita.id,
+                fechaCita: cita.fechaCita,
+                horaCita: cita.horaCita,
+                venta: cita.venta,
+                servicios: cita.servicios,
+                usuario_empleado: cita.usuario_empleado,
+                usuario: cita.usuario
             });
-
-            console.log(citasVentasEmpleado);
-            mostrarCitasEmpleado(citasVentasEmpleado);
-        });
-    }
-
-    dibujarCitasVentasTecnicasProductosEmpleado();
-
-    function mostrarCitasEmpleado(citas) {
-        let tablaVenta = $('#dibujarVentaEmpleado');
-        tablaVenta.empty();
-
-        $.each(citas, function (index, citaData) {
-            let cita = citaData;
-            let venta = citaData.venta;
-            console.log('citas de empleados: ', citaData);
-            tablaVenta.append(`
-                <tr>
-                    <td>Cita ${cita.id}</td>
-                    <td>${venta.total}</td>
-                    <td>${venta.fechaVenta}</td>
-                    <td>${cita.horaCita}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-regular fa-eye"></i>  Detalles</button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
-                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
-                </tr>
-            `);
         });
 
-        manejarEventos();
-    }
+        console.log(citasVentasEmpleado);
+        mostrarCitasEmpleado(citasVentasEmpleado);
+    });
+}
+
+dibujarCitasVentasTecnicasProductosEmpleado();
+
+function mostrarCitasEmpleado(citas) {
+    let tablaVenta = $('#dibujarVentaEmpleado');
+    tablaVenta.empty();
+
+    $.each(citas, function (index, citaData) {
+        let cita = citaData;
+        let venta = citaData.venta;
+        console.log('citaaaaaaaaaaaaa: ', cita)
+        console.log('citas de empleados: ', citaData);
+        tablaVenta.append(`
+            <tr>
+                <td>Cita ${cita.id}</td>
+                <td>${venta.total}</td>
+                <td>${venta.fechaVenta}</td>
+                <td>${cita.horaCita}</td>
+                <td>${cita.usuario.name + " " + cita.usuario.apellido}</td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-regular fa-eye"></i>  Detalles</button></td>
+                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
+                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
+            </tr>
+        `);
+    });
+
+    $('#tablaVenta').DataTable({
+        destroy: true,
+        "pageLength": 5,
+        "searching": true,
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    manejarEventos();
+}
 
     function manejarEventos() {
         $(document).off('click', '.ver-detalles').on('click', '.ver-detalles', function () {
@@ -1155,6 +1183,25 @@ function dibujarCitasVentasTecnicasProductosEmpleado() {
         });
     }
 
+
+    //     let tabla = $('#tablaVenta').DataTable({
+    //     "pageLength": 8, // Número de filas por página
+    //     "searching": true, // Activa la búsqueda
+    //     "language": {
+    //         "lengthMenu": "Mostrar _MENU_ citas por página",
+    //         "zeroRecords": "No se encontraron citas",
+    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+    //         "infoEmpty": "No hay citas disponibles",
+    //         "infoFiltered": "(filtrado de _MAX_ citas totales)",
+    //         "search": "Buscar:",
+    //         "paginate": {
+    //             "first": "Primero",
+    //             "last": "Último",
+    //             "next": "Siguiente",
+    //             "previous": "Anterior"
+    //         }
+    //     }
+    // });
     
     $('#filtrarCitasEmpleado').on('click', function () {
         let fechaFiltro = $('#fechaFiltroEmpleado').val();
