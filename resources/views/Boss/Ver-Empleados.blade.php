@@ -670,7 +670,8 @@ horaInicioSelect.on('change', function() {
 });
 
 function editarHorario(id) {
-    $.get(`/horario/empleado/${id}`, function(empleado) {
+    $.get(`/un/empleado/horarios/citas/${id}`, function(empleadoJA) {
+        let empleado = empleadoJA[0];
         console.log('empleado: ', empleado);
         let selectInicio = $('#nuevoHoraInicio');
         let selectFin = $('#nuevoHoraFin');
