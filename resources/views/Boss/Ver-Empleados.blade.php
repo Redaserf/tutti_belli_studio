@@ -486,9 +486,10 @@ header {
                           <option value="Mujer" {{ Auth::user()->gender == 'Mujer' ? 'selected' : '' }}>Mujer</option>
                       </select>
                   </div>
-                    <div class="form-group" style="margin-top: 10px;">
+                  <div class="form-group" style="margin-top: 10px;">
                         <label for="edit_email">Correo electrónico</label>
                         <input type="email" class="form-control" id="edit_email" name="email" value="{{ Auth::user()->email }}">
+                        <span id="emailError"></span> 
                     </div>
                     <div class="form-group" style="margin-top: 10px;">
                         <label for="edit_phone">Número de teléfono</label>
@@ -836,10 +837,51 @@ $('#editProfileForm').on('submit', function(e) {
             $('#contenedor_carga').css('display', 'none');
             console.error('Error al actualizar el perfil:', error);
             alert('Hubo un error al actualizar el perfil');
+            $('#emailError').text('Correo ya en uso.');
+                $('#emailError').css('display', 'block');
         }
     });
 });
+document.getElementById('edit_phone').addEventListener('input', function() {
+    const phoneInput = this.value;
+    const submitButton = document.querySelector('#editProfileForm button[type="submit"]');
+    
+    if (phoneInput.length === 10) {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
+});
 
+// Inicialmente deshabilita el botón si el valor actual del campo de teléfono no tiene 10 dígitos
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('edit_phone').value;
+    const submitButton = document.querySelector('#editProfileForm button[type="submit"]');
+    
+    if (phoneInput.length !== 10) {
+        submitButton.disabled = true;
+    }
+});
+document.getElementById('edit_email').addEventListener('blur', function() {
+    const email = this.value;
+    const emailError = document.getElementById('emailError');
+
+    if (email) {
+        fetch(`/check-email?email=${email}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    emailError.textContent = 'Este correo ya está en uso. Por favor, utiliza otro correo.';
+                    emailError.style.color = 'red';
+                    document.querySelector('#editProfileForm button[type="submit"]').disabled = true;
+                } else {
+                    emailError.textContent = '';
+                    document.querySelector('#editProfileForm button[type="submit"]').disabled = false;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+});
 
         $(document).ready(function(){
 
