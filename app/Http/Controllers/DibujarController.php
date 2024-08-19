@@ -361,6 +361,25 @@ public function contarProductosEnCarrito()
                 Log::info("El curso no se puede editar porque faltan menos de 24 horas y tiene inscripciones válidas.");
                 return response()->json(['error' => 'Menos de un día para el curso con inscripciones registradas, imposible de editarlo.'], 403);
             }
+
+
+        // Verificar si el empleado o administrador tiene citas en las fechas del curso
+        $empleadoId = $request->input('empleadoId');
+        $fechasCurso = [
+            $request->input('date'),
+            Carbon::parse($request->input('date'))->addDay()->format('Y-m-d'),
+            Carbon::parse($request->input('date'))->addDays(2)->format('Y-m-d')
+        ];
+
+        $citasOcupadas = Cita::where('empleadoId', $empleadoId)
+            ->whereIn('fechaCita', $fechasCurso)
+            ->exists();
+
+        if ($citasOcupadas) {
+            Log::info("El empleado tiene {$citasOcupadas} citas en el rango del curso, no puede ser asignado.");
+            return response()->json(['error' => 'El empleado o administrador está ocupado en una o más fechas del curso.'], 400);
+        }
+
     
             // Si no tiene inscripciones o falta más de 24 horas, se permite la edición
             $curso->nombre = $request->input('nombre');
