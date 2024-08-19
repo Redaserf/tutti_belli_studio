@@ -251,6 +251,8 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
         Route::get('/get/carrito',[DibujarController::class,'carritoIndex']);
         Route::post('/carrito/agregar', [DibujarController::class, 'carritoAgregar'])->middleware('auth');
         Route::post('/carrito/eliminar/{pivotId}', [DibujarController::class, 'carritoDelete'])->name('carrito.eliminar');
+        Route::get('/carrito/contar-productos', [DibujarController::class, 'contarProductosEnCarrito']);
+        Route::post('/carrito/eliminar-todo', [DibujarController::class, 'eliminarTodosLosProductosDelCarrito'])->name('carrito.eliminarTodo');
 
 
 

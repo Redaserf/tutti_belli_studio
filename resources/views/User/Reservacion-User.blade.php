@@ -427,6 +427,39 @@ gmp-map {
         height: 45px;
     
     }}
+
+    
+    /* Carrito css */
+
+@media (max-width: 768px) {
+  #carrito {
+    font-size: 0.9rem;
+    margin-right: 15px;
+  }
+
+  #carrito-count {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  #carrito {
+    font-size: 1rem;
+    margin-right: 30px;
+  }
+
+  #carrito-count {
+    top: -10px;
+    right: -15px;
+    font-size: 13px;
+  }
+}
+
+    /* Fin carrito css */
+
     </style>
 </head>
 <body class="hiddenX">
@@ -464,7 +497,14 @@ gmp-map {
                 <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
               </li>
           </ul>
-          <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+
+          <a id="carrito" style="margin-right: 30px; position: relative;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="carrito-count" style="">
+                <!-- Aquí se insertará la cantidad de productos -->
+            </span>
+          </a>
+
             <a href="/Reservacion-User" style="margin-right:20px;">
               <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
             </a>
@@ -690,6 +730,13 @@ function mostrarAlerta(text, alertClass, iconId) {
     }
 
 $(document).ready(function(){
+
+$('#carritoxd').empty();
+$.get('/carrito/contar-productos', function(data) {
+  $('#carrito-count').text(data.cantidad);
+});
+
+
     $('#fechaCita').prop('disabled', true).hide();
     $('a[data-bs-target="#termsModal"]').click(function(e){
             e.preventDefault();
