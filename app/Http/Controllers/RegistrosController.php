@@ -31,6 +31,7 @@ use App\Models\EmpleadoHasHorario;
 
 use App\Models\Reporte;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class RegistrosController extends Controller
 {
@@ -197,6 +198,34 @@ class RegistrosController extends Controller
 
         try{
 
+            Log::info("============================================");
+
+            // Extraer fechas del curso
+            $fechaInicio = $request->input('fechaInicio');
+            $segundaFecha = Carbon::parse($fechaInicio)->addDay()->format('Y-m-d');
+            $terceraFecha = Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d');
+            $empleadoId = $request->input('empleadoId');
+
+            // Log de inicio de validación
+            Log::info("Verificando citas para el empleado ID: {$empleadoId} entre las fechas: {$fechaInicio}, {$segundaFecha}, y {$terceraFecha}");
+
+            // Verificar citas del empleado en las fechas del curso
+            $citas = Cita::where('empleadoId', $empleadoId)->where(function ($query) use ($fechaInicio, $segundaFecha, $terceraFecha) {
+                $query->where('fechaCita', $fechaInicio)->orWhere('fechaCita', $segundaFecha)->orWhere('fechaCita', $terceraFecha);
+                })
+                ->where('estadoCita', '<>', null) // pa asegurarse de que la cita está activa
+                ->count();
+
+            // Log del resultado de la validación
+            Log::info("Citas encontradas para el empleado ID: {$empleadoId} en las fechas especificadas: {$citas}");
+
+            // si hay alguna cita en esas fechas, entonces da error
+            if ($citas > 0) {
+                $mensajeError = 'El instructor seleccionado tiene citas programadas en las fechas del curso. Por favor, selecciona otro instructor o ajusta las fechas del curso.';
+                Log::warning("No se puede asignar al empleado ID: {$empleadoId} porque tiene citas en el periodo del curso.");
+                return response()->json(['message' => $mensajeError], 400);
+            }
+
             // Extraer datos del request
             $nombre = $request->input('nombre');
             $cupoLimite = $request->input('cupoLimite');
@@ -208,10 +237,6 @@ class RegistrosController extends Controller
             $tecnicas = json_decode($request->input('tecnicas'), true);
             $productos = json_decode($request->input('productos'), true);
             $cantidadesProductos = json_decode($request->input('cantidadesProductos'), true);
-
-            // Calcular segundaFecha y terceraFecha
-            $segundaFecha = Carbon::parse($fechaInicio)->addDay()->format('Y-m-d');
-            $terceraFecha = Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d');
 
 
             // Guardar la imagen
@@ -233,6 +258,8 @@ class RegistrosController extends Controller
 //                'empleadoId' => $empleadoId
 //            ]);
 
+            Log::info("Creando curso con nombre: {$request->input('nombre')} y empleado ID: {$empleadoId}");
+
             $curso = new Curso();
             $curso->nombre = $nombre;
             $curso->cupoLimite = $cupoLimite;
@@ -246,6 +273,7 @@ class RegistrosController extends Controller
                 $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
             }
             $curso->empleadoId = $empleadoId;
+            Log::info("Curso creado exitosamente con ID: {$curso->id}");
             $curso->save();
 
             if(empty($tecnicas)){
@@ -276,7 +304,7 @@ class RegistrosController extends Controller
 
 
             DB::commit();
-            return 'curso guardado exitosamente';
+            return 'Curso creado con éxito.';
         }catch (\Exception $e){
             DB::rollback();
             return response()->json(['message' => 'Error: ',  $e->getMessage()], 500);
