@@ -44,7 +44,7 @@ ul{
     height: 100vh;
     width: 100%;
     position: fixed;
-    z-index: 100;
+    z-index: 500000;
 }
 
 /* Dashboard CSS */
@@ -518,7 +518,7 @@ header {
                                     <form id="editCursoForm" enctype="multipart/form-data">
                                         @csrf
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="editCursoModalLabel">Editar Producto</h5>
+                                            <h5 class="modal-title" id="editCursoModalLabel">Editar Curso</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -555,6 +555,7 @@ header {
                                             </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" id="deleteCursoBtn" class="btn btn-danger">Finalizar curso</button>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="btn btn-primary">Guardar</button>
                                         </div>
@@ -612,6 +613,7 @@ header {
                         </div>
 
 
+                {{-- HOME --}}
             <section class="home">
                 <div class="top text-center">
                     <h2>Cursos</h2>
@@ -619,18 +621,46 @@ header {
                 </div>
 
                 <div class="section-divider"></div>
+        
 
-                <div>
+                        <!-- Pestañas de navegación -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="cursos-activos-tab" data-bs-toggle="tab" href="#cursos-activos" role="tab" aria-controls="cursos-activos" aria-selected="true">Cursos activos</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="cursos-inactivos-tab" data-bs-toggle="tab" href="#cursos-inactivos" role="tab" aria-controls="cursos-inactivos" aria-selected="false">Cursos finalizados</a>
+                        </li>
+                    </ul>
 
 
-                    <div class="container mt-1 pt-5">
-                        <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de curso">
-                        <div id="cursos" class="row">
-                          {{-- Cursos mediante backend --}}
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="cursos-activos" role="tabpanel" aria-labelledby="cursos-activos-tab">
+                            <div class="table-container mt-5">
+                                <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de curso">
+    
+                            <div class="container mt-1 pt-5">
+                                <div id="cursos" class="row">
+                                  {{-- Cursos mediante backend --}}
+                                </div>
+                            </div>
+
+
+                            </div>
                         </div>
-                      </div>
+                    <div class="tab-pane fade" id="cursos-inactivos" role="tabpanel" aria-labelledby="cursos-inactivos-tab">
+                    <div class="table-container mt-5">
 
+                        <div class="container mt-1 pt-5">
+                            <div id="cursosInactivos" class="row">
+                                {{-- Cursos mediante backend --}}
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
                 </div>
+
 
             </section>
 
@@ -645,6 +675,23 @@ header {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-bodyInscripciones" style="padding:35px;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para ver inscripciones de cursos finalizados -->
+            <div class="modal fade" id="inscripcionesNullModal" tabindex="-1" aria-labelledby="inscripcionesNullModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inscripcionesNullModalLabel">Inscripciones del Curso Finalizado</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-bodyInscripcionesNull" style="padding:35px;">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -702,8 +749,7 @@ header {
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrar()">Cerrar</button>
-                    <button type="button" id="guardarProductos" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="cerrarProductos" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -757,12 +803,14 @@ header {
                   <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
                   <p class="card-text">Técnicas: ${tecnicas}</p>
                   <p class="card-text">Costo de inscripción: $${curso.precio}</p>
-                  <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
+                    <p class="card-text">Fecha de inicio: ${curso.fechaInicio}</p>
+                    <p class="card-text">Segunda fecha: ${curso.segundaFecha}</p>
+                    <p class="card-text">Tercera fecha: ${curso.terceraFecha}</p>
+                    <p class="card-text">Hora de inicio: ${curso.horaInicio}</p>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-warning editar-curso" data-id="${curso.id}">Editar curso<i style="margin-left: 6px" class="fa-solid fa-pen-to-square"></i></button>
-                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-danger borrar-curso" data-id="${curso.id}">Borrar curso<i style="margin-left: 6px" class="fa-solid fa-trash"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones" data-id="${curso.id}">Ver inscripciones<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
                         <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-dark" data-id="${curso.id}" onclick="dibujarProductosUsados(${curso.id})">Ver Productos utilizados<i style="margin-left: 6px" class="fa-solid fa-box"></i></button>
-                        <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-primary" data-id="${curso.id}" onclick="mostrarDias(${curso.id})">Agregar proxima fecha de curso<i style="margin-left: 6px" class="fa-solid fa-calendar-plus"></i></button>
+
                 </div>
               </div>
             </div>
@@ -788,6 +836,62 @@ header {
         },
         error: function(error) {
             console.error('Error al obtener los cursos:', error);
+        }
+    });
+}
+
+
+// Cursos inactivos
+function dibujarCursosInactivos() {
+    $.ajax({
+        url: '/get/cursosInactivos',
+        method: 'GET',
+        success: function(data) {
+            console.log(data);
+            const cursosInactivos = $('#cursosInactivos');
+            cursosInactivos.empty();
+            if (data.length === 0) {
+                cursosInactivos.append(`
+                    <div class="col-12 text-center my-5">
+                        <div class="alert" role="alert">
+                            <h4 class="alert-heading">¡No hay cursos inactivos disponibles en este momento!</h4>
+                        </div>
+                    </div>
+                `);
+            } else {
+                data.forEach(curso => {
+                    const tecnicas = curso.tecnicas.map(tecnica => tecnica.nombre).join(', ');
+                    const card = `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <img src="/storage/${curso.imagen}" class="card-img-top" alt="${curso.nombre}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${curso.nombre}</h5>
+                                    <p class="card-text">${curso.descripcion}</p>
+                                    <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
+                                    <p class="card-text">Técnicas: ${tecnicas}</p>
+                                    <p class="card-text">Costo de inscripción: $${curso.precio}</p>
+                                    <p class="card-text">Fecha de inicio: ${curso.fechaInicio}</p>
+                                    <p class="card-text">Segunda fecha: ${curso.segundaFecha}</p>
+                                    <p class="card-text">Tercera fecha: ${curso.terceraFecha}</p>
+                                    <p class="card-text">Hora de inicio: ${curso.horaInicio}</p>
+                                    <button style="margin-bottom: 10px;" type="button" class="btn btn-outline-info ver-inscripciones-finalizadas" data-id="${curso.id}">Ver inscripciones finalizadas<i style="margin-left: 6px" class="fa-solid fa-user"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    cursosInactivos.append(card);
+                });
+
+
+                $('.ver-inscripciones-finalizadas').click(function() {
+                const cursoId = $(this).data('id');
+                mostrarInscripcionesNull(cursoId);
+                });
+            }
+        },
+        error: function(error) {
+            console.error('Error al obtener los cursos inactivos:', error);
         }
     });
 }
@@ -838,85 +942,127 @@ function mostrarInscripciones(cursoId) {
         }
     });
 }
+
+
+function mostrarInscripcionesNull(cursoId) {
+    $.ajax({
+        url: `/get/inscripcionesNull/${cursoId}`,
+        method: 'GET',
+        success: function(response) {
+            const inscripciones = response.inscripciones;
+            const curso = response.curso;
+            let inscripcionesHtml = `<h5 style="margin-bottom:30px;">${curso.nombre}</h5><ul>`;
+            let filtroId = `<input style="width:160px;" type="number" id="buscadorIdNull" class="form-control mb-3" placeholder="Busqueda por ID" ></input>`;
+            inscripcionesHtml += filtroId;
+
+            inscripciones.forEach(inscripcion => {
+                inscripcionesHtml += `<li class="buscar" data-id="${inscripcion.id}">
+                    Inscripción ID #${inscripcion.id}<br>
+                    ${inscripcion.usuarios.name} ${inscripcion.usuarios.apellido}<br>
+                    ${inscripcion.usuarios.numeroTelefono}<br>
+                    Estado: <span style='color: #6c757d; font-weight:600;'>Finalizado</span>
+                    </li>`;
+            });
+
+            inscripcionesHtml += '</ul>';
+            $('#inscripcionesNullModal .modal-bodyInscripcionesNull').html(inscripcionesHtml);
+            $('#inscripcionesNullModal').modal('show');
+
+            $('#buscadorIdNull').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('.buscar').filter(function() {
+                    var text = $(this).data('id').toString().toLowerCase();
+                    $(this).toggle(text.indexOf(value) > -1);
+                });
+            });
+        },
+        error: function(error) {
+            console.error('Error al obtener las inscripciones:', error);
+        }
+    });
+}
+
+
+
     //
     //
     var cursoActual;
-    function mostrarDias(id){
-        cursoActual = id
-            $('#agregarDiasModal').modal('show');
-            let divDias = $('#agregarDiasCurso');
-            divDias.empty();
+    // function mostrarDias(id){
+    //     cursoActual = id
+    //         $('#agregarDiasModal').modal('show');
+    //         let divDias = $('#agregarDiasCurso');
+    //         divDias.empty();
 
-            $.ajax({
-                url: '/diaCurso/' + id,
-                method: 'GET',
-                success: function (response){
+    //         $.ajax({
+    //             url: '/diaCurso/' + id,
+    //             method: 'GET',
+    //             success: function (response){
 
-                    let cursos = response.curso;
-                    let proximosDias = response.dias
-
-
-                    let inicial = `<label> fecha Inicial: ${cursos.fechaInicio}</label> <br>
-                               <label> hora de Inicio: ${cursos.horaInicio}</label>`;
-
-                    divDias.append(inicial);
-
-                    let des = `<h5> Dias proximos </h5>`;
-
-                    divDias.append(des);
-
-                    proximosDias.forEach(dia =>{
-                        let nuevoDia = `<li>
-                          <label> Fecha: ${dia.fechaContinuacion} </label>
-                          <label> Hora: ${dia.horaContinuacion} </label>
-                         </li>`
-
-                        divDias.append(nuevoDia);
-                    })
+    //                 let cursos = response.curso;
+    //                 let proximosDias = response.dias
 
 
+    //                 let inicial = `<label> fecha Inicial: ${cursos.fechaInicio}</label> <br>
+    //                            <label> hora de Inicio: ${cursos.horaInicio}</label>`;
 
-                },
-                error: function (){
+    //                 divDias.append(inicial);
 
-                }
-            });
+    //                 let des = `<h5> Dias proximos </h5>`;
 
-    }
+    //                 divDias.append(des);
 
-    $('#AgregarFC').on('click', function (){
-        $("#agregarNuevoDiaModal").modal('show');
-        $('#agregarDiasModal').modal('hide');
-    });
+    //                 proximosDias.forEach(dia =>{
+    //                     let nuevoDia = `<li>
+    //                       <label> Fecha: ${dia.fechaContinuacion} </label>
+    //                       <label> Hora: ${dia.horaContinuacion} </label>
+    //                      </li>`
 
-    $('#GuardarFC').on('click',function (id){
-        let fecha = $('#nuevaFecha').val();
-        let hora = $('#nuevaHora').val();
+    //                     divDias.append(nuevoDia);
+    //                 })
 
-        console.log(fecha);
-        console.log(hora);
 
-        $.ajax({
-           url: '/nuevaFecha/' + cursoActual,
-           method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-           data:{
-               fecha: fecha,
-               hora: hora
-           },
-           success: function (response){
-               alert(response)
-               mostrarDias(cursoActual);
-               $("#agregarNuevoDiaModal").modal('hide');
-               $('#agregarDiasModal').modal('show');
-           },
-           error: function (response){
-                console.log(response);
-           }
-        });
-    });
+
+    //             },
+    //             error: function (){
+
+    //             }
+    //         });
+
+    // }
+
+    // $('#AgregarFC').on('click', function (){
+    //     $("#agregarNuevoDiaModal").modal('show');
+    //     $('#agregarDiasModal').modal('hide');
+    // });
+
+    // $('#GuardarFC').on('click',function (id){
+    //     let fecha = $('#nuevaFecha').val();
+    //     let hora = $('#nuevaHora').val();
+
+    //     console.log(fecha);
+    //     console.log(hora);
+
+    //     $.ajax({
+    //        url: '/nuevaFecha/' + cursoActual,
+    //        method: 'POST',
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //        data:{
+    //            fecha: fecha,
+    //            hora: hora
+    //        },
+    //        success: function (response){
+    //            alert(response)
+    //            mostrarDias(cursoActual);
+    //            $("#agregarNuevoDiaModal").modal('hide');
+    //            $('#agregarDiasModal').modal('show');
+    //        },
+    //        error: function (response){
+    //             console.log(response);
+    //        }
+    //     });
+    // });
 
 
 
@@ -954,11 +1100,15 @@ function editarInscripcion(inscripcionId){
                             estado: $('#inscripcionEstado').val(),
                             _token: $('meta[name="csrf-token"]').attr('content')
                         };
+                        // Mostrar la pantalla de carga
+                         $('#contenedor_carga').css('display', 'block');
                         $.ajax({
                             url: `/update/inscripcion/${inscripcionId}`,
                             method: 'POST',
                             data: updatedInscripcion,
                             success: function(response) {
+                                // Ocultar la pantalla de carga
+                                $('#contenedor_carga').css('display', 'none');
                                 alert(response);
                                 $('#inscripcionModal').modal('hide');
                                 mostrarInscripciones(data.cursoId);
@@ -966,6 +1116,8 @@ function editarInscripcion(inscripcionId){
                                 console.log(response);
                             },
                             error: function(error) {
+                                // Ocultar la pantalla de carga
+                                $('#contenedor_carga').css('display', 'none');
                                 alert('Error al actualizar la inscripción.');
                             }
                         });
@@ -1043,7 +1195,9 @@ function cursoDelete(id) {
                     // Muestra el mensaje de error personalizado desde el controlador
                     alert(response.error);
                 } else {
-                    alert('Curso eliminado exitosamente.');
+                    alert('Curso finalizado exitosamente.');
+                    $('#editCursoModal').modal('hide');
+                    dibujarCursosInactivos();
                     dibujarCursos();
                 }
             },
@@ -1067,6 +1221,7 @@ function modalEditar(id) {
         success: function(data) {
             const curso = data.curso;
             const empleados = data.empleados;
+            const inscripciones = data.inscripcion || [];
 
             $('#edit_id').val(curso.id);
             $('#edit_nombre').val(curso.nombre);
@@ -1082,6 +1237,34 @@ function modalEditar(id) {
             empleados.forEach(empleado => {
                 const selected = empleado.id === curso.empleadoId ? 'selected' : '';
                 empleadoSelect.append(`<option value="${empleado.id}" ${selected}>${empleado.name}</option>`);
+            });
+
+            // Verificar si el curso tiene inscripciones con estado 1 o 0
+            const tieneInscripciones = inscripciones.some(inscripcion => inscripcion.estado === 1 || inscripcion.estado === 0);
+
+            // Verificar si la terceraFecha ya pasó
+            const hoy = new Date();
+            const terceraFecha = new Date(curso.terceraFecha);
+            console.log("Hoy: " + hoy + ", tercera fecha: " + terceraFecha);
+
+            if (tieneInscripciones) {
+                $('#deleteCursoBtn').prop('disabled', true);
+                if (hoy >= terceraFecha){
+                    $('#deleteCursoBtn').prop('disabled', false);
+                }
+                $('#edit_precio').prop('readonly', true);
+                $('#edit_date').prop('readonly', true);
+                $('#edit_hour').prop('readonly', true);
+            } else {
+                $('#deleteCursoBtn').prop('disabled', false);
+                $('#edit_precio').prop('readonly', false);
+                $('#edit_date').prop('readonly', false);
+                $('#edit_hour').prop('readonly', false);
+            }
+
+            // Asignar el ID del curso al botón de borrar
+            $('#deleteCursoBtn').off('click').on('click', function() {
+                cursoDelete(curso.id);
             });
 
             $('#editCursoModal').modal('show');
@@ -1178,16 +1361,17 @@ $('#edit_imagenProducto').on('change', function() {
     }
 })
 
-    $('#buscadorNombre').on('keyup', function() {
-        var value = $(this).val().toLowerCase();
-        $('#cursos .card').filter(function() {
-            $(this).toggle($(this).find('.card-title').text().toLowerCase().indexOf(value) > -1);
-        });
+$('#buscadorNombre').on('keyup', function() {
+    var value = $(this).val().toLowerCase();
+    $('#cursos .card').filter(function() {
+        $(this).toggle($(this).find('.card-title').text().toLowerCase().indexOf(value) > -1);
     });
+});
 
 
     $(document).ready(function(){
 
+        dibujarCursosInactivos();
         dibujarCursos();
 
 // Dashboard toggle

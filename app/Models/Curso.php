@@ -15,7 +15,7 @@ class Curso extends Model
     //Para que no de problemas a la hora de hacer pruebas y llenar, Ponerlas true si es necesario saber las fechas
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'cupoLimite', 'fechaInicio','horaInicio', 'precio', 'imagen','descripcion', 'empleadoId', 'descuentoId'];
+    protected $fillable = ['nombre', 'cupoLimite', 'fechaInicio', 'segundaFecha', 'terceraFecha', 'horaInicio', 'precio', 'imagen','descripcion', 'empleadoId', 'descuentoId'];
 
 
     public function empleado(){

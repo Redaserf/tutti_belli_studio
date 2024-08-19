@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('cupoLimite');
             $table->date('fechaInicio');
+            $table->date('segundaFecha')->nullable();
+            $table->date('terceraFecha')->nullable();
             $table->time('horaInicio');
             $table->boolean('activo')->default(1);
             $table->double('precio');

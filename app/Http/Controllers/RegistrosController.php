@@ -30,11 +30,7 @@ use App\Models\Horario;
 use App\Models\EmpleadoHasHorario;
 
 use App\Models\Reporte;
-
-
-
-
-
+use Carbon\Carbon;
 
 class RegistrosController extends Controller
 {
@@ -170,7 +166,7 @@ class RegistrosController extends Controller
             }
     
             if (!is_array($diaSemana)) {
-                returnresponse()->json(['message' => 'Los días de la semana deben ser un array'], 400);
+                return response()->json(['message' => 'Los días de la semana deben ser un array'], 400);
             }
     
             foreach ($diaSemana as $dia) {
@@ -213,6 +209,10 @@ class RegistrosController extends Controller
             $productos = json_decode($request->input('productos'), true);
             $cantidadesProductos = json_decode($request->input('cantidadesProductos'), true);
 
+            // Calcular segundaFecha y terceraFecha
+            $segundaFecha = Carbon::parse($fechaInicio)->addDay()->format('Y-m-d');
+            $terceraFecha = Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d');
+
 
             // Guardar la imagen
             if ($request->hasFile('imagenCurso')) {
@@ -237,6 +237,8 @@ class RegistrosController extends Controller
             $curso->nombre = $nombre;
             $curso->cupoLimite = $cupoLimite;
             $curso->fechaInicio = $fechaInicio;
+            $curso->segundaFecha = $segundaFecha;
+            $curso->terceraFecha = $terceraFecha;
             $curso->horaInicio = $horaInicio;
             $curso->descripcion = $descripcion;
             $curso->precio = $precio;

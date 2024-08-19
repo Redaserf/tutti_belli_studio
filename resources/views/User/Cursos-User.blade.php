@@ -380,7 +380,10 @@
                       <p class="card-text">Instructor: ${curso.empleado ? curso.empleado.name : 'No asignado'}</p>
                       <p class="card-text">Técnicas: ${tecnicas}</p>
                       <p class="card-text">Costo de inscripción: $${curso.precio}</p>
-                      <p class="card-text">Fecha: ${curso.fechaInicio} Hora: ${curso.horaInicio}</p>
+                      <p class="card-text">Fecha de inicio: ${curso.fechaInicio}</p>
+                      <p class="card-text">Segunda fecha: ${curso.segundaFecha}</p>
+                      <p class="card-text">Tercera fecha: ${curso.terceraFecha}</p>
+                      <p class="card-text">Hora de inicio: ${curso.horaInicio}</p>
                       <button class="btn btn-primary inscribirme-btn" data-curso-id="${curso.id}" ${buttonDisabled} data-bs-toggle="modal" data-bs-target="#inscripcionModal">${buttonText}</button>
                       ${buttonCancelar}
                     </div>
