@@ -26,7 +26,7 @@ class DetalleProductoController extends Controller
     function comprasConfirmadas(){
         $ventas = Venta::has('detalleProductos')
             ->with('detalleProductos')
-            ->where('estadoVenta', true)
+            ->where('estadoVenta', '=',1)
             ->orderBy('id','desc')
             ->get();
 
@@ -34,6 +34,17 @@ class DetalleProductoController extends Controller
     }
 
     //Compras rechazadas
+    function comprasRechazadas()
+    {
+        $ventas = Venta::has('detalleProductos')
+            ->with('detalleProductos')
+            ->where('estadoVenta', '=',0)
+            ->orderBy('id','desc')
+            ->get();
+
+
+        return response()->json($ventas);
+    }
 
 
     function ticket($id){
