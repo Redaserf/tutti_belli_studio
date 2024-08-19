@@ -232,6 +232,7 @@
                 <tr>
                     <th>Tipo</th>
                     <th>Precio</th>
+                    <th>Fecha</th>
                     <th>Detalles</th>
                 </tr>
             </thead>
@@ -378,6 +379,7 @@
                             const infoCitas = `<tr>
                                 <td><span style='color: ${color}; font-weight:600;'>Cita</span></td>
                                 <td>$${venta ? venta.total : 'N/A'}</td>
+                                <td>${cita ? cita.fechaCita : 'N/A'}</td>
                                 <td>
                                     <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
                                 </td>
@@ -404,6 +406,7 @@
                             const infoInscripciones = `<tr>
                                 <td><span style='color: ${color}; font-weight:600;'>${estadoClase}</span></td>
                                 <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                                <td>${inscripcion ? inscripcion.fechaInscripcion : 'N/A'}</td>
                                 <td>
                                     <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
                                 </td>
@@ -427,6 +430,7 @@
                             const infoVentas = `<tr>
                                 <td><span style='color: ${color}; font-weight:600;'>${estadoVentaClase}</span></td>
                                 <td>$${venta.total}</td>
+                                <td>${venta ? venta.fechaVenta : 'N/A'}</td>
                                 <td>
                                     <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
                                 </td>
