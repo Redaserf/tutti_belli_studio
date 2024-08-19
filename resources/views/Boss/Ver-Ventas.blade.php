@@ -793,6 +793,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="compras-aceptadas-tab-btn" data-bs-toggle="tab" data-bs-target="#comprasAceptadasContent" type="button" role="tab" aria-controls="comprasAceptadasContent" aria-selected="false">Compras Aceptadas</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="compras-rechazadas-tab-btn" data-bs-toggle="tab" data-bs-target="#comprasRechazadasContent" type="button" role="tab" aria-controls="comprasRechazadasContent" aria-selected="false">Compras Rechazadas</button>
+                </li>
             </ul>
 
             <br>
@@ -841,6 +844,29 @@
                                 </thead>
                                 <tbody id="ventasConfirmadasTable">
                                     <!-- Contenido de la tabla -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña compras RECHAZADAS -->
+                <div class="tab-pane fade" id="comprasRechazadasContent" role="tabpanel" aria-labelledby="compras-rechazadas-tab-btn">
+                    <div class="table-container mt-5">
+                        <h2>COMPRAS RECHAZADAS</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Id de compra</th>
+                                    <th>Total</th>
+                                    <th>Día</th>
+                                    <th>Detalles</th>
+                                </tr>
+                                </thead>
+                                <tbody id="ventasRechazadas">
+                                <!-- Contenido de la tabla -->
                                 </tbody>
                             </table>
                         </div>
@@ -1998,6 +2024,7 @@ sidebarBtn.addEventListener("click", () => {
         // Fin scripts para todas las vistas
         dibujarCompras();
         dibujarCompraConfirmada();
+        dibujarCompraRechazada();
 
 
 
@@ -2032,17 +2059,19 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
-    dibujarCompras();
+    // dibujarCompras();
 
     function dibujarCompraConfirmada(){
         $.ajax({
             url: '/get/compras/confirmadas',
             method: 'GET',
             success: function (data) {
+                console.log('ENTRAMOS A CONFIRMADA');
                 var cont = 0;
                 const detallesCompra = $('#ventasConfirmadasTable');
                 detallesCompra.empty();
                 data.forEach(venta => {
+                    console.log(venta);
                         cont = venta.id;
                         const fila = `
                         <tr>
@@ -2058,7 +2087,35 @@ sidebarBtn.addEventListener("click", () => {
             }
         });
     }
-    dibujarCompraConfirmada();
+    // dibujarCompraConfirmada();
+
+    function dibujarCompraRechazada(){
+        $.ajax({
+            url: '/get-Rechazadas',
+            method: 'GET',
+            success: function (data) {
+                console.log('ENTRAMOS A RECAHZADA');
+                var cont = 0;
+                const detallesCompra = $('#ventasRechazadas');
+                detallesCompra.empty();
+                data.forEach(venta => {
+                    console.log(venta)
+                    cont = venta.id;
+                    const fila = `
+                            <tr>
+                                <td>Compra</td>
+                                <th>${venta.id}</th>
+                                <td>${venta.total}</td>
+                                <td>${venta.fechaVenta}</td>
+                                <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
+                            </tr>
+                        `;
+                    detallesCompra.append(fila);
+                });
+            }
+        });
+    }
+// dibujarCompraRechazada();
 
 
     function prepararConfirmacion(ventaId) {
@@ -2130,6 +2187,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
+                dibujarCompraRechazada();
 
 
                 // dibujarCompras();
@@ -2155,6 +2213,7 @@ sidebarBtn.addEventListener("click", () => {
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
+                dibujarCompraRechazada();
                 $('#rejectModal').modal('hide');
             },
             error: function (error){
