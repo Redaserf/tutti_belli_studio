@@ -1151,13 +1151,13 @@ $.ajax({
 
                 console.log('Opciones agregadas:', select.children('option').length);
 
-                if (select.children('option').length > 0) {
-                    select.val(select.children('option').first().val());
-                } else {
-                    alert('No hay horas disponibles para la fecha seleccionada.');
-                    $('#citasModal').modal('hide');
+                // if (select.children('option').length > 0) {
+                //     select.val(select.children('option').first().val());
+                // } else {
+                //     alert('No hay horas disponibles para la fecha seleccionada.');
+                //     $('#citasModal').modal('hide');
 
-                }
+                // }
             }
         }
 
@@ -1214,7 +1214,7 @@ $.ajax({
                 var fechaHora = info.date;
                 var hoy = new Date();
 
-                var limiteHora = new Date(hoy.getTime() + 1 * 60 * 60 * 1000);
+                var limiteHora = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
 
                 let fechaSeleccionada = moment(fechaHora);
                 let citasEmpleados = empleado.citas_empleados || []; // Asegurarse de que sea un array
@@ -1228,12 +1228,12 @@ $.ajax({
                 });
 
                 if (citaExistente) {
-                    alert('Ya existe una cita para esta fecha y hora.');
+                    mostrarAlerta('Ya existe una cita para esta fecha y hora.', 'alert-primary', 'info-fill');
                     return;
                 }
 
                 if (fechaHora.toDateString() === hoy.toDateString() && fechaHora.getTime() < limiteHora.getTime()) {
-                    alert('No se pueden hacer citas con menos de 1 hora de anticipación.');
+                    mostrarAlerta('No se pueden hacer citas con menos de 2 horas de anticipación.', 'alert-primary', 'info-fill');
                     return;
                 }
 
@@ -1274,9 +1274,14 @@ $.ajax({
             beforeShowDay: function(fecha) {
                 var dia = fecha.getDay();
 
-                var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
-                if (resultadoCurso[0] === false) {
-                    return resultadoCurso;
+                if(cursosFechas === null){
+                    console.log('El empleado no tiene cursos asignados')
+                }else{
+                    var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
+                    console.log('JAJJAJA: ', resultadoCurso[0]);
+                    if (resultadoCurso[0] === false) {
+                        return resultadoCurso;
+                    }
                 }
 
                 if (hiddenDays.includes(dia)) {
@@ -1457,7 +1462,7 @@ function actualizarOpcionesHora(fechaHora) {
                 error: function(error) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                    alert("Hubo un error al tratar de eliminar la cita.")
+                    mostrarAlerta("Hubo un error al tratar de eliminar la cita.", 'alert-danger', 'exclamation-triangle-fill');
                     console.log(error);
                 }
             })

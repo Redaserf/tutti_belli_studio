@@ -647,6 +647,7 @@ $.get('/carrito/contar-productos', function(data) {
                     }, 1500);
                 },
                 error: function (response){
+                    console.log(response);
                     var mensajeError = response.responseJSON.message;
                     mostrarAlerta(mensajeError, 'alert-danger','exclamation-triangle-fill')
 

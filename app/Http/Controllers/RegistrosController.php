@@ -364,6 +364,23 @@ class RegistrosController extends Controller
             'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
 
+        $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
+        ->where('activo', true)
+        ->pluck('fechaInicio');
+
+        //validar si la fecha seleccionada coincide con alguna de las fechas de los cursos
+        foreach ($fechasCursos as $fechaInicio) {
+            $cursoFechas = [
+            Carbon::parse($fechaInicio)->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
+            ];
+
+            if (in_array($request->fechaCita, $cursoFechas)) {
+                throw new \Exception ('Tienes un curso asignado para esa fecha');
+            }
+        }
+
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
@@ -495,6 +512,23 @@ class RegistrosController extends Controller
             'json' => 'Los datos deben estar en formato JSON válido.',
         ]);
 
+
+         $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
+        ->where('activo', true)
+        ->pluck('fechaInicio');
+
+        //validar si la fecha seleccionada coincide con alguna de las fechas de los cursos
+        foreach ($fechasCursos as $fechaInicio) {
+            $cursoFechas = [
+            Carbon::parse($fechaInicio)->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
+            ];
+
+            if (in_array($request->fechaCita, $cursoFechas)) {
+                throw new \Exception ('Tienes un curso asignado para esa fecha');
+            }
+        }
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
@@ -826,6 +860,23 @@ class RegistrosController extends Controller
             'after_or_equal' => 'La fecha debe ser hoy o posterior.',
             'json' => 'Los datos deben estar en formato JSON válido.',
         ]);//valida que entren esos datos en los formatos deseados
+
+        $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
+        ->where('activo', true)
+        ->pluck('fechaInicio');
+
+        //validar si la fecha seleccionada coincide con alguna de las fechas de los cursos
+        foreach ($fechasCursos as $fechaInicio) {
+            $cursoFechas = [
+            Carbon::parse($fechaInicio)->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
+            Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
+            ];
+
+            if (in_array($request->fechaCita, $cursoFechas)) {
+                throw new \Exception ('El empleado no tiene disponible esa fecha');
+            }
+        }
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 

@@ -950,9 +950,14 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 beforeShowDay: function(fecha) {
                     var dia = moment(fecha).day();
 
-                    var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
-                    if (resultadoCurso[0] === false) {
-                        return resultadoCurso;
+                    if(cursosFechas === null){
+                        console.log('El empleado no tiene cursos asignados')
+                    }else{
+                        var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
+                        console.log('JAJJAJA: ', resultadoCurso[0]);
+                        if (resultadoCurso[0] === false) {
+                            return resultadoCurso;
+                        }
                     }
 
                     if (hiddenDays.includes(dia)) {

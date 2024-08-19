@@ -1102,6 +1102,11 @@ $.ajax({
         function deshabilitarFechaPorCurso(fecha, fechasCursos) {
             const fechaMoment = moment(fecha).format('YYYY-MM-DD');
 
+            if(fechasCursos === null) {
+                console.log('No hay cursos activos para este empleado');
+                return;
+            }
+
             for (let curso of fechasCursos) {
                 if (
                     fechaMoment === curso.primeraFecha ||
@@ -1180,6 +1185,8 @@ $.ajax({
                     while (horaInicio.isBefore(horaFin)) {
                         let horaTexto = horaInicio.format('HH:mm:ss');
                         
+
+                        limiteHora = new Date();
                         //si es el día actual quita las horas con menos de 1 hora de anticipación
                         if (!horasOcupadas.includes(horaTexto)) {
                             if (fechaMoment.isSame(hoy, 'day')) {
@@ -1261,7 +1268,7 @@ $.ajax({
                 var fechaHora = info.date;
                 var hoy = new Date();
 
-                var limiteHora = new Date(hoy.getTime() + 1 * 60 * 60 * 1000);
+                var limiteHora = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
 
                 let fechaSeleccionada = moment(fechaHora);
                 let citasEmpleados = empleado.citas_empleados || []; // Asegurarse de que sea un array
@@ -1280,7 +1287,7 @@ $.ajax({
                 }
 
                 if (fechaHora.toDateString() === hoy.toDateString() && fechaHora.getTime() < limiteHora.getTime()) {
-                    mostrarAlerta('No se pueden hacer citas con menos de 1 hora de anticipación.', 'alert-primary', 'info-fill');
+                    mostrarAlerta('No se pueden hacer citas con menos de 2 horas de anticipación.', 'alert-primary', 'info-fill');
                     return;
                 }
 
@@ -1321,10 +1328,17 @@ $.ajax({
             beforeShowDay: function(fecha) {
                 var dia = fecha.getDay();
 
-                var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
-                if (resultadoCurso[0] === false) {
-                    return resultadoCurso;
+                if(cursosFechas === null){
+                    console.log('El empleado no tiene cursos asignados')
+                }else{
+                    var resultadoCurso = deshabilitarFechaPorCurso(fecha, cursosFechas);
+                    console.log('JAJJAJA: ', resultadoCurso[0]);
+                    if (resultadoCurso[0] === false) {
+                        return resultadoCurso;
+                    }
                 }
+
+       
 
                 
                 if (hiddenDays.includes(dia)) {
