@@ -42,6 +42,14 @@ class InscripcionController extends Controller
         return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
     }
 
+    public function getInscripcionesNull($cursoId)
+    {
+        $inscripciones = Inscripcion::where('cursoId', $cursoId)->where('estado', null)->where('canceladoPorAdmin', null)->with('usuarios')->get();
+        $curso = Curso::find($cursoId);
+
+        return response()->json(['inscripciones' => $inscripciones, 'curso' => $curso]);
+    }
+
 
     public function index($inscripcionId)
     {
@@ -137,7 +145,7 @@ class InscripcionController extends Controller
                     }
 
                     DB::commit();
-                    return 'Inscripcion contretada correctamente';
+                    return 'Inscripción aceptada con éxito.';
                 }
 
             }else{
@@ -210,9 +218,12 @@ class InscripcionController extends Controller
                 return response()->json(['error' => 'Inscripción no encontrada.'], 404);
             }
 
+            $inscripcion->canceladoPorAdmin = 1;
             $inscripcion->estado = null;
             $inscripcion->save();
-            // $inscripcion->delete();
+//             $inscripcion->delete();
+
+            Mail::to($usuario->email)->send(new InscripcionCancelada($inscripcion,$nombreCurso));
 
             // Enviar correo de cancelación usando la instancia completa de la inscripción
 

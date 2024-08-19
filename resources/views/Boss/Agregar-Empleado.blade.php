@@ -425,7 +425,6 @@
 
 
 <div class="home">
-
     <div class="col-12">
         <div class="container container-div">
             <div class="container full-height d-flex justify-content-center align-items-center">
@@ -436,36 +435,45 @@
                     <form id="empleadoForm">
                         @csrf
                         <div class="col-md-12">
+                            <!-- Nombre -->
                             <div class="form-floating mb-3">
                                 <input name="employeeName" type="text" class="form-control" id="employeeName" placeholder="Nombre" required>
                                 <label for="employeeName">Nombre</label>
                             </div>
+                            <!-- Apellidos -->
                             <div class="form-floating mb-3">
                                 <input name="employeeLastname" type="text" class="form-control" id="employeeLastname" placeholder="Apellidos" required>
                                 <label for="employeeLastname">Apellidos</label>
                             </div>
+                            <!-- Género -->
                             <div class="form-floating mb-3">
-                                <select name="employeeGender" class="form-control" id="employeeGender" placeholder="Sexo" required>
+                                <select name="employeeGender" class="form-control" id="employeeGender" required>
                                     <option value="" disabled selected>Escoge una opción</option>
                                     <option value="Hombre">Hombre</option>
                                     <option value="Mujer">Mujer</option>
                                 </select>
                                 <label for="employeeGender">Género</label>
                             </div>
+                            <!-- Teléfono -->
                             <div class="form-floating mb-3">
-                            <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)" min="0" pattern="\d{10}"  title="El número de teléfono debe contener exactamente 10 dígitos.">
+                                <input type="number" name="employeePhone" class="form-control" id="employeePhone" placeholder="Número telefónico" required oninput="this.value = this.value.slice(0, 10)">
                                 <label for="employeePhone">Número telefónico</label>
+                                <div class="invalid-feedback">El número de teléfono debe contener exactamente 10 dígitos.</div>
                             </div>
+                            <!-- Fecha de nacimiento -->
                             <div class="form-floating mb-3">
                                 <input type="date" class="form-control" name="employeeBirthDate" id="employeeBirthDate" placeholder="Fecha de nacimiento" required>
                                 <label for="employeeBirthDate">Fecha de nacimiento</label>
+                                <div class="invalid-feedback">Debes ser mayor de 18 años para registrarte.</div>
                             </div>
+                            <!-- Correo electrónico -->
                             <div class="form-floating mb-3">
                                 <input name="employeeEmail" type="email" class="form-control" id="employeeEmail" placeholder="Correo electrónico" required>
                                 <label for="employeeEmail">Correo electrónico</label>
                             </div>
+                            <!-- Contraseña -->
                             <div class="form-floating mb-3">
-                                <input name="employeePassword" type="password" class="form-control" id="employeePassword" placeholder="Contraseña" required minlength="8" pattern=".*[0-9].*" title="Su contraseña debe incluír al menos 1 número">
+                                <input name="employeePassword" type="password" class="form-control" id="employeePassword" placeholder="Contraseña" required minlength="8">
                                 <label for="employeePassword">Contraseña</label>
                             </div>
                             <div>
@@ -478,17 +486,16 @@
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#crearHorarioModal" class="btn btn-primary btn-block w-100" id="agregarHorario"><i class="fa-regular fa-calendar"></i></button>
                                 
                             </div>
+                            <!-- Botón de envío -->
                             <div style="margin-top: 20px">
-                                <button type="submit" class="btn btn-dark btn-block w-100" id="agregarEmpleado">Agregar Empleado</button>
+                                <button type="submit" class="btn btn-dark btn-block w-100" id="agregarEmpleado" disabled>Agregar Empleado</button>
                             </div>
                         </div>
                     </form>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -575,6 +582,64 @@
     });
 
 $(document).ready(function(){
+    // Función para validar si es mayor de 18 años
+    function validarEdad(fechaNacimiento) {
+        const fechaNacimientoDate = new Date(fechaNacimiento);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+            edad--;
+        }
+        return edad >= 18;
+    }
+
+    // Función para habilitar o deshabilitar el botón de envío
+    function toggleSubmitButton() {
+        const isValid = validarEdad($('#employeeBirthDate').val()) && 
+                        $('#employeePhone').val().length === 10 && 
+                        $('#employeeName').val().trim() !== '' &&
+                        $('#employeeLastname').val().trim() !== '' &&
+                        $('#employeeGender').val() !== '' &&
+                        $('#employeeEmail').val().trim() !== '' &&
+                        $('#employeePassword').val().length >= 8;
+
+        $('#agregarEmpleado').prop('disabled', !isValid);
+    }
+
+    // Eventos de validación
+    $('#employeeBirthDate').on('change', function() {
+        const isValidAge = validarEdad($(this).val());
+        if (!isValidAge) {
+            $(this).addClass('is-invalid');
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+        toggleSubmitButton();
+    });
+
+    $('#employeePhone').on('input', function() {
+        const isValidPhone = $(this).val().length === 10;
+        if (!isValidPhone) {
+            $(this).addClass('is-invalid');
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+        toggleSubmitButton();
+    });
+
+    // Validación en todos los campos relevantes
+    $('#employeeName, #employeeLastname, #employeeGender, #employeeEmail, #employeePassword').on('input change', function() {
+        toggleSubmitButton();
+    });
+
+    // Prevenir el envío del formulario si las validaciones no son correctas
+    $('#empleadoForm').on('submit', function(e) {
+        if ($('#agregarEmpleado').is(':disabled')) {
+            e.preventDefault();
+            alert('Por favor, asegúrate de que todos los campos sean correctos.');
+        }
+    });
 
     const horaInicioSelect = $('#nuevoHoraInicio');
     const horaFinSelect = $('#nuevoHoraFin');

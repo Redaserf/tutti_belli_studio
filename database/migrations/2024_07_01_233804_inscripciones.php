@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->date('fechaInscripcion');
             $table->boolean('estado')->nullable();
+            $table->boolean('canceladoPorAdmin')->nullable();
             $table->unsignedBigInteger('usuarioId');
             $table->unsignedBigInteger('cursoId');
             $table->timestamps();

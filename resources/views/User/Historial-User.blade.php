@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Historial del usuario</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&display=swap');
@@ -188,7 +189,7 @@
     <!-- ESTA TABLA ES PARA VER POR ENCIMA EL HISTORIAL ALGO BASICO NO TAN AMONTONADO -->
     <div class="table-container mt-5">
         <h2>Historial</h2>
-        <table class="table table-striped">
+        <table id="tablaHistorial" class="table table-striped">
             <thead>
                 <tr>
                     <th>Tipo</th>
@@ -271,6 +272,7 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script>
@@ -307,108 +309,99 @@
                 localStorage.removeItem('alertIcon');
             }
             //alertas
-        function dibujarHistorial() {
-      $.ajax({
-        url: '/get/historial',
-        method: 'GET',
-        success: function(data) {
-          console.log(data);
-          const historiales = $('#bodyHistorial');
-          historiales.empty();
-          const { citas, inscripciones, ventas } = data;
 
-    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
-        historiales.append(`
-            <tr>
-                <td colspan="4">No hay historial disponible.</td>
-            </tr>
-        `);
-    } else {
-        citas.forEach(cita => {
-            let venta;
-            cita.citas_has_servicios.forEach(servicio => {
-                venta = servicio.venta;
-            })
-        const infoCitas = `<tr>
-            <td>Cita</td>
-            <td>$${venta ? venta.total : 'N/A'}</td>
-            <td>
-                <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
-            </td>
-        </tr>`;
-        historiales.append(infoCitas);
-});
+            function dibujarHistorial() {
+            $.ajax({
+                url: '/get/historial',
+                method: 'GET',
+                success: function(data) {
+                    const tabla = $('#tablaHistorial').DataTable();
+                    tabla.clear(); // Limpiar la tabla antes de agregar nuevas filas
+                    const { citas, inscripciones, ventas } = data;
 
-        inscripciones.forEach(inscripcion => {
-            if (inscripcion.estado == null) {
-                const infoInscripcionesExpiradas = `<tr>
-                <td><span style='color: #A81416; font-weight:600;'>Inscripción</span></td>
-                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoInscripcionesExpiradas);
-            }
-            else if (inscripcion.estado == 1) {
-                const infoInscripcionesAceptadas = `<tr>
-                <td><span style='color: #39BF3D; font-weight:600;'>Inscripción</span></td>
-                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                <td>
-                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                </td>
-            </tr>`;
-            historiales.append(infoInscripcionesAceptadas);
-            }
-            else {
-                const infoInscripciones = `<tr>
-                    <td><span style='color: #D5B533; font-weight:600;'>Inscripción</span></td>
-                    <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoInscripciones);
-            }
-        });
+                    if (citas.length === 0 && inscripciones.length === 0 && ventas.length === 0) {
+                        tabla.row.add([
+                            '<td colspan="3" class="text-center">No hay historial disponible.</td>'
+                        ]).draw();
+                    } else {
+                        citas.forEach(cita => {
+                            let venta;
+                            cita.citas_has_servicios.forEach(servicio => {
+                                venta = servicio.venta;
+                            });
+                            let color = '';
+                            if (cita.estadoCita == null) {
+                                color = '#A81416'; // Rojo para expiradas
+                            } else if (cita.estadoCita == 1) {
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
+                            const infoCitas = `<tr>
+                                <td><span style='color: ${color}; font-weight:600;'>Cita</span></td>
+                                <td>$${venta ? venta.total : 'N/A'}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoCitas)).draw(false);
+                        });
 
-        ventas.forEach(venta => {
-            if (venta.estadoVenta == 0) {
-                const infoVentasCancelada = `<tr>
-                    <td><span style='color: #A81416; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentasCancelada);
-            } else if (venta.estadoVenta == 1) {
-                const infoVentasAceptada = `<tr>
-                    <td><span style='color: #39BF3D; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentasAceptada);
-            } else {
-                const infoVentas = `<tr>
-                    <td><span style='color: #D5B533; font-weight:600;'>Compra</span></td>
-                    <td>$${venta.total}</td>
-                    <td>
-                        <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
-                    </td>
-                </tr>`;
-                historiales.append(infoVentas);
-            }
-        });
-    }
-    },
-        error: function(error) {
-        console.error('Error al obtener el historial', error);
+                        inscripciones.forEach(inscripcion => {
+                            let estadoClase = '';
+                            let color = '';
+                            if (inscripcion.estado == null && inscripcion.canceladoPorAdmin == 1) {
+                                estadoClase = 'Inscripción';
+                                color = '#A81416'; // Rojo (Inscripción cancelada por administrador)
+                            } else if (inscripcion.estado == null && inscripcion.canceladoPorAdmin == null) {
+                                estadoClase = 'Inscripción';
+                                color = '#39BF3D'; // Verde (curso finalizado y pagado)
+                            } else if (inscripcion.estado == 1) {
+                                estadoClase = 'Inscripción';
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                estadoClase = 'Inscripción';
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
+                            const infoInscripciones = `<tr>
+                                <td><span style='color: ${color}; font-weight:600;'>${estadoClase}</span></td>
+                                <td>$${inscripcion.cursos ? inscripcion.cursos.precio : 'N/A'}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarInscripcionModal(${inscripcion.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoInscripciones)).draw(false);
+                        });
+
+                        ventas.forEach(venta => {
+                            let estadoVentaClase = '';
+                            let color = '';
+                            if (venta.estadoVenta == 0) {
+                                estadoVentaClase = 'Compra';
+                                color = '#A81416'; // Rojo para canceladas
+                            } else if (venta.estadoVenta == 1) {
+                                estadoVentaClase = 'Compra';
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                estadoVentaClase = 'Compra';
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
+                            const infoVentas = `<tr>
+                                <td><span style='color: ${color}; font-weight:600;'>${estadoVentaClase}</span></td>
+                                <td>$${venta.total}</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="mostrarProductoModal(${venta.id})"><i class="fa-solid fa-eye"></i></button>
+                                </td>
+                            </tr>`;
+                            tabla.row.add($(infoVentas)).draw(false);
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.error('Error al obtener el historial', error);
+                }
+            });
         }
-    });
-}
 
 
 function mostrarCitaModal(citaId) {
@@ -418,7 +411,7 @@ function mostrarCitaModal(citaId) {
                 success: function(data) {
                     const bodyCitas = $('#modal-bodyCitas');
                     bodyCitas.empty();
-                    const { citaHasServicios, cita, empleado } = data;
+                    const { citaHasServicios, cita, empleado, venta } = data;
                     if (citaHasServicios.length > 0) {
                 citaHasServicios.forEach(item => {
                     const servicios = `<div class="modalInfo">
@@ -431,20 +424,40 @@ function mostrarCitaModal(citaId) {
             } else {
                 bodyCitas.append('<div class="modalInfo">No se encontraron servicios para esta cita.</div>');
             }
-            if (empleado) {
-                const detalleCita = `
+
+            let detalleCita = '';
+            if (cita.estadoCita == 1 && venta && venta.estadoVenta == 1) {
+                detalleCita = `
+                <div class="modalInfo">
+                    Su cita programada para el ${cita.fechaCita}
+                    a las ${cita.horaCita} con el empleado ${empleado.name} <span style='color: #39BF3D; font-weight:600;'>ha finalizado con éxito.</span><br><br>
+                </div>`;
+                console.log("Cita:", cita);
+                console.log("Venta:", venta);
+            } else if (cita.estadoCita == 1) {
+                detalleCita = `
                 <div class="modalInfo">
                     Cita programada para el ${cita.fechaCita}
-                    a las ${cita.horaCita} con el empleado ${empleado.name}.
+                    a las ${cita.horaCita} con el empleado ${empleado.name}. <br><br>
+                    <span style='color: #39BF3D; font-weight:600;'>Su cita ha sido aceptada.</span> Lo esperamos en la sucursal a la fecha y hora acordada.
                 </div>`;
-                bodyCitas.append(detalleCita);
-            } else {
-                const detalleCita = `
+                console.log("Cita:", cita);
+                console.log("Venta:", venta);
+            } else if (cita.estadoCita == null) {
+                detalleCita = `
                 <div class="modalInfo">
-                    La cita ha terminado o ha sido cancelada, para más información, ponte en contacto con nosotros mediante WhatsApp.
+                    <span style='color: #A81416; font-weight:600;'>Su cita ha sido cancelada.</span> Para más información, ponte en contacto con nosotros mediante WhatsApp.
                 </div>`;
-                bodyCitas.append(detalleCita);
+            } else {
+                detalleCita = `
+                <div class="modalInfo">
+                    Cita programada para el ${cita.fechaCita}
+                    a las ${cita.horaCita} con el empleado ${empleado.name}. <br><br>
+                    <span style='color: #D5B533; font-weight:600;'>Su cita está pendiente de ser aceptada.</span> Para más información, ponte en contacto con nosotros mediante WhatsApp.
+                </div>`;
             }
+
+            bodyCitas.append(detalleCita);
             $('#citaModal').modal('show');
         },
         error: function(error) {
@@ -485,7 +498,7 @@ function mostrarCitaModal(citaId) {
                     }
                     else if (curso.activo == 1 && inscripcion.estado == null) {
                         const inscripcionCancelada = `<div class="modalInfo">
-                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Inscripción cancelada</p> Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros.</a> 
+                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Inscripción cancelada.</p> Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros.</a> 
                         </div>`;
 
                     inscripcionModal.append(inscripcionCancelada);
@@ -594,6 +607,25 @@ function mostrarCitaModal(citaId) {
 
 
         $(document).ready(function(){
+            let tabla = $('#tablaHistorial').DataTable({
+                "pageLength": 8, // Número de filas por página
+                "searching": true, // Activa la búsqueda
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontró historial",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
 
             dibujarHistorial();
 

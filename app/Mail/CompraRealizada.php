@@ -13,6 +13,8 @@ class CompraRealizada extends Mailable
 
     public $ventaId;
     public $usuario;
+    public $productos;
+    public $total;
 
     /**
      * Create a new message instance.
@@ -21,9 +23,23 @@ class CompraRealizada extends Mailable
      */
     public function __construct(Venta $venta)
     {
-        // Usamos la relación "usuarios" en lugar de "usuario"
         $this->ventaId = $venta->id;
         $this->usuario = $venta->usuarios->name;
+
+        // Agrupar productos por productoId y contar las cantidades
+        $this->productos = $venta->detalleProductos->groupBy('productoId')->map(function ($group) {
+            return [
+                'nombre' => $group->first()->nombre,
+                'descripcion' => $group->first()->descripcion,
+                'precio' => $group->first()->precio,
+                'cantidad' => $group->count()
+            ];
+        });
+
+        // Calcular el precio total
+        $this->total = $this->productos->sum(function($producto) {
+            return $producto['precio'] * $producto['cantidad'];
+        });
     }
 
     /**
@@ -34,10 +50,12 @@ class CompraRealizada extends Mailable
     public function build()
     {
         return $this->view('email.precompra')
-                    ->subject('Confirmación de tu compra')
-                    ->with([
-                        'ventaId' => $this->ventaId,
-                        'usuario' => $this->usuario,
-                    ]);
-    }
+            ->subject('Confirmación de tu compra')
+            ->with([
+                'ventaId' => $this->ventaId,
+                'usuario' => $this->usuario,
+                'productos' => $this->productos,
+                'total' => $this->total, // Pasar el total a la vista
+                ]);
+        }
 }
