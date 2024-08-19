@@ -198,8 +198,6 @@ use App\Models\Inscripcion;
     Route::get('/Perfil-Admin',[ViewsController ::class,'bossVerPerfil']);
 
 
-
-
 // ==========[ Login y Registros ]==========
 
 
