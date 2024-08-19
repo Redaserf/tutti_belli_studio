@@ -826,29 +826,25 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img1g.jpg" class="card-img-top" alt="...">
-            <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              
+            <div style="margin-top: 20px;"  class="card-body">
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de cejas, enseñándote a crear diseños naturales y personalizados que realzan la belleza de cada rostro. Aprenderás desde el diseño inicial hasta el acabado perfecto, utilizando métodos avanzados y seguros.</p>
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img4g.jpg" class="card-img-top" alt="...">
-            <div style="margin-top: 20px;" data-aos="fade-up" data-aos-duration="1000" class="card-body">
-              
+            <div style="margin-top: 20px;" " class="card-body">           
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de labios, enfocándote en la pigmentación y el contorno para lograr resultados duraderos y estéticamente agradables. Te enseñaremos a manejar diferentes tipos de pigmentos y técnicas para obtener un acabado impecable.</p>    
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img3g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de delineado de ojos, brindándote las habilidades necesarias para crear líneas precisas y elegantes que realzan la mirada. Aprenderás a aplicar distintos estilos de delineado, adaptándolos a las preferencias de cada cliente.</p>              
             </div>
           </div>
           <div data-aos="fade-up" data-aos-duration="1000" class="card-2" style="width: 18rem;">
             <img src="/resources/img/home/img2g.jpg" class="card-img-top" alt="...">
             <div style="margin-top: 20px;" class="card-body">
-              
               <p class="card-text">Nuestro curso te ayuda a especializarte con técnicas de pestañas, enseñándote cómo aplicar extensiones y tratamientos que mejoran la longitud y el volumen de manera segura y profesional. Conocerás diferentes métodos y productos para ofrecer un servicio de alta calidad a tus clientes.</p>
             </div>
           </div>
@@ -858,16 +854,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
         <div data-aos="fade-up" data-aos-duration="1000" class="container">
           <div data-aos="fade-up" data-aos-duration="1000" class="text-center row justify-content-center">
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR3.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/CURSO1.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR0.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/CURSO2.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR2.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/CURSO3.jpg" class="rounded img-galeria" alt="...">
             </div>
             <div data-aos="fade-up" data-aos-duration="1000" class="col-md-3 mb-4">
-              <img src="/resources/img/home/ICUR1.jpg" class="rounded img-galeria" alt="...">
+              <img src="/resources/img/home/CURSO4.jpg" class="rounded img-galeria" alt="...">
             </div>
           </div>
         </div>
