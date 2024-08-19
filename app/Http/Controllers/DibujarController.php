@@ -251,15 +251,29 @@ public function carritoDelete(Request $request, $pivotId) {
     }
 }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+public function eliminarTodosLosProductosDelCarrito(Request $request)
+{
+    $user = Auth::user();
+    $carrito = $user->carrito;
+
+    if ($carrito) {
+        DB::table('carrito_has_productos')->where('carritoId', $carrito->id)->delete();
+
+        return response()->json(['success' => 'Todos los productos han sido eliminados del carrito']);
+    } else {
+        return response()->json(['error' => 'El carrito no existe'], 404);
+    }
+}
+
+public function contarProductosEnCarrito()
+{
+    $user = Auth::user();
+    $carrito = $user->carrito;
+    $cantidadProductos = $carrito ? $carrito->productos()->count() : '';
+
+    return response()->json(['cantidad' => $cantidadProductos]);
+}
+
 
 // =============================================================================================
 

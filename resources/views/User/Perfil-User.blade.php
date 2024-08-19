@@ -154,6 +154,39 @@ h1, h2, h3, option, select, a{
             animation-name: slideOut;
         }
         /* Alerta bonita */
+
+
+   /* Carrito css */
+
+@media (max-width: 768px) {
+  #carrito {
+    font-size: 0.9rem;
+    margin-right: 15px;
+  }
+
+  #carrito-count {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  #carrito {
+    font-size: 1rem;
+    margin-right: 30px;
+  }
+
+  #carrito-count {
+    top: -10px;
+    right: -15px;
+    font-size: 13px;
+  }
+}
+
+    /* Fin carrito css */
+
     </style>
 </head>
 <body class="hiddenX">
@@ -191,7 +224,14 @@ h1, h2, h3, option, select, a{
               <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
             </li>
         </ul>
-        <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+
+        <a id="carrito" style="margin-right: 30px; position: relative;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="carrito-count" style="">
+              <!-- Aquí se insertará la cantidad de productos -->
+          </span>
+        </a>
+
           <a href="/Reservacion-User" style="margin-right:20px;">
             <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
           </a>
@@ -204,48 +244,50 @@ h1, h2, h3, option, select, a{
             {{-- Modal para editar perfil --}}
 
             <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                      <form id="editProfileForm" enctype="multipart/form-data">
-                          @csrf
-                          <div class="modal-header">
-                              <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <form id="editProfileForm" enctype="multipart/form-data">
+                      @csrf
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <input type="hidden" id="edit_user_id" name="id" value="{{ Auth::user()->id }}">
+                          <div class="form-group">
+                              <label for="edit_name">Nombre</label>
+                              <input type="text" class="form-control" id="edit_name" name="name" value="{{ Auth::user()->name }}">
                           </div>
-                          <div class="modal-body">
-                              <input type="hidden" id="edit_user_id" name="id" value="{{ Auth::user()->id }}">
-                              <div class="form-group">
-                                  <label for="edit_name">Nombre</label>
-                                  <input type="text" class="form-control" id="edit_name" name="name" value="{{ Auth::user()->name }}">
-                              </div>
-                              <div class="form-group" style="margin-top: 10px;">
-                                  <label for="edit_apellidos">Apellidos</label>
-                                  <input type="text" class="form-control" id="edit_apellidos" name="apellidos" value="{{ Auth::user()->apellido }}">
-                              </div>
-                              <div class="form-group" style="margin-top: 10px;">
-                                <label for="edit_gender">Género</label>
-                                <select class="form-control" id="edit_gender" name="gender" >
-                                    <option value="Hombre" {{ Auth::user()->gender == 'Hombre' ? 'selected' : '' }}>Hombre</option>
-                                    <option value="Mujer" {{ Auth::user()->gender == 'Mujer' ? 'selected' : '' }}>Mujer</option>
-                                </select>
-                            </div>
-                              <div class="form-group" style="margin-top: 10px;">
-                                  <label for="edit_email">Correo electrónico</label>
-                                  <input type="email" class="form-control" id="edit_email" name="email" value="{{ Auth::user()->email }}">
-                              </div>
-                              <div class="form-group" style="margin-top: 10px;">
-                                  <label for="edit_phone">Número de teléfono</label>
-                                  <input type="number" class="form-control" id="edit_phone" name="phone" value="{{ Auth::user()->numeroTelefono }}" oninput="this.value = this.value.slice(0, 10)">
-                              </div>
+                          <div class="form-group" style="margin-top: 10px;">
+                              <label for="edit_apellidos">Apellidos</label>
+                              <input type="text" class="form-control" id="edit_apellidos" name="apellidos" value="{{ Auth::user()->apellido }}">
                           </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                          <div class="form-group" style="margin-top: 10px;">
+                              <label for="edit_gender">Género</label>
+                              <select class="form-control" id="edit_gender" name="gender">
+                                  <option value="Hombre" {{ Auth::user()->gender == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                                  <option value="Mujer" {{ Auth::user()->gender == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+                              </select>
                           </div>
-                      </form>
-                  </div>
+                          <div class="form-group" style="margin-top: 10px;">
+                              <label for="edit_email">Correo electrónico</label>
+                              <input type="email" class="form-control" id="edit_email" name="email" value="{{ Auth::user()->email }}">
+                              <span id="emailError"></span> 
+                          </div>
+                          <div class="form-group" style="margin-top: 10px;">
+                              <label for="edit_phone">Número de teléfono</label>
+                              <input type="number" class="form-control" id="edit_phone" name="phone" value="{{ Auth::user()->numeroTelefono }}" oninput="validatePhoneNumber(this.value)">
+                              <small id="phone_error" class="text-danger"></small>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          <button type="submit" id="submitBtn" class="btn btn-primary">Guardar cambios</button>
+                      </div>
+                  </form>
               </div>
           </div>
+      </div>
 
           <br>
 
@@ -305,6 +347,38 @@ h1, h2, h3, option, select, a{
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 
 <script>
+  function validatePhoneNumber(phone) {
+        const phoneError = document.getElementById('phone_error');
+        const submitBtn = document.getElementById('submitBtn');
+        if (phone.length !== 10) {
+            phoneError.textContent = 'El número de teléfono debe tener 10 dígitos.';
+            submitBtn.disabled = true;
+        } else {
+            phoneError.textContent = '';
+            submitBtn.disabled = false;
+        }
+    }
+
+    document.getElementById('edit_email').addEventListener('input', function() {
+        const email = this.value;
+        const emailError = document.getElementById('email_error');
+        const submitBtn = document.getElementById('submitBtn');
+
+        $.ajax({
+            url: '/check-email',
+            type: 'POST',
+            data: { email: email, _token: '{{ csrf_token() }}' },
+            success: function(response) {
+                if (response.exists) {
+                    emailError.textContent = 'Este correo ya está en uso.';
+                    submitBtn.disabled = true;
+                } else {
+                    emailError.textContent = '';
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    });
 function mostrarAlerta(text, alertClass, iconId) {
                 $("#alertaTexto").text(text);
                 $(".custom-alert")
@@ -370,11 +444,18 @@ $('#editProfileForm').on('submit', function(e) {
         error: function(error) {
             console.log(error);
             mostrarAlerta('Hubo un error al actualizar el perfil.', 'alert-warning', 'exclamation-triangle-fill');
+            $('#emailError').text('Correo ya en uso.');
+                $('#emailError').css('display', 'block');
         }
     });
 });
 
 $(document).ready(function(){
+
+  $('#carritoxd').empty();
+$.get('/carrito/contar-productos', function(data) {
+  $('#carrito-count').text(data.cantidad);
+});
 
   function separadorHidden(){
   var cuentaLi = document.getElementById("cuenta");

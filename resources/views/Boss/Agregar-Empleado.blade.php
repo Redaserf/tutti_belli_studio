@@ -470,7 +470,11 @@
                             <div class="form-floating mb-3">
                                 <input name="employeeEmail" type="email" class="form-control" id="employeeEmail" placeholder="Correo electrónico" required>
                                 <label for="employeeEmail">Correo electrónico</label>
+                                <span id="emailError"></span> <!-- Aquí se mostrará el mensaje de error -->
                             </div>
+                            @if (session('error'))
+                                <div class="alert alert-danger" id="error-message">{{ session('error') }}</div>
+                            @endif
                             <!-- Contraseña -->
                             <div class="form-floating mb-3">
                                 <input name="employeePassword" type="password" class="form-control" id="employeePassword" placeholder="Contraseña" required minlength="8">
@@ -811,7 +815,7 @@ sidebarBtn.addEventListener("click", () => {
                 console.log(error);
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
-                alert('Ocurrió un error al agregar al empleado');
+                alert('Ocurrió un error al agregar al empleado Verifique bien sus datos');
                 // $('#employeeName').val('');
                 // $('#employeeLastname').val('');
                 // $('#employeeGender').val('');
@@ -819,7 +823,10 @@ sidebarBtn.addEventListener("click", () => {
                 // $('#employeeBirthDate').val('');
                 // $('#employeeEmail').val('');
                 // $('#employeePassword').val('');
+                $('#emailError').text('Correo ya en uso.');
+                $('#emailError').css('display', 'block');
             }
+            
         });
     });
     // Fin script para registrar empleado
