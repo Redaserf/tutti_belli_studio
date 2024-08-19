@@ -1295,7 +1295,6 @@ $('#editCursoForm').on('submit', function(e) {
             processData: false,
             success: function(response) {
                 if(response.error) {
-                    // Mostrar el mensaje de error del controlador en un alert
                     alert(response.error);
                 } else {
                     $('#editCursoModal').modal('hide');
@@ -1304,8 +1303,7 @@ $('#editCursoForm').on('submit', function(e) {
                 }
             },
             error: function(xhr) {
-                // Capturar y mostrar el mensaje de error del servidor
-                if(xhr.status === 403) {
+                if(xhr.status === 403 || xhr.status === 400) { // Verifica si el código de estado es 403 o 400
                     alert(xhr.responseJSON.error);
                 } else {
                     alert('Hubo un error al actualizar el curso');
