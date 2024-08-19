@@ -829,10 +829,12 @@ function checkWidth() {
 
                 },
                 error: function(error) {
-
-                    alert('Ocurrió un error al agregar el Curso');
-                    console.log(selectedTecnicas)
-
+                    if (error.status === 400 && error.responseJSON && error.responseJSON.message) {
+                        alert(error.responseJSON.message); // Muestra el mensaje de error personalizado
+                    } else {
+                        alert('Ocurrió un error al agregar el Curso');
+                    }
+                    console.error("Error en la petición:", error);
                 }
             });
         }
