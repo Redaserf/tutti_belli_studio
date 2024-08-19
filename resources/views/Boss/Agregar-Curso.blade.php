@@ -893,10 +893,10 @@ function checkWidth() {
 
 
 
-        // ========= QUIZÁ CAMBIAR ESTA RUTA ========= 
+        // ========= QUIZÁ CAMBIAR ESTA RUTA ========= NO YA NO
 
         function loadEmpleados(){
-            $.get('/usuario/empleado', function(empleados){
+            $.get('/usuarios/rol/empleado', function(empleados){
                 empleadoSelect = $('#empleadoId');
                 empleadoSelect.empty();
 

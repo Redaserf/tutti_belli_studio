@@ -275,6 +275,7 @@ Route::post('/registro/citas/usuarios', [RegistrosController::class, 'RegistroCi
     Route::get('/get/curso/{id}', [DibujarController::class, 'obtenerCurso']);
     Route::post('/cursos/actualizar/{id}', [DibujarController::class, 'actualizarCurso']);
     Route::get('/get/inscripciones/{cursoId}', [InscripcionController::class, 'getInscripciones']);
+    Route::get('/get/inscripcionesNull/{cursoId}', [InscripcionController::class, 'getInscripcionesNull']);
     Route::get('/get/inscripcion/{inscripcionId}', [InscripcionController::class, 'index']);
     Route::post('/update/inscripcion/{inscripcionId}', [InscripcionController::class, 'actualizarInscripcion']);
     Route::post('/rembolso/inscripcion/{inscripcionId}', [InscripcionController::class, 'rembolsarInscripcion']);

@@ -317,21 +317,11 @@ public function carritoDelete(Request $request, $pivotId) {
         return response()->json($cursos);
     }
 
-    // ==========[ Obtener todos los cursos ]==========
+    // ==========[ Obtener todos los cursos (Inactivos) ]==========
     function cursosIndex0(){
-        $usuarioId = Auth::id();
 
         // Obtener solo los cursos que están inactivos ("eliminados")
         $cursos = Curso::with(['tecnicas', 'empleado'])->where('activo', 0)->get();
-
-        // Obtener las inscripciones del usuario actual
-        $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->pluck('cursoId')->toArray();
-
-        // Marcar los cursos en los que el usuario está inscrito
-        $cursos = $cursos->map(function($curso) use ($inscripciones) {
-            $curso->inscrito = in_array($curso->id, $inscripciones);
-            return $curso;
-        });
 
         return response()->json($cursos);
     }
@@ -341,31 +331,20 @@ public function carritoDelete(Request $request, $pivotId) {
         $curso = Curso::find($id);
     
         if ($curso) {
+            $fechaInicioOriginal = $curso->fechaInicio; // Almacena la fecha original
             $fechaInicio = Carbon::parse($curso->fechaInicio . ' ' . $curso->horaInicio);
             $hoy = Carbon::now('America/Monterrey');
     
             Log::info("=================================");
             Log::info("El día de hoy es {$hoy}");
             Log::info("El curso inicia el {$fechaInicio}");
+
+            // Filtrar inscripciones que no son null
+            $inscripcionesValidas = $curso->inscripciones()->whereNotNull('estado')->count();
     
             // Verifica si el curso comienza dentro de las próximas 24 horas y tiene inscripciones
-            if ($hoy->greaterThan($fechaInicio->subHours(24)) && $curso->inscripciones()->count() > 0) {
-                if ($hoy->greaterThan($fechaInicio->subHours(24))) {
-                    Log::info("Queda menos de un día para que inicie el curso.");
-                    if ($curso->inscripciones()->count() > 0) {
-                        Log::info("El curso tiene inscripciones, no debería dejar editarlo.");
-                    } else {
-                        Log::info("El curso no tiene inscripciones, debería dejar editarlo.");
-                    }
-                } else {
-                    Log::info("Queda más de un día para que inicie el curso.");
-                    if ($curso->inscripciones()->count() > 0) {
-                        Log::info("El curso tiene inscripciones, debería ser capaz de ser editado.");
-                    } else {
-                        Log::info("El curso no tiene inscripciones, debería ser capaz de ser editado.");
-                    }
-                }
-                Log::info("El curso no se puede editar porque faltan menos de 24 horas y tiene inscripciones.");
+            if ($hoy->greaterThan($fechaInicio->subHours(24)) && $inscripcionesValidas > 0) {
+                Log::info("El curso no se puede editar porque faltan menos de 24 horas y tiene inscripciones válidas.");
                 return response()->json(['error' => 'Menos de un día para el curso con inscripciones registradas, imposible de editarlo.'], 403);
             }
     
@@ -374,6 +353,17 @@ public function carritoDelete(Request $request, $pivotId) {
             $curso->descripcion = $request->input('descripcion');
             $curso->precio = $request->input('precio');
             $curso->fechaInicio = $request->input('date');
+    
+            // Recalcula segundaFecha y terceraFecha si se actualizó la fecha de inicio
+            if ($request->input('date') !== $fechaInicioOriginal) { // Compara con la fecha original
+                $curso->segundaFecha = Carbon::parse($curso->fechaInicio)->addDay()->format('Y-m-d');
+                $curso->terceraFecha = Carbon::parse($curso->fechaInicio)->addDays(2)->format('Y-m-d');
+                Log::info("Las fechas del curso han sido actualizadas.");
+                Log::info("Nueva fecha de inicio: {$curso->fechaInicio}");
+                Log::info("Nueva segunda fecha: {$curso->segundaFecha}");
+                Log::info("Nueva tercera fecha: {$curso->terceraFecha}");
+            }
+    
             $curso->horaInicio = $request->input('hour');
             $curso->empleadoId = $request->input('empleadoId');
     
@@ -381,23 +371,7 @@ public function carritoDelete(Request $request, $pivotId) {
                 $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
             }
     
-            if ($hoy->greaterThan($fechaInicio->subHours(24))) {
-                Log::info("Queda menos de un día para que inicie el curso.");
-                if ($curso->inscripciones()->count() > 0) {
-                    Log::info("El curso tiene inscripciones, no debería dejar editarlo.");
-                } else {
-                    Log::info("El curso no tiene inscripciones, debería dejar editarlo.");
-                }
-            } else {
-                Log::info("Queda más de un día para que inicie el curso.");
-                if ($curso->inscripciones()->count() > 0) {
-                    Log::info("El curso tiene inscripciones, debería ser capaz de ser editado.");
-                } else {
-                    Log::info("El curso no tiene inscripciones, debería ser capaz de ser editado.");
-                }
-            }
-
-            Log::info("El curso se puede editar porque faltan más de 24 horas o no tiene inscripciones.");
+            Log::info("El curso se puede editar porque faltan más de 24 horas o no tiene inscripciones válidas.");
             $curso->save();
     
             return response()->json(['success' => 'Curso actualizado exitosamente']);
@@ -405,20 +379,27 @@ public function carritoDelete(Request $request, $pivotId) {
             return response()->json(['error' => 'Curso no encontrado'], 404);
         }
     }
+    
 
-    // ==========[ Obtener un curso por id ]==========
-    public function obtenerCurso($id){
-        $curso = Curso::with('empleado')->find($id);
-        $empleados = User::where('rolId', 3)->get();
+// ==========[ Obtener un curso por id ]==========
+public function obtenerCurso($id){
+    $curso = Curso::with('empleado', 'inscripciones')->find($id);  // Asegúrate de incluir las inscripciones aquí
+    $empleados = User::whereIn('rolId', [3, 4])->get();
 
-        if ($curso) {
-            return response()->json(['curso' => $curso, 'empleados' => $empleados]);
-        } else {
-            return response()->json(['error' => 'Curso no encontrado'], 404);
-        }
+    Log::info("=================================");
+    Log::info("Curso encontrado: " . json_encode($curso));
+    Log::info("Empleados disponibles: " . json_encode($empleados));
+
+    if ($curso) {
+        Log::info("El curso tiene las siguientes inscripciones: " . json_encode($curso->inscripciones));
+        return response()->json(['curso' => $curso, 'empleados' => $empleados, 'inscripcion' => $curso->inscripciones]);
+    } else {
+        Log::info("Curso no encontrado para el ID: " . $id);
+        return response()->json(['error' => 'Curso no encontrado'], 404);
     }
+}
 
-// ==========[ Eliminar un curso (ocultar) ]==========
+// ==========[ Finalizar un curso (ocultar) ]==========
 public function cursosDelete($id) {
     DB::beginTransaction();
     try {
@@ -430,30 +411,38 @@ public function cursosDelete($id) {
         Log::info("El día de hoy es {$hoy}");
         Log::info("El curso inicia el {$fechaInicio}");
 
-        // Verifica si el curso comienza dentro de las próximas 24 horas y tiene inscripciones
-        if ($hoy->greaterThan($fechaInicio->subHours(24)) && $curso->inscripciones()->count() > 0) {
-            Log::info("El curso no se puede eliminar porque faltan menos de 24 horas y tiene inscripciones.");
-            return response()->json(['error' => 'Menos de un día para el curso con inscripciones registradas, imposible de eliminarlo.'], 403);
-        }
+        // Filtrar inscripciones que no son null
+        // $inscripcionesValidas = $curso->inscripciones()->whereNotNull('estado')->count();
 
+        // Verifica si el curso comienza dentro de las próximas 24 horas y tiene inscripciones válidas
+        // if ($hoy->greaterThan($fechaInicio->subHours(24)) && $inscripcionesValidas > 0) {
+        //     Log::info("El curso no se puede eliminar porque faltan menos de 24 horas y tiene inscripciones válidas.");
+        //     return response()->json(['error' => 'Menos de un día para el curso con inscripciones registradas, imposible de eliminarlo.'], 403);
+        // }
+
+        // Cambiar el estado de las inscripciones a null
         $inscripciones = $curso->inscripciones()->get();
-
         foreach ($inscripciones as $inscripcion) {
+            if ($inscripcion->estado == 0) {
+                $inscripcion->canceladoPorAdmin = 1;
+            }
             $inscripcion->estado = null;
             $inscripcion->save();
         }
 
+        // Marcar el curso como inactivo
         $curso->activo = 0;
         $curso->save();
 
-        Log::info("El curso se puede eliminar porque faltan más de 24 horas o no tiene inscripciones.");
+        // Log::info("El curso se puede eliminar porque faltan más de 24 horas o no tiene inscripciones válidas.");
         DB::commit();
-        return response()->json(['success' => 'Curso eliminado con éxito.']);
+        return response()->json(['success' => 'Curso finalizado con éxito.']);
     } catch (\Exception $e) {
         DB::rollback();
-        return response()->json(['error' => 'Error al eliminar el curso: ' . $e->getMessage()], 500);
+        return response()->json(['error' => 'Error al finalizar el curso: ' . $e->getMessage()], 500);
     }
 }
+
 
     // =============================================================================================
 
@@ -478,12 +467,20 @@ public function cursosDelete($id) {
 
         // ==========[ Obtener servicio y técnica de una cita ]==========
         public function obtenerServicioTecnica($citaId){
-            $cita = Cita::find($citaId);
+            $cita = Cita::with('citasHasServicios.tecnica', 'citasHasServicios.servicio')->find($citaId);
             if ($cita) {
                 $empleado = User::find($cita->empleadoId);
                 $citaHasServicios = CitaHasServicio::where('citaId', $citaId)->with(['servicio', 'tecnica'])->get();
 
-                return response()->json(['citaHasServicios' => $citaHasServicios, 'cita' => $cita, 'empleado' => $empleado]);
+        $venta = null;
+        foreach ($cita->citasHasServicios as $citaServicio) {
+            if ($citaServicio->venta) {
+                $venta = $citaServicio->venta;
+                break;
+            }
+        }
+
+                return response()->json(['citaHasServicios' => $citaHasServicios, 'cita' => $cita, 'empleado' => $empleado, 'venta' => $venta]);
             } else {
                 return response()->json(['error' => 'Cita no encontrada.'], 404);
             }

@@ -1367,6 +1367,7 @@ function actualizarOpcionesHora(fechaHora) {
 
                     mostrarAlerta('Se elimino con éxito la cita', 'alert-success', 'check-circle-fill');    
                     citasNoAceptadas();
+                    // ESTO NO LE FUNCIONA A ANGEL, PROBAR SI JALA A TODOS YA FINAL
                 },
                 error: function(error) {
                     // Ocultar la pantalla de carga

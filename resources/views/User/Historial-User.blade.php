@@ -309,6 +309,7 @@
                 localStorage.removeItem('alertIcon');
             }
             //alertas
+
             function dibujarHistorial() {
             $.ajax({
                 url: '/get/historial',
@@ -328,8 +329,16 @@
                             cita.citas_has_servicios.forEach(servicio => {
                                 venta = servicio.venta;
                             });
+                            let color = '';
+                            if (cita.estadoCita == null) {
+                                color = '#A81416'; // Rojo para expiradas
+                            } else if (cita.estadoCita == 1) {
+                                color = '#39BF3D'; // Verde para aceptadas
+                            } else {
+                                color = '#D5B533'; // Amarillo para pendientes
+                            }
                             const infoCitas = `<tr>
-                                <td>Cita</td>
+                                <td><span style='color: ${color}; font-weight:600;'>Cita</span></td>
                                 <td>$${venta ? venta.total : 'N/A'}</td>
                                 <td>
                                     <button class="btn btn-success" onclick="mostrarCitaModal(${cita.id})"><i class="fa-solid fa-eye"></i></button>
@@ -341,9 +350,12 @@
                         inscripciones.forEach(inscripcion => {
                             let estadoClase = '';
                             let color = '';
-                            if (inscripcion.estado == null) {
+                            if (inscripcion.estado == null && inscripcion.canceladoPorAdmin == 1) {
                                 estadoClase = 'Inscripción';
-                                color = '#A81416'; // Rojo para expiradas
+                                color = '#A81416'; // Rojo (Inscripción cancelada por administrador)
+                            } else if (inscripcion.estado == null && inscripcion.canceladoPorAdmin == null) {
+                                estadoClase = 'Inscripción';
+                                color = '#39BF3D'; // Verde (curso finalizado y pagado)
                             } else if (inscripcion.estado == 1) {
                                 estadoClase = 'Inscripción';
                                 color = '#39BF3D'; // Verde para aceptadas
@@ -399,7 +411,7 @@ function mostrarCitaModal(citaId) {
                 success: function(data) {
                     const bodyCitas = $('#modal-bodyCitas');
                     bodyCitas.empty();
-                    const { citaHasServicios, cita, empleado } = data;
+                    const { citaHasServicios, cita, empleado, venta } = data;
                     if (citaHasServicios.length > 0) {
                 citaHasServicios.forEach(item => {
                     const servicios = `<div class="modalInfo">
@@ -412,20 +424,40 @@ function mostrarCitaModal(citaId) {
             } else {
                 bodyCitas.append('<div class="modalInfo">No se encontraron servicios para esta cita.</div>');
             }
-            if (empleado) {
-                const detalleCita = `
+
+            let detalleCita = '';
+            if (cita.estadoCita == 1 && venta && venta.estadoVenta == 1) {
+                detalleCita = `
+                <div class="modalInfo">
+                    Su cita programada para el ${cita.fechaCita}
+                    a las ${cita.horaCita} con el empleado ${empleado.name} <span style='color: #39BF3D; font-weight:600;'>ha finalizado con éxito.</span><br><br>
+                </div>`;
+                console.log("Cita:", cita);
+                console.log("Venta:", venta);
+            } else if (cita.estadoCita == 1) {
+                detalleCita = `
                 <div class="modalInfo">
                     Cita programada para el ${cita.fechaCita}
-                    a las ${cita.horaCita} con el empleado ${empleado.name}.
+                    a las ${cita.horaCita} con el empleado ${empleado.name}. <br><br>
+                    <span style='color: #39BF3D; font-weight:600;'>Su cita ha sido aceptada.</span> Lo esperamos en la sucursal a la fecha y hora acordada.
                 </div>`;
-                bodyCitas.append(detalleCita);
-            } else {
-                const detalleCita = `
+                console.log("Cita:", cita);
+                console.log("Venta:", venta);
+            } else if (cita.estadoCita == null) {
+                detalleCita = `
                 <div class="modalInfo">
-                    La cita ha terminado o ha sido cancelada, para más información, ponte en contacto con nosotros mediante WhatsApp.
+                    <span style='color: #A81416; font-weight:600;'>Su cita ha sido cancelada.</span> Para más información, ponte en contacto con nosotros mediante WhatsApp.
                 </div>`;
-                bodyCitas.append(detalleCita);
+            } else {
+                detalleCita = `
+                <div class="modalInfo">
+                    Cita programada para el ${cita.fechaCita}
+                    a las ${cita.horaCita} con el empleado ${empleado.name}. <br><br>
+                    <span style='color: #D5B533; font-weight:600;'>Su cita está pendiente de ser aceptada.</span> Para más información, ponte en contacto con nosotros mediante WhatsApp.
+                </div>`;
             }
+
+            bodyCitas.append(detalleCita);
             $('#citaModal').modal('show');
         },
         error: function(error) {
@@ -466,7 +498,7 @@ function mostrarCitaModal(citaId) {
                     }
                     else if (curso.activo == 1 && inscripcion.estado == null) {
                         const inscripcionCancelada = `<div class="modalInfo">
-                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Inscripción cancelada</p> Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros.</a> 
+                            Curso ${curso.nombre}.<br> <p syles="font-weight:600;">Inscripción cancelada.</p> Para más información al respecto, ponte en <a href="/Home-usuario#contacto">contacto con nosotros.</a> 
                         </div>`;
 
                     inscripcionModal.append(inscripcionCancelada);

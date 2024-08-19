@@ -77,14 +77,14 @@ class ConsultasController extends Controller
         }
     
         $user = Auth::user();
-
-
     
         // Trae el usuario logueado junto con los usuarios que tienen los roles de 'Empleado' o 'Administrador'
         $usuarios = User::WhereHas('roles', function ($query) {
                 $query->whereIn('nombre', ['Empleado', 'Administrador']);
             })
             ->get();
+
+            Log::info($usuarios);
     
         return response()->json($usuarios);
     }
@@ -103,7 +103,7 @@ class ConsultasController extends Controller
         if ($user->rolId == 2) {
             return redirect('/Home-usuario');
         }
-        // } elseif ($user->rolId == 4) {
+        // } else if ($user->rolId == 4) {
         //     return redirect('/Ver-Citas');
         // }
 
