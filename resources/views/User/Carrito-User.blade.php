@@ -202,6 +202,38 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
     }}
         /* Alerta bonita */
 
+
+            /* Carrito css */
+
+@media (max-width: 768px) {
+  #carrito {
+    font-size: 0.9rem;
+    margin-right: 15px;
+  }
+
+  #carrito-count {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  #carrito {
+    font-size: 1rem;
+    margin-right: 30px;
+  }
+
+  #carrito-count {
+    top: -10px;
+    right: -15px;
+    font-size: 13px;
+  }
+}
+
+    /* Fin carrito css */
+
     </style>
 </head>
 <body class="hiddenX">
@@ -239,7 +271,14 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
               <a class="nav-link active texto1" aria-current="page" href="/Logout" style="color: #000000;">Cerrar sesión<i class="fa-solid fa-arrow-right-from-bracket" style="margin-left: 10px;"></i></a>
             </li>
         </ul>
-        <a id="carrito" style="margin-right: 30px;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;"><i class="fa-solid fa-cart-shopping"></i></a>
+
+          <a id="carrito" style="margin-right: 30px; position: relative;" class="nav-link active texto1" aria-current="page" href="/Carrito-User" style="color: #000000;">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="carrito-count" style="">
+                <!-- Aquí se insertará la cantidad de productos -->
+            </span>
+          </a>
+
           <a href="/Reservacion-User" style="margin-right:20px;">
             <button class="btn btn-light ms-auto" type="button">Reservar cita</button>
           </a>
@@ -280,7 +319,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
                         <th scope="col">Descripción</th>
                         <th scope="col">Costo</th>
                         <th scope="col">Cantidad seleccionada</th>
-                        <th scope="col">Cantidad disponible en almacen</th>
+                        <th scope="col">Cantidad disponible</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
@@ -292,6 +331,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         <div class="summary-container mt-3">
             <div id="costo-total" class="total-price"></div>
             <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
+            <button class="btn btn-danger" style="margin-top:15px;" id="borrarTodo"><i class="fa-solid fa-trash"></i></button>
         </div>
     </div>
 </div>
@@ -488,6 +528,12 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
             });
 
 $(document).ready(function(){
+
+    $('#carritoxd').empty();
+$.get('/carrito/contar-productos', function(data) {
+  $('#carrito-count').text(data.cantidad);
+});
+
   dibujarCarrito();
 
   function separadorHidden(){
@@ -615,6 +661,30 @@ $(document).ready(function(){
         }
 
     });
+
+
+    $('#borrarTodo').on('click', function() {
+    if (confirm('¿Estás seguro de que quieres eliminar todos los productos del carrito?')) {
+        $.ajax({
+            url: '/carrito/eliminar-todo',
+            method: 'POST',
+            data: {
+                _token: $('input[name="_token"]').val()
+            },
+            success: function(response) {
+                console.log(response);
+                mostrarAlerta('Todos los productos han sido eliminados del carrito.', 'alert-success', 'check-circle-fill');
+                setTimeout(function() {
+                    location.reload();
+                }, 1400); 
+            },
+            error: function(error) {
+                console.log(error);
+                mostrarAlerta('Hubo un error al eliminar los productos del carrito.', 'alert-danger', 'exclamation-triangle-fill');
+            }
+        });
+    }
+});
 
 });
 
