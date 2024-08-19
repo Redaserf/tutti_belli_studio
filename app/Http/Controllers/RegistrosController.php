@@ -362,6 +362,7 @@ class RegistrosController extends Controller
 
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
+        ->where('estadoCita', '<>', null)
         ->first();
 
         if ($citaExistente) {
@@ -486,6 +487,7 @@ class RegistrosController extends Controller
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)
         ->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
+        ->where('estadoCita', '<>', null)
         ->where('id', '<>', $id)//agarraba tambien el id de la cita que se estaba editando
         ->first();
 

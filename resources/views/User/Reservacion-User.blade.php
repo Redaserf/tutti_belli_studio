@@ -490,7 +490,7 @@ gmp-map {
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="fechaCita" name='fechaCita' placeholder="Fecha de la cita" required>
-                            <label for="fechaCita">Fecha de la cita</label>
+                            <label for="fechaCita" id="fechaCitaLabel">Fecha de la cita</label>
                         </div>
                         <div class="form-floating mb-3">
                             <select style='display: none' class='form-control' id="horaCita" name="horaCita">
@@ -674,6 +674,21 @@ gmp-map {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
 
+function mostrarAlerta(text, alertClass, iconId) {
+        $("#alertaTexto").text(text);
+        $(".custom-alert")
+            .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+            .addClass(`show ${alertClass}`)
+            .fadeIn();
+        $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+        setTimeout(function() {
+            $(".custom-alert")
+                .removeClass("show")
+                .addClass("hide")
+                .fadeOut();
+        }, 6000);
+    }
+
 $(document).ready(function(){
     $('#fechaCita').prop('disabled', true).hide();
     $('a[data-bs-target="#termsModal"]').click(function(e){
@@ -687,20 +702,12 @@ $(document).ready(function(){
         });
 
 
-    function mostrarAlerta(text, alertClass, iconId) {
-                $("#alertaTexto").text(text);
-                $(".custom-alert")
-                    .removeClass("alert-primary alert-success alert-warning alert-danger hide")
-                    .addClass(`show ${alertClass}`)
-                    .fadeIn();
-                $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
-                setTimeout(function() {
-                    $(".custom-alert")
-                        .removeClass("show")
-                        .addClass("hide")
-                        .fadeOut();
-                }, 6000);
-            }
+        // $('#citasModal').on('hidden.bs.modal', function () {
+        //     // Ocultar el input con el ID 'fechaCita'
+        //     $('#fechaCita').prop('disabled', true).hide();
+        // });
+
+
 
          // Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la pagina
             const alertMessage = localStorage.getItem('alertMessage');
@@ -745,6 +752,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
 
     $('#empleadoId').on('change', function() {
             let empleado = $(this).val();
+            $('#fechaCitaLabel').show();
 
             if (empleado) {
                 datepicker(empleado);
@@ -778,10 +786,10 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 let select = $('#horaCita');
                 select.empty();
 
-                var hoy = moment();
-                var fechaMoment = moment(fechaHora);
-                var diaSemana = fechaMoment.day();
+                let fechaMoment = moment(fechaHora);
 
+                var hoy = moment();
+                var diaSemana = fechaMoment.day();
                 var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
 
                 if (horarioDia) {
@@ -797,23 +805,41 @@ $('#citasModal').on('hidden.bs.modal', function () {
                         second: 0
                     });
 
-                    while (horaInicio.isBefore(horaFin)) {
-                        if (!horaInicio.isSame(hoy, 'day') || horaInicio.isAfter(hoy.add(2, 'hours'))) {
+                    let horasOcupadas = empleado.citas_empleados
+                        .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                        .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+
+                        while (horaInicio.isBefore(horaFin)) {
                             let horaTexto = horaInicio.format('HH:mm:ss');
-                            let option = new Option(horaTexto, horaTexto);
-                            select.append(option);
+                            
+                            //si es el día actual, quitar las horas con menos de 1 hora de anticipación
+                            if (!horasOcupadas.includes(horaTexto)) {
+                                if (fechaMoment.isSame(hoy, 'day')) {
+                                    if (horaInicio.isAfter(limiteHora)) {
+                                        let option = new Option(horaTexto, horaTexto);
+                                        select.append(option);
+                                    }
+                                } else {
+                                    let option = new Option(horaTexto, horaTexto);
+                                    select.append(option);
+                                }
+                            }
+
+                            horaInicio.add(1, 'hour');
                         }
-                        horaInicio.add(1, 'hour');
-                    }
+
+                    console.log('Opciones agregadas:', select.children('option').length);
 
                     if (select.children('option').length > 0) {
                         select.val(select.children('option').first().val());
                     } else {
                         alert('No hay horas disponibles para la fecha seleccionada.');
+                        $('#citasModal').modal('hide');
+                        $('#fechaCita').hide();
+
                     }
                 }
             }
-
             $("#fechaCita").datepicker({
                 dateFormat: 'yy-mm-dd',
                 minDate: 0,
@@ -853,7 +879,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 }
             });
 
-            $("#fechaCita").on('input', function() {
+            $("#fechaCita").on('keyup', function() {
                 var fechaText = $(this).val();
                 if (fechaText) {
                     var fechaSeleccionada = moment(fechaText, 'YYYY-MM-DD').toDate();
@@ -1009,6 +1035,18 @@ $('#empleadoId').change(function() {
         //     }
 
         // }
+
+        $('#citasModal').on('hidden.bs.modal', function () {
+            console.log('El modal se ha cerrado.');
+
+            $('#citaForm')[0].reset();
+            $('#horaCita').hide();
+            $('#fechaCita').hide();
+
+            $('#fechaCitaLabel').hide();
+
+        });
+
 
 
         function dibujarServiciosTecnicas() {
@@ -1213,25 +1251,33 @@ $('#empleadoId').change(function() {
                 },
                 error: function(xhr){
                     console.log(xhr);
-            if (xhr.readyState === 4 && xhr.responseJSON) {
-                if (xhr.responseJSON.message) {
-                    if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
-                        mostrarAlerta('Por favor, selecciona al menos un servicio.', 'alert-warning', 'exclamation-triangle-fill');
-                    } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
-                        mostrarAlerta('Ya existe una cita para esta fecha y hora.', 'alert-warning', 'exclamation-triangle-fill');
-                    } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
-                        mostrarAlerta('La fecha debe ser hoy o posterior.', 'alert-warning', 'exclamation-triangle-fill');
-                    } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
-                        mostrarAlerta('Error: Ingrese correctamente la fecha.', 'alert-danger', 'exclamation-triangle-fill');
-                    } else {
-                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
-                    }
-                }
-            } else {
-                mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
-            }
 
-            $('#contenedor_carga').css('display', 'none');
+                    if (xhr.responseJSON) {
+                        
+
+                        if (xhr.readyState === 4 && xhr.responseJSON.message) {
+                            if (xhr.responseJSON.error) {
+                                mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
+                            }
+                            else if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
+                                mostrarAlerta('Por favor, selecciona al menos un servicio.', 'alert-warning', 'exclamation-triangle-fill');
+                            } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
+                                mostrarAlerta('Ya existe una cita para esta fecha y hora.', 'alert-warning', 'exclamation-triangle-fill');
+                            } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
+                                mostrarAlerta('La fecha debe ser hoy o posterior.', 'alert-warning', 'exclamation-triangle-fill');
+                            } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
+                                mostrarAlerta('Error: Ingrese correctamente la fecha.', 'alert-danger', 'exclamation-triangle-fill');
+                            } else {
+                                mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
+                            }
+                        } else if (!xhr.responseJSON.error && !xhr.responseJSON.message) {
+                            mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
+                        }
+                    } else {
+                        mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
+                    }
+
+                $('#contenedor_carga').css('display', 'none');
 
                 }
             });
@@ -1243,6 +1289,7 @@ $('#empleadoId').change(function() {
        
         function limpiarFormulario() {
             $('#id').val('');
+            $('#fechaCitaLabel').hide();
             $('#citaForm')[0].reset();
         }
 
