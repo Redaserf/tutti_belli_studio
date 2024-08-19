@@ -142,6 +142,13 @@ class DibujarController extends Controller
             return response()->json(['error' => 'El usuario no tiene un carrito asociado'], 404);
         }
     }
+    function productosConDescuentocd(){
+        $productos = Producto::where('descuentoId', '>', 0)
+            ->where('inventarioId', '=', 1)
+            ->with(['inventario', 'descuento'])
+            ->get();
+        return response()->json($productos);
+    }
 
     // ==========[ Agregar producto al carrito ]==========
     function carritoAgregar(Request $request){
