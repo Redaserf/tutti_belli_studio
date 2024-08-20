@@ -618,6 +618,8 @@ $.get('/carrito/contar-productos', function(data) {
     // Scripts aquí
     const randomDateTime = '2023-08-02 14:35:47';
 
+    
+
     $('#comprar').on('click',function (){
     // Mostrar la pantalla de carga
         console.log(productosComprados);
@@ -646,15 +648,24 @@ $.get('/carrito/contar-productos', function(data) {
                         window.location.href = '/Historial-User';
                     }, 1500);
                 },
-                error: function (response){
-                    console.log(response);
-                    var mensajeError = response.responseJSON.message;
-                    mostrarAlerta(mensajeError, 'alert-danger','exclamation-triangle-fill')
+                error: function(response) {
+                console.log(response);
+
+                // Verificar si es un error específico de cantidad excedida o si es un problema con max_input_vars
+                if (response.responseText.includes('max_input_vars')) {
+                    mostrarAlerta('Error: Se excedió el número de productos para la venta. Intenta reducir la cantidad de productos.', 'alert-danger', 'exclamation-triangle-fill');
+                } else if (response.responseJSON && response.responseJSON.errorTipo === 'cantidadExcedida') {
+                    mostrarAlerta('Error: ' + response.responseJSON.message, 'alert-danger', 'exclamation-triangle-fill');
+                } else {
+                    // Manejar otros tipos de errores aquí
+                    var mensajeError = response.responseJSON ? response.responseJSON.message : 'Hubo un problema al realizar la compra. Intenta nuevamente.';
+                    mostrarAlerta(mensajeError, 'alert-danger', 'exclamation-triangle-fill');
+                }
 
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
                 }
-            })
+            });
         }else{
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
