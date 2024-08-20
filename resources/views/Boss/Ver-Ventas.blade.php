@@ -737,7 +737,7 @@
 
             <br>
 
-            <input type="text" class="form-control mb-3" id="buscadorIdCompra" placeholder="Buscar por id de venta">
+           
 
             <div class="tab-content" id="comprasTabContent">
                 <!-- Pestaña compras totales -->
