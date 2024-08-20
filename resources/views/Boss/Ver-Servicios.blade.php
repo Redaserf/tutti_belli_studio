@@ -7,6 +7,10 @@
     <title>Servicios</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
@@ -465,7 +469,7 @@
         <div class="table-responsive tab-content">
 
             <input type="text" class="form-control mb-3" id="buscadorNombre" placeholder="Buscar por nombre de servicio">
-            <table class="table">
+            <table class="table table-striped" id="tablaServicios">
                 <thead>
                   <tr>
                       <th scope="col">ID</th>
@@ -543,6 +547,7 @@
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
 $.ajaxSetup({
     headers: {
@@ -567,33 +572,65 @@ $.ajaxSetup({
 
         // Dibujar servicios
         function tablaServicios(){
-            $.ajax({
-                url: '/get/servicios',
-                method: 'GET',
-                success: function(data) {
-                    const tableBody = $('#Servicios');
-                    tableBody.empty();
-                    if (data.length === 0) {
-                        // Mostrar mensaje si no hay servicios
-                        tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
+
+    console.log('Test');
+
+    $.ajax({
+        url: '/get/servicios',
+        method: 'GET',
+        success: function(data) {
+            const tableBody = $('#Servicios');
+            tableBody.empty();
+            if (data.length === 0) {
+                // Mostrar mensaje si no hay servicios
+                tableBody.append('<tr><td colspan="4" class="text-center">No hay servicios para mostrar</td></tr>');
+            } else {
+                data.forEach(servicio => {
+                    const row = `<tr>
+                        <td>${servicio.id}</td>
+                        <td>${servicio.nombre}</td>
+                        <td>
+                            <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal"><i class="fa-solid fa-eye"></i></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
+                            <button style="margin-left:2px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
+                        </td>
+                    </tr>`;
+                    tableBody.append(row);
+                });
+            }
+
+            // Destruye la instancia anterior de DataTables si existe
+            if ($.fn.DataTable.isDataTable('#tablaServicios')) {
+                $('#tablaServicios').DataTable().destroy();
+            }
+
+            // Inicializar DataTables después de que los datos se han cargado
+            $('#tablaServicios').DataTable({
+                "pageLength": 10, // Número de filas por página
+                "searching": false, // Desactivar la búsqueda
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
                     }
-                    data.forEach(servicio => {
-                        const row = `<tr>
-                            <td>${servicio.id}</td>
-                            <td>${servicio.nombre}</td>
-                            <td>
-                                <button class="btn btn-success" data-id="${servicio.id}" onclick="verTecnicas(${servicio.id})" data-bs-toggle="modal" data-bs-target="#tecnicasModal"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                            <td>
-                                <button class="btn btn-warning" onclick="servicioUpdate(${servicio.id})"><i class="fa-solid fa-pencil"></i></button>
-                                <button style="margin-left:2px;" class="btn btn-danger" onclick="servicioDelete(${servicio.id})"><i class="fa-solid fa-delete-left"></i></button>
-                            </td>
-                        </tr>`;
-                        tableBody.append(row);
-                    });
                 }
             });
+        },
+        error: function() {
+            mostrarAlerta('Error al cargar los servicios.', 'alert-danger', 'exclamation-triangle-fill');
         }
+    });
+}
 
         function verTecnicas(servicioId) {
     $.ajax({
@@ -694,12 +731,15 @@ function editarTecnica(tecnicaId, servicioId) {
             method: 'POST',
             data: updatedTecnica,
             success: function(response) {
-                // Ocultar la pantalla de carga
-                $('#contenedor_carga').css('display', 'none');
-                mostrarAlerta('Técnica actualizada con éxito', 'alert-success', 'check-circle-fill');
-                $('#editarTecnicaModal').modal('hide');
-                verTecnicas(servicioId);
-            },
+                    // Ocultar la pantalla de carga
+                    $('#contenedor_carga').css('display', 'none');
+                    mostrarAlerta('Técnica actualizada con éxito', 'alert-success', 'check-circle-fill');
+                    $('#editarTecnicaModal').modal('hide');
+
+                    // Volver a abrir el modal con la lista de técnicas
+                    verTecnicas(servicioId);
+                    $('#tecnicasModal').modal('show');
+                },
             error: function(error) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
@@ -721,8 +761,9 @@ function editarTecnica(tecnicaId, servicioId) {
                     // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
                 mostrarAlerta('Técnica eliminada con éxito', 'alert-success', 'check-circle-fill');
-                    $('#editarTecnicaModal').modal('hide');
-                    verTecnicas(servicioId);
+                $('#editarTecnicaModal').modal('hide');
+                verTecnicas(servicioId);
+                $('#tecnicasModal').modal('show');
                 },
                 error: function(error) {
                     console.log(error);
@@ -772,9 +813,15 @@ function servicioUpdate(servicioId) {
                     data: updatedServicio,
                     success: function(response) {
                         $('#editarServicioModal').modal('hide');
-                        // Ocultar la pantalla de carga
-                $('#contenedor_carga').css('display', 'none');
-                mostrarAlerta('Servicio actualizado con éxito', 'alert-success', 'check-circle-fill');
+                        $('#contenedor_carga').css('display', 'none');
+                        mostrarAlerta('Servicio actualizado con éxito', 'alert-success', 'check-circle-fill');
+
+                        // Destruir la instancia anterior de DataTables si existe
+                        if ($.fn.DataTable.isDataTable('#tablaServicios')) {
+                            $('#tablaServicios').DataTable().destroy();
+                        }
+
+                        // Actualizar la tabla de servicios
                         tablaServicios();
                     },
                     error: function(error) {
@@ -803,6 +850,13 @@ function servicioDelete(servicioId) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
                 mostrarAlerta('Servicio eliminado con éxito', 'alert-success', 'check-circle-fill');
+
+                // Destruir la instancia anterior de DataTables si existe
+                if ($.fn.DataTable.isDataTable('#tablaServicios')) {
+                    $('#tablaServicios').DataTable().destroy();
+                }
+
+                // Recargar la tabla de servicios
                 tablaServicios();
             },
             error: function(error) {
@@ -832,7 +886,14 @@ function mostrarAlerta(text, alertClass, iconId) {
 
         $(document).ready(function(){
 
+
+
             tablaServicios();
+
+
+            
+
+
 
             // Dashboard toggle
             const body = document.querySelector("body"),
