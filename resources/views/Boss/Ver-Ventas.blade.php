@@ -7,6 +7,7 @@
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
 
 <!-- datePicker -->
@@ -639,39 +640,9 @@
             <!-- Contenido de Citas de todos los empleados -->
             <div class="tab-pane fade show active" id="citasTotalesContent" role="tabpanel" aria-labelledby="citas-totales-tab">
                 <div class="table-container mt-5">
-                    <h2>CITAS</h2>
-                    <div class="filtros mt-3">
-                        <div class="form-floating mb-3">
-                            <input type="input" id="fechaFiltro" class="form-select">
-                            <label for="fechaFiltro">Fecha:</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select id="horaFiltro" class="form-select">
-                                <option value="">-- Seleccionar una hora --</option>
-                                <option value="09:00:00">09:00:00</option>
-                                <option value="10:00:00">10:00:00</option>
-                                <option value="11:00:00">11:00:00</option>
-                                <option value="12:00:00">12:00:00</option>
-                                <option value="13:00:00">13:00:00</option>
-                                <option value="14:00:00">14:00:00</option>
-                                <option value="15:00:00">15:00:00</option>
-                                <option value="16:00:00">16:00:00</option>
-                                <option value="17:00:00">17:00:00</option>
-                                <option value="18:00:00">18:00:00</option>
-                                <option value="19:00:00">19:00:00</option>
-                                <option value="20:00:00">20:00:00</option>
-                            </select>
-                            <label for="horaFiltro">Hora:</label>
-                        </div>
-                        <div class="form-floating mb-3 row">
-                            <button id="filtrarCitas" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/U hora </button>
-                            <button id="mostrarTodasCitas" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
-                            <button id="ordenarAsc" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
-                            <button id="ordenarDesc" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
-                        </div>
-                    </div>
+                    <h2>CITAS</h2>                   
                     <div  class="table-responsive">
-                        <table class="table table-striped" style="margin-top: 30px">
+                        <table  id="tablaCitasTotales"class="table table-striped" style="margin-top: 30px">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -695,12 +666,8 @@
             <div class="tab-pane fade" id="citasAceptadasContent" role="tabpanel" aria-labelledby="citas-aceptadas-tab">
                 <div class="table-container mt-5">
                     <h2>VENTAS DE CITAS ACEPTADAS</h2>
-                    <div class="form-floating mb-3">
-                        <input type="text" id="nombreEmpleadoFiltro" class="form-control" placeholder="Nombre del empleado">
-                        <label for="nombreEmpleadoFiltro">Buscar ventas del empleado:</label>
-                    </div>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table id="tablaVentasAceptadas" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -729,38 +696,8 @@
             <div class="tab-pane fade" id="misCitasContent" role="tabpanel" aria-labelledby="mis-citas-tab">
                 <div class="table-container mt-5">
                     <h2>MIS CITAS</h2>
-                    <div class="filtros mt-3">
-                        <div class="form-floating mb-3">
-                            <input type="input" id="fechaFiltroEmpleado" class="form-select">
-                            <label for="fechaFiltroEmpleado">Fecha:</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select id="horaFiltroEmpleado" class="form-select">
-                                <option value="">-- Seleccionar una hora</option>
-                                <option value="09:00:00">09:00:00</option>
-                                <option value="10:00:00">10:00:00</option>
-                                <option value="11:00:00">11:00:00</option>
-                                <option value="12:00:00">12:00:00</option>
-                                <option value="13:00:00">13:00:00</option>
-                                <option value="14:00:00">14:00:00</option>
-                                <option value="15:00:00">15:00:00</option>
-                                <option value="16:00:00">16:00:00</option>
-                                <option value="17:00:00">17:00:00</option>
-                                <option value="18:00:00">18:00:00</option>
-                                <option value="19:00:00">19:00:00</option>
-                                <option value="20:00:00">20:00:00</option>
-                            </select>
-                            <label id="labelHoraFiltroEmpleado" for="horaFiltroEmpleado">Hora:</label>
-                        </div>
-                        <div class="form-floating mb-3 row">
-                            <button id="filtrarCitasEmpleado" class="btn btn-light mt-2 col-6 col-md-12 col-sm-12" style="border: 2px solid black"><i class="fa-solid fa-magnifying-glass"></i>  Buscar.. por fecha Y/U hora </button>
-                            <button id="mostrarTodasCitasEmpleado" class="btn btn-dark mt-2 col-6 col-md-12 col-sm-12"><i class="fa-regular fa-eye"></i>  Ver todas las Citas</button>
-                            <button id="ordenarAscEmpleado" class="btn btn-pink mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-down-wide-short"></i>  Menor a mayor</button>
-                            <button id="ordenarDescEmpleado" class="btn btnMayorMenor mt-2 col-6 col-md-12 col-sm-12"><i class="fa-solid fa-arrow-up-short-wide"></i>  Mayor a menor </button>
-                        </div>
-                    </div>
                     <div  class="table-responsive">
-                        <table class="table table-striped" style="margin-top: 30px">
+                        <table id="tablaCitasEmpleado" class="table table-striped" style="margin-top: 30px">
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -1226,6 +1163,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-es.min.js"></script> -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -1400,6 +1338,25 @@ $('#citas-aceptadas-tab').on('click', function() {
         `);
     });
 
+    // Inicializar DataTables
+    $('#tablaVentasAceptadas').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+
     let totalVentas = calcularTotalVentas(citas);
     $('#totalVentasAceptadas').text('Total Vendido: $' + totalVentas.toFixed(2));
 
@@ -1408,7 +1365,7 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
 
-    function mostrarCitas(citas) {
+function mostrarCitas(citas) {
     let tablaVenta = $('#dibujarVenta');
     tablaVenta.empty();
 
@@ -1432,6 +1389,25 @@ $('#citas-aceptadas-tab').on('click', function() {
                 <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i></button></td>
             </tr>
         `);
+    });
+
+    // Inicializar DataTables
+    $('#tablaCitasTotales').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
     });
 
     manejarEventos();
@@ -1711,28 +1687,57 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
     function mostrarCitasEmpleado(citas) {
-        let tablaVenta = $('#dibujarVentaEmpleado');
-        tablaVenta.empty();
+    let tablaVenta = $('#dibujarVentaEmpleado');
+    tablaVenta.empty();
 
-        $.each(citas, function (index, citaData) {
-            let cita = citaData;
-            let venta = citaData.venta;
-            console.log('citas de empleados: ', citaData);
-            tablaVenta.append(`
-                <tr>
-                    <td>Cita ${cita.id}</td>
-                    <td>${venta.total}</td>
-                    <td>${venta.fechaVenta}</td>
-                    <td>${cita.horaCita}</td>
-                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCitaAdmin"><i class="fa-solid fa-trash"></i> No asistió</button></td>
-                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
-                </tr>
-            `);
-        });
-
-        manejarEventosEmpleado  ();
+    if (citas.length === 0) {
+        tablaVenta.append('<tr><td colspan="7">No hay citas para mostrar.</td></tr>');
+        return;
     }
+
+    $.each(citas, function (index, citaData) {
+        let cita = citaData;
+        let venta = citaData.venta;
+
+        tablaVenta.append(`
+            <tr>
+                <td>Cita ${cita.id}</td>
+                <td>${venta.total}</td>
+                <td>${venta.fechaVenta}</td>
+                <td>${cita.horaCita}</td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
+                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCitaAdmin"><i class="fa-solid fa-trash"></i> No asistió</button></td>
+                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
+            </tr>
+        `);
+    });
+
+    // Destruir DataTables si ya está inicializado
+    // if ($.fn.DataTable.isDataTable('#tablaCitasEmpleado')) {
+    //     $('#tablaCitasEmpleado').DataTable().destroy();
+    // }
+
+    // Inicializar DataTables
+    $('#tablaCitasEmpleado').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    manejarEventosEmpleado();
+}
 
     $('#filtrarCitasEmpleado').on('click', function () {
         let fechaFiltro = $('#fechaFiltroEmpleado').val();
@@ -1947,6 +1952,7 @@ $(document).on('click', '.eliminarCita', function() {
 
 $(document).on('click', '.eliminarCitaAdmin', function() {
     let citaId = $(this).data('cita-id');
+    console.log('id de la citaaaaaaaaaaaaaaaaaaaa: ', citaId)
     $('#rechazarCitaAdmin').data('cita-id', citaId);
 })
 
