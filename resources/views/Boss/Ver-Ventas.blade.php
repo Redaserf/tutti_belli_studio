@@ -1339,7 +1339,7 @@ $('#citas-aceptadas-tab').on('click', function() {
                 <td>${venta.fechaVenta}</td>
                 <td>${cita.horaCita}</td>
                 <td>${cita.usuario_empleado.name + " " + cita.usuario_empleado.apellido}</td>
-                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i></button></td>
             </tr>
         `);
     });
@@ -1722,9 +1722,9 @@ function mostrarCitas(citas) {
                 <td>${venta.total}</td>
                 <td>${venta.fechaVenta}</td>
                 <td>${cita.horaCita}</td>
-                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
-                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCitaAdmin"><i class="fa-solid fa-trash"></i> No asistió</button></td>
-                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
+                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> </button></td>
+                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCitaAdmin"><i class="fa-solid fa-trash"></i></button></td>
+                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i></button></td>
             </tr>
         `);
     });
@@ -2058,10 +2058,21 @@ function eliminarCita(id){
             $('#editProductsModal1').modal('show');
         });
 
+        $('#abrirTecnicas').on('click', function() {
+            $('#editAppointmentModalCit').modal('show');
+        })
+
 
         $('#editProductsModal1').on('hidden.bs.modal', function () {
-            $('#editAppointmentModalCit').modal('show');
+            dibujarCitasVentasTecnicasProductos();
+            dibujarCitasVentasTecnicasProductosEmpleado();
+            // $('#editAppointmentModalCit').modal('show');
         });
+
+        // $('#guardarCambios').on('click', function() {
+        //     // $('#editProductsModal1').modal('hide');
+        //     // $('#editAppointmentModalCit').modal('hide');
+        // })
 
 
 // Dashboard toggle
