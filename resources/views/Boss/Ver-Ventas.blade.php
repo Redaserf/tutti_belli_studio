@@ -1188,6 +1188,58 @@
 //     });
 // });
 $(document).ready(function() {
+    $('#tablaCitasTotales').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+    $('#tablaVentasAceptadas').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+    // Inicializar DataTables
+    $('#tablaCitasEmpleado').DataTable({
+        "pageLength": 10, // Número de filas por página
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
     $('#fechaFiltro').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: 0,
@@ -1338,24 +1390,9 @@ $('#citas-aceptadas-tab').on('click', function() {
         `);
     });
 
+
     // Inicializar DataTables
-    $('#tablaVentasAceptadas').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
+    
 
     let totalVentas = calcularTotalVentas(citas);
     $('#totalVentasAceptadas').text('Total Vendido: $' + totalVentas.toFixed(2));
@@ -1391,24 +1428,9 @@ function mostrarCitas(citas) {
         `);
     });
 
+
     // Inicializar DataTables
-    $('#tablaCitasTotales').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
+    
 
     manejarEventos();
 }
@@ -1712,29 +1734,7 @@ function mostrarCitas(citas) {
         `);
     });
 
-    // Destruir DataTables si ya está inicializado
-    // if ($.fn.DataTable.isDataTable('#tablaCitasEmpleado')) {
-    //     $('#tablaCitasEmpleado').DataTable().destroy();
-    // }
-
-    // Inicializar DataTables
-    $('#tablaCitasEmpleado').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
+    
 
     manejarEventosEmpleado();
 }
