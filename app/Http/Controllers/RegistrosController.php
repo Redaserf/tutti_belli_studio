@@ -880,14 +880,23 @@ class RegistrosController extends Controller
 
         $empleado = User::with('horarios')->findOrFail($request->empleadoId);
         $horaCita = $request->horaCita;
-
-        foreach ($empleado->horarios as $horario) {
-            if ($horaCita < $horario->horaInicio) {
-                throw new \Exception('La hora seleccionada no está dentro del horario del empleado');
-            } elseif ($horaCita > $horario->horaFin) {
-                throw new \Exception('La hora seleccionada no está dentro del horario del empleado');
+        $diaSemanaCita = Carbon::parse($request->fechaCita)->dayOfWeek;
+        
+        $horariosDelDia = $empleado->horarios->filter(function ($horario) use ($diaSemanaCita) {
+            return $horario->diaSemana == $diaSemanaCita;
+        });
+        
+        if ($horariosDelDia->isEmpty()) {
+            throw new \Exception('No hay horarios laborales para el día seleccionado.');
+        }
+        
+        foreach ($horariosDelDia as $horario) {
+            if ($horaCita < $horario->horaInicio || $horaCita > $horario->horaFin) {
+                throw new \Exception('La hora seleccionada no está dentro del horario laboral del empleado.');
             }
         }
+        
+        
 
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 

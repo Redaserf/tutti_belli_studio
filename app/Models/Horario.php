@@ -20,4 +20,8 @@ class Horario extends Model
     public function empleadoHasHorario(){
         return $this->hasMany(EmpleadoHasHorario::class, 'horarioId');
     }
+
+    public function horariosEmpleado(){
+        return $this->belongsToMany(User::class, 'empleados_has_horarios', 'horarioId', 'empleadoId');
+    }
 }

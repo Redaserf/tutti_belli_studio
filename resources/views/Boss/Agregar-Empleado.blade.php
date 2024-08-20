@@ -25,6 +25,45 @@
         padding-left: 0;
     }
 
+/* Alerta bonita */
+
+@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
+
     ul{
         padding-left: 0;
     }
@@ -420,7 +459,23 @@
 
             {{-- Fin Sidebar --}}
 
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="info-fill" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
 
+            <div class="custom-alert alert alert-dismissible fade" role="alert">
+                <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+                <div id="alertaTexto">Texto de la alerta</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
 
 
@@ -585,6 +640,34 @@
         loader.style.display = "none";
     });
 
+    function mostrarAlerta(text, alertClass, iconId) {
+    $("#alertaTexto").text(text);
+    $(".custom-alert")
+        .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+        .addClass(`show ${alertClass}`)
+        .fadeIn();
+    $("#alert-icon").html(`<use xlink:href="#${iconId}"></use>`);
+    setTimeout(function() {
+        $(".custom-alert")
+            .removeClass("show")
+            .addClass("hide")
+            .fadeOut();
+    }, 6000);
+}
+// Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la pagina
+const alertMessage = localStorage.getItem('alertMessage');
+const alertClass = localStorage.getItem('alertClass');
+const alertIcon = localStorage.getItem('alertIcon');
+
+if (alertMessage) {
+    mostrarAlerta(alertMessage, alertClass, alertIcon);
+
+    // Limpiar el mensaje de alerta después de mostrarlo
+    localStorage.removeItem('alertMessage');
+    localStorage.removeItem('alertClass');
+    localStorage.removeItem('alertIcon');
+}
+
 $(document).ready(function(){
     // Función para validar si es mayor de 18 años
     function validarEdad(fechaNacimiento) {
@@ -641,7 +724,7 @@ $(document).ready(function(){
     $('#empleadoForm').on('submit', function(e) {
         if ($('#agregarEmpleado').is(':disabled')) {
             e.preventDefault();
-            alert('Por favor, asegúrate de que todos los campos sean correctos.');
+            mostrarAlerta('Por favor, asegúrate de que todos los campos sean correctos.', 'alert-warning', 'exclamation-triangle-fill');
         }
     });
 
@@ -808,14 +891,14 @@ sidebarBtn.addEventListener("click", () => {
                 console.log(response);
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
-                alert("Empleado agregado exitosamente");
+            mostrarAlerta('Empleado agregado exitosamente.', 'alert-success', 'check-circle-fill');
                 window.location.href = '/Ver-Empleados';
         },
             error: function(error) {
                 console.log(error);
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
-                alert('Ocurrió un error al agregar al empleado Verifique bien sus datos');
+            mostrarAlerta('Ocurrió un error al agregar al empleado. Verifique bien sus datos.', 'alert-danger', 'exclamation-triangle-fill');
                 // $('#employeeName').val('');
                 // $('#employeeLastname').val('');
                 // $('#employeeGender').val('');

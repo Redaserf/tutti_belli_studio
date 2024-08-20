@@ -1188,58 +1188,7 @@
 //     });
 // });
 $(document).ready(function() {
-    $('#tablaCitasTotales').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
-    $('#tablaVentasAceptadas').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
-    // Inicializar DataTables
-    $('#tablaCitasEmpleado').DataTable({
-        "pageLength": 10, // Número de filas por página
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
+     
     $('#fechaFiltro').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: 0,
@@ -1366,8 +1315,13 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
     function mostrarCitasAceptadas(citas) {
+        
+    if ($.fn.DataTable.isDataTable('#tablaVentasAceptadas')) {
+    $('#tablaVentasAceptadas').DataTable().destroy();
+    }
     let tablaVenta = $('#dibujarVentasAceptadas');
     tablaVenta.empty();
+    
 
     if (citas.length === 0) {
         tablaVenta.append('<tr><td colspan="6">No hay citas aceptadas para mostrar.</td></tr>');
@@ -1392,7 +1346,24 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
     // Inicializar DataTables
-    
+    $('#tablaVentasAceptadas').DataTable({
+            "pageLength": 5, // Fija el número de filas por página a 5
+            "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
+            "language": {
+                "lengthMenu": "",
+                "zeroRecords": "No se encontraron citas",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+                "infoEmpty": "No hay citas disponibles",
+                "infoFiltered": "(filtrado de _MAX_ citas totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
 
     let totalVentas = calcularTotalVentas(citas);
     $('#totalVentasAceptadas').text('Total Vendido: $' + totalVentas.toFixed(2));
@@ -1403,6 +1374,9 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
 function mostrarCitas(citas) {
+    if ($.fn.DataTable.isDataTable('#tablaCitasTotales')) {
+        $('#tablaCitasTotales').DataTable().destroy();
+    }
     let tablaVenta = $('#dibujarVenta');
     tablaVenta.empty();
 
@@ -1430,6 +1404,24 @@ function mostrarCitas(citas) {
 
 
     // Inicializar DataTables
+    $('#tablaCitasTotales').DataTable({
+            "pageLength": 5, // Fija el número de filas por página a 5
+            "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
+            "language": {
+                "lengthMenu": "", 
+                "zeroRecords": "No se encontraron citas",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+                "infoEmpty": "No hay citas disponibles",
+                "infoFiltered": "(filtrado de _MAX_ citas totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
     
 
     manejarEventos();
@@ -1709,6 +1701,9 @@ function mostrarCitas(citas) {
 
 
     function mostrarCitasEmpleado(citas) {
+    if ($.fn.DataTable.isDataTable('#tablaCitasEmpleado')) {
+    $('#tablaCitasEmpleado').DataTable().destroy();
+    }
     let tablaVenta = $('#dibujarVentaEmpleado');
     tablaVenta.empty();
 
@@ -1733,6 +1728,25 @@ function mostrarCitas(citas) {
             </tr>
         `);
     });
+    $('#tablaCitasEmpleado').DataTable({
+            "pageLength": 5, // Fija el número de filas por página a 5
+            "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
+            "language": {
+                "lengthMenu": "", 
+                "zeroRecords": "No se encontraron citas",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+                "infoEmpty": "No hay citas disponibles",
+                "infoFiltered": "(filtrado de _MAX_ citas totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
 
     
 
@@ -1885,17 +1899,15 @@ function mostrarCitas(citas) {
             },
             success: function(response) {
                 console.log(response);
-                alert('Se aceptó con éxito');
+                // alert('Se aceptó con éxito');
 
                 dibujarCitasVentasTecnicasProductosAceptados();
                 dibujarCitasVentasTecnicasProductos();
                 
-                // Mantén el contenido del modal si es necesario
                 $('#editAppointmentModalCit').modal('hide');
                 mostrarAlerta('Cita aceptada correctamente.', 'alert-success', 'check-circle-fill');
                 
-                // Vuelve a asignar los eventos
-                aceptarVenta(); // Asigna de nuevo el evento a los botones
+                aceptarVenta();
             },
             error: function(error) {
                 console.log(error);
@@ -1927,11 +1939,9 @@ function aceptarMisCitasAdmin() {
                 
                 $('#editAppointmentModalCit').modal('hide');
 
-                // Cierra el modal relacionado con la cita del admin
                 mostrarAlerta('Cita del admin aceptada correctamente.', 'alert-success', 'check-circle-fill');
                 
-                // Vuelve a asignar los eventos
-                aceptarMisCitasAdmin(); // Asigna de nuevo el evento a los botones para citas del admin
+                aceptarMisCitasAdmin();
             },
             error: function(error) {
                 console.log(error);
