@@ -429,7 +429,7 @@ h1, h2, h3, h4, h5 ,a, li{
         <div class="custom-alert alert alert-dismissible fade" role="alert">
             <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
             <div id="alertaTexto">Texto de la alerta</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> --}}
         </div>
 
         <!-- fin alerta -->
@@ -462,17 +462,21 @@ h1, h2, h3, h4, h5 ,a, li{
   function mostrarAlerta(text, alertClass, iconId) {
     $("#alertaTexto").text(text);
     $(".custom-alert")
-    .removeClass("alert-primary alert-success alert-warning alert-danger hide")
-    .addClass(`show ${alertClass}`)
-    .fadeIn();
+        .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+        .addClass(`show ${alertClass}`)
+        .fadeIn();
+
     $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+
     setTimeout(function() {
-      $(".custom-alert")
-      .removeClass("show")
-      .addClass("hide")
-      .fadeOut();
+        $(".custom-alert").fadeOut(function() {
+            $(this)
+                .removeClass("show")
+                .addClass("hide")
+                .removeClass(alertClass); // Restablecer la clase para la próxima vez
+        });
     }, 1500);
-  }
+}
 
   // Dibujar productos
   function dibujarProductosCd() {
@@ -718,6 +722,7 @@ $('.precio-filtro').on('change', dibujarProductosCd)
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
+          carritoCantidad();
             mostrarAlerta('Producto agregado al carrito', 'alert-success', 'check-circle-fill');
         },
         error: function(error) {

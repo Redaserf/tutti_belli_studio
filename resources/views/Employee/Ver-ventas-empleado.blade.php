@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ventas</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -666,52 +666,6 @@ margin-right: 20px;
             <div class="container mt-5">
                 <h2>MIS CITAS</h2>
                 <div class="table-container table-responsive mt-4">
-                    <div class="filtros mb-3">
-                        <div class="form-floating mb-3">
-                            <input type="date" id="fechaFiltroEmpleado" class="form-control">
-                            <label for="fechaFiltroEmpleado">Fecha:</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select id="horaFiltroEmpleado" class="form-select">
-                                <option value="">-- Seleccionar una hora</option>
-                                <option value="09:00:00">09:00:00</option>
-                                <option value="10:00:00">10:00:00</option>
-                                <option value="11:00:00">11:00:00</option>
-                                <option value="12:00:00">12:00:00</option>
-                                <option value="13:00:00">13:00:00</option>
-                                <option value="14:00:00">14:00:00</option>
-                                <option value="15:00:00">15:00:00</option>
-                                <option value="16:00:00">16:00:00</option>
-                                <option value="17:00:00">17:00:00</option>
-                                <option value="18:00:00">18:00:00</option>
-                                <option value="19:00:00">19:00:00</option>
-                                <option value="20:00:00">20:00:00</option>
-                            </select>
-                            <label for="horaFiltroEmpleado">Hora:</label>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 mb-2">
-                                <button id="filtrarCitasEmpleado" class="btn btn-light w-100" style="border: 2px solid black">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Buscar por fecha Y/O hora
-                                </button>
-                            </div>
-                            <div class="col-12 col-md-6 mb-2">
-                                <button id="mostrarTodasCitasEmpleado" class="btn btn-dark w-100">
-                                    <i class="fa-regular fa-eye"></i> Ver todas las Citas
-                                </button>
-                            </div>
-                            <div class="col-12 col-md-6 mb-2">
-                                <button id="ordenarAscEmpleado" class="btn btn-pink w-100">
-                                    <i class="fa-solid fa-arrow-down-wide-short"></i> Menor a mayor
-                                </button>
-                            </div>
-                            <div class="col-12 col-md-6 mb-2">
-                                <button id="ordenarDescEmpleado" class="btn btn-dark w-100">
-                                    <i class="fa-solid fa-arrow-up-short-wide"></i> Mayor a menor
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="table-responsive tab-content">
                         <table id="tablaVenta" class="table table-striped mt-3">
                             <thead>
@@ -1248,6 +1202,7 @@ $(document).on('click', '.eliminarCita', function() {
 $('#rechazarCita').on('click', function() {
     let citaId = $(this).data('cita-id');
     eliminarCita(citaId);
+    window.location.reload();
 });
 
 function eliminarCita(id){
