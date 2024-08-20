@@ -318,6 +318,45 @@ header {
                 min-width: 100%;
                 margin-top: 20px;
             }
+
+            /* Alerta bonita */
+
+            @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
             </style>
 
 </head>
@@ -416,6 +455,24 @@ header {
                 </div>
                 </div>
             </nav>
+             
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="info-fill" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
+
+            <div class="custom-alert alert alert-dismissible fade" role="alert">
+                <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+                <div id="alertaTexto">Texto de la alerta</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
             {{-- Fin Sidebar --}}
 
@@ -732,10 +789,11 @@ $('#editarHorarioForm').on('submit', function(e) {
         data: formData,
         success: function(response) {
             console.log(response);
-            alert('Horario editado con éxito');
+            mostrarAlerta('Horario editado con éxito', 'alert-success', 'check-circle-fill');
+            $('#editarHorarioModal').modal('hide');
         },
         error: function(error){
-            alert('Error al editar el horario');
+            mostrarAlerta('Error al editar el horario', 'alert-danger', 'exclamation-triangle-fill');
             console.log(error);
         }
     });
@@ -770,7 +828,7 @@ $('#editarHorarioForm').on('submit', function(e) {
               success: function(){
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                alert("Empleado eliminado con éxito.")
+                mostrarAlerta('Empleado eliminado con éxito', 'alert-success', 'check-circle-fill');
                   tablaEmpleados();
               },
               error: function(error){
@@ -829,7 +887,7 @@ $('#editProfileForm').on('submit', function(e) {
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
             $('#editProfileModal').modal('hide');
-            alert('Perfil actualizado con éxito.');
+            mostrarAlerta('Perfil actualizado con éxito', 'alert-success', 'check-circle-fill');
             $('#emailError').text('Correo ya en uso.');
                 $('#emailError').css('display', 'none');
             tablaEmpleados();
@@ -965,6 +1023,111 @@ function checkWidth() {
 
 
         // Fin document.ready
+    });
+
+    
+    // Función para mostrar alertas bonitas
+    function mostrarAlerta(text, alertClass, iconId) {
+        $("#alertaTexto").text(text);
+        $(".custom-alert")
+            .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+            .addClass(`show ${alertClass}`)
+            .fadeIn();
+        $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+        setTimeout(function() {
+            $(".custom-alert")
+                .removeClass("show")
+                .addClass("hide")
+                .fadeOut();
+        }, 6000);
+    }
+
+    // Ejemplo de llamadas a la función
+    // mostrarAlerta('Este es un mensaje de advertencia.', 'alert-warning', 'exclamation-triangle-fill');
+    // mostrarAlerta('¡Operación exitosa!', 'alert-success', 'check-circle-fill');
+
+    // Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la página
+    const alertMessage = localStorage.getItem('alertMessage');
+    const alertClass = localStorage.getItem('alertClass');
+    const alertIcon = localStorage.getItem('alertIcon');
+
+    if (alertMessage) {
+        mostrarAlerta(alertMessage, alertClass, alertIcon);
+
+        // Limpiar el mensaje de alerta después de mostrarlo
+        localStorage.removeItem('alertMessage');
+        localStorage.removeItem('alertClass');
+        localStorage.removeItem('alertIcon');
+    }
+
+    $(document).ready(function() {
+        tablaEmpleados();
+
+        // Dashboard toggle
+        const body = document.querySelector("body"),
+            sidebar = body.querySelector(".sidebar"),
+            toggle = body.querySelector(".toggle"),
+            overlay = body.querySelector(".overlay"),
+            sidebarBtn = body.querySelector(".sidebar-btn");
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if (!sidebar.classList.contains("close")) {
+                overlay.style.display = "block";
+            } else {
+                overlay.style.display = "none";
+            }
+        });
+
+        overlay.addEventListener("click", () => {
+            sidebar.classList.add("close");
+            overlay.style.display = "none";
+            sidebar.classList.remove("open");
+        });
+
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            if (sidebar.classList.contains("open")) {
+                sidebar.classList.remove("close");
+                overlay.style.display = "block";
+            } else {
+                sidebar.classList.add("close");
+                overlay.style.display = "none";
+            }
+        });
+
+        function checkWidth() {
+            if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
+                $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
+            } else {
+                $('#scrollDash').removeClass('table-responsive');
+            }
+        }
+        checkWidth();
+        $(window).resize(checkWidth);
+
+        // Botón sidebar
+        function botonSidebar() {
+            if (window.innerWidth <= 768) {
+                $('.sidebar-btn').css('display', 'block');
+            } else {
+                $('.sidebar-btn').css('display', 'none');
+            }
+        }
+        window.addEventListener('resize', botonSidebar);
+        botonSidebar();
+
+        function botones() {
+            if (window.innerWidth <= 960) {
+                $('.top').css('flex-direction', 'column');
+                $('.top').css('gap', '10px');
+            } else {
+                $('.top').css('gap', '0');
+                $('.top').css('flex-direction', '');
+            }
+        }
+        window.addEventListener('resize', botones);
+        botones();
     });
 
     </script>

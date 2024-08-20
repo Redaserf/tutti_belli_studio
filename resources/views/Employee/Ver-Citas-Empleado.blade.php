@@ -609,12 +609,6 @@ margin-right: 20px;
                 </a>
             </li>
             <li class="nav-link">
-                <a href="/Agregar-Cita-Empleado">
-                    <i class="fa-solid fa-pencil icon"></i>
-                    <span class="text nav-text">Agendar Cita</span>
-                </a>
-            </li>
-            <li class="nav-link">
                 <a href="/Ver-Productos-Empleado">
                     <i class="fa-solid fa-bag-shopping icon"></i>
                     <span class="text nav-text">Productos</span>

@@ -667,12 +667,6 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
                     </a>
                 </li>
                 <li class="nav-link">
-                    <a href="/Agregar-Cita-Empleado">
-                        <i class="fa-solid fa-pencil icon"></i>
-                        <span class="text nav-text">Agendar Cita</span>
-                    </a>
-                </li>
-                <li class="nav-link">
                   <a href="/Ver-Productos-Empleado">
                       <i class="fa-solid fa-box icon"></i>
                       <span class="text nav-text">Inventario</span>
