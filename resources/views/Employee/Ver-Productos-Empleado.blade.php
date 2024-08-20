@@ -427,19 +427,10 @@ header {
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="productos-servicios" role="tabpanel" aria-labelledby="productos-servicios-tab">
             <div class="table-container mt-5">
-                    <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
-                <div class="flex-container">
-                    <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
-                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-up-wide-short"></i>
-                    </a>
-                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-down-short-wide"></i>
-                    </a>
-                </div>
+                    <h2 class="text-center" style="margin: 10px;">Productos en Servicios</h2>
                 <div class="table-responsive">
 
-                    <table class="table table-striped">
+                    <table id="table-productos-servicios" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
@@ -458,18 +449,9 @@ header {
         </div>
         <div class="tab-pane fade" id="productos-ventas" role="tabpanel" aria-labelledby="productos-ventas-tab">
             <div class="table-container mt-5">
-                <h2 class="text-center">Productos en Ventas</h2>
-                <div class="flex-container">
-                    <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
-                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-up-wide-short"></i>
-                    </a>
-                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-down-short-wide"></i>
-                    </a>
-                </div>
+                <h2 class="text-center"  style="margin: 10px;">Productos en Ventas</h2>
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table id="table-productos-ventas" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
@@ -488,18 +470,9 @@ header {
         </div>
         <div class="tab-pane fade" id="productos-curso" role="tabpanel" aria-labelledby="productos-curso-tab">
             <div class="table-container mt-5">
-                <h2 class="text-center">Productos en Curso</h2>
-                <div class="flex-container">
-                    <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
-                    <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-up-wide-short"></i>
-                    </a>
-                    <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                        <i class="fa-solid fa-arrow-down-short-wide"></i>
-                    </a>
-                </div>
+                <h2 class="text-center"  style="margin: 10px;">Productos en Curso</h2>
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table id="table-productos-curso" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
@@ -521,6 +494,8 @@ header {
 
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -541,11 +516,6 @@ header {
     url: '/get/productos',
     method: 'GET',
     success: function(data) {
-        // Limpiar las tablas
-        $('#productos-servicios tbody').empty();
-        $('#productos-ventas tbody').empty();
-        $('#productos-curso tbody').empty();
-
         // Agrupar los productos por inventario_id
         var productosPorInventario = {
             1: [], // Productos en ventas
@@ -561,32 +531,59 @@ header {
             }
         });
 
-        // Función para agregar productos a una tabla
+        // Función para agregar productos a una tabla y aplicar DataTables
         function agregarProductosATabla(tablaSelector, productos) {
-            var targetTable = $(tablaSelector);
-            if(productos.length === 0){
-                targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
-            }
-            productos.forEach(function(producto) {
-            var color = '';
-                if (producto.cantidadEnStock <= 0) {
-                    color = 'red';
-            } else if (producto.cantidadEnStock <= 20) {
-                    color = 'rgb(248, 208, 76)';
-                }
+            var targetTable = $(tablaSelector + ' tbody');
+            targetTable.empty(); // Vaciar la tabla antes de agregar nuevos datos
 
-                var row = '<tr>' +
-                    '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
-                    '<td>' + producto.nombre + '</td>' +
-                    '<td>' + producto.descripcion + '</td>' +
-                    '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
-                    '<td>' + producto.precio + '</td>' +
-                    '</tr>';
-                targetTable.append(row);
+            if (productos.length === 0) {
+                targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
+            } else {
+                productos.forEach(function(producto) {
+                    var color = '';
+                    if (producto.cantidadEnStock <= 0) {
+                        color = 'red';
+                    } else if (producto.cantidadEnStock <= 20) {
+                        color = 'rgb(248, 208, 76)';
+                    }
+
+                    var row = '<tr>' +
+                        '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                        '<td>' + producto.nombre + '</td>' +
+                        '<td>' + producto.descripcion + '</td>' +
+                        '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
+                        '<td>' + producto.precio + '</td>' +
+                        '</tr>';
+                    targetTable.append(row);
+                });
+            }
+
+            // Inicializar DataTables
+            if ($.fn.DataTable.isDataTable(tablaSelector)) {
+                $(tablaSelector).DataTable().destroy(); // Destruir la instancia existente si ya está inicializada
+            }
+
+            $(tablaSelector).DataTable({
+                "pageLength": 5, // Fija el número de filas por página a 5
+                "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
+                "language": {
+                    "lengthMenu": "", // Deja esto vacío para eliminar el texto de la opción
+                    "zeroRecords": "No se encontraron productos",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ productos",
+                    "infoEmpty": "No hay productos disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ productos totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
             });
         }
 
-        // Agregar productos a las tablas correspondientes
+        // Agregar productos a las tablas correspondientes y aplicar DataTables
         agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
         agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
         agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
