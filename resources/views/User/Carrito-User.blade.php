@@ -366,7 +366,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
         <div class="custom-alert alert alert-dismissible fade" role="alert">
             <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
-            <div id="alertaTexto">Texto de la alerta</div>
+            <div id="alertaTexto">La cantidad maxima para comprar es de 249 productos por venta.</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
@@ -618,6 +618,8 @@ $.get('/carrito/contar-productos', function(data) {
     // Scripts aquí
     const randomDateTime = '2023-08-02 14:35:47';
 
+    
+
     $('#comprar').on('click',function (){
     // Mostrar la pantalla de carga
         console.log(productosComprados);
@@ -662,6 +664,7 @@ $.get('/carrito/contar-productos', function(data) {
         }
 
     });
+
 
 
     $('#borrarTodo').on('click', function() {

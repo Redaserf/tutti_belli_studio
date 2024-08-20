@@ -31,7 +31,7 @@ class InscripcionAceptada extends Mailable
      */
     public function build()
     {
-        return $this->view('email.inscripcionAceptada')
+        return $this->view('email.inscripcionaceptada')
         ->with([
             'usuario' => $this->usuario,
             'inscripcion' => $this->inscripcion,
