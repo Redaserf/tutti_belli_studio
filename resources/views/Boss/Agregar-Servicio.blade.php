@@ -42,6 +42,45 @@ ul{
     z-index: 300000;
 }
 
+/* Alerta bonita */
+
+@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            z-index: 2000;/* para que este por encima del modal */
+            animation-duration: 0.8s;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation-name: slideIn;
+        }
+
+        .custom-alert.hide {
+            animation-name: slideOut;
+        }
+        /* Alerta bonita */
+
 /* Dashboard CSS */
 :root {
     --body-color: #FFF;
@@ -477,7 +516,23 @@ header {
 
             {{-- Fin Sidebar --}}
 
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <symbol id="check-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <symbol id="info-fill" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </symbol>
+                <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
 
+            <div class="custom-alert alert alert-dismissible fade" role="alert">
+                <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
+                <div id="alertaTexto">Texto de la alerta</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
 
 
@@ -571,6 +626,36 @@ header {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
+function mostrarAlerta(text, alertClass, iconId) {
+    $("#alertaTexto").text(text);
+    $(".custom-alert")
+        .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+        .addClass(`show ${alertClass}`)
+        .fadeIn();
+    $("#alert-icon").html(`<use xlink:href="#${iconId}"></use>`);
+    setTimeout(function() {
+        $(".custom-alert")
+            .removeClass("show")
+            .addClass("hide")
+            .fadeOut();
+    }, 6000);
+}
+
+
+// Mostrar alerta guardada en localStorage para que no se quite cuando reinicies la pagina
+const alertMessage = localStorage.getItem('alertMessage');
+const alertClass = localStorage.getItem('alertClass');
+const alertIcon = localStorage.getItem('alertIcon');
+
+if (alertMessage) {
+    mostrarAlerta(alertMessage, alertClass, alertIcon);
+
+    // Limpiar el mensaje de alerta después de mostrarlo
+    localStorage.removeItem('alertMessage');
+    localStorage.removeItem('alertClass');
+    localStorage.removeItem('alertIcon');
+}
+
 
     $('#productosModal').on('hide.bs.modal', function (e) {
         console.log('El modal está a punto de cerrarse');
@@ -650,7 +735,7 @@ sidebarBtn.addEventListener("click", () => {
         if(nombreServicio.length >0){
             $('#tecnicasModal').modal('show');
         }else{
-            alert('Debes agregar nombre para la tecnica')
+            mostrarAlerta('Debes agregar nombre para la técnica', 'alert-warning', 'exclamation-triangle-fill');
         }
     });
 
@@ -674,7 +759,7 @@ sidebarBtn.addEventListener("click", () => {
         }
         else{
 
-            alert('completa los campos faltantes')
+            mostrarAlerta('Completa los campos faltantes', 'alert-warning', 'exclamation-triangle-fill');
         }
 
     });
@@ -701,7 +786,7 @@ sidebarBtn.addEventListener("click", () => {
                 // $('#nombre').val('');
             },
             error: function(error) {
-                alert('Ocurrió un error al agregar el servicio');
+                mostrarAlerta('Ocurrió un error al agregar el servicio', 'alert-danger', 'exclamation-triangle-fill');
                 $('#nombre').val('');
             }
         });
@@ -833,15 +918,18 @@ sidebarBtn.addEventListener("click", () => {
                     success: function(response) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                        alert("Servicio junto con su técnica agregado con éxtio.");
+                    mostrarAlerta('Servicio junto con su técnica agregado con éxito', 'alert-success', 'check-circle-fill');
                         // location.reload();  // Refresca la página al aceptar el alert
-                        window.location.href = '/Ver-Servicios';
+                        setTimeout(function() {
+                            window.location.href = '/Ver-Servicios';
+                    }, 1500);
+                        
                     },
                     error: function(error) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
                         console.log(error)
-                        alert('Parece que hubo un error, vuelve a intentarlo más tarde.');
+                        mostrarAlerta('Parece que hubo un error, vuelve a intentarlo más tarde.', 'alert-danger', 'exclamation-triangle-fill');
                         // location.reload();  // Refresca la página al aceptar el alert
                     }
                 });
@@ -850,7 +938,7 @@ sidebarBtn.addEventListener("click", () => {
             } else {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                alert('Completa los campos faltantes');
+                mostrarAlerta('Completa los campos faltantes', 'alert-warning', 'exclamation-triangle-fill');
             }
 
             // Reiniciar todos los campos de cantidad
@@ -861,7 +949,7 @@ sidebarBtn.addEventListener("click", () => {
         } else {
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
-            alert('Completa los datos correctamente');
+            mostrarAlerta('Completa los datos correctamente', 'alert-warning', 'exclamation-triangle-fill');
         }
     });
 
@@ -884,7 +972,7 @@ sidebarBtn.addEventListener("click", () => {
             console.log(selectedProducts);
             console.log(cantidadesProducts);
         } else {
-            alert('Inserte una cantidad válida que sea menor o igual al stock disponible');
+            mostrarAlerta('Inserte una cantidad válida que sea menor o igual al stock disponible', 'alert-warning', 'exclamation-triangle-fill');
         }
     });
     function checkWidth() {
@@ -905,7 +993,7 @@ sidebarBtn.addEventListener("click", () => {
         }
         else{
 
-            alert('completa los campos faltantes')
+            mostrarAlerta('Completa los campos faltantes', 'alert-warning', 'exclamation-triangle-fill');
         }
     });
 
