@@ -1144,6 +1144,9 @@ margin-right: 20px;
                     dibujarCitasVentasTecnicasProductosEmpleado();
                     $('#eliminarCita').modal('hide');
                     mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
+                    setTimeout(function() {
+                            location.reload();
+                        }, 1300);
                 },
                 error: function(error) {
                     console.log(error);
