@@ -737,7 +737,7 @@
 
             <br>
 
-           
+            
 
             <div class="tab-content" id="comprasTabContent">
                 <!-- Pestaña compras totales -->
@@ -1911,7 +1911,7 @@ function mostrarCitas(citas) {
             },
             error: function(error) {
                 console.log(error);
-                alert('Hubo un error al aceptar la venta');
+                mostrarAlerta('Hubo un error al aceptar la venta.', 'alert-danger', 'exclamation-triangle-fill');
             }
         });
     });
@@ -1945,7 +1945,7 @@ function aceptarMisCitasAdmin() {
             },
             error: function(error) {
                 console.log(error);
-                alert('Hubo un error al aceptar la cita del admin');
+                mostrarAlerta('Hubo un error al aceptar la cita del admin.', 'alert-danger', 'exclamation-triangle-fill');
             }
         });
     });
@@ -2349,7 +2349,7 @@ sidebarBtn.addEventListener("click", () => {
                 _token: $('input[name="_token"]').val(),
             },
             success: function (){
-                alert('Compra confirmada');
+                mostrarAlerta('Compra confirmada', 'alert-success', 'check-circle-fill');
 
                 dibujarCompras();
                 dibujarCompraConfirmada();
@@ -2375,7 +2375,7 @@ sidebarBtn.addEventListener("click", () => {
                 _token: $('input[name="_token"]').val(),
             },
             success: function (){
-                alert('Compra Rechazada')
+                mostrarAlerta('Compra Rechazada', 'alert-danger', 'exclamation-triangle-fill');
 
                 dibujarCompras();
                 dibujarCompraConfirmada();

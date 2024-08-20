@@ -429,7 +429,7 @@ h1, h2, h3, h4, h5 ,a, li{
         <div class="custom-alert alert alert-dismissible fade" role="alert">
             <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
             <div id="alertaTexto">Texto de la alerta</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> --}}
         </div>
 
         <!-- fin alerta -->
