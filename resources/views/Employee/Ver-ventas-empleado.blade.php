@@ -1024,6 +1024,9 @@ margin-right: 20px;
                         $('#editAppointmentModalCit').modal('hide');
                         dibujarCitasVentasTecnicasProductosEmpleado();
                         mostrarAlerta('La venta fue aceptada y el stock actualizado con éxito.', 'alert-success', 'check-circle-fill');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1500);
                     },
                     error: function(xhr) {
                         let errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Error inesperado';
