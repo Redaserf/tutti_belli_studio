@@ -664,13 +664,13 @@ header {
             loader.style.display = "none";
         });
 
-    function mostrarAlerta(text, alertClass, iconId) {
+        function mostrarAlerta(text, alertClass, iconId) {
         $("#alertaTexto").text(text);
         $(".custom-alert")
             .removeClass("alert-primary alert-success alert-warning alert-danger hide")
-            .addClass(show ${alertClass})
+            .addClass(`show ${alertClass}`)
             .fadeIn();
-        $("#alert-icon").html(<use xlink:href="#${iconId}"></use>);
+        $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
         setTimeout(function() {
             $(".custom-alert")
                 .removeClass("show")
@@ -854,7 +854,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
 
 
         if (precio < 0 || cantidad < 0 ){
-            alert("Ingresa valores correctos.")
+            mostrarAlerta("Ingresa valores correctos.", "alert-warning", "exclamation-triangle-fill");
         } else {
 
         // Mostrar la pantalla de carga
@@ -869,7 +869,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
             success: function(response) {
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
-                alert('Producto actualizado con éxito.');
+                mostrarAlerta('Producto actualizado con éxito.', 'alert-success', 'check-circle-fill');
                 $('#editProductModal').modal('hide');
                 location.reload(); // Opcional: Recargar la página para reflejar los cambios
             },
