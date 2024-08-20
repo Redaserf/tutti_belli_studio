@@ -85,12 +85,9 @@ class VentaController extends Controller
 
             }
             //de haber detectado que no hay exsitencia de uno o varios productos, el estado 500 lo maneja como un error
-            if ($noHay) {
+            if($noHay){
                 DB::rollBack();
-                return response()->json([
-                    'message' => 'Ha seleccionado una cantidad mayor a la de los productos en existencia en almacen, favor de verificar sus productos seleccionados',
-                    'errorTipo' => 'cantidadExcedida'
-                ], 500);
+                return response()->json(['message' => 'Ha seleccionado una cantidad mayor a la de los productos en existencia en almacen, favor de verificar sus productos seleccionados'],500);
             }
 
             //Script para vacial el carrito del usuario
