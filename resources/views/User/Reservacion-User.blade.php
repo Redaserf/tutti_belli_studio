@@ -918,9 +918,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
                     let horaTexto = horaInicio.format('HH:mm:ss');
 
                     if (!horasOcupadas.includes(horaTexto)) {
-                        // Verifica si el día seleccionado es hoy
                         if (fechaMoment.isSame(hoy, 'day')) {
-                            // Solo agrega opciones para las horas que son posteriores a dos horas desde ahora
                             if (horaInicio.isAfter(dosHorasDespues)) {
                                 let option = new Option(horaTexto, horaTexto);
                                 select.append(option);
@@ -939,7 +937,7 @@ $('#citasModal').on('hidden.bs.modal', function () {
                 if (select.children('option').length > 0) {
                     select.val(select.children('option').first().val());
                 } else {
-                    alert('No hay horas disponibles para la fecha seleccionada.');
+                    mostrarAlerta('No hay horas disponibles para la fecha seleccionada.', 'alert-primary', 'info-fill');
                     $('#citasModal').modal('hide');
                 }
             }

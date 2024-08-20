@@ -1164,7 +1164,7 @@ $.ajax({
         if (select.children('option').length > 0) {
             select.val(select.children('option').first().val());
         } else {
-            alert('No hay horas disponibles para la fecha seleccionada.');
+            mostrarAlerta('No hay horas disponibles para la fecha seleccionada.', 'alert-primary', 'info-fill');
             $('#citasModal').modal('hide');
         }
     }

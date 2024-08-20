@@ -745,7 +745,8 @@ header {
                                 <div class="modal-footer">
                                     <button type="button" style='display:none' id='btnEliminar' data-bs-dismiss="modal" class='btn btn-danger'>Eliminar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-pink">Confirmar</button>
+                                    <button type="button" id="aceptarCitaa" data-cita-id="" style="display: none" class="btn btn-pink">Confirmar</button>
+                                    <button type="submit" id="mandarCita" class="btn btn-pink">Confirmar</button>
                                 </div>
                             </form>
                         </div>
@@ -1066,6 +1067,11 @@ header {
 
         const eventos = @json($events);
 
+        let fechaAhoraJAJA = new Date();
+        console.log('Fecha de hoyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy:', fechaAhoraJAJA);
+
+
+
         let horarios = [];
         let empleado = [];
 
@@ -1077,8 +1083,10 @@ $.ajax({
         horarios = empleado.horarios;
 
         const workingDays = horarios.map(horario => parseInt(horario.diaSemana));
+        console.log('dias de trabajoooooo: ', workingDays);
         const allDays = [0, 1, 2, 3, 4, 5, 6];
         const hiddenDays = allDays.filter(day => !workingDays.includes(day));
+        console.log('dias a ocultarrrrrr: ', hiddenDays);
         const businessHours = horarios.map(horario => {
             return {
                 daysOfWeek: [parseInt(horario.diaSemana)],
@@ -1086,6 +1094,8 @@ $.ajax({
                 endTime: horario.horaFin
             };
         });
+
+        console.log('horas de WORKKKKKKKKKK: ', businessHours);
 
         const slotMinTime = horarios.reduce((min, horario) => {
             return horario.horaInicio < min ? horario.horaInicio : min;
@@ -1099,13 +1109,9 @@ $.ajax({
         console.log('cursosssssssssssssssssssssss: ', cursosFechas);
 
 
+          
         function deshabilitarFechaPorCurso(fecha, fechasCursos) {
             const fechaMoment = moment(fecha).format('YYYY-MM-DD');
-
-            if(fechasCursos === null) {
-                console.log('No hay cursos activos para este empleado');
-                return;
-            }
 
             for (let curso of fechasCursos) {
                 if (
@@ -1119,6 +1125,7 @@ $.ajax({
 
             return [true, "", ""];
         }
+
 
 
         function deshabilitarFecha(fecha) {
@@ -1140,20 +1147,17 @@ $.ajax({
                 second: 0
             });
 
-            let horasOcupadas = empleado.citas_empleados
-                .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
-                .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
-
-            while (horaInicio.isBefore(horaFin)) {
-                let horaTexto = horaInicio.format('HH:mm:ss');
-                if (!horasOcupadas.includes(horaTexto)) {
-                    return true; //si hay una hora minimo
+            if (fechaMoment.isSame(moment(), 'day')) {
+                if (moment().isBefore(horaFin)) {
+                    return true; 
+                } else {
+                    return false;
                 }
-                horaInicio.add(1, 'hour');
+            } else {
+                return moment().isBetween(horaInicio, horaFin);
             }
-
-            return false; //deshabilita la fecha en el datepicker
         }
+
 
         function actualizarOpcionesHora(fechaHora) {
             let select = $('#horaCita');
@@ -1182,16 +1186,13 @@ $.ajax({
                     .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
                     .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
 
-                let limiteHora = new Date();
                 let dosHorasDespues = moment().add(2, 'hours');
 
                 while (horaInicio.isBefore(horaFin)) {
                     let horaTexto = horaInicio.format('HH:mm:ss');
 
                     if (!horasOcupadas.includes(horaTexto)) {
-                        // Verifica si el día seleccionado es hoy
                         if (fechaMoment.isSame(hoy, 'day')) {
-                            // Solo agrega opciones para las horas que son posteriores a dos horas desde ahora
                             if (horaInicio.isAfter(dosHorasDespues)) {
                                 let option = new Option(horaTexto, horaTexto);
                                 select.append(option);
@@ -1210,7 +1211,7 @@ $.ajax({
                 if (select.children('option').length > 0) {
                     select.val(select.children('option').first().val());
                 } else {
-                    alert('No hay horas disponibles para la fecha seleccionada.');
+                    mostrarAlerta('No hay horas disponibles para la fecha seleccionada.', 'alert-primary', 'info-fill');
                     $('#citasModal').modal('hide');
                 }
             }
@@ -1220,14 +1221,14 @@ $.ajax({
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
-            initialDate: new Date().toISOString().split('T')[0],
+            initialDate: fechaAhoraJAJA,
             slotMinTime: slotMinTime,
             slotMaxTime: slotMaxTime,
             allDaySlot: false,
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
             validRange: {
-                start: new Date().toISOString().split('T')[0],
+                start: fechaAhoraJAJA,
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
             events: eventos,
@@ -1329,6 +1330,10 @@ $.ajax({
             regional: "es",
             beforeShowDay: function(fecha) {
                 var dia = fecha.getDay();
+                let fechaMoment = moment(fecha);
+                let esDiaActual = fechaMoment.isSame(hoy, 'day');
+                let horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
+
 
                 if(cursosFechas === null){
                     console.log('El empleado no tiene cursos asignados')
@@ -1346,9 +1351,11 @@ $.ajax({
                 if (hiddenDays.includes(dia)) {
                     return [false, "", "Día no laborable"];
                 }
-
-                if (!deshabilitarFecha(fecha)) {//si no hay horas en el select se deshabilita la fecha
+                let fechaStr = moment(fecha).format('YYYY-MM-DD');
+                if (!deshabilitarFecha(fechaStr)) {
                     return [false, "", "No hay horas disponibles"];
+                } else {
+                    return [true, "", ""];
                 }
 
                 var hoy = new Date();
@@ -1360,6 +1367,45 @@ $.ajax({
 
                     if (horaInicioLimite >= hoy) {
                         return [false, "", `Las citas deben ser al menos 2 horas después de la hora actual`];
+                    }
+                }
+
+                if (esDiaActual && horarioDia) {
+                    let horaInicio = moment().set({
+                        hour: horarioDia.horaInicio.split(':')[0],
+                        minute: horarioDia.horaInicio.split(':')[1],
+                        second: 0
+                    });
+
+                    let horaFin = moment().set({
+                        hour: horarioDia.horaFin.split(':')[0],
+                        minute: horarioDia.horaFin.split(':')[1],
+                        second: 0
+                    });
+
+                    // Si ya pasó el tiempo del día laboral, oculta el día
+                    if (moment().isAfter(horaFin)) {
+                        return [false, "", "Horario laboral terminado"];
+                    }
+
+                    // Verificamos si hay alguna hora disponible en el horario del día
+                    let horasOcupadas = empleado.citas_empleados
+                        .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                        .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+
+                    let horasDisponibles = 0;
+
+                    while (horaInicio.isBefore(horaFin)) {
+                        let horaTexto = horaInicio.format('HH:mm:ss');
+                        if (!horasOcupadas.includes(horaTexto) && horaInicio.isAfter(moment())) {
+                            horasDisponibles++;
+                        }
+                        horaInicio.add(1, 'hour');
+                    }
+
+                    // Si no hay horas disponibles, ocultamos el día
+                    if (horasDisponibles === 0) {
+                        return [false, "", "No hay horas disponibles"];
                     }
                 }
 
@@ -1579,6 +1625,7 @@ function actualizarOpcionesHora(fechaHora) {
             rechazarCita($('#id').val());
         })
 
+        
 
         function editarCita(id) {
     limpiarFormulario();
@@ -1752,7 +1799,7 @@ function actualizarOpcionesHora(fechaHora) {
             console.log($(this));
 
             // Mostrar la pantalla de carga
-        $('#contenedor_carga').css('display', 'block');
+            $('#contenedor_carga').css('display', 'block');
 
             let id = $('#id').val();
             let url = id ? `/editar/cita/${id}` : '/RegistroCitaAdmin';
@@ -1861,6 +1908,13 @@ function actualizarOpcionesHora(fechaHora) {
 
         console.log('Valor del input serviciosSeleccionados:', $('#serviciosSeleccionados').val());
 
+        $('#verCitasModal').on('hidden.bs.modal', function() {
+            $('#contenedor_carga').css('display', 'block');
+
+            setTimeout(function() {
+                window.location.href = '/Ver-Citas';
+            }, 500);
+        });
 
        
         function limpiarFormulario() {
@@ -1882,7 +1936,7 @@ function actualizarOpcionesHora(fechaHora) {
             $.get('/cita/por/empleado', function(citas) {
                 let tabla = $('#tablaCitas').DataTable();
                 tabla.clear(); // Limpiar la tabla
-                
+
                 citas.forEach(cita => {
                     tabla.row.add([
                         cita.fechaCita,
@@ -1892,13 +1946,102 @@ function actualizarOpcionesHora(fechaHora) {
                         cita.usuario.email,
                         cita.usuario_empleado.empleadoNombreCompleto,
                         `<button class="btn btn-danger eliminar-cita-btn" data-cita-id="${cita.id}">Eliminar cita<i style="margin-left:9px;" class="fa-solid fa-trash"></i></button>
-                        <button class="btn btn-success aceptar-cita" data-fecha-cita="${cita.fechaCita}" data-cita-id="${cita.id}" id="aceptarCita${cita.id}">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>`
+                        <button class="btn btn-success aceptar-cita" data-cita-id="${cita.id}" id="aceptarCitaa">Aceptar cita<i style="margin-left:9px;" class="fa-solid fa-check"></i></button>`
                     ]).draw(false);
+                });
+
+                // Volver a vincular el evento click al botón "Aceptar cita"
+                $('#aceptarCitaa').off('click').on('click', function() {
+                    let id = $(this).data('cita-id');
+
+                    $('#contenedor_carga').css('display', 'block');
+
+                    let serviciosSeleccionados = [];
+
+                    $('.multiselect-option.selected').each(function() {
+                        let servicioId = $(this).data('select-id');
+                        let tecnicaSeleccionada = $(`#tecnicaSelect${servicioId}`).val();
+                        serviciosSeleccionados.push({
+                            servicioId: servicioId,
+                            tecnicaId: tecnicaSeleccionada
+                        });
+                    });
+
+                    console.log('Servicios seleccionados:', serviciosSeleccionados);
+
+                    $('#serviciosSeleccionados').val(JSON.stringify(serviciosSeleccionados));
+
+                    let formData = $('#citaForm').serialize();
+
+                    $.ajax({
+                        url: `/editar/cita/${id}`,
+                        method: 'PUT',
+                        data: formData,
+                        success: function(response) {
+                            $('#contenedor_carga').css('display', 'none');
+                            console.log(response);
+                            $('#citasModal').modal('hide');
+                            $('#aceptarCitaa').hide();
+                            $('#mandarCita').show();
+
+                            limpiarFormulario();
+
+                            let alertMessage = '';
+                            let alertClass = '';
+                            let alertIcon = '';
+
+                            if (response.message === 'Cita actualizada con éxito') {
+                                alertMessage = 'Cambios confirmados';
+                                alertClass = "alert-success";
+                                alertIcon = "check-circle-fill";
+                            }
+
+                            mostrarAlerta(alertMessage, alertClass, alertIcon);
+
+                            citasNoAceptadas();
+
+                            if ($.fn.DataTable.isDataTable('#tablaCitas')) {
+                                $('#tablaCitas').DataTable().clear().destroy();
+                            }
+                        },
+                        error: function(xhr) {
+                            $('#contenedor_carga').css('display', 'none');
+                            console.log(xhr);
+                            var response = xhr.responseJSON;
+                            let alertMessage = '';
+                            let alertClass = 'alert-danger';
+                            let alertIcon = 'exclamation-triangle-fill';
+
+                            if (xhr.readyState === 4 && xhr.responseJSON) {
+                                if (xhr.responseJSON.error) {
+                                    mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
+                                } else if (xhr.responseJSON.message) {
+                                    if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
+                                        alertMessage = 'Por favor, selecciona al menos un servicio.';
+                                        alertClass = 'alert-warning';
+                                    } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
+                                        alertMessage = 'Ya existe una cita para esta fecha y hora.';
+                                        alertClass = 'alert-warning';
+                                    } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
+                                        alertMessage = 'La fecha debe ser hoy o posterior.';
+                                    } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
+                                        alertMessage = 'Error: Ingrese correctamente la fecha.';
+                                    } else {
+                                        alertMessage = `Error: ${xhr.responseJSON.message}`;
+                                    }
+
+                                    mostrarAlerta(alertMessage, alertClass, alertIcon);
+                                }
+                            } else {
+                                mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
+                            }
+                        }
+                    });
                 });
             });
         }
 
-            citasNoAceptadas();    
+citasNoAceptadas();
 
         // //dibujar citas no aceptadas
         // function citasNoAceptadas(){
@@ -1948,9 +2091,13 @@ function actualizarOpcionesHora(fechaHora) {
         
         $(document).on('click', '.aceptar-cita', function() {
             let citaId = $(this).data('cita-id');
+            $('#aceptarCitaa').data('cita-id', citaId);
             let fechaCita = $('#fechaCita').val();
             $('#nombreUsuario').show();
             $('#nombreUsuarioLabel').show();
+
+            $('#aceptarCitaa').show();
+            $('#mandarCita').hide();
 
             let telefonoInput = $('#telefonoUsuario');
             let labelTelefono = $('#labelTelefono');
@@ -1958,6 +2105,114 @@ function actualizarOpcionesHora(fechaHora) {
             labelTelefono.show();
             editarCita(citaId);
         })
+        
+
+    //     $('#aceptarCitaa').on('click', function() {
+    //         let id = $('#id').val();
+
+    //         $('#contenedor_carga').css('display', 'block');
+
+
+    //         let serviciosSeleccionados = []; 
+
+
+    //         $('.multiselect-option.selected').each(function() {//ousheo servicios y tecnicas
+
+
+    //             let servicioId = $(this).data('select-id');
+    //             let tecnicaSeleccionada = $(`#tecnicaSelect${servicioId}`).val();
+    //             serviciosSeleccionados.push({
+    //                 servicioId: servicioId,
+    //                 tecnicaId: tecnicaSeleccionada
+    //             });
+    //         });
+
+
+
+
+    //         console.log('Servicios seleccionados:', serviciosSeleccionados);
+
+
+
+    //         $('#serviciosSeleccionados').val(JSON.stringify(serviciosSeleccionados));
+
+    //         let formData = $('#citaForm').serialize();
+            
+    //         $.ajax({
+    //             url: `/editar/cita/${id}`,
+    //             method: 'PUT',
+    //             data: formData,
+    //             success: function(response) {
+    //                 // Ocultar la pantalla de carga
+    //                 $('#contenedor_carga').css('display', 'none');
+    //                 console.log(response);
+    //                 $('#citasModal').modal('hide');
+    //                 $('#aceptarCitaa').hide();
+    //                 $('#mandarCita').show();
+
+    //                 limpiarFormulario();                    
+    //                 let alertMessage = '';
+    //                 let alertClass = '';
+    //                 let alertIcon = '';
+
+
+    //                 if(response.message === 'Cita actualizada con éxito'){
+    //                     alertMessage = 'Cambios confirmados';
+    //                     alertClass = "alert-success";
+    //                     alertIcon = "check-circle-fill";
+    //                 }
+
+    //                 mostrarAlerta(alertMessage, alertClass, alertIcon);
+                    
+    //                 citasNoAceptadas();
+    //             },
+    //             error: function(xhr) {
+    //                 // Ocultar la pantalla de carga
+    //                 $('#contenedor_carga').css('display', 'none');
+    //                     console.log(xhr);
+    //                     var response = xhr.responseJSON;
+    //                     let alertMessage = '';
+    //                     let alertClass = 'alert-danger'; // clase predeterminada para errores
+    //                     let alertIcon = 'exclamation-triangle-fill'; //icono de danger
+    //                     if (xhr.readyState === 4 && xhr.responseJSON) {
+    //                         if (xhr.responseJSON.error) {
+    //                             mostrarAlerta(`Error: ${xhr.responseJSON.error}`, 'alert-danger', 'exclamation-triangle-fill');
+    //                         } 
+    //                         else if (xhr.responseJSON.message) {
+    //                             let alertMessage = '';
+    //                             let alertClass = 'alert-danger';
+    //                             let alertIcon = 'exclamation-triangle-fill';
+
+    //                             if (xhr.responseJSON.message === 'Debe seleccionar al menos un servicio') {
+    //                                 alertMessage = 'Por favor, selecciona al menos un servicio.';
+    //                                 alertClass = 'alert-warning';
+    //                             } else if (xhr.responseJSON.message === 'Ya existe una cita para esta fecha y hora') {
+    //                                 alertMessage = 'Ya existe una cita para esta fecha y hora.';
+    //                                 alertClass = 'alert-warning';
+    //                             } else if (xhr.responseJSON.message === 'La fecha debe ser hoy o posterior.') {
+    //                                 alertMessage = 'La fecha debe ser hoy o posterior.';
+    //                             } else if (xhr.responseJSON.message === 'The fecha cita field must be a valid date.') {
+    //                                 alertMessage = 'Error: Ingrese correctamente la fecha.';
+    //                             } else {
+    //                                 alertMessage = `Error: ${xhr.responseJSON.message}`;
+    //                             }
+
+    //                             mostrarAlerta(alertMessage, alertClass, alertIcon);
+    //                         }
+    //                     } else {
+    //                         mostrarAlerta('Error desconocido. Por favor, inténtelo de nuevo.', 'alert-danger', 'exclamation-triangle-fill');
+    //                     }
+
+
+    //                     if (alertMessage) {
+    //                         mostrarAlerta(alertMessage, alertClass, alertIcon);
+    //                     }
+                
+    //         }
+    //     });
+    // });
+
+
 
 
         $(document).on('click', '.eliminar-cita-btn', function() {
