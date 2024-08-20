@@ -54,27 +54,42 @@ class DibujarController extends Controller
     // ==========[ Actualizar un producto ]==========
     public function actualizarProducto(Request $request, $id){
 
-        $producto = Producto::find($id);
 
-        if($producto->descuentoId){
-            return 'Para cambiar los datos de un producto es necesario que este no cuente con un descuento';
+        DB::beginTransaction();
+        try {
+            $producto = Producto::find($id);
+
+            if($producto->descuentoId){
+                $producto->nombre = $request->input('nombre');
+                $producto->descripcion = $request->input('descripcion');
+
+                if ($request->hasFile('imagenProducto')) {
+                    $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+                }
+
+                $producto->save();
+                DB::commit();
+                return 'Producto Actualizado';
+            }else{
+                $producto->nombre = $request->input('nombre');
+                $producto->descripcion = $request->input('descripcion');
+                $producto->precio = $request->input('precio');
+
+                if ($request->hasFile('imagenProducto')) {
+                    $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
+                }
+
+                $producto->save();
+                DB::commit();
+                return 'Producto Actualizado Exitosamente';
+            }
+
+        }catch (\Exception $e){
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        if ($producto) {
-        $producto->nombre = $request->input('nombre');
-        $producto->descripcion = $request->input('descripcion');
-        $producto->precio = $request->input('precio');
 
-        if ($request->hasFile('imagenProducto')) {
-            $producto->imagen = $request->file('imagenProducto')->store('imagenProducto', 'public');
-        }
-
-        $producto->save();
-
-        return response()->json(['success' => 'Producto actualizado exitosamente']);
-        } else {
-        return response()->json(['error' => 'Producto no encontrado'], 404);
-        }
     }
 
     public function actualizarProductoInv(Request $request, $id)
@@ -157,26 +172,26 @@ class DibujarController extends Controller
             $productId = $request->input('productId');
             $cantidad = $request->input('cantidad', 1); // Obtener la cantidad, por defecto 1
             $producto = Producto::find($productId);
-    
+
             if ($producto) {
                 $carrito = $user->carrito;
-    
+
                 if (!$carrito) {
                     $carrito = Carrito::create([
                         'usuarioId' => $user->id,
                         'costoTotal' => 0,
                     ]);
                 }
-    
+
                 // Agregar la cantidad de productos al carrito
                 for ($i = 0; $i < $cantidad; $i++) {
                     $carrito->productos()->attach($producto->id);
                 }
-    
+
                 // Actualizar el costo total del carrito
                 $carrito->costoTotal += $producto->precio * $cantidad;
                 $carrito->save();
-    
+
                 return response()->json(['success' => 'Producto agregado al carrito']);
             } else {
                 return response()->json(['error' => 'Producto no encontrado'], 404);
@@ -302,8 +317,8 @@ public function contarProductosEnCarrito()
             $horarioIds = EmpleadoHasHorario::where('empleadoId', $empleado->id)->pluck('horarioId');
             EmpleadoHasHorario::where('empleadoId', $empleado->id)->delete();
             Horario::whereIn('id', $horarioIds)->delete();
-            
-            
+
+
             $empleado->citasEmpleados()->delete();
             $empleado->carrito()->delete();
             $empleado->ususariosEmpleadoCursos()->update(['empleadoId' => null]);
@@ -319,13 +334,13 @@ public function contarProductosEnCarrito()
     // ==========[ Obtener todos los cursos ]==========
     function cursosIndex(){
         $usuarioId = Auth::id();
-    
+
         // Obtener solo los cursos que están activos
         $cursos = Curso::with(['tecnicas', 'empleado'])->where('activo', 1)->get();
-    
+
         // Obtener las inscripciones del usuario actual
         $inscripciones = Inscripcion::where('usuarioId', $usuarioId)->get();
-    
+
         // Marcar los cursos en los que el usuario está inscrito y agregar inscripcionId
         $cursos = $cursos->map(function($curso) use ($inscripciones) {
             $inscripcion = $inscripciones->firstWhere('cursoId', $curso->id);
@@ -334,7 +349,7 @@ public function contarProductosEnCarrito()
             $curso->estado = $inscripcion ? $inscripcion->estado : null;  // Agregar el estado de la inscripción
             return $curso;
         });
-    
+
         return response()->json($cursos);
     }
 
@@ -350,19 +365,19 @@ public function contarProductosEnCarrito()
     // ==========[ Actualizar curso ]==========
     public function actualizarCurso(Request $request, $id) {
         $curso = Curso::find($id);
-    
+
         if ($curso) {
             $fechaInicioOriginal = $curso->fechaInicio; // Almacena la fecha original
             $fechaInicio = Carbon::parse($curso->fechaInicio . ' ' . $curso->horaInicio);
             $hoy = Carbon::now('America/Monterrey');
-    
+
             Log::info("=================================");
             Log::info("El día de hoy es {$hoy}");
             Log::info("El curso inicia el {$fechaInicio}");
 
             // Filtrar inscripciones que no son null
             $inscripcionesValidas = $curso->inscripciones()->whereNotNull('estado')->count();
-    
+
             // Verifica si el curso comienza dentro de las próximas 24 horas y tiene inscripciones
             if ($hoy->greaterThan($fechaInicio->subHours(24)) && $inscripcionesValidas > 0) {
                 Log::info("El curso no se puede editar porque faltan menos de 24 horas y tiene inscripciones válidas.");
@@ -387,13 +402,13 @@ public function contarProductosEnCarrito()
             return response()->json(['error' => 'El empleado o administrador está ocupado en una o más fechas del curso.'], 400);
         }
 
-    
+
             // Si no tiene inscripciones o falta más de 24 horas, se permite la edición
             $curso->nombre = $request->input('nombre');
             $curso->descripcion = $request->input('descripcion');
             $curso->precio = $request->input('precio');
             $curso->fechaInicio = $request->input('date');
-    
+
             // Recalcula segundaFecha y terceraFecha si se actualizó la fecha de inicio
             if ($request->input('date') !== $fechaInicioOriginal) { // Compara con la fecha original
                 $curso->segundaFecha = Carbon::parse($curso->fechaInicio)->addDay()->format('Y-m-d');
@@ -403,23 +418,23 @@ public function contarProductosEnCarrito()
                 Log::info("Nueva segunda fecha: {$curso->segundaFecha}");
                 Log::info("Nueva tercera fecha: {$curso->terceraFecha}");
             }
-    
+
             $curso->horaInicio = $request->input('hour');
             $curso->empleadoId = $request->input('empleadoId');
-    
+
             if ($request->hasFile('imagenCurso')) {
                 $curso->imagen = $request->file('imagenCurso')->store('imagenCurso', 'public');
             }
-    
+
             Log::info("El curso se puede editar porque faltan más de 24 horas o no tiene inscripciones válidas.");
             $curso->save();
-    
+
             return response()->json(['success' => 'Curso actualizado exitosamente']);
         } else {
             return response()->json(['error' => 'Curso no encontrado'], 404);
         }
     }
-    
+
 
 // ==========[ Obtener un curso por id ]==========
 public function obtenerCurso($id){
