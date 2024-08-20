@@ -915,8 +915,10 @@ class RegistrosController extends Controller
                 'fechaVenta' => $request->fechaCita,
                 'total' => 0,
                 'estadoVenta' => false,
+                'tipoVenta' => 'cita',
                 'usuarioId' => $cita->usuarioId,
-                'reporteId' => $reporte->id
+                'reporteId' => $reporte->id,
+                'empleadoId' => $cita->empleadoId
             ]);
 
 
