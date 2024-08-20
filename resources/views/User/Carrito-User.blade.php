@@ -366,7 +366,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
 
         <div class="custom-alert alert alert-dismissible fade" role="alert">
             <svg id="alert-icon" class="bi flex-shrink-0 me-2" role="img" aria-label="Icon" width="24" height="24"></svg>
-            <div id="alertaTexto">La cantidad maxima para comprar es de 240 productos por venta.</div>
+            <div id="alertaTexto">La cantidad maxima para comprar es de 249 productos por venta.</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
