@@ -871,7 +871,10 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                 $('#contenedor_carga').css('display', 'none');
                 mostrarAlerta('Producto actualizado con éxito.', 'alert-success', 'check-circle-fill');
                 $('#editProductModal').modal('hide');
-                location.reload(); // Opcional: Recargar la página para reflejar los cambios
+                setTimeout(function() {
+                    location.reload();
+                 },1500);
+                 
             },
             error: function(error) {
                 // Ocultar la pantalla de carga
