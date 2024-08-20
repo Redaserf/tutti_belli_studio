@@ -1023,6 +1023,9 @@ margin-right: 20px;
         //     console.log(eventos);
         // }
 
+        let fechaAhoraJAJA = new Date();
+        console.log('Fecha de hoyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy:', fechaAhoraJAJA);
+
   
         let horarios = [];
         let empleado = [];
@@ -1173,14 +1176,14 @@ $.ajax({
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
-            initialDate: new Date().toISOString().split('T')[0],
+            initialDate: fechaAhoraJAJA,
             slotMinTime: slotMinTime,
             slotMaxTime: slotMaxTime,
             allDaySlot: false,
             slotDuration: '01:00:00',
             slotLabelInterval: '01:00:00',
             validRange: {
-                start: new Date().toISOString().split('T')[0],
+                start: fechaAhoraJAJA,
                 end: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
             },
             events: citasEmpleado,

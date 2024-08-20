@@ -1074,8 +1074,7 @@ header {
 
         let horarios = [];
         let empleado = [];
-
-$.ajax({
+        $.ajax({
     url: `/horario/empleado`,
     method: 'GET',
     success: function(data) {
@@ -1083,10 +1082,8 @@ $.ajax({
         horarios = empleado.horarios;
 
         const workingDays = horarios.map(horario => parseInt(horario.diaSemana));
-        console.log('dias de trabajoooooo: ', workingDays);
         const allDays = [0, 1, 2, 3, 4, 5, 6];
         const hiddenDays = allDays.filter(day => !workingDays.includes(day));
-        console.log('dias a ocultarrrrrr: ', hiddenDays);
         const businessHours = horarios.map(horario => {
             return {
                 daysOfWeek: [parseInt(horario.diaSemana)],
@@ -1094,8 +1091,6 @@ $.ajax({
                 endTime: horario.horaFin
             };
         });
-
-        console.log('horas de WORKKKKKKKKKK: ', businessHours);
 
         const slotMinTime = horarios.reduce((min, horario) => {
             return horario.horaInicio < min ? horario.horaInicio : min;
@@ -1105,11 +1100,11 @@ $.ajax({
             return horario.horaFin > max ? horario.horaFin : max;
         }, horarios[0].horaFin);
 
+        
         let cursosFechas = data.fechasCursos;
         console.log('cursosssssssssssssssssssssss: ', cursosFechas);
 
-
-          
+        
         function deshabilitarFechaPorCurso(fecha, fechasCursos) {
             const fechaMoment = moment(fecha).format('YYYY-MM-DD');
 
@@ -1126,8 +1121,7 @@ $.ajax({
             return [true, "", ""];
         }
 
-
-
+        
         function deshabilitarFecha(fecha) {
             const fechaMoment = moment(fecha);
             const diaSemana = fechaMoment.day();
@@ -1147,76 +1141,81 @@ $.ajax({
                 second: 0
             });
 
-            if (fechaMoment.isSame(moment(), 'day')) {
-                if (moment().isBefore(horaFin)) {
-                    return true; 
-                } else {
-                    return false;
-                }
-            } else {
-                return moment().isBetween(horaInicio, horaFin);
-            }
-        }
+            let horasOcupadas = empleado.citas_empleados
+                .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+                .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
 
+            while (horaInicio.isBefore(horaFin)) {
+                let horaTexto = horaInicio.format('HH:mm:ss');
+                if (!horasOcupadas.includes(horaTexto)) {
+                    return true; //si hay una hora minimo
+                }
+                horaInicio.add(1, 'hour');
+            }
+
+            return false; //deshabilita la fecha en el datepicker
+        }
 
         function actualizarOpcionesHora(fechaHora) {
-            let select = $('#horaCita');
-            select.empty();
+    let select = $('#horaCita');
+    select.empty();
 
-            let fechaMoment = moment(fechaHora);
+    let fechaMoment = moment(fechaHora);
 
-            var hoy = moment();
-            var diaSemana = fechaMoment.day();
-            var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+    var hoy = moment();
+    var diaSemana = fechaMoment.day();
+    var horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
 
-            if (horarioDia) {
-                let horaInicio = moment(fechaMoment).set({
-                    hour: horarioDia.horaInicio.split(':')[0],
-                    minute: horarioDia.horaInicio.split(':')[1],
-                    second: 0
-                });
+    if (horarioDia) {
+        let horaInicio = moment(fechaMoment).set({
+            hour: horarioDia.horaInicio.split(':')[0],
+            minute: horarioDia.horaInicio.split(':')[1],
+            second: 0
+        });
 
-                let horaFin = moment(fechaMoment).set({
-                    hour: horarioDia.horaFin.split(':')[0],
-                    minute: horarioDia.horaFin.split(':')[1],
-                    second: 0
-                });
+        let horaFin = moment(fechaMoment).set({
+            hour: horarioDia.horaFin.split(':')[0],
+            minute: horarioDia.horaFin.split(':')[1],
+            second: 0
+        });
 
-                let horasOcupadas = empleado.citas_empleados
-                    .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
-                    .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
+        let horasOcupadas = empleado.citas_empleados
+            .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
+            .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
 
-                let dosHorasDespues = moment().add(2, 'hours');
+        let limiteHora = new Date();
+        let dosHorasDespues = moment().add(2, 'hours');
 
-                while (horaInicio.isBefore(horaFin)) {
-                    let horaTexto = horaInicio.format('HH:mm:ss');
+        while (horaInicio.isBefore(horaFin)) {
+            let horaTexto = horaInicio.format('HH:mm:ss');
 
-                    if (!horasOcupadas.includes(horaTexto)) {
-                        if (fechaMoment.isSame(hoy, 'day')) {
-                            if (horaInicio.isAfter(dosHorasDespues)) {
-                                let option = new Option(horaTexto, horaTexto);
-                                select.append(option);
-                            }
-                        } else {
-                            let option = new Option(horaTexto, horaTexto);
-                            select.append(option);
-                        }
+            if (!horasOcupadas.includes(horaTexto)) {
+                // Verifica si el día seleccionado es hoy
+                if (fechaMoment.isSame(hoy, 'day')) {
+                    // Solo agrega opciones para las horas que son posteriores a dos horas desde ahora
+                    if (horaInicio.isAfter(dosHorasDespues)) {
+                        let option = new Option(horaTexto, horaTexto);
+                        select.append(option);
                     }
-
-                    horaInicio.add(1, 'hour');
-                }
-
-                console.log('Opciones agregadas:', select.children('option').length);
-
-                if (select.children('option').length > 0) {
-                    select.val(select.children('option').first().val());
                 } else {
-                    mostrarAlerta('No hay horas disponibles para la fecha seleccionada.', 'alert-primary', 'info-fill');
-                    $('#citasModal').modal('hide');
+                    let option = new Option(horaTexto, horaTexto);
+                    select.append(option);
                 }
             }
+
+            horaInicio.add(1, 'hour');
         }
 
+        console.log('Opciones agregadas:', select.children('option').length);
+
+        if (select.children('option').length > 0) {
+            select.val(select.children('option').first().val());
+        } else {
+            mostrarAlerta('No hay horas disponibles para la fecha seleccionada.', 'alert-primary', 'info-fill');
+            $('#citasModal').modal('hide');
+        }
+    }
+}
 
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1330,10 +1329,6 @@ $.ajax({
             regional: "es",
             beforeShowDay: function(fecha) {
                 var dia = fecha.getDay();
-                let fechaMoment = moment(fecha);
-                let esDiaActual = fechaMoment.isSame(hoy, 'day');
-                let horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === dia);
-
 
                 if(cursosFechas === null){
                     console.log('El empleado no tiene cursos asignados')
@@ -1345,67 +1340,23 @@ $.ajax({
                     }
                 }
 
-       
-
-                
                 if (hiddenDays.includes(dia)) {
                     return [false, "", "Día no laborable"];
                 }
-                let fechaStr = moment(fecha).format('YYYY-MM-DD');
-                if (!deshabilitarFecha(fechaStr)) {
+
+                if (!deshabilitarFecha(fecha)) {//si no hay horas en el select se deshabilita la fecha
                     return [false, "", "No hay horas disponibles"];
-                } else {
-                    return [true, "", ""];
                 }
 
                 var hoy = new Date();
                 if (fecha.toDateString() === hoy.toDateString()) {
                     const horaInicioLimite = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
-                    const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '21:00:00';
+                    const horaFinHoy = horarios.find(horario => parseInt(horario.diaSemana) === dia)?.horaFin || '16:00:00';
                     const horaFinHoyParts = horaFinHoy.split(':');
                     hoy.setHours(horaFinHoyParts[0], horaFinHoyParts[1], 0, 0);
 
                     if (horaInicioLimite >= hoy) {
                         return [false, "", `Las citas deben ser al menos 2 horas después de la hora actual`];
-                    }
-                }
-
-                if (esDiaActual && horarioDia) {
-                    let horaInicio = moment().set({
-                        hour: horarioDia.horaInicio.split(':')[0],
-                        minute: horarioDia.horaInicio.split(':')[1],
-                        second: 0
-                    });
-
-                    let horaFin = moment().set({
-                        hour: horarioDia.horaFin.split(':')[0],
-                        minute: horarioDia.horaFin.split(':')[1],
-                        second: 0
-                    });
-
-                    // Si ya pasó el tiempo del día laboral, oculta el día
-                    if (moment().isAfter(horaFin)) {
-                        return [false, "", "Horario laboral terminado"];
-                    }
-
-                    // Verificamos si hay alguna hora disponible en el horario del día
-                    let horasOcupadas = empleado.citas_empleados
-                        .filter(cita => moment(cita.fechaCita).isSame(fechaMoment, 'day'))
-                        .map(cita => moment(cita.horaCita, 'HH:mm:ss').format('HH:mm:ss'));
-
-                    let horasDisponibles = 0;
-
-                    while (horaInicio.isBefore(horaFin)) {
-                        let horaTexto = horaInicio.format('HH:mm:ss');
-                        if (!horasOcupadas.includes(horaTexto) && horaInicio.isAfter(moment())) {
-                            horasDisponibles++;
-                        }
-                        horaInicio.add(1, 'hour');
-                    }
-
-                    // Si no hay horas disponibles, ocultamos el día
-                    if (horasDisponibles === 0) {
-                        return [false, "", "No hay horas disponibles"];
                     }
                 }
 
@@ -1449,6 +1400,8 @@ $.ajax({
         console.error('Error al cargar los horarios:', err);
     }
 });
+
+
 
 
 function actualizarOpcionesHora(fechaHora) {
