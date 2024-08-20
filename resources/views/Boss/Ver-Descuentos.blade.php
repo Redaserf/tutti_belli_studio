@@ -462,13 +462,13 @@ header {
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="productos-descuento" role="tabpanel" aria-labelledby="productos-descuento-tab">
                         <div class="table-container mt-5">
-                            <input type="text" class="form-control mb-3" id="buscadorNombreProductoDescuento" placeholder="Buscar por nombre del producto">
+{{--                            <input type="text" class="form-control mb-3" id="buscadorNombreProductoDescuento" placeholder="Buscar por nombre del producto">--}}
                         <div id="mensajeNoProductos" class="alert alert-warning text-center" style="display: none;">
                             No hay productos con descuento para mostrar.
                         </div>
 
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="tablaProductos" class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">ID</th>
@@ -490,13 +490,13 @@ header {
                     </div>
                     <div class="tab-pane fade" id="tecnicas-descuento" role="tabpanel" aria-labelledby="tecnicas-descuento-tab">
                         <div class="table-container mt-5">
-                            <input type="text" class="form-control mb-3" id="buscadorNombreTecnicaDescuento" placeholder="Buscar por nombre de la tecnica">
+{{--                            <input type="text" class="form-control mb-3" id="buscadorNombreTecnicaDescuento" placeholder="Buscar por nombre de la tecnica">--}}
                         <div id="mensajeNoTecnicas" class="alert alert-warning text-center" style="display: none;">
                             No hay técnicas con descuento para mostrar.
                         </div>
 
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="tablaTecnicas" class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">ID</th>
@@ -522,7 +522,8 @@ header {
 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script>
 
 // Scripts para todas las vistas, no tocar
@@ -619,6 +620,9 @@ function tablaDescuentosProducto() {
         url: 'get/productos/cdcd',
         method: 'GET',
         success: function(data) {
+            if ($.fn.DataTable.isDataTable('#tablaProductos')) {
+                $('#tablaProductos').DataTable().destroy();
+            }
             const tableBody = $('#Productos');
             const mensajeNoProductos = $('#mensajeNoProductos');
 
@@ -649,10 +653,27 @@ function tablaDescuentosProducto() {
                               </tr>`;
                     tableBody.append(row);
                 });
+
+
+
+                $('#tablaProductos').DataTable({
+                    "paging": true,
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                    }
+                });
             }
         }
     });
 }
+
+
 
 $('#buscadorNombreTecnicaDescuento').on('keyup', function() {
     var value = $(this).val().toLowerCase();
@@ -666,6 +687,9 @@ function tablaDescuentosTecnicas() {
         url: 'conDescuentoTecnica',
         method: 'GET',
         success: function(data) {
+            if ($.fn.DataTable.isDataTable('#tablaTecnicas')) {
+                $('#tablaTecnicas').DataTable().destroy();
+            }
             const tableBody = $('#Tecnicas');
             const mensajeNoTecnicas = $('#mensajeNoTecnicas');
 
@@ -693,6 +717,21 @@ function tablaDescuentosTecnicas() {
                                   </td>
                               </tr>`;
                     tableBody.append(row);
+                });
+
+
+
+                $('#tablaTecnicas').DataTable({
+                    "paging": true,
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                    }
                 });
             }
         }
