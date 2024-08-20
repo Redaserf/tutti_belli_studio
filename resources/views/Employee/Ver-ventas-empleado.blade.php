@@ -1248,6 +1248,7 @@ $(document).on('click', '.eliminarCita', function() {
 $('#rechazarCita').on('click', function() {
     let citaId = $(this).data('cita-id');
     eliminarCita(citaId);
+    window.location.reload();
 });
 
 function eliminarCita(id){
