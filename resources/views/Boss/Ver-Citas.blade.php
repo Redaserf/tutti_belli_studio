@@ -1879,6 +1879,7 @@ function actualizarOpcionesHora(fechaHora) {
 
         $('#btnAgregar').on('click', function() {
 //limpia el btn de agregar cita y esconde el btn de eliminar y la hora de la cita para que se despliegue cuando seleccionen fecha
+            dibujarGuest();
             limpiarFormulario();
             $('#horaCita').hide();
             $('#btnEliminar').hide();

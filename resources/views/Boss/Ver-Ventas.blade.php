@@ -1021,7 +1021,9 @@
                                             </tr> -->
                                         </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-primary" id="aceptarCita">Aceptar cita</button>
+                                    <button type="button" class="btn btn-primary" data-venta-id="" id="aceptarCita">Aceptar cita</button>
+                                    <button type="button" class="btn btn-primary" style="display: none" data-venta-id="" id="aceptarCitaAdmin">Aceptar cita</button>
+
                                 </div>
                             </div>
                         </div>
@@ -1261,6 +1263,8 @@ $(document).ready(function() {
     });
 
     $('#citas-totales-tab').on('click', function() {
+        $('#aceptarCita').show();
+        $('#aceptarCitaAdmin').hide();
         dibujarCitasVentasTecnicasProductos();
     });
 
@@ -1324,6 +1328,8 @@ let citasVentasAceptadas = [];
     }
 
     $('#mis-citas-tab').on('click', function() {
+        $('#aceptarCita').hide();
+        $('#aceptarCitaAdmin').show();
         dibujarCitasVentasTecnicasProductosEmpleado();
     })
 
@@ -1457,7 +1463,8 @@ $('#citas-aceptadas-tab').on('click', function() {
             let citaData = citasVentasGlobal.find(cita => cita.id === citaId);
 
             let ventaId = $(this).data('venta-id');
-            $('#aceptarCita').attr('data-venta-id', ventaId);
+            $('#aceptarCita').data('venta-id', ventaId);
+
 
             let tablaModificar = $('#dibujarDetalleTecnicas');
             tablaModificar.empty();
@@ -1606,7 +1613,7 @@ $('#citas-aceptadas-tab').on('click', function() {
             let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
 
             let ventaId = $(this).data('venta-id');
-            $('#aceptarCita').attr('data-venta-id', ventaId);
+            $('#aceptarCitaAdmin').data('venta-id', ventaId);
 
             let tablaModificar = $('#dibujarDetalleTecnicas');
             tablaModificar.empty();
@@ -1853,8 +1860,8 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
 
-function aceptarVenta() {
-    $(document).on('click', '#aceptarCita', function() {
+    function aceptarVenta() {
+    $(document).off('click', '#aceptarCita').on('click', '#aceptarCita', function() {
         let ventaId = $(this).data('venta-id');
         console.log('Venta ID en Aceptar:', ventaId);
 
@@ -1867,12 +1874,17 @@ function aceptarVenta() {
             },
             success: function(response) {
                 console.log(response);
-                dibujarCitasVentasTecnicasProductosEmpleado();
+                alert('Se aceptó con éxito');
+
                 dibujarCitasVentasTecnicasProductosAceptados();
                 dibujarCitasVentasTecnicasProductos();
+                
+                // Mantén el contenido del modal si es necesario
                 $('#editAppointmentModalCit').modal('hide');
-
-                alert('Se aceptó con éxito');
+                mostrarAlerta('Cita aceptada correctamente.', 'alert-success', 'check-circle-fill');
+                
+                // Vuelve a asignar los eventos
+                aceptarVenta(); // Asigna de nuevo el evento a los botones
             },
             error: function(error) {
                 console.log(error);
@@ -1884,10 +1896,47 @@ function aceptarVenta() {
 
 aceptarVenta();
 
+function aceptarMisCitasAdmin() {
+    $(document).off('click', '#aceptarCitaAdmin').on('click', '#aceptarCitaAdmin', function() {
+        let ventaId = $(this).data('venta-id');
+        console.log('Venta ID en Aceptar (Admin):', ventaId);
+
+        $.ajax({
+            url: '/venta/actualizar',
+            method: 'PUT',
+            data: {
+                ventaId: ventaId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                console.log(response);
+                // alert('Cita del admin aceptada con éxito');
+                dibujarCitasVentasTecnicasProductosAceptados();
+                dibujarCitasVentasTecnicasProductosEmpleado(); // Asume que esta función maneja las citas del admin
+                
+                $('#editAppointmentModalCit').modal('hide');
+
+                // Cierra el modal relacionado con la cita del admin
+                mostrarAlerta('Cita del admin aceptada correctamente.', 'alert-success', 'check-circle-fill');
+                
+                // Vuelve a asignar los eventos
+                aceptarMisCitasAdmin(); // Asigna de nuevo el evento a los botones para citas del admin
+            },
+            error: function(error) {
+                console.log(error);
+                alert('Hubo un error al aceptar la cita del admin');
+            }
+        });
+    });
+}
+
+// Llama a la función para asignar los eventos al cargar la página
+aceptarMisCitasAdmin();
+
 
 $(document).on('click', '.eliminarCita', function() {
     let citaId = $(this).data('cita-id');
-    $('#rechazarCita').attr('data-cita-id', citaId);
+    $('#rechazarCita').data('cita-id', citaId);
 });
 
 $('#rechazarCita').on('click', function() {
@@ -1906,6 +1955,7 @@ function eliminarCita(id){
         success: function(response){
             console.log(response);
             dibujarCitasVentasTecnicasProductos();
+            dibujarCitasVentasTecnicasProductosAceptados();
             dibujarCitasVentasTecnicasProductosEmpleado();
             $('#eliminarCita').modal('hide');
             mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
