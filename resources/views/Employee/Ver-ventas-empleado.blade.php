@@ -1036,12 +1036,33 @@ function mostrarCitasEmpleado(citas) {
             }
         });
 
-        $(document).off('click', '.modificarProductos').on('click', '.modificarProductos', function () {
-            let citaId = $(this).data('cita-id');
-            let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
+        
+$(document).off('click', '.modificarProductos').on('click', '.modificarProductos', function () {
+    let citaId = $(this).data('cita-id');
+    let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
 
-            let ventaId = $(this).data('venta-id');
-            $('#aceptarCita').attr('data-venta-id', ventaId);
+    $(document).off('click', '#aceptarCita').on('click', '#aceptarCita', function () {
+    let ventaId = $(this).attr('data-venta-id');
+    
+    $.ajax({
+        url: `/venta/actualizar`,  // Esta es la ruta que apunta a la función en el controlador
+        method: 'PUT',
+        data: {
+            ventaId: ventaId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            $('#editAppointmentModalCit').modal('hide');
+            dibujarCitasVentasTecnicasProductosEmpleado();
+            mostrarAlerta('La venta fue aceptada y el stock actualizado con éxito.', 'alert-success', 'check-circle-fill');
+        },
+        error: function(xhr) {
+            let errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Error inesperado';
+            mostrarAlerta(`Error: ${errorMessage}`, 'alert-danger', 'exclamation-triangle-fill');
+            console.error(xhr);
+        }
+    });
+});
 
             let tablaModificar = $('#dibujarDetalleTecnicas');
             tablaModificar.empty();
