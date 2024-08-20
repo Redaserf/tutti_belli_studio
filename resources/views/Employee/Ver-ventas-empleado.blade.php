@@ -661,8 +661,8 @@ margin-right: 20px;
 </nav>
         
 <section class="home">
-    <div class="top text-center">
-        <div class="tab-content table-responsive" id="misCitas" aria-labelledby="mis-citas-tab">
+    <div class="text-center">
+        <div class=" table-responsive" id="misCitas" aria-labelledby="mis-citas-tab">
             <div class="container mt-5">
                 <h2>MIS CITAS</h2>
                 <div class="table-container table-responsive mt-4">
