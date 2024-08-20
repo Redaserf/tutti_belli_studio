@@ -749,6 +749,7 @@ $('#editProductModal').on('show.bs.modal', function(event) {
                 $('#productPrice').prop('disabled',true);
             }
 
+            console.log()
             // Muestra la imagen actual si existe
             modal.find('#productImagePreview').attr('src', '/storage/' + data.imagen); // Asume que hay un <img id="productImagePreview"> en el modal
         },
@@ -760,8 +761,11 @@ $('#editProductModal').on('show.bs.modal', function(event) {
     // Guardar cambios
     $('#saveProductChanges').off('click').on('click', function() {
 
-        const precio = parseFloat($('#productPrice').val());
-        const cantidad = parseFloat($('#productQuantity').val());
+        $('#productPrice').prop('disabled',false);
+        let precio = parseFloat($('#productPrice').val());
+        let cantidad = parseFloat($('#productQuantity').val());
+        // $('#productPrice').prop('disabled',true);
+
 
         if (precio < 0 || cantidad < 0 ){
             alert("Ingresa valores correctos.")

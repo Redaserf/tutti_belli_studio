@@ -679,7 +679,7 @@ $('#editProductForm').on('submit', function(e) {
 
     // Mostrar la pantalla de carga
     $('#contenedor_carga').css('display', 'block');
-
+    $('#edit_precio').prop('disabled',false);
     let formData = new FormData(this);
     formData.append('_token', $('input[name="_token"]').val());
 
@@ -694,7 +694,7 @@ $('#editProductForm').on('submit', function(e) {
             // Ocultar la pantalla de carga
             $('#contenedor_carga').css('display', 'none');
             dibujarProductos();
-            alert('Producto actualizado exitosamente');
+            alert(response);
         },
         error: function(error) {
             console.log(error);
