@@ -621,7 +621,7 @@
             success: function (empleados) {
                 let select = $('#select-empleado');
                 select.empty(); // Limpiar el select
-                select.append(`<option value="">Seleccione un empleado</option>`);
+                select.append(`<option value="">Todos los empleados</option>`);
                 empleados.forEach(empleado =>{
 
                     select.append(`<option value="${empleado.id}">` + empleado.name + '</option>');
