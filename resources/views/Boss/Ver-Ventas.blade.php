@@ -640,7 +640,7 @@
             <!-- Contenido de Citas de todos los empleados -->
             <div class="tab-pane fade show active" id="citasTotalesContent" role="tabpanel" aria-labelledby="citas-totales-tab">
                 <div class="table-container mt-5">
-                    <h2>CITAS</h2>                   
+                    <h2>CITAS</h2>
                     <div  class="table-responsive">
                         <table  id="tablaCitasTotales"class="table table-striped" style="margin-top: 30px">
                             <thead>
@@ -745,7 +745,7 @@
                     <div class="table-container mt-5">
                         <h2>COMPRAS PENDIENTES</h2>
                         <div  class="table-responsive">
-                            <table class="table table-striped">
+                            <table id="tablaComprasPendientes" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Tipo</th>
@@ -769,7 +769,7 @@
                     <div class="table-container mt-5">
                         <h2>COMPRAS CONFIRMADAS</h2>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table id="tablaComprasConfirmadas" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Tipo</th>
@@ -792,7 +792,7 @@
                     <div class="table-container mt-5">
                         <h2>COMPRAS RECHAZADAS</h2>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table id="tablaComprasRechazadas" class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>Tipo</th>
@@ -1188,7 +1188,7 @@
 //     });
 // });
 $(document).ready(function() {
-     
+
     $('#fechaFiltro').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: 0,
@@ -1315,13 +1315,13 @@ $('#citas-aceptadas-tab').on('click', function() {
 
 
     function mostrarCitasAceptadas(citas) {
-        
+
     if ($.fn.DataTable.isDataTable('#tablaVentasAceptadas')) {
     $('#tablaVentasAceptadas').DataTable().destroy();
     }
     let tablaVenta = $('#dibujarVentasAceptadas');
     tablaVenta.empty();
-    
+
 
     if (citas.length === 0) {
         tablaVenta.append('<tr><td colspan="6">No hay citas aceptadas para mostrar.</td></tr>');
@@ -1408,7 +1408,7 @@ function mostrarCitas(citas) {
             "pageLength": 5, // Fija el número de filas por página a 5
             "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
             "language": {
-                "lengthMenu": "", 
+                "lengthMenu": "",
                 "zeroRecords": "No se encontraron citas",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
                 "infoEmpty": "No hay citas disponibles",
@@ -1422,7 +1422,7 @@ function mostrarCitas(citas) {
                 }
             }
         });
-    
+
 
     manejarEventos();
 }
@@ -1732,7 +1732,7 @@ function mostrarCitas(citas) {
             "pageLength": 5, // Fija el número de filas por página a 5
             "lengthChange": false, // Desactiva el cambio de cantidad de filas por página
             "language": {
-                "lengthMenu": "", 
+                "lengthMenu": "",
                 "zeroRecords": "No se encontraron citas",
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
                 "infoEmpty": "No hay citas disponibles",
@@ -1748,7 +1748,7 @@ function mostrarCitas(citas) {
         });
 
 
-    
+
 
     manejarEventosEmpleado();
 }
@@ -1903,10 +1903,10 @@ function mostrarCitas(citas) {
 
                 dibujarCitasVentasTecnicasProductosAceptados();
                 dibujarCitasVentasTecnicasProductos();
-                
+
                 $('#editAppointmentModalCit').modal('hide');
                 mostrarAlerta('Cita aceptada correctamente.', 'alert-success', 'check-circle-fill');
-                
+
                 aceptarVenta();
             },
             error: function(error) {
@@ -1936,11 +1936,11 @@ function aceptarMisCitasAdmin() {
                 // alert('Cita del admin aceptada con éxito');
                 dibujarCitasVentasTecnicasProductosAceptados();
                 dibujarCitasVentasTecnicasProductosEmpleado(); // Asume que esta función maneja las citas del admin
-                
+
                 $('#editAppointmentModalCit').modal('hide');
 
                 mostrarAlerta('Cita del admin aceptada correctamente.', 'alert-success', 'check-circle-fill');
-                
+
                 aceptarMisCitasAdmin();
             },
             error: function(error) {
@@ -2143,9 +2143,13 @@ sidebarBtn.addEventListener("click", () => {
     //script para vista de ventas de compra
     function dibujarCompras() {
         $.ajax({
+
             url: '/get/compras',
             method: 'GET',
             success: function (data) {
+                if ($.fn.DataTable.isDataTable('#tablaComprasPendientes')) {
+                    $('#tablaComprasPendientes').DataTable().destroy();
+                }
                 $('#ventasProductosTable').empty(); // Limpiar la tabla antes de agregar nuevas filas
                 data.forEach(venta => {
                     const detallesCompra = $('#ventasProductosTable');
@@ -2161,6 +2165,19 @@ sidebarBtn.addEventListener("click", () => {
                         </tr>
                     `;
                     detallesCompra.append(fila);
+                })
+
+                $('#tablaComprasPendientes').DataTable({
+                    "paging": true,
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                    }
                 });
             }
         });
@@ -2172,6 +2189,10 @@ sidebarBtn.addEventListener("click", () => {
             url: '/get/compras/confirmadas',
             method: 'GET',
             success: function (data) {
+
+                if ($.fn.DataTable.isDataTable('#tablaComprasConfirmadas')) {
+                    $('#tablaComprasConfirmadas').DataTable().destroy();
+                }
                 console.log('ENTRAMOS A CONFIRMADA');
                 var cont = 0;
                 const detallesCompra = $('#ventasConfirmadasTable');
@@ -2189,6 +2210,19 @@ sidebarBtn.addEventListener("click", () => {
                         </tr>
                     `;
                         detallesCompra.append(fila);
+                })
+
+                $('#tablaComprasConfirmadas').DataTable({
+                    "paging": true,
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                    }
                 });
             }
         });
@@ -2200,6 +2234,9 @@ sidebarBtn.addEventListener("click", () => {
             url: '/get-Rechazadas',
             method: 'GET',
             success: function (data) {
+                if ($.fn.DataTable.isDataTable('#tablaComprasRechazadas')) {
+                    $('#tablaComprasRechazadas').DataTable().destroy();
+                }
                 console.log('ENTRAMOS A RECAHZADA');
                 var cont = 0;
                 const detallesCompra = $('#ventasRechazadas');
@@ -2217,6 +2254,18 @@ sidebarBtn.addEventListener("click", () => {
                             </tr>
                         `;
                     detallesCompra.append(fila);
+                });
+                $('#tablaComprasRechazadas').DataTable({
+                    "paging": true,
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                    }
                 });
             }
         });
