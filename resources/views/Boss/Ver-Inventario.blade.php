@@ -449,17 +449,17 @@ header {
                         <div class="table-container mt-5">
                                 <h2 class="text-center" style="margin: 0;">Productos en Servicios</h2>
                             <div class="flex-container">
-                                <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
-                                </a>
-                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
-                                </a>
+{{--                                <input type="text" class="form-control mb-3" id="search-productos-servicios" placeholder="Buscar por nombre..." style="width:250px;">--}}
+{{--                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-up-wide-short"></i>--}}
+{{--                                </a>--}}
+{{--                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-down-short-wide"></i>--}}
+{{--                                </a>--}}
                             </div>
                             <div class="table-responsive">
 
-                                <table class="table table-striped">
+                                <table id="productosEnServicios" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Imagen</th>
@@ -481,16 +481,16 @@ header {
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Ventas</h2>
                             <div class="flex-container">
-                                <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
-                                </a>
-                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
-                                </a>
+{{--                                <input type="text" class="form-control mb-3" id="search-productos-ventas" placeholder="Buscar por nombre..." style="width:250px;">--}}
+{{--                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-up-wide-short"></i>--}}
+{{--                                </a>--}}
+{{--                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-down-short-wide"></i>--}}
+{{--                                </a>--}}
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table id="productosEnVentas" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Imagen</th>
@@ -512,16 +512,16 @@ header {
                         <div class="table-container mt-5">
                             <h2 class="text-center">Productos en Curso</h2>
                             <div class="flex-container">
-                                <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">
-                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-up-wide-short"></i>
-                                </a>
-                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">
-                                    <i class="fa-solid fa-arrow-down-short-wide"></i>
-                                </a>
+{{--                                <input type="text" class="form-control mb-3" id="search-productos-curso" placeholder="Buscar por nombre..." style="width:250px;">--}}
+{{--                                <a href="#" class="mayor" style="cursor: pointer; font-size:23px; color:black; margin-left: 15px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-up-wide-short"></i>--}}
+{{--                                </a>--}}
+{{--                                <a href="#" class="menor" style="cursor: pointer; font-size:23px; color:black; margin-left: 17px; margin-bottom:15px">--}}
+{{--                                    <i class="fa-solid fa-arrow-down-short-wide"></i>--}}
+{{--                                </a>--}}
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-striped">
+                                <table id="productosEnCurso" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Imagen</th>
@@ -592,6 +592,8 @@ header {
     <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
     <script>
 
@@ -605,7 +607,11 @@ header {
             loader.style.display = "none";
         });
 
+
     $(document).ready(function(){
+
+
+
 
 // Dashboard toggle
 const body = document.querySelector("body"),
@@ -639,65 +645,85 @@ sidebarBtn.addEventListener("click", () => {
         overlay.style.display = "none";
     }
 });
-$.ajax({
-    url: '/get/productos',
-    method: 'GET',
-    success: function(data) {
-        // Limpiar las tablas
-        $('#productos-servicios tbody').empty();
-        $('#productos-ventas tbody').empty();
-        $('#productos-curso tbody').empty();
 
-        // Agrupar los productos por inventario_id
-        var productosPorInventario = {
-            1: [], // Productos en ventas
-            2: [], // Productos en servicios
-            3: []  // Productos en curso
-        };
+function dibujarTodos(){
+    $.ajax({
+        url: '/get/productos',
+        method: 'GET',
+        success: function(data) {
+            // Limpiar las tablas
+            $('#productos-servicios tbody').empty();
+            $('#productos-ventas tbody').empty();
+            $('#productos-curso tbody').empty();
 
-        data.forEach(function(producto) {
-            if (productosPorInventario.hasOwnProperty(producto.inventarioId)) {
-                productosPorInventario[producto.inventarioId].push(producto);
-            } else {
-                console.error('ID de inventario no reconocido:', producto.inventarioId);
-            }
-        });
+            // Agrupar los productos por inventario_id
+            var productosPorInventario = {
+                1: [], // Productos en ventas
+                2: [], // Productos en servicios
+                3: []  // Productos en curso
+            };
 
-        // Función para agregar productos a una tabla
-        function agregarProductosATabla(tablaSelector, productos) {
-            var targetTable = $(tablaSelector);
-            if(productos.length === 0){
-                targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
-            }
-            productos.forEach(function(producto) {
-            var color = '';
-                if (producto.cantidadEnStock <= 0) {
-                    color = 'red';
-            } else if (producto.cantidadEnStock <= 20) {
-                    color = 'rgb(248, 208, 76)';
+            data.forEach(function(producto) {
+                if (productosPorInventario.hasOwnProperty(producto.inventarioId)) {
+                    productosPorInventario[producto.inventarioId].push(producto);
+                } else {
+                    console.error('ID de inventario no reconocido:', producto.inventarioId);
                 }
-
-                var row = '<tr>' +
-                    '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
-                    '<td>' + producto.nombre + '</td>' +
-                    '<td>' + producto.descripcion + '</td>' +
-                    '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
-                    '<td> $' + producto.precio + '</td>' +
-                    '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
-                    '</tr>';
-                targetTable.append(row);
             });
-        }
 
-        // Agregar productos a las tablas correspondientes
-        agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
-        agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
-        agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
-    },
-    error: function(error) {
-        console.error("Error al obtener los productos:", error);
-    }
-});
+            // Función para agregar productos a una tabla
+            function agregarProductosATabla(tablaSelector, productos) {
+                var targetTable = $(tablaSelector);
+                if(productos.length === 0){
+                    targetTable.append('<tr><td colspan="6" class="text-center">No hay nada para mostrar</td></tr>');
+                }
+                productos.forEach(function(producto) {
+                    var color = '';
+                    if (producto.cantidadEnStock <= 0) {
+                        color = 'red';
+                    } else if (producto.cantidadEnStock <= 20) {
+                        color = 'rgb(248, 208, 76)';
+                    }
+
+                    var row = '<tr>' +
+                        '<td><img src="/storage/' + producto.imagen + '" alt="' + producto.nombre + '" width="50"></td>' +
+                        '<td>' + producto.nombre + '</td>' +
+                        '<td>' + producto.descripcion + '</td>' +
+                        '<td style="color:' + color + '; font-weight: 500;">' + producto.cantidadEnStock + '</td>' +
+                        '<td> $' + producto.precio + '</td>' +
+                        '<td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="' + producto.id + '">Editar</button></td>' +
+                        '</tr>';
+                    targetTable.append(row);
+                });
+            }
+
+            // Agregar productos a las tablas correspondientes
+            agregarProductosATabla('#table-productos-ventas', productosPorInventario[1]);
+            agregarProductosATabla('#table-productos-servicios', productosPorInventario[2]);
+            agregarProductosATabla('#table-productos-curso', productosPorInventario[3]);
+
+            $('#productosEnServicios').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                }
+            });
+            $('#productosEnVentas').DataTable();
+            $('#productosEnCurso').DataTable();
+
+        },
+        error: function(error) {
+            console.error("Error al obtener los productos:", error);
+        }
+    });
+}
+
 $('#editProductModal').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget);
     var productId = button.data('id');
@@ -863,9 +889,87 @@ function checkWidth() {
     window.addEventListener('resize', botonSidebar);
     botonSidebar();
 
+
+
         // Fin scripts para todas las vistas
 
+        // $('#productosEnServicios').DataTable().destroy();
 
+
+        dibujarTodos();
+
+
+
+        // Inicializar DataTables para la tabla "Productos en Servicios"
+
+
+
+        // Evento al cambiar a la pestaña "Productos en Servicios"
+        $('#productos-servicios-tab').on('click', function (){
+
+            if ($.fn.DataTable.isDataTable('#productosEnServicios')) {
+                $('#productosEnServicios').DataTable().destroy();
+            }
+
+            // dibujarTodos();
+
+            $('#productosEnServicios').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                }
+            });
+        });
+
+        // Evento al cambiar a la pestaña "Productos en Ventas"
+        $('#productos-ventas-tab').on('click', function (){
+
+            if ($.fn.DataTable.isDataTable('#productosEnVentas')) {
+                $('#productosEnVentas').DataTable().destroy();
+                // $('#productosEnVentas').empty()
+            }
+            // dibujarTodos();
+
+            $('#productosEnVentas').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                }
+            });
+        });
+
+        // Evento al cambiar a la pestaña "Productos en Curso"
+        $('#productos-curso-tab').on('click', function (){
+
+            if ($.fn.DataTable.isDataTable('#productosEnCurso')) {
+                $('#productosEnCurso').DataTable().destroy();
+            }
+            // dibujarTodos();
+            $('#productosEnCurso').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-MX.json"
+                }
+            });
+        });
 
 
 
@@ -873,6 +977,11 @@ function checkWidth() {
     });
 
 
+
+
+
+
     </script>
+
 </body>
 </html>

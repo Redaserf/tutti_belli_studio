@@ -2097,7 +2097,7 @@ sidebarBtn.addEventListener("click", () => {
                         <tr>
                             <td>Compra</td>
                             <th>${venta.id}</th>
-                            <td>${venta.total}</td>
+                            <td>$ ${venta.total}</td>
                             <td>${venta.fechaVenta}</td>
                             <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
                             <td><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="prepararConfirmacion(${venta.id})">Aceptar</button></td>
@@ -2127,7 +2127,7 @@ sidebarBtn.addEventListener("click", () => {
                         <tr>
                             <td>Compra</td>
                             <th>${venta.id}</th>
-                            <td>$${venta.total}</td>
+                            <td>$ ${venta.total}</td>
                             <td>${venta.fechaVenta}</td>
                             <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
                         </tr>
@@ -2155,7 +2155,7 @@ sidebarBtn.addEventListener("click", () => {
                             <tr>
                                 <td>Compra</td>
                                 <th>${venta.id}</th>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModalProducts" onclick="dibujarTicket(${venta.id})">Ver detalles</button></td>
                             </tr>
