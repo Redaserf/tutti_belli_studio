@@ -6,6 +6,7 @@
     <title>Empleados</title>
     <link rel="icon" href="/resources/img/home/_CON.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <style>
 
@@ -638,6 +639,7 @@ header {
                 <script src="https://kit.fontawesome.com/24af5dc0df.js" crossorigin="anonymous"></script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
                 <script>
 
@@ -662,8 +664,7 @@ header {
     });
 
         // Dibujar empleados
-
-  function tablaEmpleados() {
+        function tablaEmpleados() {
     $.ajax({
         url: '/get/empleados',
         method: 'GET',
@@ -695,15 +696,39 @@ header {
                             <button class="btn btn-warning" onclick="cargarEmpleado(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="fa-solid fa-user-pen"></i></button>
                             <button class="btn btn-danger" onclick="employeeDelete(${empleado.id})"><i class="fa-solid fa-user-xmark"></i></button>
                             <button class="btn btn-primary" onclick="editarHorario(${empleado.id})" data-bs-toggle="modal" data-bs-target="#editarHorarioModal"><i class="fa-regular fa-calendar"></i></button>
-
                         </td>
                     </tr>`;
                     tableBody.append(row);
+                });
+
+                // Destruye la instancia anterior de DataTables si existe
+                if ($.fn.DataTable.isDataTable('.table')) {
+                    $('.table').DataTable().destroy();
+                }
+
+                // Inicializar DataTables
+                $('.table').DataTable({
+                    "pageLength": 10,
+                    "searching": false, // Desactivar la búsqueda
+                    "language": {
+                        "lengthMenu": "Mostrar _MENU_ registros por página",
+                        "zeroRecords": "No se encontraron resultados",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        "infoEmpty": "No hay registros disponibles",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    }
                 });
             }
         }
     });
 }
+
         // editar horario
 
         const horaInicioSelect = $('#nuevoHoraInicio');
@@ -816,22 +841,30 @@ $('#editarHorarioForm').on('submit', function(e) {
 
         // }
 
-        // Eliminar empleados
 
+
+        // Eliminar empleados
         function employeeDelete(id){
-            if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
-                // Mostrar la pantalla de carga
+    if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+        // Mostrar la pantalla de carga
         $('#contenedor_carga').css('display', 'block');
-          $.ajax({
-              url: `/empleado/eliminar/${id}`,
-              method: 'GET',
-              success: function(){
+        $.ajax({
+            url: `/empleado/eliminar/${id}`,
+            method: 'GET',
+            success: function(){
                 // Ocultar la pantalla de carga
                 $('#contenedor_carga').css('display', 'none');
                 mostrarAlerta('Empleado eliminado con éxito', 'alert-success', 'check-circle-fill');
-                  tablaEmpleados();
-              },
-              error: function(error){
+
+                // Destruir la instancia anterior de DataTables si existe
+                if ($.fn.DataTable.isDataTable('.table')) {
+                    $('.table').DataTable().destroy();
+                }
+
+                // Recargar la tabla de empleados
+                tablaEmpleados();
+            },
+            error: function(error){
                 if (error.status === 500) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
@@ -842,10 +875,10 @@ $('#editarHorarioForm').on('submit', function(e) {
                     alert('Ocurrió un error al eliminar el empleado.');
                 }
                 console.log(error);
-              }
-          });
-        }
-        }
+            }
+        });
+    }
+}
 
         function cargarEmpleado(id) {
     $.ajax({
@@ -890,6 +923,12 @@ $('#editProfileForm').on('submit', function(e) {
             mostrarAlerta('Perfil actualizado con éxito', 'alert-success', 'check-circle-fill');
             $('#emailError').text('Correo ya en uso.');
                 $('#emailError').css('display', 'none');
+
+                // Destruye la instancia anterior de DataTables si existe
+                if ($.fn.DataTable.isDataTable('.table')) {
+                $('.table').DataTable().destroy();
+                }
+
             tablaEmpleados();
         },
         error: function(error) {
