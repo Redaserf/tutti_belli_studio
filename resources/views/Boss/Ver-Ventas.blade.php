@@ -1190,6 +1190,8 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button type="button" id="rechazarCita" data-cita-id="" class="btn btn-pink">Confirmar</button>
+                                    <button type="button" style="display: none" id="rechazarCitaAdmin" data-cita-id="" class="btn btn-primary">Confirmar</button>
+
                                 </div>
                             </div>
                         </div>
@@ -1263,6 +1265,8 @@ $(document).ready(function() {
     });
 
     $('#citas-totales-tab').on('click', function() {
+        $('#rechazarCita').show();
+        $('#rechazarCitaAdmin').hide();
         $('#aceptarCita').show();
         $('#aceptarCitaAdmin').hide();
         dibujarCitasVentasTecnicasProductos();
@@ -1328,6 +1332,8 @@ let citasVentasAceptadas = [];
     }
 
     $('#mis-citas-tab').on('click', function() {
+        $('#rechazarCitaAdmin').show();
+        $('#rechazarCita').hide();
         $('#aceptarCita').hide();
         $('#aceptarCitaAdmin').show();
         dibujarCitasVentasTecnicasProductosEmpleado();
@@ -1719,7 +1725,7 @@ $('#citas-aceptadas-tab').on('click', function() {
                     <td>${venta.fechaVenta}</td>
                     <td>${cita.horaCita}</td>
                     <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-solid fa-eye"></i> Detalles</button></td>
-                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
+                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCitaAdmin"><i class="fa-solid fa-trash"></i> No asistió</button></td>
                     <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
                 </tr>
             `);
@@ -1939,6 +1945,40 @@ $(document).on('click', '.eliminarCita', function() {
     $('#rechazarCita').data('cita-id', citaId);
 });
 
+$(document).on('click', '.eliminarCitaAdmin', function() {
+    let citaId = $(this).data('cita-id');
+    $('#rechazarCitaAdmin').data('cita-id', citaId);
+})
+
+$('#rechazarCitaAdmin').on('click', function() {
+    let citaId = $(this).data('cita-id');
+
+    eliminarCitaAdmin(citaId);
+})
+
+function eliminarCitaAdmin(id){
+    $.ajax({
+        url: `/eliminar/cita/${id}`,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        method: 'DELETE',
+        success: function(response){
+            console.log(response);
+            dibujarCitasVentasTecnicasProductosEmpleado();
+            dibujarCitasVentasTecnicasProductosAceptados();
+            $('#eliminarCita').modal('hide');
+            mostrarAlerta('Se eliminó con éxito la cita del admin.', 'alert-success', 'check-circle-fill');
+        },
+        error: function(error) {
+            console.log(error);
+            // mostrarAlerta('Se eliminó con éxito la cita del admin.', 'alert-danger', 'info-fill');
+
+        }
+    });
+}
+
+
 $('#rechazarCita').on('click', function() {
     let citaId = $(this).data('cita-id');
 
@@ -1955,8 +1995,8 @@ function eliminarCita(id){
         success: function(response){
             console.log(response);
             dibujarCitasVentasTecnicasProductos();
+            // dibujarCitasVentasTecnicasProductosEmpleado();
             dibujarCitasVentasTecnicasProductosAceptados();
-            dibujarCitasVentasTecnicasProductosEmpleado();
             $('#eliminarCita').modal('hide');
             mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
         },
