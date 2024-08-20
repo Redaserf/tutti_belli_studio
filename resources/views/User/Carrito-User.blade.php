@@ -654,9 +654,10 @@ $.get('/carrito/contar-productos', function(data) {
                 // Verificar si es un error específico de cantidad excedida o si es un problema con max_input_vars
                 if (response.responseText.includes('max_input_vars')) {
                     mostrarAlerta('Error: Se excedió el número de productos para la venta. Intenta reducir la cantidad de productos.', 'alert-danger', 'exclamation-triangle-fill');
-                } else if (response.responseJSON && response.responseJSON.errorTipo === 'cantidadExcedida') {
-                    mostrarAlerta('Error: ' + response.responseJSON.message, 'alert-danger', 'exclamation-triangle-fill');
-                } else {
+                }                 // Verificar si es un error de integridad para fechaVenta nula
+                else if (mensajeError.includes('Integrity constraint violation') && mensajeError.includes('fechaVenta cannot be null')) {
+                    mostrarAlerta('Error: No se pudo realizar la compra, la fecha de venta es inválida o está vacía.', 'alert-danger', 'exclamation-triangle-fill');
+                }  else {
                     // Manejar otros tipos de errores aquí
                     var mensajeError = response.responseJSON ? response.responseJSON.message : 'Hubo un problema al realizar la compra. Intenta nuevamente.';
                     mostrarAlerta(mensajeError, 'alert-danger', 'exclamation-triangle-fill');
