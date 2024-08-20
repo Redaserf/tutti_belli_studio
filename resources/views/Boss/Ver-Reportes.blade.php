@@ -485,11 +485,11 @@
                             <label id="etiquetaTotal" for="info-label" style="font-weight: 5;"> </label>
                             <br>
                             <select class="form-control mb-3" id="select-empleado" style="width:250px; display: inline-block; margin-right: 15px;">
-                                <option value="">Seleccionar Empleado</option>
+                                <option value="">Todos los empleados</option>
                                 <!-- porsiacaso -->
                             </select>
                             <select class="form-control mb-3" id="select-opcion" style="width:250px; display: inline-block;">
-                                <option value="null">Seleccionar opción</option>
+                                <option value="null">Todos los servicios</option>
                                 <option value="producto">Productos</option>
                                 <option value="cita">Citas</option>
                                 <option value="inscripcion">Inscripciones</option>
@@ -621,7 +621,7 @@
             success: function (empleados) {
                 let select = $('#select-empleado');
                 select.empty(); // Limpiar el select
-                select.append(`<option value="">Seleccione un empleado</option>`);
+                select.append(`<option value="">Todos los empleados</option>`);
                 empleados.forEach(empleado =>{
 
                     select.append(`<option value="${empleado.id}">` + empleado.name + '</option>');
@@ -787,7 +787,7 @@
                         <td>${venta.tipoVenta}</td>
                         <td>${venta.fechaVenta}</td>
                         <td>${venta.empleadoNombre}</td>
-                        <td>${venta.total}</td>
+                        <td>$ ${venta.total}</td>
                         </tr>`;
                         tablaRaiz.append(contenido);
 
@@ -861,7 +861,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                             tablaRaiz.append(contenido);
                             total += venta.total
@@ -918,7 +918,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total
@@ -975,7 +975,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total
@@ -1053,7 +1053,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                             tablaRaiz.append(contenido);
                             total += venta.total
@@ -1108,7 +1108,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total;
@@ -1164,7 +1164,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total

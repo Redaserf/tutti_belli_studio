@@ -331,7 +331,7 @@ label, p, input, button, h1, h2, h3, a, h4, h5, li{
         <div class="summary-container mt-3">
             <div id="costo-total" class="total-price"></div>
             <button id="comprar" class="btn btn-success btn-buy">Comprar</button>
-            <button class="btn btn-danger" style="margin-top:15px;" id="borrarTodo"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn btn-danger" style="margin-top:15px;" id="borrarTodo">Eliminar todo <i class="fa-solid fa-trash"></i></button>
         </div>
     </div>
 </div>
