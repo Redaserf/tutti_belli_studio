@@ -816,24 +816,7 @@ margin-right: 20px;
         });
     
     $(document).ready(function(){
-        let tabla = $('#tablaCitas').DataTable({
-        "pageLength": 8, // Número de filas por página
-        "searching": true, // Activa la búsqueda
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
+        
 
     // Filtrar por fecha
     $('#filtroFecha').on('keyup change', function() {
@@ -1812,6 +1795,24 @@ function actualizarOpcionesHora(fechaHora) {
                     });
                 }
             });
+            let tabla = $('#tablaCitas').DataTable({
+        "pageLength": 8, // Número de filas por página
+        "searching": true, // Activa la búsqueda
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ citas por página",
+            "zeroRecords": "No se encontraron citas",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+            "infoEmpty": "No hay citas disponibles",
+            "infoFiltered": "(filtrado de _MAX_ citas totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
         }
 
         citasNoAceptadas();      
