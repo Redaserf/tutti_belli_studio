@@ -878,6 +878,17 @@ class RegistrosController extends Controller
             }
         }
 
+        $empleado = User::with('horarios')->findOrFail($request->empleadoId);
+        $horaCita = $request->horaCita;
+
+        foreach ($empleado->horarios as $horario) {
+            if ($horaCita < $horario->horaInicio) {
+                throw new \Exception('La hora seleccionada no está dentro del horario del empleado');
+            } elseif ($horaCita > $horario->horaFin) {
+                throw new \Exception('La hora seleccionada no está dentro del horario del empleado');
+            }
+        }
+
         $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
 
         if (empty($serviciosSeleccionados)) {

@@ -1220,6 +1220,40 @@ $.ajax({
                 var fechaHora = info.date;
                 var hoy = new Date();
 
+                let fechaMoment = moment(fechaHora);
+                let diaSemana = fechaMoment.day();
+                let horarioDia = horarios.find(horario => parseInt(horario.diaSemana) === diaSemana);
+
+                if (!horarioDia) {
+                    mostrarAlerta('El día seleccionado no está dentro de tu horario laboral.', 'alert-primary', 'info-fill');
+                    return;
+                }
+
+                let cursoAsignado = cursosFechas.some(curso => {
+                    return (
+                        fechaMoment.isSame(moment(curso.primeraFecha, 'YYYY-MM-DD'), 'day') ||
+                        fechaMoment.isSame(moment(curso.segundaFecha, 'YYYY-MM-DD'), 'day') ||
+                        fechaMoment.isSame(moment(curso.terceraFecha, 'YYYY-MM-DD'), 'day')
+                    );
+                });
+
+                if (cursoAsignado) {
+                    mostrarAlerta('Ya tienes un curso asignado en la fecha seleccionada.', 'alert-primary', 'info-fill');
+                    return;
+                }
+
+                let horaSeleccionadaHorarioLaboral = fechaHora.getHours() + ':' + fechaHora.getMinutes() + ':' + fechaHora.getSeconds();
+                
+                let horaInicio = moment(horarioDia.horaInicio, 'HH:mm:ss');
+                let horaFin = moment(horarioDia.horaFin, 'HH:mm:ss').subtract(1, 'hours');
+                let horaSeleccionadaMoment = moment(horaSeleccionadaHorarioLaboral, 'HH:mm:ss');
+
+                if (horaSeleccionadaMoment.isBefore(horaInicio) || horaSeleccionadaMoment.isAfter(horaFin)) {
+                    mostrarAlerta('La hora seleccionada está fuera de tu horario laboral.', 'alert-primary', 'info-fill');
+                    return;
+                }
+
+
                 var limiteHora = new Date(hoy.getTime() + 2 * 60 * 60 * 1000);
 
                 let fechaSeleccionada = moment(fechaHora);
