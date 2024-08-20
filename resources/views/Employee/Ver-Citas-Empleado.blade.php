@@ -1229,17 +1229,23 @@ $.ajax({
                     return;
                 }
 
-                let cursoAsignado = cursosFechas.some(curso => {
-                    return (
-                        fechaMoment.isSame(moment(curso.primeraFecha, 'YYYY-MM-DD'), 'day') ||
-                        fechaMoment.isSame(moment(curso.segundaFecha, 'YYYY-MM-DD'), 'day') ||
-                        fechaMoment.isSame(moment(curso.terceraFecha, 'YYYY-MM-DD'), 'day')
-                    );
-                });
+                let cursoAsignado;
 
-                if (cursoAsignado) {
-                    mostrarAlerta('Ya tienes un curso asignado en la fecha seleccionada.', 'alert-primary', 'info-fill');
-                    return;
+                if (!cursosFechas || !Array.isArray(cursosFechas) || cursosFechas.length === 0) {
+                    console.log('El empleado no tiene cursos asignados');
+                } else {
+                    cursoAsignado = cursosFechas.some(curso => {
+                        return (
+                            fechaMoment.isSame(moment(curso.primeraFecha, 'YYYY-MM-DD'), 'day') ||
+                            fechaMoment.isSame(moment(curso.segundaFecha, 'YYYY-MM-DD'), 'day') ||
+                            fechaMoment.isSame(moment(curso.terceraFecha, 'YYYY-MM-DD'), 'day')
+                        );
+                    });
+
+                    if (cursoAsignado) {
+                        mostrarAlerta('Ya tienes un curso asignado en la fecha seleccionada.', 'alert-primary', 'info-fill');
+                        return;
+                    }
                 }
 
                 let horaSeleccionadaHorarioLaboral = fechaHora.getHours() + ':' + fechaHora.getMinutes() + ':' + fechaHora.getSeconds();
