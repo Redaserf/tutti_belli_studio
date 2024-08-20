@@ -845,76 +845,49 @@ margin-right: 20px;
         loader.style.display = "none";
     });
 
-$(document).ready(function(){
-
+    $(document).ready(function() {
+    // Mostrar el modal de productos cuando se hace clic en el botón correspondiente
     $('a[data-bs-target="#editProductsModal1"]').click(function(e){
-            e.preventDefault();
-            $('#editProductsModal1').modal('show');
-        });
+        e.preventDefault();
+        $('#editProductsModal1').modal('show');
+    });
 
-        
-        $('#editProductsModal1').on('hidden.bs.modal', function () {
-            $('#editAppointmentModalCit').modal('show');    
-        });
+    // Cuando el modal de productos se oculta, mostrar nuevamente el modal de edición de citas
+    $('#editProductsModal1').on('hidden.bs.modal', function () {
+        $('#editAppointmentModalCit').modal('show');    
+    });
 
+    // Toggle del sidebar
+    const body = document.querySelector("body"),
+        sidebar = body.querySelector(".sidebar"),
+        toggle = body.querySelector(".toggle"),
+        overlay = body.querySelector(".overlay"),
+        sidebarBtn = body.querySelector(".sidebar-btn");
 
-            // Dashboard toggle
-            const body = document.querySelector("body"),
-                sidebar = body.querySelector(".sidebar"),
-                toggle = body.querySelector(".toggle"),
-                overlay = body.querySelector(".overlay"),
-                sidebarBtn = body.querySelector(".sidebar-btn");
+    toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+        overlay.style.display = !sidebar.classList.contains("close") ? "block" : "none";
+    });
 
-            toggle.addEventListener("click", () => {
-                sidebar.classList.toggle("close");
-                if (!sidebar.classList.contains("close")) {
-                    overlay.style.display = "block";
-                } else {
-                    overlay.style.display = "none";
-                }
-            });
-    
+    overlay.addEventListener("click", () => {
+        sidebar.classList.add("close");
+        overlay.style.display = "none";
+    });
 
-            overlay.addEventListener("click", () => {
-                sidebar.classList.add("close");
-                overlay.style.display = "none";
-                sidebar.classList.remove("open");
-            });
-            function checkWidth() {
-        if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
-            $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
-        } else {
-            $('#scrollDash').removeClass('table-responsive');  
-        }
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        sidebar.classList.contains("open") ? sidebar.classList.remove("close") : sidebar.classList.add("close");
+        overlay.style.display = sidebar.classList.contains("open") ? "block" : "none";
+    });
+
+    // Verifica si la pantalla es menor a 786px para agregar o quitar la clase de responsive en el sidebar
+    function checkWidth() {
+        $('#scrollDash').toggleClass('table-responsive', $(window).width() < 786);
     }
     checkWidth();
     $(window).resize(checkWidth);
 
-            sidebarBtn.addEventListener("click", () => {
-                sidebar.classList.toggle("open");
-                if (sidebar.classList.contains("open")) {
-                    sidebar.classList.remove("close");
-                    overlay.style.display = "block";
-                } else {
-                    sidebar.classList.add("close");
-                    overlay.style.display = "none";
-                }
-            });
-
-                        // Botón sidebar
-                        function botonSidebar() { 
-                if (window.innerWidth <= 768) {
-                    $('.sidebar-btn').css('display', 'block');
-                } else {
-                    $('.sidebar-btn').css('display', 'none');
-                }
-            }
-            window.addEventListener('resize', botonSidebar);
-            botonSidebar();
-
-    // Fin scripts para todas las vistas
-
-
+    // Inicialización del datepicker
     $("#fechaFiltroEmpleado").datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: 0, 
@@ -922,94 +895,93 @@ $(document).ready(function(){
         changeYear: true
     });
 
-
-    // Fin document.ready
-
-function mostrarAlerta(text, alertClass, iconId) {
-    $("#alertaTexto").text(text);
-    $(".custom-alert")
-        .removeClass("alert-primary alert-success alert-warning alert-danger hide")
-        .addClass(`show ${alertClass}`)
-        .fadeIn();
-    $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
-    setTimeout(function() {
+    // Mostrar alerta
+    function mostrarAlerta(text, alertClass, iconId) {
+        $("#alertaTexto").text(text);
         $(".custom-alert")
-            .removeClass("show")
-            .addClass("hide")
-            .fadeOut();
-    }, 6500);
-}
+            .removeClass("alert-primary alert-success alert-warning alert-danger hide")
+            .addClass(`show ${alertClass}`)
+            .fadeIn();
+        $("#alert-icon").html(`<use xlink:href="#${iconId}"/>`);
+        setTimeout(function() {
+            $(".custom-alert")
+                .removeClass("show")
+                .addClass("hide")
+                .fadeOut();
+        }, 6500);
+    }
 
+    // Dibujar citas, ventas, técnicas y productos para el empleado
+    function dibujarCitasVentasTecnicasProductosEmpleado() {
+        $.get('/venta/citas/empleado', function (citasVentas) {
+            citasVentasEmpleado = [];
 
-function dibujarCitasVentasTecnicasProductosEmpleado() {
-    $.get('/venta/citas/empleado', function (citasVentas) {
-        citasVentasEmpleado = [];
-
-        $.each(citasVentas, function(index, cita) {
-            citasVentasEmpleado.push({
-                id: cita.id,
-                fechaCita: cita.fechaCita,
-                horaCita: cita.horaCita,
-                venta: cita.venta,
-                servicios: cita.servicios,
-                usuario_empleado: cita.usuario_empleado,
-                usuario: cita.usuario
+            $.each(citasVentas, function(index, cita) {
+                citasVentasEmpleado.push({
+                    id: cita.id,
+                    fechaCita: cita.fechaCita,
+                    horaCita: cita.horaCita,
+                    venta: cita.venta,
+                    servicios: cita.servicios,
+                    usuario_empleado: cita.usuario_empleado,
+                    usuario: cita.usuario
+                });
             });
+
+            mostrarCitasEmpleado(citasVentasEmpleado);
+        });
+    }
+
+    // Llamar a la función para dibujar las citas al cargar la página
+    dibujarCitasVentasTecnicasProductosEmpleado();
+
+    // Mostrar las citas del empleado
+    function mostrarCitasEmpleado(citas) {
+        let tablaVenta = $('#dibujarVentaEmpleado');
+        tablaVenta.empty();
+
+        $.each(citas, function (index, citaData) {
+            let cita = citaData;
+            let venta = citaData.venta;
+
+            tablaVenta.append(`
+                <tr>
+                    <td>Cita ${cita.id}</td>
+                    <td>${venta.total}</td>
+                    <td>${venta.fechaVenta}</td>
+                    <td>${cita.horaCita}</td>
+                    <td>${cita.usuario.name + " " + cita.usuario.apellido}</td>
+                    <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-regular fa-eye"></i>  Detalles</button></td>
+                    <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
+                    <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
+                </tr>
+            `);
         });
 
-        console.log(citasVentasEmpleado);
-        mostrarCitasEmpleado(citasVentasEmpleado);
-    });
-}
-
-dibujarCitasVentasTecnicasProductosEmpleado();
-
-function mostrarCitasEmpleado(citas) {
-    let tablaVenta = $('#dibujarVentaEmpleado');
-    tablaVenta.empty();
-
-    $.each(citas, function (index, citaData) {
-        let cita = citaData;
-        let venta = citaData.venta;
-        console.log('citaaaaaaaaaaaaa: ', cita)
-        console.log('citas de empleados: ', citaData);
-        tablaVenta.append(`
-            <tr>
-                <td>Cita ${cita.id}</td>
-                <td>${venta.total}</td>
-                <td>${venta.fechaVenta}</td>
-                <td>${cita.horaCita}</td>
-                <td>${cita.usuario.name + " " + cita.usuario.apellido}</td>
-                <td><button class="btn btn-primary ver-detalles" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#detailsModal"><i class="fa-regular fa-eye"></i>  Detalles</button></td>
-                <td><button data-cita-id="${cita.id}" id="delete" data-bs-toggle="modal" data-bs-target="#eliminarCita" class="btn btn-danger eliminarCita"><i class="fa-solid fa-trash"></i> No asistió</button></td>
-                <td><button class="btn btn-success modificarProductos" data-venta-id="${venta.id}" data-cita-id="${cita.id}" data-bs-toggle="modal" data-bs-target="#editAppointmentModalCit"><i class="fa-solid fa-check"></i> Aceptar</button></td>
-            </tr>
-        `);
-    });
-
-    $('#tablaVenta').DataTable({
-        destroy: true,
-        "pageLength": 5,
-        "searching": true,
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ citas por página",
-            "zeroRecords": "No se encontraron citas",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-            "infoEmpty": "No hay citas disponibles",
-            "infoFiltered": "(filtrado de _MAX_ citas totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
+        $('#tablaVenta').DataTable({
+            destroy: true,
+            "pageLength": 5,
+            "searching": true,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ citas por página",
+                "zeroRecords": "No se encontraron citas",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
+                "infoEmpty": "No hay citas disponibles",
+                "infoFiltered": "(filtrado de _MAX_ citas totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
             }
-        }
-    });
+        });
 
-    manejarEventos();
-}
+        manejarEventos();
+    }
 
+    // Manejar eventos
     function manejarEventos() {
         $(document).off('click', '.ver-detalles').on('click', '.ver-detalles', function () {
             let citaId = $(this).data('cita-id');
@@ -1017,7 +989,6 @@ function mostrarCitasEmpleado(citas) {
 
             let tablaDetalles = $('#dibujarDetalles');
             tablaDetalles.empty();
-            console.log('servicios: ', citaData.servicios);
 
             if (citaData && citaData.servicios) {
                 citaData.servicios.forEach(servicio => {
@@ -1036,33 +1007,31 @@ function mostrarCitasEmpleado(citas) {
             }
         });
 
-        
-$(document).off('click', '.modificarProductos').on('click', '.modificarProductos', function () {
-    let citaId = $(this).data('cita-id');
-    let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
+        $(document).off('click', '.modificarProductos').on('click', '.modificarProductos', function () {
+            let citaId = $(this).data('cita-id');
+            let ventaId = $(this).data('venta-id');
+            let citaData = citasVentasEmpleado.find(cita => cita.id === citaId);
 
-    $(document).off('click', '#aceptarCita').on('click', '#aceptarCita', function () {
-    let ventaId = $(this).attr('data-venta-id');
-    
-    $.ajax({
-        url: `/venta/actualizar`,  // Esta es la ruta que apunta a la función en el controlador
-        method: 'PUT',
-        data: {
-            ventaId: ventaId,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-            $('#editAppointmentModalCit').modal('hide');
-            dibujarCitasVentasTecnicasProductosEmpleado();
-            mostrarAlerta('La venta fue aceptada y el stock actualizado con éxito.', 'alert-success', 'check-circle-fill');
-        },
-        error: function(xhr) {
-            let errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Error inesperado';
-            mostrarAlerta(`Error: ${errorMessage}`, 'alert-danger', 'exclamation-triangle-fill');
-            console.error(xhr);
-        }
-    });
-});
+            $(document).off('click', '#aceptarCita').on('click', '#aceptarCita', function () {
+                $.ajax({
+                    url: `/venta/actualizar`,
+                    method: 'PUT',
+                    data: {
+                        ventaId: ventaId,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        $('#editAppointmentModalCit').modal('hide');
+                        dibujarCitasVentasTecnicasProductosEmpleado();
+                        mostrarAlerta('La venta fue aceptada y el stock actualizado con éxito.', 'alert-success', 'check-circle-fill');
+                    },
+                    error: function(xhr) {
+                        let errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'Error inesperado';
+                        mostrarAlerta(`Error: ${errorMessage}`, 'alert-danger', 'exclamation-triangle-fill');
+                        console.error(xhr);
+                    }
+                });
+            });
 
             let tablaModificar = $('#dibujarDetalleTecnicas');
             tablaModificar.empty();
@@ -1086,7 +1055,6 @@ $(document).off('click', '.modificarProductos').on('click', '.modificarProductos
 
             $(document).off('click', '.productos').on('click', '.productos', function () {
                 let tecnicaId = $(this).data('tecnica-id');
-                let ventaId = $(this).data('venta-id');
                 let citaId = $(this).data('cita-id');
                 let servicioId = $(this).data('servicio-id');
                 let servicio = citaData.servicios.find(s => s.id === servicioId);
@@ -1143,35 +1111,49 @@ $(document).off('click', '.modificarProductos').on('click', '.modificarProductos
                         var response = xhr.responseJSON;
                         if (response.message === 'Arreglo vacio') {
                             mostrarAlerta('No se hizo ningun cambio.', 'alert-primary', 'info-fill');
+                        } else {
+                            mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
                         }
-                        mostrarAlerta(`Error: ${xhr.responseJSON.message}`, 'alert-danger', 'exclamation-triangle-fill');
-                        
                     }
                 });
             });
         });
+
+        $(document).on('click', '.eliminarCita', function() {
+            let citaId = $(this).data('cita-id');
+            $('#rechazarCita').attr('data-cita-id', citaId);
+        });
+
+        $('#rechazarCita').on('click', function() {
+            let citaId = $(this).data('cita-id');
+            eliminarCita(citaId);
+        });
+
+        function eliminarCita(id) {
+            $.ajax({
+                url: `/eliminar/cita/${id}`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'DELETE',
+                success: function(response){
+                    console.log(response);
+                    dibujarCitasVentasTecnicasProductosEmpleado();
+                    $('#eliminarCita').modal('hide');
+                    mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $('#mostrarTodasCitasEmpleado').on('click', function() {
+            dibujarCitasVentasTecnicasProductosEmpleado();
+        });
     }
 
-
-    //     let tabla = $('#tablaVenta').DataTable({
-    //     "pageLength": 8, // Número de filas por página
-    //     "searching": true, // Activa la búsqueda
-    //     "language": {
-    //         "lengthMenu": "Mostrar _MENU_ citas por página",
-    //         "zeroRecords": "No se encontraron citas",
-    //         "info": "Mostrando _START_ a _END_ de _TOTAL_ citas",
-    //         "infoEmpty": "No hay citas disponibles",
-    //         "infoFiltered": "(filtrado de _MAX_ citas totales)",
-    //         "search": "Buscar:",
-    //         "paginate": {
-    //             "first": "Primero",
-    //             "last": "Último",
-    //             "next": "Siguiente",
-    //             "previous": "Anterior"
-    //         }
-    //     }
-    // });
-    
+    // Filtros para citas
     $('#filtrarCitasEmpleado').on('click', function () {
         let fechaFiltro = $('#fechaFiltroEmpleado').val();
         let horaFiltro = $('#horaFiltroEmpleado').val();
@@ -1188,20 +1170,16 @@ $(document).off('click', '.modificarProductos').on('click', '.modificarProductos
         $('#horaFiltroEmpleado').val('');
     });
 
+    // Ordenar citas por fecha y hora
     function ordenarCitasEmpleado(orden) {
         let citasOrdenadas = citasVentasEmpleado.slice();
         citasOrdenadas.sort(function(a, b) {
             let fechaA = new Date(a.venta.fechaVenta + 'T' + a.horaCita);
             let fechaB = new Date(b.venta.fechaVenta + 'T' + b.horaCita);
 
-            if (orden === 'asc') {
-                return fechaA - fechaB;
-            } else if (orden === 'desc') {
-                return fechaB - fechaA;
-            }
+            return orden === 'asc' ? fechaA - fechaB : fechaB - fechaA;
         });
         mostrarCitasEmpleado(citasOrdenadas);
-
     }
 
     $('#ordenarAscEmpleado').on('click', function() {
@@ -1212,42 +1190,6 @@ $(document).off('click', '.modificarProductos').on('click', '.modificarProductos
         ordenarCitasEmpleado('desc');
     });
 
-
-    
-$(document).on('click', '.eliminarCita', function() {
-    let citaId = $(this).data('cita-id');
-    $('#rechazarCita').attr('data-cita-id', citaId);
-});
-
-    
-$('#rechazarCita').on('click', function() {
-    let citaId = $(this).data('cita-id');
-    eliminarCita(citaId);
-    window.location.reload();
-});
-
-function eliminarCita(id){
-    $.ajax({
-        url: `/eliminar/cita/${id}`,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        method: 'DELETE',
-        success: function(response){
-            console.log(response);
-            dibujarCitasVentasTecnicasProductosEmpleado();
-            $('#eliminarCita').modal('hide');
-            mostrarAlerta('Se eliminó con éxito la cita.', 'alert-success', 'check-circle-fill');
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
-}
-
-$('#mostrarTodasCitasEmpleado').on('click', function() {
-    dibujarCitasVentasTecnicasProductosEmpleado();
-})
 });
 
 
