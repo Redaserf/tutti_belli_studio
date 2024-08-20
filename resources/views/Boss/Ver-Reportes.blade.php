@@ -1164,7 +1164,7 @@
                                 <td>${venta.tipoVenta}</td>
                                 <td>${venta.fechaVenta}</td>
                                 <td>${venta.empleadoNombre}</td>
-                                <td>$ +${venta.total}</td>
+                                <td>$ ${venta.total}</td>
                                 </tr>`;
                                 tablaRaiz.append(contenido);
                                 total += venta.total
