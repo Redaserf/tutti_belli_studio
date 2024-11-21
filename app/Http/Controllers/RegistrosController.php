@@ -395,15 +395,15 @@ class RegistrosController extends Controller
             }
         }
 
-        if (!Auth::check()) {
-            return redirect('/Home-guest');
-        }
+        // if (!Auth::check()) {
+        //     return redirect('/Home-guest');
+        // }
 
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        if ($user->rolId == 2) {
-            return redirect('/Home-usuario');
-        }
+        // if ($user->rolId == 2) {
+        //     return redirect('/Home-usuario');
+        // }
 
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
@@ -414,6 +414,8 @@ class RegistrosController extends Controller
             throw new \Exception ('Ya existe una cita para esta fecha y hora');
         }
 
+        // dd($request->estadoCita);
+
         DB::beginTransaction();
         try {
             $cita = Cita::create([
@@ -422,7 +424,7 @@ class RegistrosController extends Controller
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
                 "notasCita" => $request->notasCita,
-                "estadoCita" => true
+                "estadoCita" => ($request->estadoCita == "true") ? true : false
             ]);
 
             $reporte = Reporte::create([
@@ -842,170 +844,6 @@ class RegistrosController extends Controller
     }
 
 
-
-
-
-    public function RegistroCitaUsuario(Request $request)
-    {
-        $request->validate([
-            'fechaCita' => 'required|date|after_or_equal:today',
-            'horaCita' => 'required|date_format:H:i:s',
-            'usuarioId' => 'required|exists:users,id',
-            'empleadoId' => 'required|exists:users,id',
-            'serviciosSeleccionados' => 'required|json'
-        ], [
-            'required' => 'Este campo es obligatorio.',
-            'date' => 'La fecha no es válida.',
-            'date_format' => 'El formato de la hora es inválido.',
-            'after_or_equal' => 'La fecha debe ser hoy o posterior.',
-            'json' => 'Los datos deben estar en formato JSON válido.',
-        ]);//valida que entren esos datos en los formatos deseados
-
-        $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
-        ->where('activo', true)
-        ->pluck('fechaInicio');
-
-        //validar si la fecha seleccionada coincide con alguna de las fechas de los cursos
-        foreach ($fechasCursos as $fechaInicio) {
-            $cursoFechas = [
-            Carbon::parse($fechaInicio)->format('Y-m-d'),
-            Carbon::parse($fechaInicio)->addDay()->format('Y-m-d'),
-            Carbon::parse($fechaInicio)->addDays(2)->format('Y-m-d')
-            ];
-
-            if (in_array($request->fechaCita, $cursoFechas)) {
-                throw new \Exception ('El empleado no tiene disponible esa fecha');
-            }
-        }
-
-        $empleado = User::with('horarios')->findOrFail($request->empleadoId);
-        $horaCita = $request->horaCita;
-        $diaSemanaCita = Carbon::parse($request->fechaCita)->dayOfWeek;
-        
-        $horariosDelDia = $empleado->horarios->filter(function ($horario) use ($diaSemanaCita) {
-            return $horario->diaSemana == $diaSemanaCita;
-        });
-        
-        if ($horariosDelDia->isEmpty()) {
-            throw new \Exception('No hay horarios laborales para el día seleccionado.');
-        }
-        
-        foreach ($horariosDelDia as $horario) {
-            if ($horaCita < $horario->horaInicio || $horaCita > $horario->horaFin) {
-                throw new \Exception('La hora seleccionada no está dentro del horario laboral del empleado.');
-            }
-        }
-        
-        
-
-        $serviciosSeleccionados = json_decode($request->serviciosSeleccionados, true);
-
-        if (empty($serviciosSeleccionados)) {
-            throw new \Exception ('Debe seleccionar al menos un servicio');
-        }
-
-        //verificar si ya existe una cita con la misma fecha y hora
-        $citaExistente = Cita::where('fechaCita', $request->fechaCita)
-        ->where('horaCita', $request->horaCita)
-        ->where('empleadoId', $request->empleadoId)
-        ->where('estadoCita', '<>', null)
-        ->first();
-
-        if ($citaExistente) {
-            throw new \Exception ('Ya existe una cita para esta fecha y hora');
-        }
-
-        DB::beginTransaction();
-        try {
-            $cita = Cita::create([
-                "fechaCita" => $request->fechaCita,
-                "horaCita" => $request->horaCita,
-                "usuarioId" => $request->usuarioId,
-                "empleadoId" => $request->empleadoId,
-                "notasCita" => $request->notasCita ?? null,
-                "estadoCita" => false
-            ]);
-
-            
-            $reporte = Reporte::create([
-                'usuarioId' => $cita->empleadoId
-            ]);
-
-            $venta = Venta::create([
-                'fechaVenta' => $request->fechaCita,
-                'total' => 0,
-                'estadoVenta' => false,
-                'tipoVenta' => 'cita',
-                'usuarioId' => $cita->usuarioId,
-                'reporteId' => $reporte->id,
-                'empleadoId' => $cita->empleadoId
-            ]);
-
-
-            foreach ($serviciosSeleccionados as $servicio) {
-                $citaHasServicios = CitaHasServicio::create([
-                    'citaId' => $cita->id,
-                    'servicioId' => $servicio['servicioId'],
-                    'tecnicaId' => $servicio['tecnicaId'],
-                    'ventaId' => $venta->id,
-                    'precioTecnica' => 0,
-                ]);
-
-                $tecnica = Tecnica::with('productosHasTecnica')->findOrFail($servicio['tecnicaId']);
-
-                $citaHasServicios->update([
-                    'precioTecnica' => $tecnica->precio
-                ]);
-
-                foreach ($tecnica->productosHasTecnica as $productoHasTecnica) {
-
-                    $producto = $productoHasTecnica->producto;
-
-
-                    if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
-                        $detalleProductos = DetalleTecnicaProducto::create([
-                            'citaId' => $cita->id,
-                            'tecnicaId' => $servicio['tecnicaId'],
-                            'productoId' => $productoHasTecnica->productoId,
-                            'cantidadProducto' => $productoHasTecnica->cantidadDeUso
-                        ]);
-
-                        $producto->cantidadEnStock -= $productoHasTecnica->cantidadDeUso * 2;
-                        //Se le resta la cantidad promedio que se usa en la tecnica al stock de cada producto
-                         $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso * 2;
-                         //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
-                         // se suma y no lo igualo pq alteraria el registro
-                         $producto->save();//se guardan cambios
-
-                    }else{
-                        throw new \Exception("No hay suficientes productos para hacer la cita con la tecnica: {$productoHasTecnica->tecnica->nombre}");
-                    }
-                }
-            }
-
-            $totalVenta = CitaHasServicio::where('citaId', $cita->id)
-                ->join('tecnicas', 'citas_has_servicios.tecnicaId', '=', 'tecnicas.id')
-                ->sum('tecnicas.precio');
-
-            $venta->update(['total' => $totalVenta]);
-
-            Mail::to($request->user()->email)->send(new CorreoEspera($cita));
-
-            // Enviar correo al empleado seleccionado
-            $empleado = User::findOrFail($request->empleadoId);
-            Mail::to($empleado->email)->send(new NotificarAdministrador($cita));
-
-            // Enviar correo al administrador
-            $administradorEmail = 'tuttibellistudiotrc@gmail.com';
-            Mail::to($administradorEmail)->send(new NotificarAdministrador($cita));
-
-            DB::commit();
-            return response()->json(['message' => 'Cita creada con éxito'], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Error al crear la cita', 'error' => $e->getMessage()], 500);
-        }
-    }
 
 
     public function actualizarDetalleTecnica(Request $request)

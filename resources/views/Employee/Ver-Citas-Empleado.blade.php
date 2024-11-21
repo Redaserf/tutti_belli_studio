@@ -692,6 +692,7 @@ margin-right: 20px;
                                     </div>
                                     <div class="form-floating mb-3">
                                     <input type="hidden" class="form-control" name="empleadoId" value="{{ Auth::user()->id }}" id="empleadoId" readonly>
+                                    <input type="hidden" id="estadoCita" name="estadoCita" value="1">
                                     <!-- <label for="empleadoId">Empleado</label> -->
                                     </div>
                                     <div style="display:none" id="msg"></div>
@@ -699,7 +700,7 @@ margin-right: 20px;
                                         <label for="notasCita">Notas de la cita</label>
                                         <textarea class="form-control" id="notasCita" name='notasCita' rows="7" required></textarea>
                                     </div>
-                                </div>
+                                    </div>
                                 <div class="modal-footer">
                                     <button type="button" style='display:none' id='btnEliminar' data-bs-dismiss="modal" class='btn btn-danger'>Eliminar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

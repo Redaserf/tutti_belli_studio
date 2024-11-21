@@ -734,6 +734,7 @@ header {
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="hidden" class="form-control" name="empleadoId" value="{{ Auth::user()->id }}" id="empleadoId" readonly>
+                                        <input type="hidden" id="estadoCita" name="estadoCita" value="true">
                                         <!-- <label for="empleadoId">Empleado</label> -->
                                     </div>
                                     <div style="display:none" id="msg"></div>
@@ -1823,6 +1824,8 @@ function actualizarOpcionesHora(fechaHora) {
             $('#serviciosSeleccionados').val(JSON.stringify(serviciosSeleccionados));
             
             let formData = $(this).serialize();
+
+            console.log(formData);
             
             $.ajax({
                 url: url,
@@ -1852,12 +1855,14 @@ function actualizarOpcionesHora(fechaHora) {
                         localStorage.setItem('alertIcon', alertIcon);
                     }
                     
-                    window.location.href = '/Ver-Citas';
+                    setTimeout(function() {
+                        window.location.href = '/Ver-Citas';
+                    }, 200); // Retraso de 200 ms
                 },
                 error: function(xhr) {
                     // Ocultar la pantalla de carga
                     $('#contenedor_carga').css('display', 'none');
-                        console.log(xhr);
+                        console.log('error', xhr);
                         var response = xhr.responseJSON;
                         let alertMessage = '';
                         let alertClass = 'alert-danger'; // clase predeterminada para errores

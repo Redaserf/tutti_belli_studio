@@ -541,6 +541,7 @@ gmp-map {
                         </div>
                         <div class="form-floating mb-3">
                             <input type="hidden" class="form-control" name="usuarioId" value="{{ Auth::user()->id }}" id="usuarioId">
+                            <input type="hidden" id="estadoCita" name="estadoCita" value="0">
                         </div>
                         <div class="mt-3 text-center">
                         <p>
@@ -548,7 +549,7 @@ gmp-map {
                             <p>Para que los resultados de los tratamiento realizados durante la cita sean exitosos, se deberá seguir con los tratamientos proporcionados al pie de la letra.</p>
                             <a href="https://drive.google.com/drive/folders/12Zhf7GFmlEn2jwGzjygeUewU26XyBXLr?usp=sharing" target="_blank">Lista de Tratamientos</a>
                         </div>
-                    </div>
+                        </div>
                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -1337,7 +1338,7 @@ $('#empleadoId').change(function() {
 
 
             $.ajax({
-                url: '/registro/citas/usuarios',
+                url: '/RegistroCitaAdmin',
                 method: 'POST',
                 data: formData,
                 success: function(response) {
@@ -1365,8 +1366,8 @@ $('#empleadoId').change(function() {
                         localStorage.setItem('alertIcon', alertIcon);
                     }
 
-                    
-                    window.location.href = '/Historial-User';
+                    console.log('cita creada: ', response);
+                    // window.location.href = '/Historial-User';
                     
                 },
                 error: function(xhr){
