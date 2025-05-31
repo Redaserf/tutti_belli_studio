@@ -181,7 +181,7 @@ a:hover {
             </div>
             <h2>Ingresa con tu cuenta</h2>
             <p>Ingresa tu email y contraseña para continuar</p>
-            <form action="/LoginUsuario" method="POST" id="login-form">
+            <form action="{{ route('loginUsuario') }}" method="POST" id="login-form">
                 @csrf
                 @if(session('error'))
                 <div class="alert alert-danger" id="error-message">{{ session('error') }}</div>

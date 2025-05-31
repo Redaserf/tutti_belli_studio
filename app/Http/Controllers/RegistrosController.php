@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProductosInsuficientesException;
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
 use App\Models\Descuento;
@@ -37,7 +38,7 @@ class RegistrosController extends Controller
 {
 
     // Registrar administradores
-    function RegistroAdmin(Request $request){
+    public function RegistroAdmin(Request $request){
 
         $administrador = new User();
         $administrador->name = $request->name;
@@ -58,7 +59,7 @@ class RegistrosController extends Controller
     // -----[ Aquí los registros que puede hacer el administrador ] -----
 
 
-    function RegistroServicio(Request $request)
+    public function RegistroServicio(Request $request)
     {
 //        $request->validate([
 //            'nombre' => 'required|string|max:255',
@@ -389,42 +390,27 @@ class RegistrosController extends Controller
             return response()->json(['message' => 'Debe seleccionar al menos un servicio'], 400);
         }
 
-        foreach ($serviciosSeleccionados as $servicio) {
-            if (!isset($servicio['servicioId']) || !isset($servicio['tecnicaId'])) {
-                return response()->json(['message' => 'Formato de servicio seleccionado incorrecto'], 400);
-            }
-        }
-
-        // if (!Auth::check()) {
-        //     return redirect('/Home-guest');
-        // }
-
-        // $user = Auth::user();
-
-        // if ($user->rolId == 2) {
-        //     return redirect('/Home-usuario');
-        // }
-
         $citaExistente = Cita::where('empleadoId', $request->empleadoId)->where('fechaCita', $request->fechaCita)
         ->where('horaCita', $request->horaCita)
         ->where('estadoCita', '<>', null)
-        ->first();
+        ->exists();
 
         if ($citaExistente) {
             throw new \Exception ('Ya existe una cita para esta fecha y hora');
         }
 
-        // dd($request->estadoCita);
 
         DB::beginTransaction();
         try {
+            $user = Auth::user();
+
             $cita = Cita::create([
                 "fechaCita" => $request->fechaCita,
                 "horaCita" => $request->horaCita,
                 "usuarioId" => $request->usuarioId,
                 "empleadoId" => $request->empleadoId,
                 "notasCita" => $request->notasCita,
-                "estadoCita" => ($request->estadoCita == "true") ? true : false
+                "estadoCita" => ($user->rolId == 1) ? true : false
             ]);
 
             $reporte = Reporte::create([
@@ -464,7 +450,7 @@ class RegistrosController extends Controller
 
 
                     if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
-                        $detalleProductos = DetalleTecnicaProducto::create([
+                        DetalleTecnicaProducto::create([
                             'citaId' => $cita->id,
                             'tecnicaId' => $servicio['tecnicaId'],
                             'productoId' => $productoHasTecnica->productoId,
@@ -515,7 +501,7 @@ class RegistrosController extends Controller
         ]);
 
 
-         $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
+        $fechasCursos = Curso::where('empleadoId', $request->empleadoId)
         ->where('activo', true)
         ->pluck('fechaInicio');
 
@@ -616,7 +602,7 @@ class RegistrosController extends Controller
 
 
                     if($producto->cantidadEnStock >= $productoHasTecnica->cantidadDeUso * 2){
-                        $detalleProductos = DetalleTecnicaProducto::create([
+                        DetalleTecnicaProducto::create([
                             'citaId' => $cita->id,
                             'tecnicaId' => $servicio['tecnicaId'],
                             'productoId' => $productoHasTecnica->productoId,
@@ -628,10 +614,10 @@ class RegistrosController extends Controller
                          $producto->cantidadReserva += $productoHasTecnica->cantidadDeUso * 2;
                          //La cantidad se guarda en la reserva del producto por cualquier cancelacion o cualquier cosa
                          // se suma y no lo igualo pq alteraria el registro
-                         $producto->save();//se guardan cambios
+                        $producto->save();//se guardan cambios
 
                     }else{
-                        throw new \Exception("No hay suficientes productos para hacer la cita");
+                        throw new ProductosInsuficientesException();
                     }
                 }
             }
@@ -700,8 +686,6 @@ class RegistrosController extends Controller
         DB::beginTransaction();
         try {
             $cita = Cita::findOrFail($id);
-            $usuario = $cita->usuario;
-
             $ventaId = CitaHasServicio::where('citaId', $id)->value('ventaId');
 
             $productosDevolverStock = DetalleTecnicaProducto::where('citaId', $id)
@@ -730,7 +714,6 @@ class RegistrosController extends Controller
 
             Venta::where('id', $ventaId)->delete();
 
-            // Mail::to($usuario->email)->send(new CorreoCancelacion($cita));
 
             DB::commit();
             return response()->json(['message' => 'Cita y venta eliminadas con éxito'], 200);
@@ -742,7 +725,7 @@ class RegistrosController extends Controller
 
 
 
-    function RegistroDescuentoProducto(Request $request){
+    public function RegistroDescuentoProducto(Request $request){
 
         DB::beginTransaction();
 
@@ -788,22 +771,8 @@ class RegistrosController extends Controller
     }
 
 
-//    public function RegistroEmpleado(Request $request){
-//        $empleado = User::create([
-//            'name' => $request->employeeName,
-//            'apellido' => $request->employeeLastname,
-//            'fechaNacimiento' => $request->employeeBirthDate,
-//            'numeroTelefono' => $request->employeePhone,
-//            'email' => $request->employeeEmail,
-//            'gender' => $request->employeeGender,
-//            'password' => Hash::make($request->employeePassword),
-//            'rolId' => 3,
-//        ]);
-//
-//        return redirect('/Ver-Empleados');
-//    }
 
-    function RegistroDescuentoTecnica(Request $request)
+    public function RegistroDescuentoTecnica(Request $request)
     {
 
         try {

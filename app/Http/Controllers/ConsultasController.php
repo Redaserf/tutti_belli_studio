@@ -27,9 +27,11 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
+
 class ConsultasController extends Controller
 {
     //
+    private $timeZone = 'America/Mexico_City';
 
     public function vistaPrueba(){
         return view('pruebita');
@@ -138,7 +140,7 @@ class ConsultasController extends Controller
             return redirect('/Ver-Citas-Empleado');
         }
     
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
         
     
         $citasHasServicios = CitaHasServicio::with(['cita' => function ($query) use ($user, $fechaHoraActual) {
@@ -190,19 +192,9 @@ class ConsultasController extends Controller
     
     public function mostrarServiciosTecnicasCitasEmpleado()
     {
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
-    
-        if (!Auth::check()) {
-            return redirect('/Home-guest');
-        }
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
     
         $user = Auth::user();
-    
-        if ($user->rolId == 2) {
-            return redirect('/Home-usuario');
-        } elseif ($user->rolId == 4) {
-            return redirect('/Ver-Citas');
-        }
     
         $citasEmpleado = [];
     
@@ -249,50 +241,6 @@ class ConsultasController extends Controller
     
     
 
-
-    
-    //creo que no se van a usar jaajaj
-
-    // public function citasAceptadas() {
-    //     // Obtener las citas con estado true y sus servicios relacionados
-    //     $citas = Cita::where('estadoCita', true)->with('servicios')->get();
-    
-    //     // Devolver las citas como una respuesta JSON
-    //     return response()->json($citas);
-    // }
-
-    // public function citasDenegadas() {
-    //     // Obtener las citas con estado true y sus servicios relacionados
-    //     $citas = Cita::where('estadoCita', false)->with('servicios')->get();
-    
-    //     // Devolver las citas como una respuesta JSON
-    //     return response()->json($citas);
-    // }
-
-
-    // public function serviciosTecnicasCitas()
-    // {
-    //     $citasHasServicios = CitaHasServicio::with('cita', 'servicio', 'tecnica')->get();
-
-    //     // Estructurar los datos para la respuesta
-    //     $result = $citasHasServicios->groupBy('citaId')->map(function ($group) {
-    //         $cita = $group->first()->cita;
-    //         $servicios = $group->map(function ($item) {
-    //             return [
-    //                 'servicio' => $item->servicio,
-    //                 'tecnica' => $item->tecnica
-    //             ];
-    //         });
-
-    //         return [
-    //             'cita' => $cita,
-    //             'servicios' => $servicios
-    //         ];
-    //     });
-
-    //     return response()->json($result->values());
-    // }
-
     public function unaCitaConServiciosTecnica($id)
     {
         $cita = Cita::with(['servicios' => function($query) use ($id) {
@@ -330,7 +278,7 @@ class ConsultasController extends Controller
     
     //citas no aceptadas (citas de usuarios) con datos de su usuario y datos del empleado
     public function citasUsuariosEmpleados() {
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
         
     
         $citas = Cita::where('estadoCita', '=', false)
@@ -360,7 +308,7 @@ class ConsultasController extends Controller
 
 
     public function citasUsuariosEmpleadosPorEmpleado() {//citas pendientes de cada empleado
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
 
         if (!Auth::check()) {
             return redirect('/Home-guest');
@@ -401,7 +349,7 @@ class ConsultasController extends Controller
 
     public function ventasCitas()
     {
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
         $fechaActual = $fechaHoraActual->toDateString();
         $horaActual = $fechaHoraActual->toTimeString();
     
@@ -468,7 +416,7 @@ class ConsultasController extends Controller
 
     public function ventasCitasAceptadas()
     {
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
         $fechaActual = $fechaHoraActual->toDateString();
         $horaActual = $fechaHoraActual->toTimeString();
     
@@ -542,7 +490,7 @@ class ConsultasController extends Controller
             return redirect('/Home-usuario');
         }
     
-        $fechaHoraActual = now()->setTimezone('America/Mexico_City');
+        $fechaHoraActual = now()->setTimezone($this->timeZone);
         $fechaActual = $fechaHoraActual->toDateString();
         $horaActual = $fechaHoraActual->toTimeString();
     
@@ -724,4 +672,4 @@ class ConsultasController extends Controller
     
     
 
-}    
+}

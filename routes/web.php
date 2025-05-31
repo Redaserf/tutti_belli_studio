@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\DibujarController;
 use App\Http\Controllers\InscripcionController;
+use App\Http\Middleware\RedirectUsuarioSinPermisos;
 use App\Models\Inscripcion;
 
 // ==========[ Vistas ]==========
@@ -160,7 +161,8 @@ use App\Models\Inscripcion;
     Route::get('/Agregar-Cita-Empleado', [ViewsController::class, 'employeeAgregarCita']);
     Route::get('/Ver-ventas-empleado',[ViewsController::class,'employeeVerVentas']);
 
-    Route::get('/Ver-Citas-Empleado', [ConsultasController::class, 'mostrarServiciosTecnicasCitasEmpleado']);
+    Route::get('/Ver-Citas-Empleado', [ConsultasController::class, 'mostrarServiciosTecnicasCitasEmpleado'])
+    ->middleware(RedirectUsuarioSinPermisos::class);
 
 
     // Route::get('/Ver-Citas-Empleado', [ViewsController::class, 'employeeVerCitas']);
@@ -203,7 +205,7 @@ use App\Models\Inscripcion;
 
     // =====[ Usuarios ]=====
 
-    Route::post('/LoginUsuario',[UsuarioController::class, 'Login']);
+    Route::post('/LoginUsuario',[UsuarioController::class, 'Login'])->name('loginUsuario');
     Route::post('/RegistroUsuario',[UsuarioController::class, 'Registro']);
     Route::get('/Logout',[UsuarioController::class, 'Logout']);
     Route::post('/ActualizarPerfil',[UsuarioController::class, 'actualizarPerfil']);

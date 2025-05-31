@@ -292,7 +292,7 @@
                 display: block;
             }
             .sidebar header .toggle {
-                display: none; 
+                display: none;
             }
         }
 
@@ -425,12 +425,14 @@
                         </ul>
                       </div>
                       <div class="bottom-content">
-                        <li class="">
-                            <a href="/Logout">
-                                <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
-                                <span class="text nav-text">Cerrar sesión</span>
-                            </a>
-                        </li>
+                        <ul>
+                            <li>
+                                <a href="/Logout">
+                                    <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+                                    <span class="text nav-text">Cerrar sesión</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -543,7 +545,7 @@
         if ($(window).width() < 786) {  // Si el ancho de la ventana es menor que 480 píxeles
             $('#scrollDash').addClass('table-responsive');  // Agrega la clase esa
         } else {
-            $('#scrollDash').removeClass('table-responsive');  
+            $('#scrollDash').removeClass('table-responsive');
         }
     }
     checkWidth();
@@ -566,7 +568,7 @@
             });
 
                         // Botón sidebar
-                        function botonSidebar() { 
+                        function botonSidebar() {
                 if (window.innerWidth <= 768) {
                     $('.sidebar-btn').css('display', 'block');
                 } else {
@@ -658,7 +660,7 @@
     //         e.preventDefault();
     //         console.log($(this));
 
-    //         let serviciosSeleccionados = []; 
+    //         let serviciosSeleccionados = [];
 
 
     //         $('.multiselect-option.selected').each(function() {
@@ -686,7 +688,7 @@
     //         $.ajax({
     //             url: '/RegistroCitaAdmin',
     //             method: 'POST',
-    //             data: formData,            
+    //             data: formData,
     //             success: function(response) {
     //                 console.log(response);
     //                 $('#citaForm')[0].reset();

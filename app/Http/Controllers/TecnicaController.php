@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class TecnicaController extends Controller
 {
-    function index(){
+    public function index(){
         return response()->json(Tecnica::all());
     }
 
@@ -58,7 +58,7 @@ class TecnicaController extends Controller
     }
 
     // ==========[ obtener las tecnicas sin descuento ]==========
-    function tecnicaSinDescuento()
+    public function tecnicaSinDescuento()
     {
         $tecnicas = Tecnica::where('descuentoId', '=', null)
             ->with(['servicios'])
@@ -68,7 +68,7 @@ class TecnicaController extends Controller
     }
 
     // ==========[ obtener las tecnicas con descuento ]==========
-    function tecnicaConDescuento()
+    public function tecnicaConDescuento()
     {
         $tecnicas = Tecnica::where('descuentoId', '>', 0)
             ->with(['servicios', 'descuento'])

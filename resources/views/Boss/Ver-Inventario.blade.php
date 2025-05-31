@@ -624,7 +624,7 @@ header {
                                 <input type="number" class="form-control" id="productQuantity" name="cantidad" min="0">
                             </div>
                             <div class="mb-3">
-                                <label for="advertencia" class="form-label" id="advertencia" style="display:none" ></label>
+                                <input type="hidden" for="advertencia" class="form-label" id="advertencia" style="display:none" >
 
                             </div>
                             <div class="mb-3">

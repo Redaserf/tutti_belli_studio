@@ -39,9 +39,7 @@ class UsuarioController extends Controller
         }
 
         // Poner un mensaje de que hubo un error al loguearse
-        return response()->json([
-            'error' => 'Correo o contraseña incorrectas. Por favor, intente de nuevo.'
-        ], 401);
+        return redirect()->back()->with('error', 'Correo o contraseña incorrectas. Por favor, intente de nuevo.');
     }
 
 
